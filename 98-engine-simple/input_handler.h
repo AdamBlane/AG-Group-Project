@@ -38,8 +38,8 @@ public:
         std::cout << "Input handler updating" << std::endl;
         int choice = 1;
         std::cout << "Change state to 1 or 2: ";
-        std::cin >> choice;
-        engine_state_machine::get()->change_state(std::to_string(choice));
+        //std::cin >> choice;
+        //engine_state_machine::get()->change_state(std::to_string(choice));
     }
 
     void render()

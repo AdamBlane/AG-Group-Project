@@ -15,40 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\98-engine-simple\component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\engine_states.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\entity_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\input_handler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\physics_system.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\state_machine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\subsystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\98-engine-simple\main.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="windowMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="windowMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

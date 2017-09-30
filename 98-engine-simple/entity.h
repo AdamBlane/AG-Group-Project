@@ -20,6 +20,7 @@ private:
 
     size_t _id = 0;
     std::string _name = "";
+	// Each entity has a map of all attached components
     std::unordered_map<std::string, std::shared_ptr<component>> _components;
     transform _trans;
 
@@ -34,7 +35,7 @@ public:
 
     bool initialise()
     {
-        std::cout << "Entity " << _id << " initialising" << std::endl;
+        std::cout << "Entity " << _id << ", " << _name << " initialising" << std::endl;
         // Call initialise on all components
         for (auto &c : _components)
             if (!c.second->initialise())
@@ -81,9 +82,10 @@ public:
             c.second->shutdown();
         _components.clear();
     }
-
+	
     bool add_component(const std::string &name, std::shared_ptr<component> comp)
     {
+		// Add component type under given name to entity's comp map
         _components[name] = comp;
         return true;
     }

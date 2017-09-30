@@ -25,14 +25,16 @@ public:
 
     std::shared_ptr<entity> create_entity(const std::string &name)
     {
+		// Construct entity with given name
         auto e = std::make_shared<entity>(name);
+		// Add it to map of all entities
         _entities[name] = e;
         return e;
     }
 
     bool initialise() override final
     {
-        std::cout << "Entity manager initialising" << std::endl;
+        std::cout << "Entity manager subsystem initialising" << std::endl;
         for (auto &e : _entities)
             if (!e.second->initialise())
                 return false;

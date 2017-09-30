@@ -17,8 +17,10 @@ private:
     engine() = default;
 public:
 
+	// Returns singleton instance of engine
     inline static std::shared_ptr<engine> get()
     {
+		std::cout << "Engine initialised" << std::endl;
         static std::shared_ptr<engine> instance(new engine());
         return instance;
     }
@@ -31,6 +33,7 @@ public:
 
     void add_subsystem(const std::string &name, std::shared_ptr<subsystem> sys)
     {
+		// Add given subsys type of given name to map of all subsystems
         _subsystems[name] = sys;
     }
 

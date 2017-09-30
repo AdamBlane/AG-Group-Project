@@ -6,6 +6,7 @@
 #include "state_machine.h"
 #include "engine_states.h"
 #include "input_handler.h"
+#include "window.h"
 //
 #include "glfw3.h"
 #include <stdlib.h>
@@ -29,33 +30,16 @@ static void key_callback(GLFWwindow* win, int key, int scancode, int action, int
 
 int main(int argc, char **argv)
 {
-	
-    //auto eng = engine::get();
-    //eng->add_subsystem("entity_manager", entity_manager::get());
-    //eng->add_subsystem("physics_system", physics_system::get());
-    //eng->add_subsystem("renderer", renderer::get());
-    //eng->add_subsystem("state_machine", engine_state_machine::get());
-    //eng->add_subsystem("input_handler", input_handler::get());
-
-    //engine_state_machine::get()->add_state("1", make_shared<engine_state_1>());
-    //engine_state_machine::get()->add_state("2", make_shared<engine_state_2>());
-    //engine_state_machine::get()->change_state("1");
-
-    //auto e = entity_manager::get()->create_entity("Test");
-    //e->add_component("physics", physics_system::get()->build_component(e));
-    //e->add_component("render", renderer::get()->build_component(e, "Blue", "Sphere", "Gouraud"));
-
-    //eng->run();
-	
-
-
 	// Create window
 	GLFWwindow* window;
+
 	// Set error callbackc function
 	glfwSetErrorCallback(error_callback);
+
 	// Initialise GLFW
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
+
 	// Initialise the window, check for error after
 	window = glfwCreateWindow(640, 480, "Triangle Simulator 2017", NULL, NULL);
 	if (!window)
@@ -63,6 +47,28 @@ int main(int argc, char **argv)
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
+
+
+    auto eng = engine::get();
+    eng->add_subsystem("entity_manager", entity_manager::get());
+    //eng->add_subsystem("physics_system", physics_system::get());
+    eng->add_subsystem("renderer", renderer::get());
+    //eng->add_subsystem("state_machine", engine_state_machine::get());
+    //eng->add_subsystem("input_handler", input_handler::get());
+
+    //engine_state_machine::get()->add_state("1", make_shared<engine_state_1>());
+    //engine_state_machine::get()->add_state("2", make_shared<engine_state_2>());
+    //engine_state_machine::get()->change_state("1");
+
+    auto e = entity_manager::get()->create_entity("StartTriangle");
+    //e->add_component("physics", physics_system::get()->build_component(e));
+    //e->add_component("render", renderer::get()->build_component(e, "Blue", "Sphere", "Gouraud"));
+
+    eng->run();
+	
+
+
+
 	// Assign context
 	glfwMakeContextCurrent(window);
 	// Assign key callback function for close on ESC
@@ -99,7 +105,7 @@ int main(int argc, char **argv)
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
+	
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);

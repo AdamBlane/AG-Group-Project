@@ -21,6 +21,7 @@ public:
 class entity_state_machine : public component
 {
 private:
+	// Map of all game states
     std::unordered_map<std::string, std::shared_ptr<entity_state>> _states;
 
     std::string _current_state_name = "";
@@ -36,6 +37,7 @@ public:
         _visible = false;
     }
 
+	
     void add_state(const std::string &name, std::shared_ptr<entity_state> state)
     {
         _states[name] = state;

@@ -98,7 +98,7 @@ public:
 
     bool initialise()
     {
-        std::cout << "Renderer initialising" << std::endl;
+        std::cout << "Renderer subsystem initialising" << std::endl;
         return true;
     }
 
