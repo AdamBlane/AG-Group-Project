@@ -92,8 +92,8 @@
     <LibraryPath>C:\Users\mrnew\Documents\Visual Studio 2015\Projects\NuttyPutters\OpenGLDep\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)\include\OpenGLDep\headers;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\include\OpenGLDep\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\include;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\mrnew\Documents\Visual Studio 2015\Projects\NuttyPutters\OpenGLDep\headers;$(IncludePath)</IncludePath>
@@ -116,11 +116,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)\include\OpenGLDep\headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)\include\OpenGLDep\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;glfw3.lib;glfw3dll.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\include</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenGLDep\libs\glew32.lib;OpenGLDep\libs\glew32s.lib;OpenGLDep\libs\glfw3.lib;OpenGLDep\libs\glfw3dll.lib;OpenGLDep\libs\OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

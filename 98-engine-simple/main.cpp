@@ -1,15 +1,4 @@
-#include <iostream>
-#include "engine.h"
-#include "entity_manager.h"
-#include "physics_system.h"
-#include "renderer.h"
-#include "state_machine.h"
-#include "engine_states.h"
-#include "input_handler.h"
-//
-#include "glfw3.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include "stdafx.h"
 
 
 using namespace std;
