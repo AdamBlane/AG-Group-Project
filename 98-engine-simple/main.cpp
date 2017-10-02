@@ -6,6 +6,7 @@
 #include "state_machine.h"
 #include "engine_states.h"
 #include "input_handler.h"
+#include "geometry_builder.h"
 //
 #include "glfw3.h"
 #include <stdlib.h>
@@ -121,124 +122,124 @@ void createCubeOLD(GLfloat startPosX, GLfloat startPosY, GLfloat startPosZ, GLfl
 }
 
 
-void createCube(GLfloat startPosX, GLfloat startPosY, GLfloat startPosZ, GLfloat edgeLength)
-{
-
-	GLfloat vertices[] =
-	{
-		// front face
-		startPosX, startPosY + edgeLength, startPosZ, // top left
-		startPosX + edgeLength, startPosY + edgeLength, startPosZ, // top right
-		startPosX + edgeLength, startPosY, startPosZ, // bottom right
-		startPosX, startPosY, startPosZ, // bottom left
-
-		// back face
-		startPosX, startPosY + edgeLength, startPosZ - edgeLength, // top left
-		startPosX + edgeLength, startPosY + edgeLength, startPosZ - edgeLength, // top right
-		startPosX + edgeLength, startPosY, startPosZ - edgeLength, // bottom right
-		startPosX, startPosY, startPosZ - edgeLength, // bottom left
-
-		// left face
-		startPosX, startPosY + edgeLength, startPosZ, // top left
-		startPosX, startPosY + edgeLength, startPosZ - edgeLength, // top right
-		startPosX, startPosY, startPosZ - edgeLength, // bottom right
-		startPosX, startPosY, startPosZ, // bottom left
-
-		// right face
-		startPosX + edgeLength, startPosY + edgeLength, startPosZ, // top left
-		startPosX + edgeLength, startPosY + edgeLength, startPosZ - edgeLength, // top right
-		startPosX + edgeLength, startPosY, startPosZ - edgeLength, // bottom right
-		startPosX + edgeLength, startPosY, startPosZ, // bottom left
-
-		// top face
-		startPosX, startPosY + edgeLength, startPosZ, // top left
-		startPosX, startPosY + edgeLength, startPosZ - edgeLength, // top right
-		startPosX + edgeLength, startPosY + edgeLength, startPosZ - edgeLength, // bottom right
-		startPosX + edgeLength, startPosY + edgeLength, startPosZ, // bottom left
-
-		// bottom face
-		startPosX, startPosY, startPosZ, // top left
-		startPosX, startPosY, startPosZ - edgeLength, // top right
-		startPosX + edgeLength, startPosY, startPosZ - edgeLength, // bottom right
-		startPosX + edgeLength, startPosY, startPosZ  // bottom left
-	};
-
-	GLfloat colour[] =
-	{
-		255, 0, 0,
-		0, 255, 0,
-		0, 0, 255
-	};
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glColor3f(colour[0], colour[1], colour[2] );
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-
-	glDrawArrays(GL_QUADS, 0, 24);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-}
-
-void createCuboid(GLfloat startPosX, GLfloat startPosY, GLfloat startPosZ, GLfloat side1, GLfloat side2)
-{
-
-	GLfloat vertices[] =
-	{
-		// front face
-		startPosX, startPosY + side1, startPosZ, // top left
-		startPosX + side2, startPosY + side1, startPosZ, // top right
-		startPosX + side2, startPosY, startPosZ, // bottom right
-		startPosX, startPosY, startPosZ, // bottom left
-
-		// back face
-		startPosX, startPosY + side1, startPosZ - side2, // top left
-		startPosX + side2, startPosY + side1, startPosZ - side2, // top right
-		startPosX + side2, startPosY, startPosZ - side2, // bottom right
-		startPosX, startPosY, startPosZ - side2, // bottom left
-
-		// left face
-		startPosX, startPosY + side1, startPosZ, // top left
-		startPosX, startPosY + side1, startPosZ - side2, // top right
-		startPosX, startPosY, startPosZ - side2, // bottom right
-		startPosX, startPosY, startPosZ, // bottom left
-
-		// right face
-		startPosX + side2, startPosY + side1, startPosZ, // top left
-		startPosX + side2, startPosY + side1, startPosZ - side2, // top right
-		startPosX + side2, startPosY, startPosZ - side2, // bottom right
-		startPosX + side2, startPosY, startPosZ, // bottom left
-
-		// top face
-		startPosX, startPosY + side1, startPosZ, // top left
-		startPosX, startPosY + side1, startPosZ - side2, // top right
-		startPosX + side2, startPosY + side1, startPosZ - side2, // bottom right
-		startPosX + side2, startPosY + side1, startPosZ, // bottom left
-
-		// bottom face
-		startPosX, startPosY, startPosZ, // top left
-		startPosX, startPosY, startPosZ - side2, // top right
-		startPosX + side2, startPosY, startPosZ - side2, // bottom right
-		startPosX + side2, startPosY, startPosZ  // bottom left
-
-	};
-
-	GLfloat colour[] =
-	{
-		255, 0, 0,
-		0, 255, 0,
-		0, 0, 255
-	};
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glColor3f(colour[0], colour[2], colour[2]);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-
-	glDrawArrays(GL_QUADS, 0, 24);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-}
+//void createCube(GLfloat startPosX, GLfloat startPosY, GLfloat startPosZ, GLfloat edgeLength)
+//{
+//
+//	GLfloat vertices[] =
+//	{
+//		// front face
+//		startPosX, startPosY + edgeLength, startPosZ, // top left
+//		startPosX + edgeLength, startPosY + edgeLength, startPosZ, // top right
+//		startPosX + edgeLength, startPosY, startPosZ, // bottom right
+//		startPosX, startPosY, startPosZ, // bottom left
+//
+//		// back face
+//		startPosX, startPosY + edgeLength, startPosZ - edgeLength, // top left
+//		startPosX + edgeLength, startPosY + edgeLength, startPosZ - edgeLength, // top right
+//		startPosX + edgeLength, startPosY, startPosZ - edgeLength, // bottom right
+//		startPosX, startPosY, startPosZ - edgeLength, // bottom left
+//
+//		// left face
+//		startPosX, startPosY + edgeLength, startPosZ, // top left
+//		startPosX, startPosY + edgeLength, startPosZ - edgeLength, // top right
+//		startPosX, startPosY, startPosZ - edgeLength, // bottom right
+//		startPosX, startPosY, startPosZ, // bottom left
+//
+//		// right face
+//		startPosX + edgeLength, startPosY + edgeLength, startPosZ, // top left
+//		startPosX + edgeLength, startPosY + edgeLength, startPosZ - edgeLength, // top right
+//		startPosX + edgeLength, startPosY, startPosZ - edgeLength, // bottom right
+//		startPosX + edgeLength, startPosY, startPosZ, // bottom left
+//
+//		// top face
+//		startPosX, startPosY + edgeLength, startPosZ, // top left
+//		startPosX, startPosY + edgeLength, startPosZ - edgeLength, // top right
+//		startPosX + edgeLength, startPosY + edgeLength, startPosZ - edgeLength, // bottom right
+//		startPosX + edgeLength, startPosY + edgeLength, startPosZ, // bottom left
+//
+//		// bottom face
+//		startPosX, startPosY, startPosZ, // top left
+//		startPosX, startPosY, startPosZ - edgeLength, // top right
+//		startPosX + edgeLength, startPosY, startPosZ - edgeLength, // bottom right
+//		startPosX + edgeLength, startPosY, startPosZ  // bottom left
+//	};
+//
+//	GLfloat colour[] =
+//	{
+//		255, 0, 0,
+//		0, 255, 0,
+//		0, 0, 255
+//	};
+//
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//	glColor3f(colour[0], colour[1], colour[2] );
+//	glEnableClientState(GL_VERTEX_ARRAY);
+//	glVertexPointer(3, GL_FLOAT, 0, vertices);
+//
+//	glDrawArrays(GL_QUADS, 0, 24);
+//
+//	glDisableClientState(GL_VERTEX_ARRAY);
+//}
+//
+//void createCuboid(GLfloat startPosX, GLfloat startPosY, GLfloat startPosZ, GLfloat side1, GLfloat side2)
+//{
+//
+//	GLfloat vertices[] =
+//	{
+//		// front face
+//		startPosX, startPosY + side1, startPosZ, // top left
+//		startPosX + side2, startPosY + side1, startPosZ, // top right
+//		startPosX + side2, startPosY, startPosZ, // bottom right
+//		startPosX, startPosY, startPosZ, // bottom left
+//
+//		// back face
+//		startPosX, startPosY + side1, startPosZ - side2, // top left
+//		startPosX + side2, startPosY + side1, startPosZ - side2, // top right
+//		startPosX + side2, startPosY, startPosZ - side2, // bottom right
+//		startPosX, startPosY, startPosZ - side2, // bottom left
+//
+//		// left face
+//		startPosX, startPosY + side1, startPosZ, // top left
+//		startPosX, startPosY + side1, startPosZ - side2, // top right
+//		startPosX, startPosY, startPosZ - side2, // bottom right
+//		startPosX, startPosY, startPosZ, // bottom left
+//
+//		// right face
+//		startPosX + side2, startPosY + side1, startPosZ, // top left
+//		startPosX + side2, startPosY + side1, startPosZ - side2, // top right
+//		startPosX + side2, startPosY, startPosZ - side2, // bottom right
+//		startPosX + side2, startPosY, startPosZ, // bottom left
+//
+//		// top face
+//		startPosX, startPosY + side1, startPosZ, // top left
+//		startPosX, startPosY + side1, startPosZ - side2, // top right
+//		startPosX + side2, startPosY + side1, startPosZ - side2, // bottom right
+//		startPosX + side2, startPosY + side1, startPosZ, // bottom left
+//
+//		// bottom face
+//		startPosX, startPosY, startPosZ, // top left
+//		startPosX, startPosY, startPosZ - side2, // top right
+//		startPosX + side2, startPosY, startPosZ - side2, // bottom right
+//		startPosX + side2, startPosY, startPosZ  // bottom left
+//
+//	};
+//
+//	GLfloat colour[] =
+//	{
+//		255, 0, 0,
+//		0, 255, 0,
+//		0, 0, 255
+//	};
+//
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//	glColor3f(colour[0], colour[2], colour[2]);
+//	glEnableClientState(GL_VERTEX_ARRAY);
+//	glVertexPointer(3, GL_FLOAT, 0, vertices);
+//
+//	glDrawArrays(GL_QUADS, 0, 24);
+//
+//	glDisableClientState(GL_VERTEX_ARRAY);
+//}
 
 int main(int argc, char **argv)
 {
@@ -279,7 +280,7 @@ int main(int argc, char **argv)
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, WIDTH, 0, HEIGHT, 0, 1000);
+		glOrtho(0, WIDTH, 0, HEIGHT, 0, 500);
 		glMatrixMode(GL_MODELVIEW);
 
 		glLoadIdentity();
@@ -295,14 +296,16 @@ int main(int argc, char **argv)
 		//glEnd();
 
 		glPushMatrix();
-		glTranslatef(WIDTH / 2, HEIGHT / 2, -500);
+		glTranslatef(WIDTH / 2, HEIGHT / 2, -250);
 		glRotatef(rotationX, 1, 0, 0);
 		glRotatef(rotationY, 0, 1, 0);
-		glTranslatef(-WIDTH / 2, -HEIGHT / 2, 500);
+		glTranslatef(-WIDTH / 2, -HEIGHT / 2, 250);
 
-		createCuboid(WIDTH / 2, HEIGHT / 2, -500, 50, 200);
-		
-		createCuboid((WIDTH / 2) - 150, HEIGHT / 2, -500, 0, 100);
+		geometry_builder *box = new geometry_builder(geometry_builder::BOX);
+
+		//createCuboid(WIDTH / 2, HEIGHT / 2, -500, 50, 200);
+		//
+		//createCuboid((WIDTH / 2) - 150, HEIGHT / 2, -500, 0, 100);
 
 
 		glPopMatrix();

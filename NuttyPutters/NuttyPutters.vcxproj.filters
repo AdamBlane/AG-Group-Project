@@ -45,7 +45,7 @@
     <ClInclude Include="..\98-engine-simple\subsystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="geometry_builder.h">
+    <ClInclude Include="include\headers\geometry_builder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,7 +53,7 @@
     <ClCompile Include="..\98-engine-simple\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="geometry_builder.cpp">
+    <ClCompile Include="..\98-engine-simple\geometry_builder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
