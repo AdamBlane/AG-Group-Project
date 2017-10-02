@@ -10,7 +10,8 @@
 #include "glfw3.h"
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 using namespace std;
 
@@ -299,9 +300,10 @@ int main(int argc, char **argv)
 		glRotatef(rotationY, 0, 1, 0);
 		glTranslatef(-WIDTH / 2, -HEIGHT / 2, 500);
 
-		createCuboid(WIDTH / 2, HEIGHT / 2, -500, 2, 100);
+		createCuboid(WIDTH / 2, HEIGHT / 2, -500, 50, 200);
+		
+		createCuboid((WIDTH / 2) - 150, HEIGHT / 2, -500, 0, 100);
 
-		createCuboid((WIDTH / 2) - 150, HEIGHT / 2, -500, 2, 100);
 
 		glPopMatrix();
 

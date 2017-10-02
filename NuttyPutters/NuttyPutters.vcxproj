@@ -29,9 +29,11 @@
     <ClInclude Include="..\98-engine-simple\renderer.h" />
     <ClInclude Include="..\98-engine-simple\state_machine.h" />
     <ClInclude Include="..\98-engine-simple\subsystem.h" />
+    <ClInclude Include="geometry_builder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\98-engine-simple\main.cpp" />
+    <ClCompile Include="geometry_builder.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B8C5F35-878F-4759-A02E-6A535FE8BF0E}</ProjectGuid>
@@ -120,7 +122,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)\include\OpenGLDep\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;glfw3.lib;glfw3dll.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;glfw3.lib;glfw3dll.lib;OpenGL32.Lib;GlU32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
