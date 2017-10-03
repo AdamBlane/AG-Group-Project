@@ -3,18 +3,6 @@
 geometry_builder::geometry_builder(type3D thisType)
 {
 	type3d = thisType;
-
-	switch (type3d) {
-	case CUBOID:
-		createCuboid();
-		break;
-	case BOX:
-		createCube();
-		break;
-	default:
-		createCube();
-		break;
-	}
 }
 
 geometry_builder::~geometry_builder()
@@ -141,20 +129,44 @@ void geometry_builder::createCuboid()
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void geometry_builder::setPosition()
+void geometry_builder::draw()
 {
+	switch (type3d) {
+	case CUBOID:
+		createCuboid();
+		break;
+	case BOX:
+		createCube();
+		break;
+	default:
+		createCube();
+		break;
+	}
+}
+
+void geometry_builder::setPosition(GLfloat newX, GLfloat newY, GLfloat newZ)
+{
+	//glTranslatef(newX, newY, newZ);
+	position = vec3(newX, newY, newZ);
+
 }
 
 vec3 geometry_builder::getPosition()
 {
-	return vec3();
+	return vec3(position);
 }
 
-void geometry_builder::scale()
+void geometry_builder::scale(GLfloat side)
 {
+	side1 = side;
 }
 
 GLfloat geometry_builder::getScale()
 {
-	return GLfloat();
+	return GLfloat(side1);
+}
+
+void geometry_builder::translate(vec3 &translateVector)
+{
+	position += translateVector;
 }

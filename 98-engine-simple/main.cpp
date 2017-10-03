@@ -280,36 +280,30 @@ int main(int argc, char **argv)
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, WIDTH, 0, HEIGHT, 0, 500);
+		glOrtho(0, WIDTH, 0, HEIGHT, -200, 500);
 		glMatrixMode(GL_MODELVIEW);
 
 		glLoadIdentity();
-		//glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.0f);
-
-		//glBegin(GL_TRIANGLES);
-		//glColor3f(1.f, 0.f, 0.f);
-		//glVertex3f(-0.6f, -0.4f, 0.f);
-		//glColor3f(0.f, 1.f, 0.f);
-		//glVertex3f(0.6f, -0.4f, 0.f);
-		//glColor3f(0.f, 0.f, 1.f);
-		//glVertex3f(0.f, 0.6f, 0.f);
-		//glEnd();
 
 		glPushMatrix();
-		glTranslatef(WIDTH / 2, HEIGHT / 2, -250);
-		glRotatef(rotationX, 1, 0, 0);
-		glRotatef(rotationY, 0, 1, 0);
-		glTranslatef(-WIDTH / 2, -HEIGHT / 2, 250);
+
 
 		geometry_builder *box = new geometry_builder(geometry_builder::BOX);
 
-		//createCuboid(WIDTH / 2, HEIGHT / 2, -500, 50, 200);
-		//
-		//createCuboid((WIDTH / 2) - 150, HEIGHT / 2, -500, 0, 100);
+		box->setPosition(200.0f, 150.0f, 0.0f);
+		box->scale(50.0f);
+
+		glTranslatef(200.0f, 150.0f, 0);
+		glRotatef(rotationX, 1, 0, 0);
+		glRotatef(rotationY, 0, 1, 0);
+		glTranslatef(-200.0f, -150.0f, 0);
+
+		box->draw();
+
+		cout << box->getPosition().x << ", " << box->getPosition().y << ", " << box->getPosition().z << endl;
 
 
 		glPopMatrix();
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

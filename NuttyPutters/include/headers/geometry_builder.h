@@ -13,12 +13,12 @@ public:
 
 	geometry_builder(type3D type3d);
 	~geometry_builder();
-
-	void setPosition();
+	void setPosition(GLfloat newX, GLfloat newY, GLfloat newZ);
 	vec3 getPosition();
-	void scale();
+	void scale(GLfloat side);
 	GLfloat getScale();
-
+	void translate(vec3 &translateVector);
+	void draw();
 
 private:
 	void createCube();
