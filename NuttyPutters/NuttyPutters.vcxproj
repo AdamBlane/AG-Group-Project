@@ -36,7 +36,6 @@
     <ClInclude Include="..\98-engine-simple\subsystem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\98-engine-simple\Camera.cpp" />
     <ClCompile Include="..\98-engine-simple\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
