@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-
 using namespace std;
 
 
@@ -35,8 +34,6 @@ int main(int argc, char **argv)
     //e->add_component("render", renderer::get()->build_component(e, "Blue", "Sphere", "Gouraud"));
 
     //eng->run();
-	
-
 
 	// Create window
 	GLFWwindow* window;

@@ -19,18 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\98-engine-simple\Camera.h" />
     <ClInclude Include="..\98-engine-simple\component.h" />
     <ClInclude Include="..\98-engine-simple\engine.h" />
     <ClInclude Include="..\98-engine-simple\engine_states.h" />
     <ClInclude Include="..\98-engine-simple\entity.h" />
     <ClInclude Include="..\98-engine-simple\entity_manager.h" />
+    <ClInclude Include="..\98-engine-simple\free_camera.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\98-engine-simple\input_handler.h" />
     <ClInclude Include="..\98-engine-simple\physics_system.h" />
     <ClInclude Include="..\98-engine-simple\renderer.h" />
     <ClInclude Include="..\98-engine-simple\state_machine.h" />
+    <ClInclude Include="..\98-engine-simple\stdafx.h" />
     <ClInclude Include="..\98-engine-simple\subsystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\98-engine-simple\Camera.cpp" />
     <ClCompile Include="..\98-engine-simple\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
