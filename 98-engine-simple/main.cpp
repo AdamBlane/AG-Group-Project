@@ -1,7 +1,11 @@
 #include "stdafx.h"
+#include"AllCamera.h"
 
+using namespace AllCamera;
 using namespace std;
+using namespace glm;
 
+free_camera cam;
 
 void error_callback(int error, const char* description)
 {
@@ -17,23 +21,10 @@ static void key_callback(GLFWwindow* win, int key, int scancode, int action, int
 
 int main(int argc, char **argv)
 {
-	
-    //auto eng = engine::get();
-    //eng->add_subsystem("entity_manager", entity_manager::get());
-    //eng->add_subsystem("physics_system", physics_system::get());
-    //eng->add_subsystem("renderer", renderer::get());
-    //eng->add_subsystem("state_machine", engine_state_machine::get());
-    //eng->add_subsystem("input_handler", input_handler::get());
-
-    //engine_state_machine::get()->add_state("1", make_shared<engine_state_1>());
-    //engine_state_machine::get()->add_state("2", make_shared<engine_state_2>());
-    //engine_state_machine::get()->change_state("1");
-
-    //auto e = entity_manager::get()->create_entity("Test");
-    //e->add_component("physics", physics_system::get()->build_component(e));
-    //e->add_component("render", renderer::get()->build_component(e, "Blue", "Sphere", "Gouraud"));
-
-    //eng->run();
+	cam.set_Posistion(glm::vec3(0.0f, 10.0f, 0.0f));
+	cam.set_Target(vec3(0.0f, 0.0f, 0.0f));
+	auto aspect = static_cast<float>(640 / 480);
+	cam.set_projection(quarter_pi<float>(), aspect, 2.414f, 1000.0f);
 
 	// Create window
 	GLFWwindow* window;

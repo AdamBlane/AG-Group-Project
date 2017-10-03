@@ -1,5 +1,6 @@
+#pragma once
 #include "stdafx.h"
-namespace Camera
+namespace AllCamera
 {
 	class camera
 	{
@@ -37,9 +38,9 @@ namespace Camera
 			{
 				projection = glm::perspective(fov, aspect, near, far);
 			}
-
 			virtual void update(float delta_time) = 0;
 	};
+			
 }
 
 

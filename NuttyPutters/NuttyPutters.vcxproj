@@ -36,6 +36,9 @@
     <ClInclude Include="..\98-engine-simple\subsystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\98-engine-simple\free_camera.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\98-engine-simple\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

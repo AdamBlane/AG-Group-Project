@@ -59,5 +59,8 @@
     <ClCompile Include="..\98-engine-simple\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\98-engine-simple\free_camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
