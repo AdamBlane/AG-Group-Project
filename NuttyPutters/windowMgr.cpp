@@ -4,7 +4,7 @@
 #include "windowMgr.h"
 
 
-
+// Close window on escape press
 void windowMgr::EscKeyCallback(GLFWwindow* win, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -36,9 +36,7 @@ void windowMgr::Init(GLFWwindow* &win)
 }
 
 void windowMgr::Update(GLFWwindow* &win)
-{
-	while (!glfwWindowShouldClose(win))
-	{
+{			
 		float ratio;
 		int width, height;
 
@@ -64,10 +62,12 @@ void windowMgr::Update(GLFWwindow* &win)
 		glColor3f(0.f, 0.f, 1.f);
 		glVertex3f(0.f, 0.6f, 0.f);
 		glEnd();
+		
 
 		glfwSwapBuffers(win);
 		glfwPollEvents();
-	}
+	
+
 }
 
 void windowMgr::CleanUp(GLFWwindow* &win)

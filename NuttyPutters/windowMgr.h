@@ -6,6 +6,8 @@
 class windowMgr
 {
 public:
+	
+
 	static void EscKeyCallback(GLFWwindow* win, int key, int scancode, int action, int mods);
 	
 	
