@@ -4,8 +4,10 @@
 // Our files
 #include "windowMgr.h"
 
+
 // GLFW
 #include "glfw3.h"
+
 
 // GLOBALS
 windowMgr winMgr;

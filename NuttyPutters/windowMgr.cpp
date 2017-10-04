@@ -3,6 +3,8 @@
 #include "glfw3.h"
 #include "windowMgr.h"
 
+/// Window manager deals with initialisation of glfw libraries, creating the game window,
+/// adds key callbacks and terminates window when done
 
 // Close window on escape press
 void windowMgr::EscKeyCallback(GLFWwindow* win, int key, int scancode, int action, int mods)
