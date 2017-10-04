@@ -6,6 +6,8 @@ using namespace std;
 using namespace glm;
 
 free_camera cam;
+// Create window
+GLFWwindow* window;
 
 void error_callback(int error, const char* description)
 {
@@ -18,7 +20,55 @@ static void key_callback(GLFWwindow* win, int key, int scancode, int action, int
 		glfwSetWindowShouldClose(win, GL_TRUE);
 }
 
+bool render() 
+{
+	float ratio;
+	int width, height;
 
+	glfwGetFramebufferSize(window, &width, &height);
+	ratio = width / (float)height;
+
+	glViewport(0, 0, width, height);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	/*glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+	glMatrixMode(GL_MODELVIEW);*/
+
+	glLoadIdentity();
+	//glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.0f);
+	auto V = cam.get_View();
+	auto P = cam.get_Projection();
+
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.f, 0.f, 0.f);
+	glVertex3f(-0.6f, -0.4f, 0.f);
+	glColor3f(0.f, 1.f, 0.f);
+	glVertex3f(0.6f, -0.4f, 0.f);
+	glColor3f(0.f, 0.f, 1.f);
+	glVertex3f(0.f, 0.6f, 0.f);
+	glEnd();
+
+	auto M = GL_MODELVIEW_MATRIX;
+	auto MVP = P * V;
+	MVP *= M;
+
+	if (glfwGetKey(GLFW_KEY_W))
+		pos = (vec3(0.0f, 0.0f, 2.0f));
+	if (glfwGetKey(GLFW_KEY_A))
+		pos = (vec3(-2.0f, 0.0f, 0.0f));
+	if (glfwGetKey(renderer::get_window(), GLFW_KEY_S))
+		pos = (vec3(0.0f, 0.0f, -2.0f));
+	if (glfwGetKey(renderer::get_window(), GLFW_KEY_D))
+		pos = (vec3(2.0f, 0.0f, 0.0f));
+
+	return true;
+}
+void update() 
+{
+
+}
 int main(int argc, char **argv)
 {
 	cam.set_Posistion(glm::vec3(0.0f, 10.0f, 0.0f));
@@ -26,8 +76,6 @@ int main(int argc, char **argv)
 	auto aspect = static_cast<float>(640 / 480);
 	cam.set_projection(quarter_pi<float>(), aspect, 2.414f, 1000.0f);
 
-	// Create window
-	GLFWwindow* window;
 	// Set error callbackc function
 	glfwSetErrorCallback(error_callback);
 	// Initialise GLFW
@@ -44,35 +92,11 @@ int main(int argc, char **argv)
 	glfwMakeContextCurrent(window);
 	// Assign key callback function for close on ESC
 	glfwSetKeyCallback(window, key_callback);
+
 	// While window is not to be closed...
 	while (!glfwWindowShouldClose(window))
 	{
-		float ratio;
-		int width, height;
-
-		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / (float)height;
-
-		glViewport(0, 0, width, height);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		glMatrixMode(GL_MODELVIEW);
-
-		glLoadIdentity();
-		glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.0f);
-
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.f, 0.f, 0.f);
-		glVertex3f(-0.6f, -0.4f, 0.f);
-		glColor3f(0.f, 1.f, 0.f);
-		glVertex3f(0.6f, -0.4f, 0.f);
-		glColor3f(0.f, 0.f, 1.f);
-		glVertex3f(0.f, 0.6f, 0.f);
-		glEnd();
-
+		render();
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
