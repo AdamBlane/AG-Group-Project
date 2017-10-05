@@ -21,6 +21,7 @@ const GLint WIDTH = 800, HEIGHT = 600;
 
 GLfloat rotationX = 0.0f;
 GLfloat rotationY = 0.0f;
+GLfloat rotationZ = 0.0f;
 
 void error_callback(int error, const char* description)
 {
@@ -55,6 +56,12 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 			break;
 		case GLFW_KEY_LEFT:
 			rotationY -= rotationSpeed;
+			break;
+		case GLFW_KEY_A:
+			rotationZ -= rotationSpeed;
+			break;
+		case GLFW_KEY_D:
+			rotationZ += rotationSpeed;
 			break;
 		}
 
@@ -289,20 +296,21 @@ int main(int argc, char **argv)
 		glPushMatrix();
 
 
-		geometry_builder *box = new geometry_builder(geometry_builder::CUBOID);
+		geometry_builder *box = new geometry_builder(geometry_builder::BOX);
 
-		box->setPosition(200.0f, 150.0f, 0.0f);
-		box->size(5.0f, 100.0f);
+		box->setPosition(500.0f, 150.0f, 0.0f);
+		box->size(70.0f, 100.0f);
 
 		glTranslatef(box->getPosition().x, box->getPosition().y, 0);
+		//X, Y, Z rotation
 		glRotatef(rotationX, 1, 0, 0);
 		glRotatef(rotationY, 0, 1, 0);
+		glRotatef(rotationZ, 0, 0, 1);
 		glTranslatef(-(box->getPosition().x), -(box->getPosition().y), 0);
 
 		box->draw();
 
 		cout << box->getPosition().x << ", " << box->getPosition().y << ", " << box->getPosition().z << endl;
-
 
 		glPopMatrix();
 		glfwSwapBuffers(window);
