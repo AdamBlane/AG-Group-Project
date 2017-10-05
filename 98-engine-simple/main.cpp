@@ -1,19 +1,14 @@
 #include <Windows.h>
 #include <iostream>
-#include "engine.h"
-#include "entity_manager.h"
-#include "physics_system.h"
-#include "renderer.h"
-#include "state_machine.h"
-#include "engine_states.h"
-#include "input_handler.h"
 #include "geometry_builder.h"
+#include "tile.h"
 //
 #include "glfw3.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
+
 
 using namespace std;
 
@@ -256,6 +251,7 @@ int main(int argc, char **argv)
 	GLFWwindow* window;
 	// Set error callbackc function
 	glfwSetErrorCallback(error_callback);
+
 	// Initialise GLFW
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
@@ -296,21 +292,24 @@ int main(int argc, char **argv)
 		glPushMatrix();
 
 
-		geometry_builder *box = new geometry_builder(geometry_builder::BOX);
+		//geometry_builder *box = new geometry_builder(geometry_builder::CUBOID);
 
-		box->setPosition(500.0f, 150.0f, 0.0f);
-		box->size(70.0f, 100.0f);
+		//box->setPosition(500.0f, 150.0f, 0.0f);
+		//box->size(2.0f, 100.0f);
 
-		glTranslatef(box->getPosition().x, box->getPosition().y, 0);
+		tile *newTile = new tile();
+
+		glTranslatef(newTile->getPosition().x, newTile->getPosition().y, 0);
 		//X, Y, Z rotation
 		glRotatef(rotationX, 1, 0, 0);
 		glRotatef(rotationY, 0, 1, 0);
 		glRotatef(rotationZ, 0, 0, 1);
-		glTranslatef(-(box->getPosition().x), -(box->getPosition().y), 0);
+		glTranslatef(-(newTile->getPosition().x), -(newTile->getPosition().y), 0);
 
-		box->draw();
+		//box->draw();
+		//newTile->drawTile();
 
-		cout << box->getPosition().x << ", " << box->getPosition().y << ", " << box->getPosition().z << endl;
+		//cout << box->getPosition().x << ", " << box->getPosition().y << ", " << box->getPosition().z << endl;
 
 		glPopMatrix();
 		glfwSwapBuffers(window);

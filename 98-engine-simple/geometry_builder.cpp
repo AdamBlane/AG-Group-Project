@@ -129,6 +129,8 @@ void geometry_builder::createCuboid()
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+
+
 void geometry_builder::draw()
 {
 	switch (type3d) {
@@ -161,9 +163,29 @@ void geometry_builder::size(GLfloat side_1, GLfloat side_2)
 	side2 = side_2;
 }
 
-GLfloat geometry_builder::getSize()
+void geometry_builder::getSize()
+{
+	switch (type3d) {
+	case CUBOID:
+		getCubeSize();
+		break;
+	case BOX:
+		getCuboidSize();
+		break;
+	default:
+		getCubeSize();
+		break;
+	}
+}
+
+GLfloat geometry_builder::getCubeSize()
 {
 	return GLfloat(side1);
+}
+
+vec2 geometry_builder::getCuboidSize()
+{
+	return vec2(side1, side2);
 }
 
 void geometry_builder::translate(vec3 &translateVector)

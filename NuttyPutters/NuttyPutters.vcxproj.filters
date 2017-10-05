@@ -15,37 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\98-engine-simple\component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\engine_states.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\entity_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\input_handler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\physics_system.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\state_machine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\98-engine-simple\subsystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\headers\geometry_builder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\headers\tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -54,6 +27,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\98-engine-simple\geometry_builder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\headers\tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

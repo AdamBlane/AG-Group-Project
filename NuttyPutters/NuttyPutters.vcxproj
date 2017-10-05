@@ -19,21 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\98-engine-simple\component.h" />
-    <ClInclude Include="..\98-engine-simple\engine.h" />
-    <ClInclude Include="..\98-engine-simple\engine_states.h" />
-    <ClInclude Include="..\98-engine-simple\entity.h" />
-    <ClInclude Include="..\98-engine-simple\entity_manager.h" />
-    <ClInclude Include="..\98-engine-simple\input_handler.h" />
-    <ClInclude Include="..\98-engine-simple\physics_system.h" />
-    <ClInclude Include="..\98-engine-simple\renderer.h" />
-    <ClInclude Include="..\98-engine-simple\state_machine.h" />
-    <ClInclude Include="..\98-engine-simple\subsystem.h" />
     <ClInclude Include="include\headers\geometry_builder.h" />
+    <ClInclude Include="include\headers\tile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\98-engine-simple\geometry_builder.cpp" />
     <ClCompile Include="..\98-engine-simple\main.cpp" />
+    <ClCompile Include="include\headers\tile.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B8C5F35-878F-4759-A02E-6A535FE8BF0E}</ProjectGuid>
