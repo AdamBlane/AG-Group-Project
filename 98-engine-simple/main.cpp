@@ -281,7 +281,7 @@ int main(int argc, char **argv)
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, WIDTH, 0, HEIGHT, -200, 500);
+		glOrtho(0, WIDTH, 0, HEIGHT, -1000, 1000);
 		glMatrixMode(GL_MODELVIEW);
 
 		glLoadIdentity();
@@ -289,15 +289,15 @@ int main(int argc, char **argv)
 		glPushMatrix();
 
 
-		geometry_builder *box = new geometry_builder(geometry_builder::BOX);
+		geometry_builder *box = new geometry_builder(geometry_builder::CUBOID);
 
 		box->setPosition(200.0f, 150.0f, 0.0f);
-		box->scale(50.0f);
+		box->size(5.0f, 100.0f);
 
-		glTranslatef(200.0f, 150.0f, 0);
+		glTranslatef(box->getPosition().x, box->getPosition().y, 0);
 		glRotatef(rotationX, 1, 0, 0);
 		glRotatef(rotationY, 0, 1, 0);
-		glTranslatef(-200.0f, -150.0f, 0);
+		glTranslatef(-(box->getPosition().x), -(box->getPosition().y), 0);
 
 		box->draw();
 

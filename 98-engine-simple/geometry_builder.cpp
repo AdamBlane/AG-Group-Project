@@ -146,7 +146,6 @@ void geometry_builder::draw()
 
 void geometry_builder::setPosition(GLfloat newX, GLfloat newY, GLfloat newZ)
 {
-	//glTranslatef(newX, newY, newZ);
 	position = vec3(newX, newY, newZ);
 
 }
@@ -156,12 +155,13 @@ vec3 geometry_builder::getPosition()
 	return vec3(position);
 }
 
-void geometry_builder::scale(GLfloat side)
+void geometry_builder::size(GLfloat side_1, GLfloat side_2)
 {
-	side1 = side;
+	side1 = side_1;
+	side2 = side_2;
 }
 
-GLfloat geometry_builder::getScale()
+GLfloat geometry_builder::getSize()
 {
 	return GLfloat(side1);
 }
