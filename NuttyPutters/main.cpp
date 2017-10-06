@@ -5,52 +5,30 @@
 // Our files
 #include "windowMgr.h"
 
-
 // GLFW
 #include "glfw3.h"
 
 using namespace std; 
 
 // GLOBALS
-windowMgr winMgr;
+windowMgr* winMgr; // Pointer to winMgr since it's a singleton
 
 
-GLFWwindow* window;
-// Possible to create this window inside of windowMgr
-// Then have a function to return a reference to the window 
-// when necessary (input etc)
-
-void Update()
-{
-	// While window is open...
-	while (!glfwWindowShouldClose(window))
-	{
-		winMgr.Update(window);
-
-		// Display current scene number
-		cout << winMgr.sceneManager.curScene << endl;
-	}
-	
-}
 
 
 int main(int argc, char **argv)
 {
-	
-	
-
-	// Create window
-	
+	// Get singleton instance of windowMgr
+	winMgr = windowMgr::getInstance();
 	
 	// Setup window
-	winMgr.Init(window);
+	winMgr->Init();
 
 	// Run update loop
-	Update();
-
-
+	winMgr->Update();
 
 	// On window close
-	winMgr.CleanUp(window);
+	winMgr->CleanUp();
+
 	return 0;
 }

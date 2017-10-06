@@ -1,21 +1,17 @@
 
-
 #include "windowMgr.h"
-#include "startScene.h"
+#include "secondScene.h"
 
 #include "glfw3.h"
 
-/// Start scene contains all render and input data for this scene
-
-// Default constructor
-startScene::startScene() { }
-
-// Deconstructor
-startScene::~startScene() { }
+// Basic constructor
+secondScene::secondScene()
+{
+}
 
 
 // Draw stuff
-void startScene::screenContent(GLFWwindow* win)
+void secondScene::screenContent(GLFWwindow * win)
 {
 	float ratio;
 	int width, height;
@@ -36,7 +32,7 @@ void startScene::screenContent(GLFWwindow* win)
 	glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.0f);
 
 	glBegin(GL_TRIANGLES);
-	glColor3f(1.f, 0.f, 0.f);
+	glColor3f(0.f, 1.f, 0.f);
 	glVertex3f(-0.6f, -0.4f, 0.f);
 	//glColor3f(0.f, 1.f, 0.f);
 	glVertex3f(0.6f, -0.4f, 0.f);
@@ -49,20 +45,21 @@ void startScene::screenContent(GLFWwindow* win)
 	glfwPollEvents();
 }
 
-// Input for moving to next scene
-void startScene::nextScene_callback(GLFWwindow* win, int key, int scancode, int action, int mods)
+
+// Input
+void secondScene::backScene_callback(GLFWwindow * win, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_N && action == GLFW_PRESS)
+	if (key == GLFW_KEY_B && action == GLFW_PRESS)
 	{
-		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(2);
+		// Tell windowMgr that we need to move to next scene
+		//parent->sceneManager.changeScene(2);
+		//ChangeScene(2);
+		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 }
 
 // Setup; add key callbacks
-void startScene::Init(GLFWwindow* win)
+void secondScene::Init(GLFWwindow * win)
 {
-	glfwSetKeyCallback(win, nextScene_callback);
+	glfwSetKeyCallback(win, backScene_callback);
 }
-
-

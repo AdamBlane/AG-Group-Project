@@ -1,21 +1,22 @@
 #pragma once
 
-#include "windowMgr.h"
-
 #include "glfw3.h"
 
 
-
-class startScene {
+class startScene
+{
 public:
-	// Keep reference to parent manager
-	windowMgr parent;
-
+	// Default constructor
 	startScene();
-	startScene(windowMgr parentMgr);
+	// Deconstructor
+	~startScene();
 
-
-	void screenContent(GLFWwindow* &win);
-	void nextScene_callback(GLFWwindow* win, int key, int scancode, int action, int mods);
-
+	// Draw stuff
+	void screenContent(GLFWwindow* win);
+	// Input callbacks
+	static void nextScene_callback(GLFWwindow* win, int key, int scancode, int action, int mods);
+	
+	// Applies callbacks, setups up scene
+	void Init(GLFWwindow* win);
+	
 };

@@ -1,21 +1,38 @@
 #pragma once
-
-#include "startScene.h"
+// Ours
 #include "sceneMgr.h"
+#include "startScene.h"
+#include "secondScene.h"
+// Others
 #include "glfw3.h"
 
 
 
 class windowMgr
 {
-public:
-	static void EscKeyCallback(GLFWwindow* win, int key, int scancode, int action, int mods);
-	void Init(GLFWwindow* &win);
-	void Update(GLFWwindow* &win);
-	void CleanUp(GLFWwindow* &win);
-
-	sceneMgr sceneManager;
-	startScene startSceneMgr;
-
+private:
+	// Store singleton instance
+	static windowMgr* instance;
+	// Private constructor to avoid instancing
 	windowMgr();
+	// Deconstructor
+	~windowMgr();
+public:
+	// Static singleton access method
+	static windowMgr* getInstance();
+	// This class creates and deals with the window
+	GLFWwindow* win;
+	// Track gamestate
+	sceneMgr sceneManager;
+	// Gamestate scenes
+	startScene startSceneMgr;
+	secondScene secondSceneMgr;
+
+	// Perform initial window setup
+	GLFWwindow* windowMgr::Init();
+	// Game update loop
+	void Update();
+	// On window close
+	void CleanUp();
+	
 };

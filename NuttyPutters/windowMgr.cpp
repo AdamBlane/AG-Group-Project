@@ -3,18 +3,33 @@
 #include "glfw3.h"
 #include "windowMgr.h"
 
-/// Window manager deals with initialisation of glfw libraries, creating the game window,
-/// adds key callbacks and terminates window when done
+/// windowMgr is a singleton class, accessed by all the scene files
+/// It initialises and sets up the window, & contains the Update loop
+/// On window close, it runs through closing steps
+/// Called from main.cpp
 
-// Close window on escape press - regardless of scene (don't want to keep this)
-void windowMgr::EscKeyCallback(GLFWwindow* win, int key, int scancode, int action, int mods)
+// Private Constructor
+windowMgr::windowMgr() { }
+// Private Deconstructor
+windowMgr::~windowMgr() { }
+
+
+// Set instance to NULL initially, since it'll be created on demand in main
+windowMgr* windowMgr::instance = NULL;
+
+// Return windowMgr singleton instance
+windowMgr* windowMgr::getInstance()
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(win, GL_TRUE);
+	// If it doesn't exist, create it
+	if (instance == NULL)
+		instance = new windowMgr();
+	
+	// Return created/existing instance
+	return instance;
 }
 
-// Setup; GLFW libraries, creates window
-void windowMgr::Init(GLFWwindow* &win)
+// Setup; GLFW stuff, creates window
+GLFWwindow* windowMgr::Init()
 {
 	// Initialise GLFW libraries
 	if (!glfwInit())
@@ -33,40 +48,48 @@ void windowMgr::Init(GLFWwindow* &win)
 	// Make window the current context
 	glfwMakeContextCurrent(win);
 
-	// Set general key callbacks
-	glfwSetKeyCallback(win, EscKeyCallback);
+
+	return win;
 }
 
-
 // Switches on current scene, calls on appropriate file to render/read input
-void windowMgr::Update(GLFWwindow* &win)
-{			
-	switch (sceneManager.curScene)
+void windowMgr::Update()
+{		
+	// While window is open...
+	while (!glfwWindowShouldClose(win))
 	{
-	// Start screen
-	case 1:
-		// Draw content
-		startSceneMgr.screenContent(win);
-		// Setup key callbacks for input
-
-		break;
-	default: break;
+		// Scene manager (property of winMgr) tracks game state
+		switch (sceneManager.curScene)
+		{
+		// Start scene
+		case 1:
+			// Setup scene (key callbacks etc)
+			startSceneMgr.Init(win);
+			// Draw content
+			startSceneMgr.screenContent(win);
+			break;
+		// Second scene
+		case 2:
+			// Setup scene
+			secondSceneMgr.Init(win);
+			// Draw content
+			secondSceneMgr.screenContent(win);
+		default: break;
+		}
+		// DEBUG - for testing, write our current scene
+		std::cout << sceneManager.curScene << std::endl;
 	}
+
 		
 }
 
-void windowMgr::CleanUp(GLFWwindow* &win)
+// On window close
+void windowMgr::CleanUp()
 {
-	//glfwDestroyWindow(win);
+	glfwDestroyWindow(win); // Runs when commented out - why?
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }
 
-// Constructor - calls constructors for property classes
-windowMgr::windowMgr()
-{
-	// Initialise start scene 
-	startSceneMgr = startScene(*this);
-}
 
 

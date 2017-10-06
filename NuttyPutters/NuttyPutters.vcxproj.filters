@@ -27,6 +27,9 @@
     <ClCompile Include="startScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="secondScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="windowMgr.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="startScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="secondScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
