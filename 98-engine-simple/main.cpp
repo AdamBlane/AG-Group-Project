@@ -282,25 +282,24 @@ int main(int argc, char **argv)
 		glfwGetFramebufferSize(window, &width, &height);
 		ratio = width / (float)height;
 
-		glViewport(0, 0, WIDTH, HEIGHT);
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0, WIDTH, 0, HEIGHT, -1000, 1000);
 		glMatrixMode(GL_MODELVIEW);
 
-		glLoadIdentity();
-
 		glPushMatrix();
-
 
 		geometry_builder *box = new geometry_builder(geometry_builder::BOX);
 
 		box->setPosition(500.0f, 150.0f, 0.0f);
-		box->size(200.0f, 100.0f);
+		box->size(100.0f);
 
-		//tile *newTile = new tile();
+		geometry_builder *rect = new geometry_builder(geometry_builder::CUBOID);
+
+		rect->setPosition(350.0f, 150.0f, 0.0f);
+		rect->size(50.0f, 100.0f);
+
+		/*tile *newTile = new tile();*/
 
 		glTranslatef(box->getPosition().x, box->getPosition().y, 0);
 		//X, Y, Z rotation
@@ -309,7 +308,13 @@ int main(int argc, char **argv)
 		glRotatef(rotationZ, 0, 0, 1);
 		glTranslatef(-(box->getPosition().x), -(box->getPosition().y), 0);
 
+		//vector<geometry_builder*> toBeDrawn;
+
+		//toBeDrawn.push_back(box);
+
+
 		box->draw();
+		rect->draw();
 		//newTile->drawTile();
 
 		//cout << box->getPosition().x << ", " << box->getPosition().y << ", " << box->getPosition().z << endl;
