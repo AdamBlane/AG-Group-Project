@@ -1,5 +1,6 @@
 // Standard stuff
-
+#include <string>
+#include <iostream>
 
 // Our files
 #include "windowMgr.h"
@@ -8,6 +9,7 @@
 // GLFW
 #include "glfw3.h"
 
+using namespace std; 
 
 // GLOBALS
 windowMgr winMgr;
@@ -24,6 +26,9 @@ void Update()
 	while (!glfwWindowShouldClose(window))
 	{
 		winMgr.Update(window);
+
+		// Display current scene number
+		cout << winMgr.sceneManager.curScene << endl;
 	}
 	
 }
@@ -36,7 +41,7 @@ int main(int argc, char **argv)
 
 	// Create window
 	
-
+	
 	// Setup window
 	winMgr.Init(window);
 

@@ -20,9 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="sceneMgr.cpp" />
+    <ClCompile Include="startScene.cpp" />
     <ClCompile Include="windowMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="sceneMgr.h" />
+    <ClInclude Include="startScene.h" />
     <ClInclude Include="windowMgr.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
