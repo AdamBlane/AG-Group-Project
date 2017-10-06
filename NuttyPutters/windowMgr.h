@@ -2,7 +2,7 @@
 // Ours
 #include "sceneMgr.h"
 #include "startScene.h"
-#include "secondScene.h"
+#include "gameScene.h"
 // Others
 #include "glfw3.h"
 
@@ -26,7 +26,7 @@ public:
 	sceneMgr sceneManager;
 	// Gamestate scenes
 	startScene startSceneMgr;
-	secondScene secondSceneMgr;
+	gameScene gameSceneMgr;
 
 	// Perform initial window setup
 	GLFWwindow* windowMgr::Init();

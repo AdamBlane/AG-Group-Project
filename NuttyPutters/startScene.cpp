@@ -24,6 +24,7 @@ void startScene::screenContent(GLFWwindow* win)
 	glfwGetFramebufferSize(win, &width, &height);
 	ratio = width / (float)height;
 	// Make viewport match window size
+	// 0,0 = bottom left corner, takes half of screen sideways
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -44,9 +45,10 @@ void startScene::screenContent(GLFWwindow* win)
 	glVertex3f(0.f, 0.6f, 0.f);
 	glEnd();
 
-
 	glfwSwapBuffers(win);
 	glfwPollEvents();
+
+	
 }
 
 // Input for moving to next scene

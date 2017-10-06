@@ -68,12 +68,12 @@ void windowMgr::Update()
 			// Draw content
 			startSceneMgr.screenContent(win);
 			break;
-		// Second scene
+		// Game scene
 		case 2:
 			// Setup scene
-			secondSceneMgr.Init(win);
+			gameSceneMgr.Init(win);
 			// Draw content
-			secondSceneMgr.screenContent(win);
+			gameSceneMgr.screenContent(win);
 		default: break;
 		}
 		// DEBUG - for testing, write our current scene

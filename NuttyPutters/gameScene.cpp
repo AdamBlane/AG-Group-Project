@@ -1,17 +1,21 @@
 
+// Ours
 #include "windowMgr.h"
-#include "secondScene.h"
-
+#include "startScene.h"
+// Others
 #include "glfw3.h"
+#include "gameScene.h"
 
-// Basic constructor
-secondScene::secondScene()
-{
-}
 
+/// Game scene holds all data to do with the game
+
+// Default constructor
+gameScene::gameScene() { }
+// Deconstructor
+gameScene::~gameScene() { }
 
 // Draw stuff
-void secondScene::screenContent(GLFWwindow * win)
+void gameScene::screenContent(GLFWwindow * win)
 {
 	float ratio;
 	int width, height;
@@ -45,21 +49,18 @@ void secondScene::screenContent(GLFWwindow * win)
 	glfwPollEvents();
 }
 
-
 // Input
-void secondScene::backScene_callback(GLFWwindow * win, int key, int scancode, int action, int mods)
+void gameScene::backScene_callback(GLFWwindow * win, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_B && action == GLFW_PRESS)
 	{
-		// Tell windowMgr that we need to move to next scene
-		//parent->sceneManager.changeScene(2);
-		//ChangeScene(2);
+		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 }
 
-// Setup; add key callbacks
-void secondScene::Init(GLFWwindow * win)
+// Setup scene
+void gameScene::Init(GLFWwindow * win)
 {
 	glfwSetKeyCallback(win, backScene_callback);
 }

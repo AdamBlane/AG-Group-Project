@@ -27,7 +27,7 @@
     <ClCompile Include="startScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="secondScene.cpp">
+    <ClCompile Include="gameScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClInclude Include="startScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="secondScene.h">
+    <ClInclude Include="gameScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

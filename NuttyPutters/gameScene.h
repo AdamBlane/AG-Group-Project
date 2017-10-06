@@ -1,19 +1,19 @@
 #pragma once
 
-// Others
+// GLFW
 #include "glfw3.h"
 
-// Forward declare winMgr here - include winMgr.h in secondScene.h
-class windowMgr;
-
-class secondScene
+class gameScene
 {
 public:
+	// Constructors
+	gameScene();
+	~gameScene();
 
-	// Basic constructor
-	secondScene();
-
+	// Draw stuff
 	void screenContent(GLFWwindow* win);
+	// Input
 	static void backScene_callback(GLFWwindow* win, int key, int scancode, int action, int mods);
+	// Setup scene
 	void Init(GLFWwindow* win);
 };

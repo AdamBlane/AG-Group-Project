@@ -19,15 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sceneMgr.cpp" />
-    <ClCompile Include="secondScene.cpp" />
     <ClCompile Include="startScene.cpp" />
     <ClCompile Include="windowMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gameScene.h" />
     <ClInclude Include="sceneMgr.h" />
-    <ClInclude Include="secondScene.h" />
     <ClInclude Include="startScene.h" />
     <ClInclude Include="windowMgr.h" />
   </ItemGroup>
