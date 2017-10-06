@@ -1,11 +1,9 @@
 #pragma once
-#include "glfw3.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <glm\glm.hpp>
 #include "geometry_builder.h"
+#include <glm\glm.hpp>
 #include <vector>
-#include <iostream>
+
+
 
 using namespace glm;
 using namespace std;

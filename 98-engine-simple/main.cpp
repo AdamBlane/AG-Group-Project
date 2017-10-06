@@ -1,13 +1,10 @@
-#include <Windows.h>
-#include <iostream>
 #include "geometry_builder.h"
 #include "tile.h"
+#include <iostream>
 //
 #include "glfw3.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <gl/GL.h>
-#include <gl/GLU.h>
 
 
 using namespace std;
@@ -264,12 +261,18 @@ int main(int argc, char **argv)
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
+
 	// Assign context
 	glfwMakeContextCurrent(window);
 	// Assign key callback function for close on ESC
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 	// While window is not to be closed...
+	glewExperimental = GL_TRUE;
+	glewInit();
+	//glEnable(GL_DEPTH_TEST);
+	//// Accept fragment if it closer to the camera than the former one
+	//glDepthFunc(GL_LESS);
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -292,21 +295,21 @@ int main(int argc, char **argv)
 		glPushMatrix();
 
 
-		//geometry_builder *box = new geometry_builder(geometry_builder::CUBOID);
+		geometry_builder *box = new geometry_builder(geometry_builder::BOX);
 
-		//box->setPosition(500.0f, 150.0f, 0.0f);
-		//box->size(2.0f, 100.0f);
+		box->setPosition(500.0f, 150.0f, 0.0f);
+		box->size(200.0f, 100.0f);
 
-		tile *newTile = new tile();
+		//tile *newTile = new tile();
 
-		glTranslatef(newTile->getPosition().x, newTile->getPosition().y, 0);
+		glTranslatef(box->getPosition().x, box->getPosition().y, 0);
 		//X, Y, Z rotation
 		glRotatef(rotationX, 1, 0, 0);
 		glRotatef(rotationY, 0, 1, 0);
 		glRotatef(rotationZ, 0, 0, 1);
-		glTranslatef(-(newTile->getPosition().x), -(newTile->getPosition().y), 0);
+		glTranslatef(-(box->getPosition().x), -(box->getPosition().y), 0);
 
-		//box->draw();
+		box->draw();
 		//newTile->drawTile();
 
 		//cout << box->getPosition().x << ", " << box->getPosition().y << ", " << box->getPosition().z << endl;
@@ -315,6 +318,8 @@ int main(int argc, char **argv)
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

@@ -1,8 +1,7 @@
 #pragma once
-#include "glfw3.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include "glew.h"
 #include <glm\glm.hpp>
+
 
 using namespace glm;
 
