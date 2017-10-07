@@ -36,7 +36,7 @@ GLFWwindow* windowMgr::Init()
 		exit(EXIT_FAILURE);
 
 	// Create window
-	win = glfwCreateWindow(400, 400, "Test", NULL, NULL);
+	win = glfwCreateWindow(1600, 900, "Test", NULL, NULL);
 
 	// Check window was created successfully
 	if (!win)
@@ -61,19 +61,45 @@ void windowMgr::Update()
 		// Scene manager (property of winMgr) tracks game state
 		switch (sceneManager.curScene)
 		{
+		// Exit game
+		case 0:
+			CleanUp();
+			break;
 		// Start scene
 		case 1:
 			// Setup scene (key callbacks etc)
-			startSceneMgr.Init(win);
+			sceneManager.startScene.Init(win);
 			// Draw content
-			startSceneMgr.screenContent(win);
+			sceneManager.startScene.screenContent(win);			
 			break;
-		// Game scene
+		// Player Select scene
 		case 2:
 			// Setup scene
-			gameSceneMgr.Init(win);
+			sceneManager.playerSelectScene.Init(win);
 			// Draw content
-			gameSceneMgr.screenContent(win);
+			sceneManager.playerSelectScene.screenContent(win);
+			break;
+		// Load Game scene
+		case 3:
+			// Setup scene
+			sceneManager.loadGameScene.Init(win);
+			// Draw content
+			sceneManager.loadGameScene.screenContent(win);
+			break;
+		// Highscore scene
+		case 4:
+			// Setup
+			sceneManager.highscoreScene.Init(win);
+			// Draw content
+			sceneManager.highscoreScene.screenContent(win);
+			break;
+		// Options scene
+		case 5:
+			// Setup
+			sceneManager.optionsScene.Init(win);
+			// Draw content
+			sceneManager.optionsScene.screenContent(win);
+			break;
 		default: break;
 		}
 		// DEBUG - for testing, write our current scene

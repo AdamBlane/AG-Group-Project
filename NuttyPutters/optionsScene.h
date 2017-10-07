@@ -1,22 +1,19 @@
 #pragma once
 
-// GLFW
 #include "glfw3.h"
 
-
-class startScene
+class optionsScene
 {
 public:
 	// Default constructor
-	startScene();
+	optionsScene();
 	// Deconstructor
-	~startScene();
+	~optionsScene();
 
 	// Draw stuff
 	void screenContent(GLFWwindow* win);
-	// Input 
+	// Input
 	static void key_callbacks(GLFWwindow* win, int key, int scancode, int action, int mods);
 	// Setup
 	void Init(GLFWwindow* win);
-	
 };

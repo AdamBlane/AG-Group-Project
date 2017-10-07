@@ -3,20 +3,17 @@
 // GLFW
 #include "glfw3.h"
 
-
-class startScene
+class playerSelect
 {
 public:
-	// Default constructor
-	startScene();
-	// Deconstructor
-	~startScene();
+	// Constructors
+	playerSelect();
+	~playerSelect();
 
 	// Draw stuff
 	void screenContent(GLFWwindow* win);
-	// Input 
+	// Input
 	static void key_callbacks(GLFWwindow* win, int key, int scancode, int action, int mods);
-	// Setup
+	// Setup scene
 	void Init(GLFWwindow* win);
-	
 };

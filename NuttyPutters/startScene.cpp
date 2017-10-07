@@ -51,20 +51,48 @@ void startScene::screenContent(GLFWwindow* win)
 	
 }
 
-// Input for moving to next scene
-void startScene::nextScene_callback(GLFWwindow* win, int key, int scancode, int action, int mods)
+// Input
+void startScene::key_callbacks(GLFWwindow* win, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_N && action == GLFW_PRESS)
+	// Move to player select scene
+	if (key == GLFW_KEY_P && action == GLFW_PRESS)
 	{
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(2);
 	}
+	// Move to load game scene
+	if (key == GLFW_KEY_L && action == GLFW_PRESS)
+	{
+		// Access singleton instance to update it's sceneManager's state
+		windowMgr::getInstance()->sceneManager.changeScene(3);
+	}
+	// Move to highscore scene
+	if (key == GLFW_KEY_H && action == GLFW_PRESS)
+	{
+		// Access singleton instance to update it's sceneManager's state
+		windowMgr::getInstance()->sceneManager.changeScene(4);
+	}
+	// Move to options scene
+	if (key == GLFW_KEY_O && action == GLFW_PRESS)
+	{
+		// Access singleton instance to update it's sceneManager's state
+		windowMgr::getInstance()->sceneManager.changeScene(5);
+	}
+	// Exit game
+	if (key == GLFW_KEY_E && action == GLFW_PRESS)
+	{
+		// Access singleton instance to update it's sceneManager's state
+		windowMgr::getInstance()->sceneManager.changeScene(0);
+	}
 }
+
+
 
 // Setup; add key callbacks
 void startScene::Init(GLFWwindow* win)
 {
-	glfwSetKeyCallback(win, nextScene_callback);
+	glfwSetKeyCallback(win, key_callbacks);
+
 }
 
 

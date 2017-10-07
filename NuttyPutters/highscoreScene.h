@@ -1,16 +1,15 @@
 #pragma once
 
-// GLFW
 #include "glfw3.h"
 
 
-class startScene
+class highscoreScene
 {
 public:
 	// Default constructor
-	startScene();
+	highscoreScene();
 	// Deconstructor
-	~startScene();
+	~highscoreScene();
 
 	// Draw stuff
 	void screenContent(GLFWwindow* win);
@@ -18,5 +17,4 @@ public:
 	static void key_callbacks(GLFWwindow* win, int key, int scancode, int action, int mods);
 	// Setup
 	void Init(GLFWwindow* win);
-	
 };

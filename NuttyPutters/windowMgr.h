@@ -24,9 +24,7 @@ public:
 	GLFWwindow* win;
 	// Track gamestate
 	sceneMgr sceneManager;
-	// Gamestate scenes
-	startScene startSceneMgr;
-	gameScene gameSceneMgr;
+
 
 	// Perform initial window setup
 	GLFWwindow* windowMgr::Init();

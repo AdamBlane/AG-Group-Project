@@ -20,13 +20,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameScene.cpp" />
+    <ClCompile Include="highscoreScene.cpp" />
+    <ClCompile Include="loadGameScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="optionsScene.cpp" />
+    <ClCompile Include="playerSelect.cpp" />
     <ClCompile Include="sceneMgr.cpp" />
     <ClCompile Include="startScene.cpp" />
     <ClCompile Include="windowMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameScene.h" />
+    <ClInclude Include="highscoreScene.h" />
+    <ClInclude Include="loadGameScene.h" />
+    <ClInclude Include="optionsScene.h" />
+    <ClInclude Include="playerSelect.h" />
     <ClInclude Include="sceneMgr.h" />
     <ClInclude Include="startScene.h" />
     <ClInclude Include="windowMgr.h" />

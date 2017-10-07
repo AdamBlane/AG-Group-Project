@@ -4,19 +4,18 @@
 #include "glfw3.h"
 
 
-class startScene
+class loadGameScene
 {
 public:
 	// Default constructor
-	startScene();
+	loadGameScene();
 	// Deconstructor
-	~startScene();
+	~loadGameScene();
 
 	// Draw stuff
 	void screenContent(GLFWwindow* win);
 	// Input 
 	static void key_callbacks(GLFWwindow* win, int key, int scancode, int action, int mods);
-	// Setup
+	// Setup scene
 	void Init(GLFWwindow* win);
-	
 };
