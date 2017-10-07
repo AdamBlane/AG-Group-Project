@@ -279,14 +279,29 @@ int main(int argc, char **argv)
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
 
-	vec3 position = vec3(0.0f, 0.0f, 0.0f);
-	GLfloat side1 = 0.2f;
-	
-	Mesh cube(Mesh::BOX);
+	//Mesh cube(Mesh::CUBOID);
 
-	cube.size(0.5);
+	//cube.size(0.1, 0.1, 0.5);
 
-	cube.createMesh();
+	//cube.createMesh();
+
+	vec3 measures = vec3(0.2f, 0.4f, 0.1f);
+	vec3 tilePos = vec3(0.0f, 0.0f, 0.0f);
+
+	Mesh floor(Mesh::CUBOID);
+	floor.setPosition(tilePos.x, tilePos.y, tilePos.z);
+	floor.size(measures.x, measures.y, measures.z);
+	floor.createMesh();
+
+	//Mesh border1(Mesh::CUBOID);
+	//border1.setPosition(tilePos.x, tilePos.y + floor.getSize().x, tilePos.z);
+	//border1.size(0.1f, 0.1f, 1.0f);
+	//border1.createMesh();
+
+	//Mesh border2(Mesh::CUBOID);
+	//border2.setPosition(tilePos.x + (floor.getSize().y - 0.1f), tilePos.y + floor.getSize().x, tilePos.z);
+	//border2.size(0.1f, 0.1f, 1.0f);
+	//border2.createMesh();
 
 	//Mesh boxMesh(&(*box));
 
@@ -320,7 +335,11 @@ int main(int argc, char **argv)
 
 		textureShader.Update(transform, camera);
 
-		cube.Draw();
+		//cube.Draw();
+
+		floor.Draw();
+		//border1.Draw();
+		//border2.Draw();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

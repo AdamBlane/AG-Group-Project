@@ -78,7 +78,7 @@ void Mesh::createMesh()
 {
 	switch (type3d) {
 	case CUBOID:
-		createCube();
+		createCuboid();
 		break;
 	case BOX:
 		createCube();
@@ -134,6 +134,67 @@ void Mesh::createCube()
 	Mesh::generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
 }
 
+void Mesh::createCuboid()
+{
+	Vertex vertices[] =
+	{
+		// front face
+		Vertex(vec3(position.x, position.y + side2, position.z), vec2(0.0, 1.0)), // top left
+		Vertex(vec3(position.x + side1, position.y + side2, position.z), vec2(1.0, 1.0)), // top right
+		Vertex(vec3(position.x + side1, position.y, position.z), vec2(1.0, 0.0)), // bottom right
+		Vertex(vec3(position.x, position.y, position.z), vec2(0.0, 0.0)), // bottom left
+
+		// back face
+		Vertex(vec3(position.x, position.y + side2, position.z - side3), vec2(0.0, 1.0)), // top left
+		Vertex(vec3(position.x + side1, position.y + side2, position.z - side3), vec2(1.0, 1.0)), // top right
+		Vertex(vec3(position.x + side1, position.y, position.z - side3), vec2(1.0, 0.0)), // bottom right
+		Vertex(vec3(position.x, position.y, position.z - side3), vec2(0.0, 0.0)), // bottom left
+
+		// left face
+		Vertex(vec3(position.x, position.y + side2, position.z), vec2(0.0, 1.0)), // top left
+		Vertex(vec3(position.x, position.y + side2, position.z - side3), vec2(1.0, 1.0)), // top right
+		Vertex(vec3(position.x, position.y, position.z - side3), vec2(1.0, 0.0)), // bottom right
+		Vertex(vec3(position.x, position.y, position.z), vec2(0.0, 0.0)), // bottom left
+	
+		// right face
+		Vertex(vec3(position.x + side1, position.y + side2, position.z), vec2(0.0, 1.0)), // top left
+		Vertex(vec3(position.x + side1, position.y + side2, position.z - side3), vec2(1.0, 1.0)), // top right
+		Vertex(vec3(position.x + side1, position.y, position.z - side3), vec2(1.0, 0.0)), // bottom right
+		Vertex(vec3(position.x + side1, position.y, position.z), vec2(0.0, 0.0)), // bottom left
+
+		// top face
+		Vertex(vec3(position.x, position.y + side1, position.z), vec2(0.0, 1.0)), // top left
+		Vertex(vec3(position.x, position.y + side1, position.z - side3), vec2(1.0, 1.0)), // top right
+		Vertex(vec3(position.x + side2, position.y + side1, position.z - side3), vec2(1.0, 0.0)), // bottom right
+		Vertex(vec3(position.x + side2, position.y + side1, position.z), vec2(0.0, 0.0)), // bottom left
+																						  
+		// bottom face
+		Vertex(vec3(position.x, position.y, position.z), vec2(0.0, 1.0)), // top left
+		Vertex(vec3(position.x, position.y, position.z - side3), vec2(1.0, 1.0)), // top right
+		Vertex(vec3(position.x + side2, position.y, position.z - side3), vec2(1.0, 0.0)), // bottom right
+		Vertex(vec3(position.x + side2, position.y, position.z), vec2(0.0, 0.0))  // bottom left
+
+	};
+
+	Mesh::generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
+}
+
+void Mesh::createWall()
+{
+		Vertex vertices[] = 
+	{ 
+		// back face
+		Vertex(vec3(position.x, position.y + side1, position.z), vec2(0.0, 1.0)), // top left
+		Vertex(vec3(position.x + side1, position.y + side1, position.z - side1), vec2(1.0, 1.0)), // top right
+		Vertex(vec3(position.x + side1, position.y, position.z - side1), vec2(1.0, 0.0)), // bottom right
+		Vertex(vec3(position.x, position.y, position.z - side1), vec2(0.0, 0.0)), // bottom left
+
+	};
+
+	Mesh::generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
+
+}
+
 void Mesh::setPosition(GLfloat newX, GLfloat newY, GLfloat newZ)
 {
 	position = vec3(newX, newY, newZ);
@@ -147,23 +208,9 @@ glm::vec3 Mesh::getPosition()
 
 void Mesh::size(GLfloat side_x, GLfloat side_y, GLfloat side_z)
 {
-	switch (type3d) {
-	case CUBOID:
-		side1 = side_x;
-		side2 = side_y;
-		side3 = side_z;
-		break;
-	case BOX:
-		side1 = side_x;
-		side2 = side_x;
-		side3 = side_x;
-		break;
-	default:
-		side1 = side_x;
-		side2 = side_y;
-		side3 = side_z;
-		break;
-	}
+	side1 = side_x;
+	side2 = side_y;
+	side3 = side_z;
 }
 
 glm::vec3 Mesh::getSize()

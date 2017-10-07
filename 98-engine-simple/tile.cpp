@@ -3,7 +3,7 @@
 
 tile::tile(vec3 newPosition)
 {
-	position = newPosition;
+	tilePos = newPosition;
 	createTile();
 }
 
@@ -13,24 +13,27 @@ tile::~tile()
 
 vec3 tile::getPosition()
 {
-	return vec3(position);
+	return vec3(tilePos);
 }
 
 void tile::createTile()
 {
-	geometry_builder *floor = new geometry_builder(geometry_builder::CUBOID);
-	floor->setPosition(position.x, position.y, position.z);
-	floor->size(10.0f, 100.0f, 100.0f);
+	Mesh floor(Mesh::CUBOID);
+	floor.setPosition(tilePos.x, tilePos.y, tilePos.z);
+	floor.size(measures.x, measures.y, measures.z);
+	floor.createMesh();
 	tileContent.push_back(floor);
 
-	geometry_builder *border1 = new geometry_builder(geometry_builder::CUBOID);
-	border1->setPosition(position.x, position.y + floor->getCuboidSize().x, position.z);
-	border1->size(10.0f, 10.0f, 100.0f);
+	Mesh border1(Mesh::CUBOID);
+	border1.setPosition(tilePos.x, tilePos.y + floor.getSize().x, tilePos.z);
+	border1.size(0.1f, 0.1f, 1.0f);
+	border1.createMesh();
 	tileContent.push_back(border1);
 
-	geometry_builder *border2 = new geometry_builder(geometry_builder::CUBOID);
-	border2->setPosition(position.x + (floor->getCuboidSize().y - 10.0f), position.y + floor->getCuboidSize().x, position.z);
-	border2->size(10.0f, 10.0f, 100.0f);
+	Mesh border2(Mesh::CUBOID);
+	border2.setPosition(tilePos.x + (floor.getSize().y - 0.1f), tilePos.y + floor.getSize().x, tilePos.z);
+	border2.size(0.1f, 0.1f, 1.0f);
+	border2.createMesh();
 	tileContent.push_back(border2);
 
 }
@@ -39,6 +42,6 @@ void tile::drawTile()
 {
 	for (auto &content : tileContent)
 	{
-		content->draw();
+		content.Draw();
 	}
 }

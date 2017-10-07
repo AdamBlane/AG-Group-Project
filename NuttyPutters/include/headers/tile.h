@@ -1,5 +1,5 @@
 #pragma once
-#include "geometry_builder.h"
+#include "Mesh.h"
 #include <glm\glm.hpp>
 #include <vector>
 #include <iostream>
@@ -14,15 +14,16 @@ class tile
 {
 public:
 	
-	tile(vec3 newPosition = vec3(500.0f, 150.0f, 0.0f));
+	tile(vec3 newPosition = vec3(0.0f, 0.0f, 0.0f));
 	~tile();
 	vec3 getPosition();
 	void drawTile();
+	vector<Mesh> tileContent;
 
 private:
-	vector<geometry_builder*> tileContent;
-	vec2 measures = vec2(50.0f, 50.0f);
-	vec3 position = vec3(500.0f, 150.0f, 0.0f);
+	
+	vec3 measures = vec3(1.0f, 0.1f, 1.0f);
+	vec3 tilePos = vec3(0.0f, 0.0f, 0.0f);
 	void createTile();
 	
 };

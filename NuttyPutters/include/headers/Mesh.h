@@ -25,9 +25,10 @@ private:
 class Mesh
 {
 public:
-	enum type3D { CUBOID, BOX };
+	enum type3D { CUBOID, BOX, WALL };
 
 	Mesh(type3D thisType);
+	//Mesh(const Mesh& other);
 	void Draw();
 
 	void createMesh();
@@ -40,9 +41,12 @@ public:
 	virtual ~Mesh();
 
 private:
-	Mesh(const Mesh& other);
+	
 	void operator=(const Mesh& other);
+
 	void createCube();
+	void createCuboid();
+	void createWall();
 	void generateMesh(Vertex* vertices, unsigned int numVertices);
 
 
