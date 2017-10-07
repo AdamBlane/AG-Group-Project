@@ -1,6 +1,11 @@
 #include "geometry_builder.h"
 #include "tile.h"
 #include <iostream>
+#include "Shader.h"
+#include "Mesh.h"
+#include "Texture.h"
+#include "Camera.h"
+#include "Transform.h"
 //
 #include "glfw3.h"
 #include <stdlib.h>
@@ -30,7 +35,7 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 {
 	//std::cout << key << std::endl;
 
-	const GLfloat rotationSpeed = 10;
+	const GLfloat rotationSpeed = 0.1;
 
 	// actions are GLFW_PRESS, GLFW_RELEASE or GLFW_REPEAT
 	if (action == GLFW_PRESS || action == GLFW_REPEAT)
@@ -241,21 +246,19 @@ void createCubeOLD(GLfloat startPosX, GLfloat startPosY, GLfloat startPosZ, GLfl
 //	glDisableClientState(GL_VERTEX_ARRAY);
 //}
 
+
 int main(int argc, char **argv)
 {
-
 	// Create window
 	GLFWwindow* window;
 	// Set error callbackc function
 	glfwSetErrorCallback(error_callback);
-
 	// Initialise GLFW
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 	// Initialise the window, check for error after
-	window = glfwCreateWindow(WIDTH, HEIGHT, "Triangle Simulator 2017", NULL, NULL);
-	int screenWidth, screenHeight;
-	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
+	window = glfwCreateWindow(1280, 720, "Triangle Simulator 2017", NULL, NULL);
+
 	if (!window)
 	{
 		glfwTerminate();
@@ -266,65 +269,64 @@ int main(int argc, char **argv)
 	glfwMakeContextCurrent(window);
 	// Assign key callback function for close on ESC
 	glfwSetKeyCallback(window, keyCallback);
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
-	// While window is not to be closed...
-	glewExperimental = GL_TRUE;
-	glewInit();
-	//glEnable(GL_DEPTH_TEST);
-	//// Accept fragment if it closer to the camera than the former one
-	//glDepthFunc(GL_LESS);
-	while (!glfwWindowShouldClose(window))
+
+	GLenum res = glewInit();
+	if (res != GLEW_OK)
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		float ratio;
-		int width, height;
-
-		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / (float)height;
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(0, WIDTH, 0, HEIGHT, -1000, 1000);
-		glMatrixMode(GL_MODELVIEW);
-
-		glPushMatrix();
-
-		geometry_builder *box = new geometry_builder(geometry_builder::BOX);
-
-		box->setPosition(500.0f, 150.0f, 0.0f);
-		box->size(100.0f);
-
-		geometry_builder *rect = new geometry_builder(geometry_builder::CUBOID);
-
-		rect->setPosition(350.0f, 150.0f, 0.0f);
-		rect->size(50.0f, 100.0f);
-
-		/*tile *newTile = new tile();*/
-
-		glTranslatef(box->getPosition().x, box->getPosition().y, 0);
-		//X, Y, Z rotation
-		glRotatef(rotationX, 1, 0, 0);
-		glRotatef(rotationY, 0, 1, 0);
-		glRotatef(rotationZ, 0, 0, 1);
-		glTranslatef(-(box->getPosition().x), -(box->getPosition().y), 0);
-
-		//vector<geometry_builder*> toBeDrawn;
-
-		//toBeDrawn.push_back(box);
-
-
-		box->draw();
-		rect->draw();
-		//newTile->drawTile();
-
-		//cout << box->getPosition().x << ", " << box->getPosition().y << ", " << box->getPosition().z << endl;
-
-		glPopMatrix();
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		std::cout << "Glew failed to initialize!" << std::endl;
 	}
 
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
 
+	vec3 position = vec3(0.0f, 0.0f, 0.0f);
+	GLfloat side1 = 0.2f;
+	
+	Mesh cube(Mesh::BOX);
+
+	cube.size(0.5);
+
+	cube.createMesh();
+
+	//Mesh boxMesh(&(*box));
+
+	// Import a shader
+	Shader colourShader("..\\NuttyPutters\\include\\shaders\\colorShader");
+	Shader textureShader("..\\NuttyPutters\\include\\shaders\\textureShader");
+	Texture textureWood("..\\NuttyPutters\\include\\res\\img\\wood.jpg");
+
+	Camera camera(glm::vec3(0, 2, 2), 70.0f, (float)1600 / (float)900, 0.01f, 1000.0f);
+
+	Transform transform;
+
+	float counter = 0.0f;
+
+	// While window is not to be closed...
+	while (!glfwWindowShouldClose(window))
+	{
+		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Bind shader
+		//colourShader.Bind();
+		textureShader.Bind();
+		// Bind Shader -  to unit 0
+		textureWood.Bind(0);
+
+		//transform.getPos().x = sinf(counter);
+		transform.getRot().x = rotationX;
+		transform.getRot().y = rotationY;
+		transform.getRot().z = rotationZ;
+
+		textureShader.Update(transform, camera);
+
+		cube.Draw();
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+
+		counter += 0.01f;
+	}
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

@@ -19,13 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\headers\Camera.h" />
     <ClInclude Include="include\headers\geometry_builder.h" />
+    <ClInclude Include="include\headers\Mesh.h" />
+    <ClInclude Include="include\headers\resource.h" />
+    <ClInclude Include="include\headers\Shader.h" />
+    <ClInclude Include="include\headers\stb_image.h" />
+    <ClInclude Include="include\headers\Texture.h" />
     <ClInclude Include="include\headers\tile.h" />
+    <ClInclude Include="include\headers\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\98-engine-simple\geometry_builder.cpp" />
     <ClCompile Include="..\98-engine-simple\main.cpp" />
-    <ClCompile Include="include\headers\tile.cpp" />
+    <ClCompile Include="..\98-engine-simple\Mesh.cpp" />
+    <ClCompile Include="..\98-engine-simple\Shader.cpp" />
+    <ClCompile Include="..\98-engine-simple\stb_image.c" />
+    <ClCompile Include="..\98-engine-simple\Texture.cpp" />
+    <ClCompile Include="..\98-engine-simple\tile.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B8C5F35-878F-4759-A02E-6A535FE8BF0E}</ProjectGuid>
