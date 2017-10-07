@@ -1,8 +1,7 @@
 #pragma once
 // Ours
 #include "sceneMgr.h"
-#include "startScene.h"
-#include "gameScene.h"
+
 // Others
 #include "glfw3.h"
 

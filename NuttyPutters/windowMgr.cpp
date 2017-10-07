@@ -100,6 +100,13 @@ void windowMgr::Update()
 			// Draw content
 			sceneManager.optionsScene.screenContent(win);
 			break;
+		// Game scene
+		case 6:
+			// Setup
+			sceneManager.gameScene.Init(win);
+			// Draw
+			sceneManager.gameScene.checkPlayers(win);
+			break;
 		default: break;
 		}
 		// DEBUG - for testing, write our current scene

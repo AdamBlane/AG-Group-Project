@@ -42,13 +42,30 @@ void playerSelect::screenContent(GLFWwindow * win)
 	glfwPollEvents();
 }
 
-// When back button is pressed
+// Input
 void playerSelect::key_callbacks(GLFWwindow * win, int key, int scancode, int action, int mods)
 {
+	// Move back to start scene
 	if (key == GLFW_KEY_B && action == GLFW_PRESS)
 	{
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(1);
+	}
+	// Move to game scene with 1 player
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+	{
+		// Tell sceneManager's game how many players
+		windowMgr::getInstance()->sceneManager.gameScene.setPlayers(1);
+		// Move to game scene
+		windowMgr::getInstance()->sceneManager.changeScene(6);
+	}
+	// Move back to game scene with 2 players
+	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+	{
+		// Tell sceneManager's game how many players
+		windowMgr::getInstance()->sceneManager.gameScene.setPlayers(2);
+		// Move to game scene
+		windowMgr::getInstance()->sceneManager.changeScene(6);
 	}
 }
 

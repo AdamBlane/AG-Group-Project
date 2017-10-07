@@ -26,3 +26,5 @@ unsigned int sceneMgr::getScene()
 {
 	return curScene;
 }
+
+
