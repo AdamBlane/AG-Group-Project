@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameScene.cpp" />
+    <ClCompile Include="gameTiles.cpp" />
     <ClCompile Include="highscoreScene.cpp" />
     <ClCompile Include="loadGameScene.cpp" />
     <ClCompile Include="main.cpp" />
@@ -31,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameScene.h" />
+    <ClInclude Include="gameTiles.h" />
     <ClInclude Include="highscoreScene.h" />
     <ClInclude Include="loadGameScene.h" />
     <ClInclude Include="optionsScene.h" />
