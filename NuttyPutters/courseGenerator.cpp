@@ -11,7 +11,6 @@ using namespace std::chrono;
 // Constructor - setup based on given number of course game tiles
 courseGenerator::courseGenerator(int difficulty)
 {
-	
 	// Take in difficulty for this game
 	courseLimit = difficulty;
 	cout << "Course Gen Constructor called, difficulty: " << courseLimit << endl;
@@ -182,7 +181,6 @@ void courseGenerator::CheckForCorners()
 				cout << "Corner_TR going up and left potential" << endl;
 			}
 		}
-
 		// Up to the right
 		int checkPosR = curTilePos + 1;
 		if (checkPosR < gridSize && checkPosR > 0)
@@ -198,7 +196,6 @@ void courseGenerator::CheckForCorners()
 				potentialTiles.push_back(cornerTL);
 				cout << "Corner_TL going up and right potential" << endl;
 			}
-
 		}
 	}
 	// Down
@@ -220,7 +217,6 @@ void courseGenerator::CheckForCorners()
 				cout << "Corner_BR going down and left potential" << endl;
 			}
 		}
-
 		// Down to the right
 		int checkPosR = curTilePos + 1;
 		if (checkPosR < gridSize && checkPosR > 0)
@@ -237,7 +233,6 @@ void courseGenerator::CheckForCorners()
 				cout << "Corner_BL going down and right potential" << endl;
 			}
 		}
-
 	}
 	// Left
 	if (dir.going_left)
@@ -258,7 +253,6 @@ void courseGenerator::CheckForCorners()
 				cout << "Corner_BL going left and up potential" << endl;
 			}
 		}
-
 		// Left & down
 		int checkPosR = curTilePos + gridLength;
 		if (checkPosR < gridSize && checkPosR > 0)
@@ -275,7 +269,6 @@ void courseGenerator::CheckForCorners()
 				cout << "Corner_TL going up and right potential" << endl;
 			}
 		}
-
 	}
 	// Right
 	if (dir.going_right)
@@ -296,7 +289,6 @@ void courseGenerator::CheckForCorners()
 				cout << "Corner_BR going right and up potential" << endl;
 			}
 		}
-
 		// Right & down
 		int checkPosR = curTilePos + gridLength;
 		if (checkPosR < gridSize && checkPosR > 0)
@@ -313,7 +305,6 @@ void courseGenerator::CheckForCorners()
 				cout << "Corner_TR going right and down potential" << endl;
 			}
 		}
-
 	}
 }
 
@@ -337,11 +328,13 @@ void courseGenerator::placeTile()
 	int choice = distribution(rng);
 	cout << "Random choice is number " << choice << endl;
 
-	// Add to back of game tiles list
+	// DEBUG in case of issue, breakpoint here
 	if ((int)potentialTiles.size() < 1)
 	{
 		cout << "Problem" << endl;
 	}
+
+	// Add to back of game tiles list
 	gameTiles.push_back(potentialTiles.at(choice));			
 	cout << "Added to game Tiles, new size: " << (int)gameTiles.size() << endl;
 	// Update grid elements tracker for this position								 

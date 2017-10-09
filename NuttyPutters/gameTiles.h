@@ -1,6 +1,6 @@
 #pragma once
 
-// Forward declaration
+// This algorithm needs a sense of direction
 class Direction
 {
 public:
@@ -33,7 +33,7 @@ public:
 
 };
 
-// Start Tile type, inherits from Tile abc
+// Start Tile type, inherits from Tile
 class StartTile : public Tile
 {
 public: 
