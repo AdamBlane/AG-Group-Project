@@ -3,6 +3,7 @@
 #include "gameScene.h"
 // GLFW
 #include "glfw3.h"
+#include "courseGenerator.h"
 
 
 
@@ -145,4 +146,7 @@ void gameScene::key_callbacks(GLFWwindow * win, int key, int scancode, int actio
 void gameScene::Init(GLFWwindow * win)
 {
 	glfwSetKeyCallback(win, key_callbacks);
+	// Generate level
+	courseGenerator courseGen(5);
+	courseGen.run();
 }

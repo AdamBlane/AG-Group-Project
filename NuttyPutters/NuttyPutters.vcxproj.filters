@@ -45,6 +45,9 @@
     <ClCompile Include="gameTiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="courseGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="windowMgr.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gameTiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="courseGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

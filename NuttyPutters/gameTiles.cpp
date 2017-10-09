@@ -52,5 +52,48 @@ void StraightTile_H::findNextTilePos(Direction dir)
 // STRAIGH_V
 void StraightTile_V::findNextTilePos(int gridLength, Direction dir)
 {
+	if (dir.going_up)
+		nextTilePos = position - gridLength;
+	else if (dir.going_down)
+		nextTilePos = position + gridLength;
+}
 
+// Bottom left corner
+void CornerTile_BL::findNextTilePos(int gridLength, Direction dir)
+{
+	// Going up or right?
+	if (dir.going_up)
+		nextTilePos = position - gridLength;
+	else if (dir.going_right)
+		nextTilePos = position + 1;
+}
+
+// Bottom right corner
+void CornerTile_BR::findNextTilePos(int gridLength, Direction dir)
+{
+	// Going up or left?
+	if (dir.going_up)
+		nextTilePos = position - gridLength;
+	else if (dir.going_left)
+		nextTilePos = position - 1;
+}
+
+// Top left corner
+void CornerTile_TL::findNextTilePos(int gridLength, Direction dir)
+{
+	// Going down or right?
+	if (dir.going_down)
+		nextTilePos = position + gridLength;
+	else if (dir.going_right)
+		nextTilePos = position + 1;
+}
+
+// Top right corner
+void CornerTile_TR::findNextTilePos(int gridLength, Direction dir)
+{
+	// Going down or left?
+	if (dir.going_down)
+		nextTilePos = position + gridLength;
+	else if (dir.going_left)
+		nextTilePos = position - 1;
 }

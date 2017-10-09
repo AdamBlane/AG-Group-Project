@@ -60,3 +60,48 @@ public:
 	~StraightTile_V() {};
 	void findNextTilePos(int gridLength, Direction dir);
 };
+
+
+// Bottom left corner Tile
+class CornerTile_BL : public Tile
+{
+public:
+	CornerTile_BL() {};
+	~CornerTile_BL() {};
+	void findNextTilePos(int gridLength, Direction dir);
+};
+
+// Bottom right corner Tile
+class CornerTile_BR : public Tile
+{
+public:
+	CornerTile_BR() {};
+	~CornerTile_BR() {};
+	void findNextTilePos(int gridLength, Direction dir);
+};
+
+// Top left corner tile
+class CornerTile_TL : public Tile
+{
+public:
+	CornerTile_TL() {};
+	~CornerTile_TL() {};
+	void findNextTilePos(int gridLength, Direction dir);
+};
+
+// Top right corner tile
+class CornerTile_TR : public Tile
+{
+public:
+	CornerTile_TR() {};
+	~CornerTile_TR() {};
+	void findNextTilePos(int gridLength, Direction dir);
+};
+
+// End tile
+class EndTile : public Tile
+{
+public:
+	EndTile() {};
+	~EndTile() {};
+};

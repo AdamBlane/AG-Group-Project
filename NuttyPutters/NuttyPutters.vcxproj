@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="courseGenerator.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="gameTiles.cpp" />
     <ClCompile Include="highscoreScene.cpp" />
@@ -31,6 +32,7 @@
     <ClCompile Include="windowMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="courseGenerator.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameTiles.h" />
     <ClInclude Include="highscoreScene.h" />
