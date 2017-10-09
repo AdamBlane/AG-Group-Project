@@ -1,6 +1,10 @@
 #include "gameTiles.h"
+#include <iostream>
+
+using namespace std;
+
 // ###### DIRECTION ######
-// Inital setup for direction; always going down first
+// Constructor - Inital setup for direction; always going down first
 Direction::Direction()
 {
 	going_up = false;
@@ -14,19 +18,31 @@ void Direction::setDir(int curTilePos, int lastTilePos, int gridLength)
 {
 	// Up
 	if (curTilePos - lastTilePos == -gridLength)
+	{
 		going_up = true;
+		cout << "We're going up!" << endl;
+	}
 	else { going_up = false; }
 	// Down
 	if (curTilePos - lastTilePos == gridLength)
+	{
 		going_down = true;
+		cout << "We're going down!" << endl;
+	}
 	else { going_down = false; }
 	// Left
 	if (curTilePos - lastTilePos == -1)
+	{
 		going_left = true;
+		cout << "We're going left!" << endl;
+	}
 	else { going_left = false; }
 	// Right
 	if (curTilePos - lastTilePos == 1)
+	{
 		going_right = true;
+		cout << "We're going right!" << endl;
+	}
 	else { going_right = false; }
 }
 // ###### DIRECTION END ######
@@ -41,7 +57,7 @@ int StartTile::findNextTilePos(int gridLength, Direction dir)
 }
 
 // STRAIGHT_H
-int StraightTile_H::findNextTilePos(int gridLength, Direction dir)
+int StraightTile_H::findNextTilePos(int gridLength, Direction dir) 
 {
 	// Based on direction
 	if (dir.going_left)
@@ -52,7 +68,7 @@ int StraightTile_H::findNextTilePos(int gridLength, Direction dir)
 }
 
 // STRAIGH_V
-int StraightTile_V::findNextTilePos(int gridLength, Direction dir)
+int StraightTile_V::findNextTilePos(int gridLength, Direction dir) 
 {
 	if (dir.going_up)
 		nextTilePos = position - gridLength;
@@ -62,46 +78,46 @@ int StraightTile_V::findNextTilePos(int gridLength, Direction dir)
 }
 
 // Bottom left corner
-int CornerTile_BL::findNextTilePos(int gridLength, Direction dir)
+int CornerTile_BL::findNextTilePos(int gridLength, Direction dir) 
 {
-	// Going up or right?
-	if (dir.going_up)
-		nextTilePos = position - gridLength;
-	else if (dir.going_right)
+	// Going down or left?
+	if (dir.going_down)
 		nextTilePos = position + 1;
+	else if (dir.going_left)
+		nextTilePos = position - gridLength;
 	return nextTilePos;
 }
 
 // Bottom right corner
 int CornerTile_BR::findNextTilePos(int gridLength, Direction dir)
 {
-	// Going up or left?
-	if (dir.going_up)
-		nextTilePos = position - gridLength;
-	else if (dir.going_left)
+	// Going down or right?
+	if (dir.going_down)
 		nextTilePos = position - 1;
+	else if (dir.going_right)
+		nextTilePos = position - gridLength;
 	return nextTilePos;
 }
 
 // Top left corner
 int CornerTile_TL::findNextTilePos(int gridLength, Direction dir)
 {
-	// Going down or right?
-	if (dir.going_down)
-		nextTilePos = position + gridLength;
-	else if (dir.going_right)
+	// Going up or left?
+	if (dir.going_up)
 		nextTilePos = position + 1;
+	else if (dir.going_left)
+		nextTilePos = position + gridLength;
 	return nextTilePos;
 }
 
 // Top right corner
 int CornerTile_TR::findNextTilePos(int gridLength, Direction dir)
 {
-	// Going down or left?
-	if (dir.going_down)
-		nextTilePos = position + gridLength;
-	else if (dir.going_left)
+	// Going up or right?
+	if (dir.going_up)
 		nextTilePos = position - 1;
+	else if (dir.going_right)
+		nextTilePos = position + gridLength;
 	return nextTilePos;
 }
 

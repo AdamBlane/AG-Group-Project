@@ -24,11 +24,13 @@ public:
 	// Position in grid of next tile
 	int nextTilePos;
 	
-	// Accessor/Mutator of position
+	// Accessor/Mutator of positions
 	void setPos(int pos) { position = pos; }
 	int getPos() { return position;  };
+	int getNextPos() { return nextTilePos;  }
 
-	virtual int findNextTilePos(int gridLength, Direction dir) = 0;
+	//virtual int findNextTilePos(int gridLength, Direction dir) = 0;
+
 };
 
 // Start Tile type, inherits from Tile abc
@@ -67,7 +69,7 @@ class CornerTile_BL : public Tile
 public:
 	CornerTile_BL() {};
 	~CornerTile_BL() {};
-	int findNextTilePos(int gridLength, Direction dir);
+	int findNextTilePos(int gridLength, Direction dir) ;
 };
 
 // Bottom right corner Tile
@@ -76,7 +78,7 @@ class CornerTile_BR : public Tile
 public:
 	CornerTile_BR() {};
 	~CornerTile_BR() {};
-	int findNextTilePos(int gridLength, Direction dir);
+	int findNextTilePos(int gridLength, Direction dir) ;
 };
 
 // Top left corner tile
@@ -85,7 +87,7 @@ class CornerTile_TL : public Tile
 public:
 	CornerTile_TL() {};
 	~CornerTile_TL() {};
-	int findNextTilePos(int gridLength, Direction dir);
+	int findNextTilePos(int gridLength, Direction dir) ;
 };
 
 // Top right corner tile
@@ -94,13 +96,13 @@ class CornerTile_TR : public Tile
 public:
 	CornerTile_TR() {};
 	~CornerTile_TR() {};
-	int findNextTilePos(int gridLength, Direction dir);
+	int findNextTilePos(int gridLength, Direction dir) ;
 };
 
 // End tile
-class EndTile : public Tile
-{
-public:
-	EndTile() {};
-	~EndTile() {};
-};
+//class EndTile : public Tile
+//{
+//public:
+//	EndTile() {};
+//	~EndTile() {};
+//};

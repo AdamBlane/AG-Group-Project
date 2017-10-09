@@ -147,7 +147,14 @@ void gameScene::Init(GLFWwindow * win)
 {
 	// Assign input
 	glfwSetKeyCallback(win, key_callbacks);
-	// Generate level
-	courseGenerator courseGen(5);
-	courseGen.run();
+	// Generate level, int param = game tiles in course
+	if (setup == false)
+	{
+		courseGenerator courseGen(5);
+		setup = true;
+		courseGen.run();
+		// Running alg should return a list or similar of all game tiles
+		// that need to be rendered, to pass to a render function here
+	}
+
 }

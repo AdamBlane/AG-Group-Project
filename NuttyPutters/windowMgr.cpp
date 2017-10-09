@@ -110,7 +110,7 @@ void windowMgr::Update()
 		default: break;
 		}
 		// DEBUG - for testing, write our current scene
-		std::cout << sceneManager.curScene << std::endl;
+		//std::cout << sceneManager.curScene << std::endl;
 	}
 
 		

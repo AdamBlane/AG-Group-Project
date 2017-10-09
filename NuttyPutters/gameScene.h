@@ -14,6 +14,9 @@ public:
 	// Track number of players for this game
 	unsigned int playerCount;
 
+	bool setup = false;
+
+
 	// Set player Count
 	void setPlayers(unsigned int players);
 	
