@@ -34,9 +34,10 @@ void Direction::setDir(int curTilePos, int lastTilePos, int gridLength)
 
 // START TILE next tile formula
 // Assumes start tile open side always faces down
-void StartTile::findNextTilePos(int gridLength)
+int StartTile::findNextTilePos(int gridLength)
 {
 	nextTilePos = position + gridLength;
+	return nextTilePos;
 }
 
 // STRAIGHT_H

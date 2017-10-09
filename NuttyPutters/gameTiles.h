@@ -15,7 +15,7 @@ public:
 	void setDir(int curTilePos, int lastTilePos, int gridLength);
 };
 
-// Abstract base class - this need never be instantiated
+// Base class - never needs to be instantiated
 class Tile
 {
 public:
@@ -28,10 +28,6 @@ public:
 	void setPos(int pos) { position = pos; }
 	int getPos() { return position;  };
 
-	// Calculate next tile pos; implemented in derived classes
-	virtual void findNextTilePos() = 0;
-	// Accessor
-	int getNextTilePos() { return nextTilePos; }
 };
 
 // Start Tile type, inherits from Tile abc
@@ -40,7 +36,8 @@ class StartTile : public Tile
 public: 
 	StartTile() {};
 	~StartTile() {};
-	void findNextTilePos(int gridLength);
+	
+	int findNextTilePos(int gridLength);
 };
 
 // Straight horizontal tile
