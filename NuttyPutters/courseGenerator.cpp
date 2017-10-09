@@ -1,4 +1,7 @@
 #include "courseGenerator.h"
+#include <stdlib.h>
+#include <time.h>
+
 
 // Setup 
 courseGenerator::courseGenerator(int difficulty)
@@ -28,7 +31,7 @@ courseGenerator::courseGenerator(int difficulty)
 	lastTilePos = centre;
 
 	// Ask start for next tile pos
-	curTilePos = start.findNextTilePos(gridLength);
+	curTilePos = start.findNextTilePos(gridLength, dir);
 	
 	// Finally, add start tile to gameTiles list
 	gameTiles.push_back(start);
@@ -117,22 +120,133 @@ void courseGenerator::CheckForStraights()
 }
 
 // Check for all potential corners
-Tile courseGenerator::CheckForCorners()
+void courseGenerator::CheckForCorners()
 {
-	return Tile();
+	// Up
+	if (dir.going_up)
+	{
+		// Up to the left
+		int checkPosL = curTilePos - 1;
+		int Lstatus = gridElements.at(checkPosL);
+		if (Lstatus == 0)
+		{
+			// Up & left grid element is free; add potential tile
+			CornerTile_TR cornerTR;
+			potentialTiles.push_back(cornerTR);
+		}
+		// Up to the right
+		int checkPosR = curTilePos + 1;
+		int Rstatus = gridElements.at(checkPosR);
+		if (Rstatus == 0)
+		{
+			// Up & right grid element is free; add potential tile
+			CornerTile_TL cornerTL;
+			potentialTiles.push_back(cornerTL);
+		}
+	}
+	// Down
+	if (dir.going_down)
+	{
+		// Down to the left
+		int checkPosL = curTilePos - 1;
+		int Lstatus = gridElements.at(checkPosL);
+		if (Lstatus == 0)
+		{
+			// Down & left grid element is free; add potential tile
+			CornerTile_TR cornerBR;
+			potentialTiles.push_back(cornerBR);
+		}
+		// Down to the right
+		int checkPosR = curTilePos + 1;
+		int Rstatus = gridElements.at(checkPosR);
+		if (Rstatus == 0)
+		{
+			// Down & right grid element is free; add potential tile
+			CornerTile_TL cornerBL;
+			potentialTiles.push_back(cornerBL);
+		}
+	}
+	// Left
+	if (dir.going_left)
+	{
+		// Left and Up
+		int checkPosL = curTilePos - gridLength;
+		int Lstatus = gridElements.at(checkPosL);
+		if (Lstatus == 0)
+		{
+			// Left & up grid element is free; add potential tile
+			CornerTile_TR cornerBL;
+			potentialTiles.push_back(cornerBL);
+		}
+		// Left & down
+		int checkPosR = curTilePos + gridLength;
+		int Rstatus = gridElements.at(checkPosR);
+		if (Rstatus == 0)
+		{
+			// Up & right grid element is free; add potential tile
+			CornerTile_TL cornerTL;
+			potentialTiles.push_back(cornerTL);
+		}
+	}
+	// Right
+	if (dir.going_right)
+	{
+		// Right and Up
+		int checkPosL = curTilePos - gridLength;
+		int Lstatus = gridElements.at(checkPosL);
+		if (Lstatus == 0)
+		{
+			// Right & up grid element is free; add potential tile
+			CornerTile_TR cornerBR;
+			potentialTiles.push_back(cornerBR);
+		}
+		// Right & down
+		int checkPosR = curTilePos + gridLength;
+		int Rstatus = gridElements.at(checkPosR);
+		if (Rstatus == 0)
+		{
+			// Up & right grid element is free; add potential tile
+			CornerTile_TL cornerTR;
+			potentialTiles.push_back(cornerTR);
+		}
+	}
 }
 
+
 // Checks for available tile types, returns a random tile
-Tile courseGenerator::placeTile()
+void courseGenerator::placeTile()
 {
+	// Clear potential tiles list from any previous iterations
+	potentialTiles.clear();
+
 	// Check for straights, adds any potential straights to possibles list
 	CheckForStraights();
 	// Check for corners
+	CheckForCorners();
 
+	// All potentials added, pick one randomly
+	// Initalise random seed
+	srand(time(NULL));
+	// Number of potentials
+	int num = (int)potentialTiles.size();
+	// Randomly choose 1 
+	int choice = (rand() % num + 1) - 1; // -1 since starting at 1 & using list.size()
+	 // Setup tile
+	Tile* chosenTile = &potentialTiles.at(choice);
+	// It takes the currently looked at position
+	chosenTile->setPos(curTilePos);
+	// Update grid elements tracker for this position
+	gridElements.at(curTilePos) = 1;
+	// Update last before overwriting current positions
+	lastTilePos = curTilePos;
+	// Now tell it to find us the next pos
+	curTilePos = chosenTile->findNextTilePos(gridLength, dir);
+	// Add to list
+	gameTiles.push_back(*chosenTile);
+	
 
-
-	return Tile();
 }
+
 
 // Main algorithm function
 void courseGenerator::run()
@@ -142,7 +256,10 @@ void courseGenerator::run()
 	{
 		// curTilePos is the current grid elemnt to be filled
 		// Place a new random tile type in current position
-
+		placeTile();
+		// Set direction after last tile placed
+		dir.setDir(curTilePos, lastTilePos, gridLength);
+		
 	}
 
 

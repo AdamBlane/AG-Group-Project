@@ -27,9 +27,8 @@ public:
 	~courseGenerator() {};
 
 	void CheckForStraights();
-	Tile CheckForCorners();
-
-	Tile placeTile();
-
+	void CheckForCorners();
+	void placeTile();
+	
 	void run();
 };

@@ -34,67 +34,74 @@ void Direction::setDir(int curTilePos, int lastTilePos, int gridLength)
 
 // START TILE next tile formula
 // Assumes start tile open side always faces down
-int StartTile::findNextTilePos(int gridLength)
+int StartTile::findNextTilePos(int gridLength, Direction dir) 
 {
 	nextTilePos = position + gridLength;
 	return nextTilePos;
 }
 
 // STRAIGHT_H
-void StraightTile_H::findNextTilePos(Direction dir)
+int StraightTile_H::findNextTilePos(int gridLength, Direction dir)
 {
 	// Based on direction
 	if (dir.going_left)
 		nextTilePos = position - 1;
 	else if (dir.going_right)
 		nextTilePos = position + 1;
+	return nextTilePos;
 }
 
 // STRAIGH_V
-void StraightTile_V::findNextTilePos(int gridLength, Direction dir)
+int StraightTile_V::findNextTilePos(int gridLength, Direction dir)
 {
 	if (dir.going_up)
 		nextTilePos = position - gridLength;
 	else if (dir.going_down)
 		nextTilePos = position + gridLength;
+	return nextTilePos;
 }
 
 // Bottom left corner
-void CornerTile_BL::findNextTilePos(int gridLength, Direction dir)
+int CornerTile_BL::findNextTilePos(int gridLength, Direction dir)
 {
 	// Going up or right?
 	if (dir.going_up)
 		nextTilePos = position - gridLength;
 	else if (dir.going_right)
 		nextTilePos = position + 1;
+	return nextTilePos;
 }
 
 // Bottom right corner
-void CornerTile_BR::findNextTilePos(int gridLength, Direction dir)
+int CornerTile_BR::findNextTilePos(int gridLength, Direction dir)
 {
 	// Going up or left?
 	if (dir.going_up)
 		nextTilePos = position - gridLength;
 	else if (dir.going_left)
 		nextTilePos = position - 1;
+	return nextTilePos;
 }
 
 // Top left corner
-void CornerTile_TL::findNextTilePos(int gridLength, Direction dir)
+int CornerTile_TL::findNextTilePos(int gridLength, Direction dir)
 {
 	// Going down or right?
 	if (dir.going_down)
 		nextTilePos = position + gridLength;
 	else if (dir.going_right)
 		nextTilePos = position + 1;
+	return nextTilePos;
 }
 
 // Top right corner
-void CornerTile_TR::findNextTilePos(int gridLength, Direction dir)
+int CornerTile_TR::findNextTilePos(int gridLength, Direction dir)
 {
 	// Going down or left?
 	if (dir.going_down)
 		nextTilePos = position + gridLength;
 	else if (dir.going_left)
 		nextTilePos = position - 1;
+	return nextTilePos;
 }
+

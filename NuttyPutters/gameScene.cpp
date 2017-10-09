@@ -145,6 +145,7 @@ void gameScene::key_callbacks(GLFWwindow * win, int key, int scancode, int actio
 // Setup scene
 void gameScene::Init(GLFWwindow * win)
 {
+	// Assign input
 	glfwSetKeyCallback(win, key_callbacks);
 	// Generate level
 	courseGenerator courseGen(5);
