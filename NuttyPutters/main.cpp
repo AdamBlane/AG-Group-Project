@@ -1,7 +1,5 @@
 // Standard stuff
 
-
-
 // Our files
 #include "windowMgr.h"
 

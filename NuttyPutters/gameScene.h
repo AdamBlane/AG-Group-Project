@@ -1,10 +1,10 @@
 #pragma once
 // Our includes
-#include "Shader.h"
-#include "Mesh.h"
-#include "Transform.h"
-#include "Texture.h"
-#include "free_camera.h"
+//#include "Shader.h"
+//#include "Mesh.h"
+//#include "Transform.h"
+//#include "Texture.h"
+//#include "free_camera.h"
 // GLFW
 #include "glfw3.h"
 

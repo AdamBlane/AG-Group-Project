@@ -1,9 +1,11 @@
 // Ours
 #include "windowMgr.h"
 #include "gameScene.h"
-// GLFW
-#include "glfw3.h"
 #include "courseGenerator.h"
+// GLFW
+//#include "glew.h"
+#include "glfw3.h"
+
 
 
 

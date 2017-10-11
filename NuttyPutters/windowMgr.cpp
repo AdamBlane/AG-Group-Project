@@ -1,7 +1,7 @@
 #include <iostream>
-
-#include "glfw3.h"
 #include "windowMgr.h"
+#include "glfw3.h"
+
 
 /// windowMgr is a singleton class, accessed by all the scene files
 /// It initialises and sets up the window, & contains the Update loop
