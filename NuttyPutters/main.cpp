@@ -1,14 +1,11 @@
 // Standard stuff
-#include <string>
-#include <iostream>
+
+
 
 // Our files
 #include "windowMgr.h"
 
-// GLFW
-#include "glfw3.h"
 
-using namespace std; 
 
 // GLOBALS
 windowMgr* winMgr; // Pointer to winMgr since it's a singleton

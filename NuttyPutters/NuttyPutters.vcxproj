@@ -20,27 +20,44 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="courseGenerator.cpp" />
+    <ClCompile Include="free_camera.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="gameTiles.cpp" />
     <ClCompile Include="highscoreScene.cpp" />
     <ClCompile Include="loadGameScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="obj_loader.cpp" />
     <ClCompile Include="optionsScene.cpp" />
-    <ClCompile Include="playerSelect.cpp" />
+    <ClCompile Include="playerSelectScene.cpp" />
     <ClCompile Include="sceneMgr.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="startScene.cpp" />
+    <ClCompile Include="stb_image.c" />
+    <ClCompile Include="target_camera.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="windowMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="chase_camera.h" />
     <ClInclude Include="courseGenerator.h" />
+    <ClInclude Include="free_camera.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameTiles.h" />
     <ClInclude Include="highscoreScene.h" />
     <ClInclude Include="loadGameScene.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="obj_loader.h" />
     <ClInclude Include="optionsScene.h" />
-    <ClInclude Include="playerSelect.h" />
+    <ClInclude Include="playerSelectScene.h" />
     <ClInclude Include="sceneMgr.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="startScene.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="target_camera.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="windowMgr.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

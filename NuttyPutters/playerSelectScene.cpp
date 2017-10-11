@@ -1,14 +1,14 @@
-#include "playerSelect.h"
+#include "playerSelectScene.h"
 #include "windowMgr.h"
 
 // Constructor
-playerSelect::playerSelect() { }
+playerSelectScene::playerSelectScene() { }
 // Deconstructor
-playerSelect::~playerSelect() { }
+playerSelectScene::~playerSelectScene() { }
 
 
 // Draw stuff for this scene
-void playerSelect::screenContent(GLFWwindow * win)
+void playerSelectScene::screenContent(GLFWwindow * win)
 {
 	float ratio;
 	int width, height;
@@ -43,7 +43,7 @@ void playerSelect::screenContent(GLFWwindow * win)
 }
 
 // Input
-void playerSelect::key_callbacks(GLFWwindow * win, int key, int scancode, int action, int mods)
+void playerSelectScene::key_callbacks(GLFWwindow * win, int key, int scancode, int action, int mods)
 {
 	// Move back to start scene
 	if (key == GLFW_KEY_B && action == GLFW_PRESS)
@@ -70,7 +70,7 @@ void playerSelect::key_callbacks(GLFWwindow * win, int key, int scancode, int ac
 }
 
 // Setup scene; add callbacks
-void playerSelect::Init(GLFWwindow * win)
+void playerSelectScene::Init(GLFWwindow * win)
 {
 	glfwSetKeyCallback(win, key_callbacks);
 }

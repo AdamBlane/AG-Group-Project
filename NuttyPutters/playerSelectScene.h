@@ -3,12 +3,12 @@
 // GLFW
 #include "glfw3.h"
 
-class playerSelect
+class playerSelectScene
 {
 public:
 	// Constructors
-	playerSelect();
-	~playerSelect();
+	playerSelectScene();
+	~playerSelectScene();
 
 	// Draw stuff
 	void screenContent(GLFWwindow* win);

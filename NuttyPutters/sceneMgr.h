@@ -2,7 +2,7 @@
 
 #include <string>
 #include "startScene.h"
-#include "playerSelect.h"
+#include "playerSelectScene.h"
 #include "loadGameScene.h"
 #include "highscoreScene.h"
 #include "optionsScene.h"
@@ -21,7 +21,7 @@ public:
 
 	// Scenes
 	startScene startScene; //1
-	playerSelect playerSelectScene; //2
+	playerSelectScene playerSelectScene; //2
 	loadGameScene loadGameScene; //3
 	highscoreScene highscoreScene; //4
 	optionsScene optionsScene; //5

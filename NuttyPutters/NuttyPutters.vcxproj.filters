@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Scene Files">
+      <UniqueIdentifier>{195aa200-d855-4521-9c22-548d7faaa48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Files">
+      <UniqueIdentifier>{7dd910c2-1dc2-45ab-8f02-9e8f7c63175f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game Logic">
+      <UniqueIdentifier>{9f9ac4dc-b3cf-4189-9fda-d07edbe5ab0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Logic">
+      <UniqueIdentifier>{5484b192-6339-4fe2-b0c6-8a6019f832f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,28 +36,49 @@
     <ClCompile Include="sceneMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="startScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gameScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="playerSelect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="loadGameScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene Files</Filter>
     </ClCompile>
     <ClCompile Include="highscoreScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadGameScene.cpp">
+      <Filter>Source Files\Scene Files</Filter>
+    </ClCompile>
+    <ClCompile Include="startScene.cpp">
+      <Filter>Source Files\Scene Files</Filter>
+    </ClCompile>
+    <ClCompile Include="playerSelectScene.cpp">
+      <Filter>Source Files\Scene Files</Filter>
     </ClCompile>
     <ClCompile Include="optionsScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gameTiles.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene Files</Filter>
     </ClCompile>
     <ClCompile Include="courseGenerator.cpp">
+      <Filter>Source Files\Game Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="gameTiles.cpp">
+      <Filter>Source Files\Game Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="obj_loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="free_camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="target_camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,28 +89,58 @@
     <ClInclude Include="sceneMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="startScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="gameScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="playerSelect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="loadGameScene.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scene Files</Filter>
     </ClInclude>
     <ClInclude Include="highscoreScene.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scene Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loadGameScene.h">
+      <Filter>Header Files\Scene Files</Filter>
     </ClInclude>
     <ClInclude Include="optionsScene.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scene Files</Filter>
     </ClInclude>
-    <ClInclude Include="gameTiles.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="startScene.h">
+      <Filter>Header Files\Scene Files</Filter>
+    </ClInclude>
+    <ClInclude Include="playerSelectScene.h">
+      <Filter>Header Files\Scene Files</Filter>
     </ClInclude>
     <ClInclude Include="courseGenerator.h">
+      <Filter>Header Files\Game Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="gameTiles.h">
+      <Filter>Header Files\Game Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="obj_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="free_camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="target_camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="chase_camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
