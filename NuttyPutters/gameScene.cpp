@@ -1,11 +1,6 @@
 // Ours
-#include "windowMgr.h"
 #include "gameScene.h"
-#include "courseGenerator.h"
-// GLFW
-//#include "glew.h"
-#include "glfw3.h"
-
+#include "windowMgr.h" // to access singleton
 
 
 

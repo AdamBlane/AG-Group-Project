@@ -1,12 +1,15 @@
 #pragma once
+#include "glfw3.h"
+
 // Our includes
-//#include "Shader.h"
-//#include "Mesh.h"
+#include "courseGenerator.h"
+//#include "Shader.h" // includes glew
+//#include "Mesh.h" // includes glew
 //#include "Transform.h"
-//#include "Texture.h"
+//#include "Texture.h" // includes glew
 //#include "free_camera.h"
 // GLFW
-#include "glfw3.h"
+
 
 class gameScene
 {

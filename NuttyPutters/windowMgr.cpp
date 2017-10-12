@@ -1,6 +1,6 @@
 #include <iostream>
 #include "windowMgr.h"
-#include "glfw3.h"
+
 
 
 /// windowMgr is a singleton class, accessed by all the scene files

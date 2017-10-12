@@ -1,8 +1,7 @@
 // Standard stuff
-
+#include "glew.h"
 // Our files
 #include "windowMgr.h"
-
 
 
 // GLOBALS

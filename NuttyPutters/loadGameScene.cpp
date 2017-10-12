@@ -1,6 +1,6 @@
-
-#include "windowMgr.h"
 #include "loadGameScene.h"
+#include "windowMgr.h"
+
 
 // Constructor
 loadGameScene::loadGameScene() { }

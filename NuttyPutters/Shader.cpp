@@ -3,9 +3,7 @@
 #include <fstream>
 // Our includes
 #include "Shader.h"
-// GLFW includes
-#include "glew.h"
-#include "glfw3.h"
+
 
 // Created by Calum - 5TH of October - Used to identify and store shader information
 // Added to engine 11/10 by Matt 

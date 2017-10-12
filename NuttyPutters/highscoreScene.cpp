@@ -1,7 +1,7 @@
 
 
 #include "highscoreScene.h"
-#include "windowMgr.h"
+#include "windowMgr.h" // to access singleton
 
 // Constructor
 highscoreScene::highscoreScene() { }

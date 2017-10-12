@@ -1,9 +1,12 @@
 #pragma once
+
+//#include "glew.h"
+#include "glfw3.h"
 // Ours
 #include "sceneMgr.h"
 
-// Others
-#include "glfw3.h"
+// GLFW
+
 
 
 

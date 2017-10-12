@@ -3,7 +3,7 @@
 #include "windowMgr.h"
 #include "startScene.h"
 
-#include "glfw3.h"
+
 
 /// Start scene contains all render and input data for this scene
 
