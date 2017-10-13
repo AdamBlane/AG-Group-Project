@@ -1,5 +1,9 @@
-#include "Mesh.h"
+// External
 #include <vector>
+// Internal
+#include "Mesh.h"
+
+
 
 Mesh::Mesh(const std::string& fileName)
 {

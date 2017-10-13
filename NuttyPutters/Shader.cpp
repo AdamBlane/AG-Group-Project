@@ -1,7 +1,7 @@
-﻿// Standard includes
+﻿// Externals
 #include <iostream>
 #include <fstream>
-// Our includes
+// Internals
 #include "Shader.h"
 
 

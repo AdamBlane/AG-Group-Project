@@ -1,9 +1,11 @@
-// Ours
+// Externals
+
+// Internals
+
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
 
-
-
+using namespace AllCamera;
 /// Game scene holds all data to do with the game
 
 // Default constructor
@@ -32,9 +34,12 @@ void gameScene::checkPlayers(GLFWwindow* win)
 	}
 }
 
+
+
 // Draw stuff for 1 player
 void gameScene::screenContent1P(GLFWwindow * win)
 {
+	
 
 }
 
@@ -118,11 +123,12 @@ void gameScene::Init(GLFWwindow * win)
 	// Generate level, int param = game tiles in course
 	if (setup == false)
 	{
-		courseGenerator courseGen(5);
-		setup = true;
-		courseGen.run();
+		//courseGenerator courseGen(5);
+		//setup = true;
+		//courseGen.run();
 		// Running alg should return a list or similar of all game tiles
 		// that need to be rendered, to pass to a render function here
 	}
+
 
 }

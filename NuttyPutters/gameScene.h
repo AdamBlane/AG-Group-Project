@@ -1,14 +1,13 @@
 #pragma once
-#include "glfw3.h"
+// Externals
+#include "glew_glfw.h"
 
-// Our includes
+// Internals
 #include "courseGenerator.h"
-//#include "Shader.h" // includes glew
-//#include "Mesh.h" // includes glew
-//#include "Transform.h"
-//#include "Texture.h" // includes glew
-//#include "free_camera.h"
-// GLFW
+#include "Shader.h"
+#include "Mesh.h"
+#include "Texture.h"
+#include "free_camera.h"
 
 
 class gameScene
@@ -23,6 +22,9 @@ public:
 	unsigned int playerCount;
 
 	bool setup = false;
+
+
+	
 
 
 	// Set player Count

@@ -1,6 +1,7 @@
 #pragma once
-
+// Externals
 #include <string>
+// Internals
 #include "startScene.h"
 #include "playerSelectScene.h"
 #include "loadGameScene.h"

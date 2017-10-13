@@ -1,11 +1,12 @@
 #pragma once
-// Standard includes
+// Externals
 #include <string>
-// Our includes
+#include "glew_glfw.h"
+// Internals
 #include "Transform.h"
 #include "Camera.h"
 // GLFW includes
-#include "glew.h"
+
 
 // Created by Calum - 5TH of October - Used to identify and store shader information
 // Added to engine 11/10 by Matt

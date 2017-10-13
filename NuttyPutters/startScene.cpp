@@ -1,8 +1,8 @@
 
 
-#include "windowMgr.h"
-#include "startScene.h"
 
+#include "startScene.h"
+#include "windowMgr.h"
 
 
 /// Start scene contains all render and input data for this scene

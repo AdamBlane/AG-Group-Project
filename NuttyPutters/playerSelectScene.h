@@ -1,7 +1,7 @@
 #pragma once
 
 // GLFW
-#include "glfw3.h"
+#include "glew_glfw.h"
 
 class playerSelectScene
 {

@@ -1,7 +1,8 @@
+// Externals
 #include <iostream>
+
+// Internals
 #include "windowMgr.h"
-
-
 
 /// windowMgr is a singleton class, accessed by all the scene files
 /// It initialises and sets up the window, & contains the Update loop
@@ -35,6 +36,13 @@ GLFWwindow* windowMgr::Init()
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
+	// Initialise GLEW 
+	GLenum res = glewInit();
+	if (res != GLEW_OK)
+	{
+		std::cout << "Glew failed to initialise!" << std::endl;
+	}
+
 	// Create window
 	win = glfwCreateWindow(1600, 900, "Test", NULL, NULL);
 
@@ -47,6 +55,8 @@ GLFWwindow* windowMgr::Init()
 
 	// Make window the current context
 	glfwMakeContextCurrent(win);
+
+	
 
 
 	return win;

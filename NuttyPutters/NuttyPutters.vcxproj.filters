@@ -140,7 +140,7 @@
     <ClInclude Include="target_camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="chase_camera.h">
+    <ClInclude Include="glew_glfw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

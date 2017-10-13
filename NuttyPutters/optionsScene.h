@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glfw3.h"
+#include "glew_glfw.h"
 
 class optionsScene
 {

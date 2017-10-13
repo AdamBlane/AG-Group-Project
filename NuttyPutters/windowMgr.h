@@ -1,11 +1,11 @@
 #pragma once
 
-//#include "glew.h"
-#include "glfw3.h"
-// Ours
+// Externals
+#include "glew_glfw.h"
+
+// Internals
 #include "sceneMgr.h"
 
-// GLFW
 
 
 
@@ -34,5 +34,4 @@ public:
 	void Update();
 	// On window close
 	void CleanUp();
-	
 };

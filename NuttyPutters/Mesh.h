@@ -1,8 +1,10 @@
 #pragma once
-
-#include "obj_loader.h"
-#include "glew.h"
+// External
+#include "glew_glfw.h"
 #include "include\glm-0.9.8.5\glm\glm\glm.hpp"
+// Interal
+#include "obj_loader.h"
+
 
 
 // Class which hold Vertex Information

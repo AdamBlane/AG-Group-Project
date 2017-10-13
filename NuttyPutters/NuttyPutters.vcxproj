@@ -40,11 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="chase_camera.h" />
     <ClInclude Include="courseGenerator.h" />
     <ClInclude Include="free_camera.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameTiles.h" />
+    <ClInclude Include="glew_glfw.h" />
     <ClInclude Include="highscoreScene.h" />
     <ClInclude Include="loadGameScene.h" />
     <ClInclude Include="Mesh.h" />
