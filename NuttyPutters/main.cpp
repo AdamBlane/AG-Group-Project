@@ -1,6 +1,6 @@
-// Standard stuff
-#include "glew.h"
-// Our files
+// Externals
+
+// Internals
 #include "windowMgr.h"
 
 

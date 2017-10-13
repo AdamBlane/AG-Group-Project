@@ -124,6 +124,3 @@ void windowMgr::CleanUp()
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }
-
-
-
