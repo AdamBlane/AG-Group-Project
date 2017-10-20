@@ -227,11 +227,12 @@ void gameScene::Init(GLFWwindow * win)
 	// Create our cuboid
 	mesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(10.0f, 10.0f, 10.0f), 2.0f, 2.0f, 2.0f);
 	// Create start tile
-	startTile = new Tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", vec3(0, 0, 0));
+	startTile = new Tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", vec3(0, 0, 10));
 	// Create next tile
 	straightTile = new Tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", vec3(0, 0, 0));
 	// Move by 10 (tile size is 10x10)
-	straightTile->transform.getPos() = vec3(0, 0, -10);
+	// This is in radians!! 
+	straightTile->transform.getRot().y = 1.5708;
 
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 	//textureWood = new Texture("..\\NuttyPutters\\box.jpg");
