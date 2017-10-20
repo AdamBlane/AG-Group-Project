@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "free_camera.h"
 #include "Camera.h"
+#include "tileBuilder.h"
 #define CHECK_GL_ERROR get_GL_error(__LINE__, __FILE__)
 
 using namespace AllCamera;
@@ -31,10 +32,13 @@ public:
 	double cursor_x, cursor_y = 0.0;
 	
 	Mesh* mesh;
+	Tile* startTile;
+	vector<Tile*> tiles;
 	Shader* textureShader;
-	Texture* textureWood;
+	//Texture* textureWood;
 	free_camera* freeCam;
 	Transform trans1;
+	Transform startTileTrans;
 	float WASDSPEED = 0.1f;
 	
 

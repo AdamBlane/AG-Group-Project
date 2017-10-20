@@ -56,16 +56,17 @@ void gameScene::checkPlayers(GLFWwindow* win)
 // Draw stuff for 1 player
 void gameScene::screenContent1P(GLFWwindow * win)
 {
+	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	// Camera stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
 	static double ratio_height = (quarter_pi<float>() * (1600 / 900)) / static_cast<float>(1600);
 	double current_x, current_y;
 	glfwGetCursorPos(win, &current_x, &current_y);
 	// Calc delta
 	double delta_x = current_x - cursor_x;
-	double delta_y = current_y - current_y;
+	double delta_y = current_y - cursor_y;
 	// Multiply deltas by ratios
 	delta_x = delta_x * ratio_width;
 	delta_y = delta_y * ratio_height * - 1; // -1 to invert on y axis
@@ -101,20 +102,26 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	{
 		pos = (vec3(0, -WASDSPEED, 0));
 	}
-	CHECK_GL_ERROR;
-	textureShader->Bind();
-	textureWood->Bind(0);
 
+
+
+	// Mesh obj stuff
+	textureShader->Bind();
+	//textureWood->Bind(0);
+	mesh->thisTexture->Bind(0);
+
+
+	startTile->drawTile(textureShader, startTileTrans, *freeCam);
 	textureShader->Update(trans1, (freeCam->get_Projection() * freeCam->get_View()));
-	CHECK_GL_ERROR;
+	
 	mesh->Draw();
-	std::cout << "Mesh (" << mesh->getPos().x << ", " << mesh->getPos().y << ", " << mesh->getPos().z << std::endl;
+	
 	freeCam->move(pos);
 	std::cout << freeCam->get_Posistion().x << ", " << freeCam->get_Posistion().y << ", " << freeCam->get_Posistion().z << std::endl;
 	freeCam->update(0.00001);
 	glfwSwapBuffers(win);
 	glfwPollEvents();
-	CHECK_GL_ERROR;
+	
 
 }
 
@@ -214,10 +221,12 @@ void gameScene::Init(GLFWwindow * win)
 	glfwSetCursorPos(win, cursor_x, cursor_y);
 	CHECK_GL_ERROR;
 	// Create our cuboid
-	mesh = new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, 0.0f), 10.0f, 2.0f, 5.0f);
-	
+	mesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(10.0f, 10.0f, 10.0f), 2.0f, 2.0f, 2.0f);
+	// Create tile
+	startTile = new Tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", vec3(0, 0, 0));
+	tiles.push_back(startTile);
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-	textureWood = new Texture("..\\NuttyPutters\\box.jpg");
+	//textureWood = new Texture("..\\NuttyPutters\\box.jpg");
 	CHECK_GL_ERROR;
 
 	freeCam = new free_camera();

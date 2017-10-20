@@ -36,6 +36,7 @@
     <ClCompile Include="stb_image.c" />
     <ClCompile Include="target_camera.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="tileBuilder.cpp" />
     <ClCompile Include="windowMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +59,7 @@
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="target_camera.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="tileBuilder.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="windowMgr.h" />
   </ItemGroup>

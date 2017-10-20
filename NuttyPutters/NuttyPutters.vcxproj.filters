@@ -81,6 +81,9 @@
     <ClCompile Include="target_camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tileBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="windowMgr.h">
@@ -144,6 +147,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="checkError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tileBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
