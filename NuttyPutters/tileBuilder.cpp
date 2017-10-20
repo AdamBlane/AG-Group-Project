@@ -4,7 +4,10 @@
 Tile::Tile(typeTile desiredType, string floorTexture, string borderTexture, vec3 newPosition)
 {
 	//setting tile properties
-	tilePos = newPosition;
+	//tilePos = newPosition;
+
+	transform.getPos() = newPosition;
+
 	this_borderTexture = borderTexture;
 	this_floorTexture = floorTexture;
 	thisTile = desiredType;
