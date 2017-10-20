@@ -32,7 +32,7 @@ namespace AllCamera
 
 	void free_camera::rotate(float delta_yaw, float delta_pitch)
 	{
-		// We simply add rotation values and calculate new orientation
+		// We  add rotation values and calculate new orientation
 		pitch += delta_pitch;
 		yaw -= delta_yaw;
 	}
