@@ -16,7 +16,7 @@ public:
 };
 
 // Base class - never needs to be instantiated
-class Tile
+class BaseTile
 {
 public:
 	// Position in grid this tile is on
@@ -34,7 +34,7 @@ public:
 };
 
 // Start Tile type, inherits from Tile
-class StartTile : public Tile
+class StartTile : public BaseTile
 {
 public: 
 	StartTile() {};
@@ -45,7 +45,7 @@ public:
 };
 
 // Straight horizontal tile
-class StraightTile_H : public Tile
+class StraightTile_H : public BaseTile
 {
 public:
 	StraightTile_H() {};
@@ -54,7 +54,7 @@ public:
 };
 
 // Straight vertical tile
-class StraightTile_V : public Tile
+class StraightTile_V : public BaseTile
 {
 public:
 	StraightTile_V() {};
@@ -64,7 +64,7 @@ public:
 
 
 // Bottom left corner Tile
-class CornerTile_BL : public Tile
+class CornerTile_BL : public BaseTile
 {
 public:
 	CornerTile_BL() {};
@@ -73,7 +73,7 @@ public:
 };
 
 // Bottom right corner Tile
-class CornerTile_BR : public Tile
+class CornerTile_BR : public BaseTile
 {
 public:
 	CornerTile_BR() {};
@@ -82,7 +82,7 @@ public:
 };
 
 // Top left corner tile
-class CornerTile_TL : public Tile
+class CornerTile_TL : public BaseTile
 {
 public:
 	CornerTile_TL() {};
@@ -91,7 +91,7 @@ public:
 };
 
 // Top right corner tile
-class CornerTile_TR : public Tile
+class CornerTile_TR : public BaseTile
 {
 public:
 	CornerTile_TR() {};

@@ -1,9 +1,5 @@
-// External
-#include <vector>
-// Internal
 #include "Mesh.h"
-
-
+#include <vector>
 
 Mesh::Mesh(const std::string& fileName)
 {
@@ -11,9 +7,11 @@ Mesh::Mesh(const std::string& fileName)
 	InitMesh(model);
 }
 
-Mesh::Mesh(typeShape shape, glm::vec3 newPosition, GLfloat size1, GLfloat size2, GLfloat size3)
+Mesh::Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2, GLfloat size3)
 {
+	//setting starting geometry properties
 	thisShape = shape;
+	filename = fileTexture;
 	position = newPosition;
 	side1 = size1;
 	side2 = size2;
@@ -21,9 +19,17 @@ Mesh::Mesh(typeShape shape, glm::vec3 newPosition, GLfloat size1, GLfloat size2,
 	halfSide1 = side1 / 2.0f;
 	halfSide2 = side2 / 2.0f;
 	halfSide3 = side3 / 2.0f;
+	thisTexture = new Texture(filename);
 
+	//calling method to create desired shape
 	chooseGeometry();
 }
+
+glm::vec3 Mesh::getGeomPos()
+{
+	return position;
+}
+
 
 Mesh::Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices)
 {
@@ -49,15 +55,13 @@ Mesh::~Mesh()
 	glDeleteVertexArrays(1, &m_vertexArrayObject);
 }
 
+//method to create geometry from chosen type
 void Mesh::chooseGeometry()
 {
 	switch (thisShape)
 	{
-	case TRIANGLE_REGULAR:
-		triangleR();
-		break;
-	case TRIANGLE_IRREGULAR:
-		triangleI();
+	case TRIANGLE:
+		triangle();
 		break;
 	case QUAD:
 		quad();
@@ -80,32 +84,170 @@ void Mesh::chooseGeometry()
 	}
 }
 
-void Mesh::triangleR()
+void Mesh::triangle()
 {
-}
+	//setting vertices and texture coodrinates for the shape 
+	//vertices are created in a counter-clock wise order, to face camera
+	Vertex vertices[] = {
+		//TR1
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z), glm::vec2(0.0, 0.0)), //index 0
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z), glm::vec2(1.0, 0.0)), //index 1
+		Vertex(glm::vec3(position.x, position.y + halfSide1, position.z), glm::vec2(0.5, 1.0)), //index 2
+	};
 
-void Mesh::triangleI()
-{
+	//setting indices to create the shape
+	unsigned int indices[] = {
+		0, 1, 2
+	};
+
+	//calling generate mesh method, taking array of vertices and indices and how many they are
+	generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
 }
 
 void Mesh::quad()
 {
+	Vertex vertices[] = {
+		//TR1
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z), glm::vec2(0.0, 0.0)), //index 0
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z), glm::vec2(1.0, 0.0)), //index 1
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z), glm::vec2(0.0, 1.0)), //index 2
+																											//TR2
+																											///get index 2
+																											///get index 1
+																											Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z), glm::vec2(1.0, 1.0)), //index 3
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2, 2, 1, 3
+	};
+
+	generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+
 }
 
 void Mesh::rectangle()
 {
+	Vertex vertices[] = {
+		//TR1
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z), glm::vec2(0.0, 0.0)), //index 0
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z), glm::vec2(1.0, 0.0)), //index 1
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z), glm::vec2(0.0, 1.0)), //index 2
+																											//TR2
+																											///get index 2
+																											///get index 1
+																											Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z), glm::vec2(1.0, 1.0)), //index 3
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2, 2, 1, 3
+	};
+
+	generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
 }
 
 void Mesh::plane()
 {
+	Vertex vertices[] = {
+		//TR1
+		Vertex(glm::vec3(position.x - halfSide1, position.y, position.z + halfSide1), glm::vec2(0.0, 0.0)), //index 0
+		Vertex(glm::vec3(position.x + halfSide1, position.y, position.z + halfSide1), glm::vec2(1.0, 0.0)), //index 1
+		Vertex(glm::vec3(position.x - halfSide1, position.y, position.z - halfSide1), glm::vec2(0.0, 1.0)), //index 2
+																											//TR2
+																											///get index 1
+																											Vertex(glm::vec3(position.x + halfSide1, position.y, position.z - halfSide1), glm::vec2(1.0, 1.0)), //index 3
+																																																				///get index 2
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2, 1, 3, 2
+	};
+
+	generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
 }
 
 void Mesh::box()
 {
+	//Counter-clock wise
+
+	Vertex vertices[] = {
+		/////////FRONT
+		//TR1
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z + halfSide1), glm::vec2(0.0, 1.0)),
+		//TR2
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z + halfSide1), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z + halfSide1), glm::vec2(1.0, 1.0)),
+
+		/////////BACK
+		//TR1
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z - halfSide1), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z - halfSide1), glm::vec2(1.0, 0.0)),
+		//TR2
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(1.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z - halfSide1), glm::vec2(1.0, 0.0)),
+
+		/////////LEFT
+		//TR1
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z - halfSide1), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+		//TR2
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z + halfSide1), glm::vec2(1.0, 1.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+
+		/////////RIGHT
+		//TR1
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z - halfSide1), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		//TR2
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z + halfSide1), glm::vec2(1.0, 1.0)),
+
+		/////////TOP
+		//TR1
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z + halfSide1), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+		//TR2
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(1.0, 1.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+
+		/////////BOTTOM
+		//TR1
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		//TR2
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z + halfSide1), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z - halfSide1), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z - halfSide1), glm::vec2(1.0, 1.0))
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2, 3, 4, 5,
+		6, 7, 8, 9, 10, 11,
+		12, 13, 14, 15, 16, 17,
+		18, 19, 20, 21, 22, 23,
+		24, 25, 26, 27, 28, 29,
+		30, 31, 32, 33, 34, 35
+	};
+
+	generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+
 }
 
 void Mesh::cuboid()
 {
+	//Counter-clock wise
+
 	Vertex vertices[] = {
 		/////////FRONT
 		//TR1

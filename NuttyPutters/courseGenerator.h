@@ -17,9 +17,9 @@ public:
 	// Tracks grid elements' status (taken as 1 or empty as 0)
 	std::vector<int> gridElements;
 	// To hold game tiles for this course
-	std::vector<Tile> gameTiles;
+	std::vector<BaseTile> gameTiles;
 	// Holds potential tiles for the current tile pos being looked at
-	std::vector<Tile> potentialTiles;
+	std::vector<BaseTile> potentialTiles;
 	// Need a sense of direction!
 	// Set to down in constructor
 	Direction dir;

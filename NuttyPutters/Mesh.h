@@ -1,16 +1,15 @@
 #pragma once
-// External
+
 #include "glew_glfw.h"
 #include "include\glm-0.9.8.5\glm\glm\glm.hpp"
-// Interal
 #include "obj_loader.h"
-
-
+#include "Texture.h"
 
 // Class which hold Vertex Information
 class Vertex
 {
 public:
+	//Vertex class to hold Vertices positions and Texture coordinates
 	Vertex(const glm::vec3& pos, const glm::vec2& texCoord)
 	{
 		this->pos = pos;
@@ -29,10 +28,11 @@ private:
 class Mesh
 {
 public:
+
+	//Enum to hold different types of geometry that could be builded
 	enum typeShape
 	{
-		TRIANGLE_REGULAR,
-		TRIANGLE_IRREGULAR,
+		TRIANGLE,
 		QUAD,
 		RECTANGLE,
 		PLANE,
@@ -41,11 +41,27 @@ public:
 
 	};
 	Mesh() {};
-	Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
-	Mesh(const std::string& fileName);
-	Mesh(typeShape shape, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f);
 
-	void cuboid();
+	//General constructor -> not used at the moment
+	Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
+
+	//Constructor to load a OBJ file from its file path
+	Mesh(const std::string& fileName);
+
+	//Constructor to generate a shape using geometry, taking type of shape, file path for texture, position and dimensions:
+	//TRIANGLE: only 1 side is necessary
+	//QUAD: only 1 side is necessary
+	//RECTANGLE: only 2 sides are necessary
+	//PLANE: only 1 side is necessary
+	//BOX: only 1 side is necessary
+	//CUBOID: all 3 sides are necessary
+	Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f);
+
+	//Get position of geometry created by geometry builder
+	glm::vec3 getGeomPos();
+
+	//Texture for each Mesh
+	Texture *thisTexture;
 
 	void InitMesh(const IndexedModel& model);
 
@@ -53,28 +69,33 @@ public:
 
 	virtual ~Mesh();
 
+
 private:
-	Mesh(const Mesh& other);
+	//Mesh(const Mesh& other);
 	void operator=(const Mesh& other);
 
 	typeShape thisShape = CUBOID;
 
 	void chooseGeometry();
 
-	void triangleR();
-	void triangleI();
+	void triangle();
 	void quad();
 	void rectangle();
 	void plane();
 	void box();
+	void cuboid();
+
+	std::string filename;
 
 
 	void generateMesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
 
+	//starting position of geometry
 	glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
 
+	//starting size of geometry
 	GLfloat side1 = 1.0f;
-	GLfloat side2 = 1.0f;
+	GLfloat side2 = 3.0f;
 	GLfloat side3 = 1.0f;
 	GLfloat halfSide1 = 0.5f;
 	GLfloat halfSide2 = 0.5f;
@@ -92,5 +113,5 @@ private:
 	GLuint m_vertexArrayObject;
 	GLuint m_vertexArrayBuffers[NUM_BUFFERS];
 	unsigned int m_drawCount;
-};
 
+};

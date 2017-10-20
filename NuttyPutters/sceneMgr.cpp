@@ -1,6 +1,6 @@
 
 #include "sceneMgr.h"
-
+#include "windowMgr.h"
 /// Scene Manager is a property of windowMgr
 /// It tracks gamestate, called by scene files on particular input
 
@@ -14,11 +14,43 @@ sceneMgr::sceneMgr()
 // Deconstructor
 sceneMgr::~sceneMgr() { }
 
-// Update game state to new scene
+// Update game state to new scene, initialise the new scene
 void sceneMgr::changeScene(unsigned int newScene)
 {
 	// Change current scene tracker to new scene
 	curScene = newScene;
+
+	// Initialise the new scene
+	switch (curScene)
+	{
+	// Exit
+	case 0: break;
+	// Start scene
+	case 1: 
+		// Setup, pass in window held by winMgr
+		startScene.Init(windowMgr::getInstance()->win);
+		break;
+	// Player select
+	case 2:
+		playerSelectScene.Init(windowMgr::getInstance()->win);
+		break;
+	// Load game
+	case 3:
+		loadGameScene.Init(windowMgr::getInstance()->win);
+		break;
+	// Highscore
+	case 4:
+		highscoreScene.Init(windowMgr::getInstance()->win);
+		break;
+	// Options
+	case 5:
+		optionsScene.Init(windowMgr::getInstance()->win);
+		break;
+	// Game scene
+	case 6:
+		gameScene.Init(windowMgr::getInstance()->win);
+		break;
+	}
 }
 
 // Returns current scene number
