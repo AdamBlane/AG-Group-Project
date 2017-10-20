@@ -13,6 +13,7 @@ namespace AllCamera
 			float yaw = 0.0f;
 			// The translation of the camera since the last frame
 			glm::vec3 translation;
+
 		public:
 			free_camera() : camera() {}
 			~free_camera() {}

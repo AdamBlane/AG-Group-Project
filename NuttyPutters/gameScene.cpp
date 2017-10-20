@@ -62,14 +62,15 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	// Camera stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
 	static double ratio_height = (quarter_pi<float>() * (1600 / 900)) / static_cast<float>(1600);
+
 	double current_x, current_y;
 	glfwGetCursorPos(win, &current_x, &current_y);
 	// Calc delta
 	double delta_x = current_x - cursor_x;
 	double delta_y = current_y - cursor_y;
 	// Multiply deltas by ratios
-	delta_x = delta_x * ratio_width;
-	delta_y = delta_y * ratio_height * - 1; // -1 to invert on y axis
+	delta_x *=  ratio_width;
+	delta_y *= ratio_height * - 1; // -1 to invert on y axis
 	// Rotate camera by delta
 	freeCam->rotate(delta_x, delta_y);
 	freeCam->update(0.001);
@@ -102,10 +103,14 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	{
 		pos = (vec3(0, -WASDSPEED, 0));
 	}
-
+	freeCam->move(pos);
 
 
 	// Mesh obj stuff
+
+
+
+	CHECK_GL_ERROR;
 	textureShader->Bind();
 	//textureWood->Bind(0);
 	mesh->thisTexture->Bind(0);
@@ -115,10 +120,6 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	textureShader->Update(trans1, (freeCam->get_Projection() * freeCam->get_View()));
 	
 	mesh->Draw();
-	
-	freeCam->move(pos);
-	std::cout << freeCam->get_Posistion().x << ", " << freeCam->get_Posistion().y << ", " << freeCam->get_Posistion().z << std::endl;
-	freeCam->update(0.00001);
 	glfwSwapBuffers(win);
 	glfwPollEvents();
 	
