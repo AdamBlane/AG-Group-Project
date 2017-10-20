@@ -59,10 +59,10 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// Camera stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
 	static double ratio_height = (quarter_pi<float>() * (1600 / 900)) / static_cast<float>(1600);
-
 	double current_x, current_y;
 	glfwGetCursorPos(win, &current_x, &current_y);
 	// Calc delta
@@ -78,7 +78,7 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	cursor_x = current_x;
 	cursor_y = current_y;
 	vec3 pos = vec3(0, 0, 0);
-
+	// Camera controls
 	if (glfwGetKey(win, GLFW_KEY_W))
 	{
 		pos = (vec3(0, 0, WASDSPEED));
@@ -103,26 +103,23 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	{
 		pos = (vec3(0, -WASDSPEED, 0));
 	}
+	// Move camera by new pos after input
 	freeCam->move(pos);
 
-
-	// Mesh obj stuff
-
-
-
-	CHECK_GL_ERROR;
+	// Bind texture shader
 	textureShader->Bind();
-	//textureWood->Bind(0);
-	mesh->thisTexture->Bind(0);
-
-
-	startTile->drawTile(textureShader, *freeCam);
-	straightTile->drawTile(textureShader, *freeCam);
-
-
-	textureShader->Update(trans1, (freeCam->get_Projection() * freeCam->get_View()));
 	
-	mesh->Draw();
+	
+	// Draw all tiles
+	for (auto &t : tiles)
+	{
+		t.drawTile(textureShader, *freeCam);
+	}
+
+
+	textureShader->Update(shaderTrans, (freeCam->get_Projection() * freeCam->get_View()));
+	
+	
 	glfwSwapBuffers(win);
 	glfwPollEvents();
 	
@@ -191,9 +188,103 @@ void gameScene::screenContent2P(GLFWwindow * win)
 	glfwPollEvents();
 }
 
+void gameScene::setupTilesToBeDrawn()
+{
+	// TILE CREATION
+	for (auto &t : algTiles)
+	{
+		if (t.name == "start")
+		{
+			// Create start tile
+			Tile tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Start tile needs rotating 180 (should always face down)
+			tile.transform.getRot().y = 3.14159;
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+
+		}
+		else if (t.name == "straight_H")
+		{
+			// Create straight tile
+			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Straight needs rotating by 90, since it's vertical by default
+			tile.transform.getRot().y = 1.5708;
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
+		else if (t.name == "straight_V")
+		{
+			// Create straight tile
+			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
+		else if (t.name == "corner_BL")
+		{
+			// Create corner tile
+			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Corner needs rotating by 90
+			tile.transform.getRot().y = 1.5708;
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
+		else if (t.name == "corner_BR")
+		{
+			// Create corner tile
+			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Corner needs rotating by 90
+			tile.transform.getRot().y = 3.14159;
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
+		else if (t.name == "corner_TL")
+		{
+			// Create corner tile
+			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
+		else if (t.name == "corner_TR")
+		{
+			// Create corner tile
+			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Corner needs rotating by 90
+			tile.transform.getRot().y = -1.5708;
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
+		else if (t.name == "end")
+		{
+			// Create start tile
+			Tile tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Consult direction to determine how much to rotate
+			if (t.direction.going_up)
+			{
+				tile.transform.getRot().y = 3.14159;
+			}
+			else if (t.direction.going_down)
+			{
+				// No rotation needed
+			}
+			else if (t.direction.going_left)
+			{
+				tile.transform.getRot().y = -1.5708;
+			}
+			else if (t.direction.going_right)
+			{
+				tile.transform.getRot().y = 1.5708;
+			}
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
+	}
+
+}
+
 // Input
 void gameScene::key_callbacks(GLFWwindow * win, int key, int scancode, int action, int mods)
 {
+	// Exit; close window
 	if (key == GLFW_KEY_B && action == GLFW_PRESS)
 	{
 		// Access singleton instance to update it's sceneManager's state
@@ -206,41 +297,34 @@ void gameScene::Init(GLFWwindow * win)
 {
 	// Assign input
 	glfwSetKeyCallback(win, key_callbacks);
-	// Generate level, int param = game tiles in course
-	if (setup == false)
-	{
-		//courseGenerator courseGen(5);
-		//setup = true;
-		//courseGen.run();
-		// Running alg should return a list or similar of all game tiles
-		// that need to be rendered, to pass to a render function here
-	}
+	// This sets up level gen
+	courseGenerator courseGen(8);
+	// Runs the alg, returns map of tiles (pos, name)
+	algTiles = courseGen.run();
+	
 
-
-	CHECK_GL_ERROR;
+	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+	// Hide cursor
 	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	// Get initial cursor pos
 	glfwSetCursorPos(win, cursor_x, cursor_y);
-	CHECK_GL_ERROR;
-	// Create our cuboid
-	mesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(10.0f, 10.0f, 10.0f), 2.0f, 2.0f, 2.0f);
-	// Create start tile
-	startTile = new Tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", vec3(0, 0, 10));
-	// Create next tile
-	straightTile = new Tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", vec3(0, 0, 0));
-	// Move by 10 (tile size is 10x10)
-	// This is in radians!! 
-	straightTile->transform.getRot().y = 1.5708;
+	
 
+	// Setup tiles
+	setupTilesToBeDrawn();
+
+
+
+
+	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-	//textureWood = new Texture("..\\NuttyPutters\\box.jpg");
-	CHECK_GL_ERROR;
-
+	// Setup camera
 	freeCam = new free_camera();
 	freeCam->set_Posistion(vec3(0, 0, 10));
 	freeCam->set_Target(vec3(0, 0, 0));
 	freeCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
-	CHECK_GL_ERROR;
+	
 }

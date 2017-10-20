@@ -55,6 +55,8 @@ courseGenerator::courseGenerator(int difficulty)
 	curTilePos = start.findNextTilePos(gridLength, dir);
 	cout << "Last Tile: " << lastTilePos << "Cur tile pos: " << curTilePos << endl;
 
+	// Set start tile's next tile coords
+	start.findNextTileCoords();
 	// Finally, add start tile to gameTiles list
 	gameTiles.push_back(start);
 	cout << "Game tiles list size: " << (int)gameTiles.size() << endl;
@@ -81,6 +83,9 @@ void courseGenerator::CheckForStraights()
 				// Set pos, find next pos
 				straightV.setPos(curTilePos);
 				straightV.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				straightV.setCoords(gameTiles.back().getNextCoords());
+				straightV.findNextTileCoords(dir);				
 				// Add to potentials list
 				potentialTiles.push_back(straightV);
 				cout << "Straight_V going up potential" << endl;
@@ -103,6 +108,9 @@ void courseGenerator::CheckForStraights()
 				// Set pos, find next pos
 				straightV.setPos(curTilePos);
 				straightV.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				straightV.setCoords(gameTiles.back().getNextCoords());
+				straightV.findNextTileCoords(dir);
 				// Add to potentials list
 				potentialTiles.push_back(straightV);
 				cout << "Straight_V going down potential" << endl;
@@ -125,6 +133,9 @@ void courseGenerator::CheckForStraights()
 				// Set pos, find next pos
 				straightH.setPos(curTilePos);
 				straightH.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				straightH.setCoords(gameTiles.back().getNextCoords());
+				straightH.findNextTileCoords(dir);
 				// Add to potentials list
 				potentialTiles.push_back(straightH);
 				cout << "Straight_H going right potential" << endl;
@@ -147,6 +158,9 @@ void courseGenerator::CheckForStraights()
 				// Set pos, find next pos
 				straightH.setPos(curTilePos);
 				straightH.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				straightH.setCoords(gameTiles.back().getNextCoords());
+				straightH.findNextTileCoords(dir);
 				// Add to potentials list
 				potentialTiles.push_back(straightH);
 				cout << "Straight_H going left potential" << endl;
@@ -177,6 +191,10 @@ void courseGenerator::CheckForCorners()
 				// Set positions
 				cornerTR.setPos(curTilePos);
 				cornerTR.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				cornerTR.setCoords(gameTiles.back().getNextCoords());
+				cornerTR.findNextTileCoords(dir);
+				// Add to list
 				potentialTiles.push_back(cornerTR);
 				cout << "Corner_TR going up and left potential" << endl;
 			}
@@ -193,6 +211,9 @@ void courseGenerator::CheckForCorners()
 				// Set positions
 				cornerTL.setPos(curTilePos);
 				cornerTL.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				cornerTL.setCoords(gameTiles.back().getNextCoords());
+				cornerTL.findNextTileCoords(dir);
 				potentialTiles.push_back(cornerTL);
 				cout << "Corner_TL going up and right potential" << endl;
 			}
@@ -213,6 +234,9 @@ void courseGenerator::CheckForCorners()
 				// Set positions
 				cornerBR.setPos(curTilePos);
 				cornerBR.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				cornerBR.setCoords(gameTiles.back().getNextCoords());
+				cornerBR.findNextTileCoords(dir);
 				potentialTiles.push_back(cornerBR);
 				cout << "Corner_BR going down and left potential" << endl;
 			}
@@ -229,6 +253,9 @@ void courseGenerator::CheckForCorners()
 				// Set positions
 				cornerBL.setPos(curTilePos);
 				cornerBL.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				cornerBL.setCoords(gameTiles.back().getNextCoords());
+				cornerBL.findNextTileCoords(dir);
 				potentialTiles.push_back(cornerBL);
 				cout << "Corner_BL going down and right potential" << endl;
 			}
@@ -249,6 +276,9 @@ void courseGenerator::CheckForCorners()
 				// Set positions
 				cornerBL.setPos(curTilePos);
 				cornerBL.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				cornerBL.setCoords(gameTiles.back().getNextCoords());
+				cornerBL.findNextTileCoords(dir);
 				potentialTiles.push_back(cornerBL);
 				cout << "Corner_BL going left and up potential" << endl;
 			}
@@ -265,6 +295,9 @@ void courseGenerator::CheckForCorners()
 				// Set positions
 				cornerTL.setPos(curTilePos);
 				cornerTL.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				cornerTL.setCoords(gameTiles.back().getNextCoords());
+				cornerTL.findNextTileCoords(dir);
 				potentialTiles.push_back(cornerTL);
 				cout << "Corner_TL going up and right potential" << endl;
 			}
@@ -285,6 +318,9 @@ void courseGenerator::CheckForCorners()
 				// Set positions
 				cornerBR.setPos(curTilePos);
 				cornerBR.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				cornerBR.setCoords(gameTiles.back().getNextCoords());
+				cornerBR.findNextTileCoords(dir);
 				potentialTiles.push_back(cornerBR);
 				cout << "Corner_BR going right and up potential" << endl;
 			}
@@ -301,6 +337,9 @@ void courseGenerator::CheckForCorners()
 				// Set positions
 				cornerTR.setPos(curTilePos);
 				cornerTR.findNextTilePos(gridLength, dir);
+				// Set coords, find next coords
+				cornerTR.setCoords(gameTiles.back().getNextCoords());
+				cornerTR.findNextTileCoords(dir);
 				potentialTiles.push_back(cornerTR);
 				cout << "Corner_TR going right and down potential" << endl;
 			}
@@ -349,11 +388,12 @@ void courseGenerator::placeTile()
 	// Clear potential tiles list for next iteration
 	potentialTiles.clear();
 	cout << "Potentials cleared, size now : " << (int)potentialTiles.size() << endl;
+	
 }
 
 
 // Main algorithm function
-void courseGenerator::run()
+vector<BaseTile> courseGenerator::run()
 {
 	cout << "Starting algorithm loop..." << endl;
 	// Until course is built...
@@ -369,4 +409,14 @@ void courseGenerator::run()
 	}
 
 	// Add End tile manually here
+	EndTile endTile;
+	endTile.setPos(curTilePos);
+	endTile.setCoords(gameTiles.back().getNextCoords());
+	endTile.direction = dir;
+	gameTiles.push_back(endTile);
+
+	
+	return gameTiles;
+
+	
 }

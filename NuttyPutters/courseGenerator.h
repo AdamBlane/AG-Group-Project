@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 // Definitions for all game tiles and direction classes
 #include "gameTiles.h"
 
@@ -31,5 +32,5 @@ public:
 	void CheckForCorners();
 	void placeTile();
 	
-	void run();
+	vector<BaseTile> run();
 };

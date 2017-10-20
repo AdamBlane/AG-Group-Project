@@ -1,7 +1,7 @@
 #pragma once
 // Externals
 #include "glew_glfw.h"
-
+#include <map>
 // Internals
 #include "courseGenerator.h"
 #include "Shader.h"
@@ -26,27 +26,22 @@ public:
 	// Track number of players for this game
 	unsigned int playerCount;
 
-	bool setup = false;
+	
 
 	// For finding cursor pos on screen
 	double cursor_x, cursor_y = 0.0;
 	
-	Mesh* mesh;
-	Tile* startTile;
-	Tile* straightTile;
+	vector<Tile> tiles;
 	Shader* textureShader;
-	//Texture* textureWood;
-	free_camera* freeCam;
-	Transform trans1;
-	Transform startTileTrans;
-	Transform straightTileTrans;
+	Transform shaderTrans;
+	free_camera* freeCam;	
 	float WASDSPEED = 0.1f;
-	
+	vector<BaseTile> algTiles;
+
+
 
 	// Set player Count
 	void setPlayers(unsigned int players);
-	
-
 	// Check player count, draw accordingly
 	void checkPlayers(GLFWwindow* win);
 	// Draw stuff for 1 player
@@ -54,7 +49,7 @@ public:
 	// Draw for 2 players
 	void screenContent2P(GLFWwindow* win);
 
-
+	void setupTilesToBeDrawn();
 	// Input
 	static void key_callbacks(GLFWwindow* win, int key, int scancode, int action, int mods);
 	// Setup scene
