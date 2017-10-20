@@ -33,12 +33,13 @@ public:
 	
 	Mesh* mesh;
 	Tile* startTile;
-	vector<Tile*> tiles;
+	Tile* straightTile;
 	Shader* textureShader;
 	//Texture* textureWood;
 	free_camera* freeCam;
 	Transform trans1;
 	Transform startTileTrans;
+	Transform straightTileTrans;
 	float WASDSPEED = 0.1f;
 	
 

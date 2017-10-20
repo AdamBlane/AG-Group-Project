@@ -92,14 +92,14 @@ void Tile::cornerTile()
 }
 
 //draws a tile passing a shader, a transform and a camera, in order to call Update method of the shader itself and allowing different textures to be bound
-void Tile::drawTile(Shader* shader, Transform trans, AllCamera::free_camera camera)
+void Tile::drawTile(Shader* shader, AllCamera::free_camera camera)
 {
 	//one shader can be used to render more than 1 texture, but in must be updated after different textures are bind to it.
 	//texture binded after a new shader.Update() should have index 0
 	tileContent[0]->thisTexture->Bind(0);
 
 	//updates the shader with first texture and draws the tile
-	shader->Update(trans, (camera.get_Projection() * camera.get_View()));
+	shader->Update(transform, (camera.get_Projection() * camera.get_View()));
 	tileContent[0]->Draw();
 
 	//loops through remaining content of the vector of Mesh
@@ -108,7 +108,7 @@ void Tile::drawTile(Shader* shader, Transform trans, AllCamera::free_camera came
 		tileContent[i]->thisTexture->Bind(0);
 
 		//Update the shader again with new textures
-		shader->Update(trans, (camera.get_Projection() * camera.get_View()));
+		shader->Update(transform ,(camera.get_Projection() * camera.get_View()));
 
 		//Draw borders of tile
 		tileContent[i]->Draw();
