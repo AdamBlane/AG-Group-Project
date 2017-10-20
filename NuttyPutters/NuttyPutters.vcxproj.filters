@@ -143,5 +143,8 @@
     <ClInclude Include="glew_glfw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="checkError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

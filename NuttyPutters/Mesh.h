@@ -53,6 +53,8 @@ public:
 
 	virtual ~Mesh();
 
+	glm::vec3 getPos() { return position; }
+
 private:
 	Mesh(const Mesh& other);
 	void operator=(const Mesh& other);

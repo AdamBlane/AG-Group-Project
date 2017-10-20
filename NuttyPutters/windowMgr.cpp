@@ -36,12 +36,7 @@ GLFWwindow* windowMgr::Init()
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
-	// Initialise GLEW 
-	GLenum res = glewInit();
-	if (res != GLEW_OK)
-	{
-		std::cout << "Glew failed to initialise!" << std::endl;
-	}
+
 
 	// Create window
 	win = glfwCreateWindow(1600, 900, "Test", NULL, NULL);
@@ -56,7 +51,17 @@ GLFWwindow* windowMgr::Init()
 	// Make window the current context
 	glfwMakeContextCurrent(win);
 
+	// Initialise GLEW 
+	GLenum res = glewInit();
+	if (res != GLEW_OK)
+	{
+		std::cout << "Glew failed to initialise!" << std::endl;
+	}
+
 	
+
+	// Setup start scene
+	sceneManager.startScene.Init(win);
 
 
 	return win;
@@ -64,7 +69,7 @@ GLFWwindow* windowMgr::Init()
 
 // Switches on current scene, calls on appropriate file to render/read input
 void windowMgr::Update()
-{		
+{	
 	// While window is open...
 	while (!glfwWindowShouldClose(win))
 	{
@@ -77,43 +82,31 @@ void windowMgr::Update()
 			break;
 		// Start scene
 		case 1:
-			// Setup scene (key callbacks etc)
-			sceneManager.startScene.Init(win);
 			// Draw content
 			sceneManager.startScene.screenContent(win);			
 			break;
 		// Player Select scene
 		case 2:
-			// Setup scene
-			sceneManager.playerSelectScene.Init(win);
 			// Draw content
 			sceneManager.playerSelectScene.screenContent(win);
 			break;
 		// Load Game scene
 		case 3:
-			// Setup scene
-			sceneManager.loadGameScene.Init(win);
 			// Draw content
 			sceneManager.loadGameScene.screenContent(win);
 			break;
 		// Highscore scene
 		case 4:
-			// Setup
-			sceneManager.highscoreScene.Init(win);
 			// Draw content
 			sceneManager.highscoreScene.screenContent(win);
 			break;
 		// Options scene
 		case 5:
-			// Setup
-			sceneManager.optionsScene.Init(win);
 			// Draw content
 			sceneManager.optionsScene.screenContent(win);
 			break;
 		// Game scene
 		case 6:
-			// Setup
-			sceneManager.gameScene.Init(win);
 			// Draw
 			sceneManager.gameScene.checkPlayers(win);
 			break;

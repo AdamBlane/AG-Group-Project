@@ -41,7 +41,7 @@ Shader::Shader(const std::string& filename)
 	CheckShaderError(m_program, GL_LINK_STATUS, true, "Error: Program failed to link: ");
 
 	// Validate Program
-	glLinkProgram(m_program);
+	glValidateProgram(m_program);
 	// Once the program is complete - shaders added, built, linked - do one final check to make sure it works
 	CheckShaderError(m_program, GL_VALIDATE_STATUS, true, "Error: Program failed to validate sucessfully: ");
 

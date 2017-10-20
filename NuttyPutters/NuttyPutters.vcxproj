@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="checkError.h" />
     <ClInclude Include="courseGenerator.h" />
     <ClInclude Include="free_camera.h" />
     <ClInclude Include="gameScene.h" />

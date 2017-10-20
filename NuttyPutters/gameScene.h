@@ -8,7 +8,10 @@
 #include "Mesh.h"
 #include "Texture.h"
 #include "free_camera.h"
+#include "Camera.h"
+#define CHECK_GL_ERROR get_GL_error(__LINE__, __FILE__)
 
+using namespace AllCamera;
 
 class gameScene
 {
@@ -18,14 +21,22 @@ public:
 	// Deconstructor
 	~gameScene();
 
+	inline bool get_GL_error(int line, const std::string &file);
 	// Track number of players for this game
 	unsigned int playerCount;
 
 	bool setup = false;
 
-
+	// For finding cursor pos on screen
+	double cursor_x, cursor_y = 0.0;
 	
-
+	Mesh* mesh;
+	Shader* textureShader;
+	Texture* textureWood;
+	free_camera* freeCam;
+	Transform trans1;
+	float WASDSPEED = 0.1f;
+	
 
 	// Set player Count
 	void setPlayers(unsigned int players);
