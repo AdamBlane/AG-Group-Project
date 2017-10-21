@@ -1,8 +1,8 @@
 #include "courseGenV2.h"
 #include <random>
 #include <chrono>
+#include <algorithm>
 
-using namespace std;
 using namespace std::chrono;
 
 // Course Gen constructor
@@ -32,7 +32,7 @@ vector<BaseTile> courseGenV2::run()
 {
 	// Until course is built...
 	// -1 since end tile will be added afterwards
-	while ((int)gameTiles.size() < courseLimit)
+	while ((int)gameTiles.size() < courseLimit - 1)
 	{
 		PlaceTile();
 	}
@@ -42,6 +42,14 @@ vector<BaseTile> courseGenV2::run()
 	end.SetCoords(curTileCoords);
 	end.outDir = dir;
 	gameTiles.push_back(end);
+
+	// Write seed to file
+	ofstream results("results.csv", ofstream::app);
+	for (auto &t : gameTiles)
+		results << t.id;
+
+	results << endl;
+
 
 	return gameTiles;
 }
@@ -53,11 +61,12 @@ void courseGenV2::PlaceTile()
 	CheckStraights();
 	CheckCorners();
 
-	// Create random engine 
-	auto millis = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-	default_random_engine rng(static_cast<unsigned int>(millis.count()));
+	// Create random engine 	
+	default_random_engine rng(random_device{}());
 	uniform_int_distribution<int> distribution(0, (int)potentialTiles.size() - 1);
 	int choice = distribution(rng);
+	// Shuffle potentials list to add yet more randomness!
+	random_shuffle(potentialTiles.begin(), potentialTiles.end());
 
 	// Add random choice to game tiles
 	gameTiles.push_back(potentialTiles.at(choice));
@@ -148,6 +157,33 @@ void courseGenV2::CheckStraights()
 			potentialTiles.push_back(straightH);
 		}
 	}
+	// RAMP TESTING
+	if (dir.going_down)
+	{
+		// Following is + 8 on y axis (arbitrary atm)
+		vec3 followingPos = vec3(curTileCoords.x, curTileCoords.y + 3.8, curTileCoords.z + zDiff);
+		if (!tilePosTaken(followingPos))
+		{
+			UpRampDown ramp;
+			ramp.SetCoords(curTileCoords);
+			ramp.SetNextCoords(followingPos);
+			ramp.outDir.going_down = true;
+			potentialTiles.push_back(ramp);
+		}
+	}
+	if (dir.going_up)
+	{
+		vec3 followingPos = vec3(curTileCoords.x, curTileCoords.y - 3.8, curTileCoords.z + zDiff);
+		if (!tilePosTaken(followingPos))
+		{
+			DownRampDown ramp;
+			ramp.SetCoords(curTileCoords);
+			ramp.SetNextCoords(followingPos);
+			ramp.outDir.going_up = true;
+			potentialTiles.push_back(ramp);
+		}
+	}
+	
 }
 
 // Adds any available corner tiles to potentials list

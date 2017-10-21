@@ -29,6 +29,7 @@ public:
 // Corner_TL - 5
 // Corner_TR - 6
 // End - 7
+// UpRampDown - 8 (Ramp goes up, direction is down)
 // Base class - never needs to be instantiated
 class BaseTile
 {
@@ -130,4 +131,16 @@ public:
 	~EndTile() {};
 };
 
+class UpRampDown : public BaseTile
+{
+public:
+	UpRampDown() { id = 8; }
+	~UpRampDown() {};
+};
 
+class DownRampDown : public BaseTile
+{
+public:
+	DownRampDown() { id = 9; }
+	~DownRampDown() {};
+};

@@ -1,12 +1,15 @@
 // Externals
-
+#include <time.h>
+#include <iostream>
+#include <sstream>
 // Internals
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
-#include <iostream>
+
 #define CHECK_GL_ERROR get_GL_error(__LINE__, __FILE__)
 
 using namespace AllCamera;
+
 /// Game scene holds all data to do with the game
 
 // Default constructor
@@ -103,6 +106,10 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	{
 		pos = (vec3(0, -WASDSPEED, 0));
 	}
+	if (glfwGetKey(win, GLFW_KEY_4))
+	{
+		DrawNewCourse(4);
+	}
 	// Move camera by new pos after input
 	freeCam->move(pos);
 
@@ -193,6 +200,27 @@ void gameScene::setupTilesToBeDrawn()
 	// TILE CREATION
 	for (auto &t : algTiles)
 	{
+		// Ramp testing
+		if (t.id == 8)
+		{
+			// Create straight tile
+			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Rotate on x
+			tile.transform.getRot().x = -0.349066;
+			tile.transform.getPos().y += 1.8;
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
+		if (t.id == 9)
+		{
+			// Create straight tile
+			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Rotate on x
+			tile.transform.getRot().x = -0.349066;
+			tile.transform.getPos().y -= 1.8;
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
 		if (t.id == 0) // Start
 		{
 			// Create start tile
@@ -293,20 +321,7 @@ void gameScene::key_callbacks(GLFWwindow * win, int key, int scancode, int actio
 
 // Setup scene
 void gameScene::Init(GLFWwindow * win)
-{
-	// Assign input
-	glfwSetKeyCallback(win, key_callbacks);
-	// This sets up level gen
-	// More than 9 tiles has a potential to break it - ask me for deets (too long to type :D)
-	courseGenV2 courseGen(6);
-	// Runs the alg, returns map of tiles (pos, name)
-	algTiles = courseGen.run();
-	// DEBUG
-	for (auto &t : algTiles)
-	{
-		cout << t.id << endl;
-	}
-
+{	
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -315,13 +330,32 @@ void gameScene::Init(GLFWwindow * win)
 	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	// Get initial cursor pos
 	glfwSetCursorPos(win, cursor_x, cursor_y);
-	
+	// Assign input
+	glfwSetKeyCallback(win, key_callbacks);
 
+
+
+
+	// This sets up level gen
+	// More than 9 tiles has a potential to break it - ask me for deets (too long to type :D)
+	courseGenV2 courseGen(9);
+	// Runs the alg, returns map of tiles (pos, name)
+	algTiles = courseGen.run();
 	// Setup tiles
 	setupTilesToBeDrawn();
 
+	//LoadGame();
+	for (auto &t : algTiles)
+	{
+		cout << t.id << endl;
+	}
 
-
+	//for (int i = 0; i < 1000; ++i)
+	//{
+	//	courseGenV2 cg(6);
+	//	cg.run();
+	//}
+	//cout << "done" << endl;
 
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
@@ -331,4 +365,43 @@ void gameScene::Init(GLFWwindow * win)
 	freeCam->set_Target(vec3(0, 0, 0));
 	freeCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
 	
+}
+
+// Resets algTiles list to draw a new course
+void gameScene::DrawNewCourse(int tiles)
+{
+	algTiles.clear();
+	courseGenV2 cg(tiles);
+	algTiles = cg.run();
+	setupTilesToBeDrawn();
+}
+
+// Loads a level based on a seed
+void gameScene::LoadGame()
+{
+	// Load all seed info
+	vector<string> lines;
+	ifstream seeds("seeds.csv");
+	if (seeds.is_open())
+	{
+		string line;
+		while (getline(seeds, line))
+		{
+			// Add line to vector
+			lines.push_back(line);
+		}
+		seeds.close();
+	}
+	
+	cout << "Loaded" << endl;
+	for (auto &s : lines)
+	{
+		cout << s << endl;
+	}
+
+	
+
+
+
+
 }

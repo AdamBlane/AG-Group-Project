@@ -1,7 +1,7 @@
 #pragma once
 // Externals
 #include <vector>
-
+#include <fstream>
 // Internals
 #include "courseGenTiles.h"
 

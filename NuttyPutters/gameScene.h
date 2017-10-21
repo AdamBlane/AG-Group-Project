@@ -54,4 +54,9 @@ public:
 	static void key_callbacks(GLFWwindow* win, int key, int scancode, int action, int mods);
 	// Setup scene
 	void Init(GLFWwindow* win);
+
+	// Draw a new course
+	void DrawNewCourse(int tiles);
+
+	void LoadGame();
 };
