@@ -1,6 +1,7 @@
 #include "gameTiles.h"
 #include <iostream>
 
+
 using namespace std;
 
 // ###### DIRECTION ######
@@ -12,6 +13,8 @@ Direction::Direction()
 	going_down = true;
 	going_left = false;
 }
+
+
 
 // Finds which direction tiles are going in now
 void Direction::setDir(int curTilePos, int lastTilePos, int gridLength)

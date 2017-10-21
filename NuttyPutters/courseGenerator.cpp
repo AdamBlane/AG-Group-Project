@@ -13,7 +13,7 @@ courseGenerator::courseGenerator(int difficulty)
 {
 	// Take in difficulty for this game
 	courseLimit = difficulty;
-	cout << "Course Gen Constructor called, difficulty: " << courseLimit << endl;
+	cout << "Course Limit: " << difficulty << endl;
 
 	// Set grid values
 	// -1 makes odd number, allows for central tile
@@ -24,16 +24,16 @@ courseGenerator::courseGenerator(int difficulty)
 	centre = (int)ceil(gridSize / 2) + 1;
 	cout << "Grid Length: " << gridLength << " Size: " << gridSize << " Centre: " << centre << endl;
 
-	cout << "Grid Elements List: ";
+	
 	// Setup grid elements list
 	for (int i = 0; i < gridSize; ++i)
 	{
 		// Since start tile is in centre, 
-		if (i == centre-1)
+		if (i == centre - 1) // -1 since working with index
 		{
-			// put 1 for taken
+			// 
 			gridElements.push_back(1);
-			cout << "1, ";
+			
 		}
 		else
 		{

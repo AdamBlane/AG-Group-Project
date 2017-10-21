@@ -299,10 +299,14 @@ void gameScene::Init(GLFWwindow * win)
 	glfwSetKeyCallback(win, key_callbacks);
 	// This sets up level gen
 	// More than 9 tiles has a potential to break it - ask me for deets (too long to type :D)
-	courseGenerator courseGen(9);
+	courseGenerator courseGen(5);
 	// Runs the alg, returns map of tiles (pos, name)
 	algTiles = courseGen.run();
-	
+	// DEBUG
+	for (auto &t : algTiles)
+	{
+		cout << t.name << endl;
+	}
 
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
