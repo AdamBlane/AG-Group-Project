@@ -193,7 +193,7 @@ void gameScene::setupTilesToBeDrawn()
 	// TILE CREATION
 	for (auto &t : algTiles)
 	{
-		if (t.name == "start")
+		if (t.id == 0) // Start
 		{
 			// Create start tile
 			Tile tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
@@ -201,9 +201,15 @@ void gameScene::setupTilesToBeDrawn()
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
-
 		}
-		else if (t.name == "straight_H")
+		else if (t.id == 1) // Straight V
+		{
+			// Create straight tile
+			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			// Add to list of tiles to be rendered
+			tiles.push_back(tile);
+		}
+		else if (t.id == 2) // Straight H
 		{
 			// Create straight tile
 			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
@@ -212,14 +218,7 @@ void gameScene::setupTilesToBeDrawn()
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.name == "straight_V")
-		{
-			// Create straight tile
-			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		else if (t.name == "corner_BL")
+		else if (t.id == 3) // Corner BL
 		{
 			// Create corner tile
 			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
@@ -228,7 +227,7 @@ void gameScene::setupTilesToBeDrawn()
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.name == "corner_BR")
+		else if (t.id == 4) // Corner BR
 		{
 			// Create corner tile
 			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
@@ -237,14 +236,14 @@ void gameScene::setupTilesToBeDrawn()
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.name == "corner_TL")
+		else if (t.id == 5) // Corner TL
 		{
 			// Create corner tile
 			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.name == "corner_TR")
+		else if (t.id == 6) // Corner TR
 		{
 			// Create corner tile
 			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
@@ -253,24 +252,24 @@ void gameScene::setupTilesToBeDrawn()
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.name == "end")
+		else if (t.id == 7) // end
 		{
 			// Create start tile
 			Tile tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
 			// Consult direction to determine how much to rotate
-			if (t.direction.going_up)
+			if (t.outDir.going_up)
 			{
 				tile.transform.getRot().y = 3.14159;
 			}
-			else if (t.direction.going_down)
+			else if (t.outDir.going_down)
 			{
 				// No rotation needed
 			}
-			else if (t.direction.going_left)
+			else if (t.outDir.going_left)
 			{
 				tile.transform.getRot().y = -1.5708;
 			}
-			else if (t.direction.going_right)
+			else if (t.outDir.going_right)
 			{
 				tile.transform.getRot().y = 1.5708;
 			}
@@ -299,13 +298,13 @@ void gameScene::Init(GLFWwindow * win)
 	glfwSetKeyCallback(win, key_callbacks);
 	// This sets up level gen
 	// More than 9 tiles has a potential to break it - ask me for deets (too long to type :D)
-	courseGenerator courseGen(5);
+	courseGenV2 courseGen(6);
 	// Runs the alg, returns map of tiles (pos, name)
 	algTiles = courseGen.run();
 	// DEBUG
 	for (auto &t : algTiles)
 	{
-		cout << t.name << endl;
+		cout << t.id << endl;
 	}
 
 	// Set GL properties 

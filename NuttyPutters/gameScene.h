@@ -3,7 +3,7 @@
 #include "glew_glfw.h"
 #include <map>
 // Internals
-#include "courseGenerator.h"
+#include "courseGenV2.h"
 #include "Shader.h"
 #include "Mesh.h"
 #include "Texture.h"

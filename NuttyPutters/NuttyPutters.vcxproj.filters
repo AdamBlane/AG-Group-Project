@@ -84,9 +84,6 @@
     <ClCompile Include="tileBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="courseGenTiles.cpp">
-      <Filter>Source Files\Game Logic</Filter>
-    </ClCompile>
     <ClCompile Include="courseGenV2.cpp">
       <Filter>Source Files\Game Logic</Filter>
     </ClCompile>

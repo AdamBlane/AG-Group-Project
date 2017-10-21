@@ -1,7 +1,7 @@
 #pragma once
 // Externals
 #include <vector>
-#include "include\glm-0.9.8.5\glm\glm\glm.hpp"
+
 // Internals
 #include "courseGenTiles.h"
 
@@ -11,10 +11,12 @@ using namespace std;
 class courseGenV2
 {
 public:
+	// Size of side of tile
+	int tileSize;
 	// Total tiles this course
 	int courseLimit;
-	// Position of last and current tiles
-	vec3 lastTileCoords, curTileCoords;
+	// Position of current tile yet to be placed
+	vec3 curTileCoords;
 	// Holds all game tiles added to course
 	vector<BaseTile> gameTiles;
 	// Holds all potential tiles for next tile placement
@@ -26,7 +28,7 @@ public:
 	courseGenV2(int difficulty);
 	~courseGenV2() {};
 
-	void run();
+	vector<BaseTile> run();
 	void PlaceTile();
 	void CheckStraights();
 	void CheckCorners();

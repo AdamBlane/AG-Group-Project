@@ -4,19 +4,20 @@
 
 using namespace glm;
 
-// This algorithm needs a sense of direction
+// Each tile has a dir as shown
+// One direciton bool is set to true, only once
 class Direction
 {
 public:
-	bool going_up;
-	bool going_right;
-	bool going_down;
-	bool going_left;
+	bool going_up = false;
+	bool going_right = false;
+	bool going_down = false;
+	bool going_left = false;
 
-	Direction();
+	Direction() {};
 	~Direction() {};
 
-	void SetDir();
+	
 };
 
 // Tiles have a number id
@@ -38,8 +39,8 @@ public:
 	int id;
 	// Tiles have a size (10x10 currently)
 	int size = 10;
-	// For end piece 
-	Direction direction;
+	// Direction of travel once this tile is placed
+	Direction outDir;
 	// Accessor/Mutator of positions
 	void SetCoords(vec3 coords) { thisCoords = coords; }
 	void SetNextCoords(vec3 coords) { nextCoords = coords; }
@@ -57,6 +58,7 @@ public:
 		id = 0; // Start is 0
 		thisCoords = vec3(0, 0, 0); // Always placed in centre
 		nextCoords = vec3(0, 0, 10);
+		outDir.going_down = true; // Always facing downwards
 	}
 	~StartTile() {};
 };
@@ -68,7 +70,7 @@ public:
 	StraightTile_V() { id = 1; } 
 	~StraightTile_V() {};
 
-	void FindNextTileCoords(Direction dir);
+	
 };
 // Straight horizontal tile
 class StraightTile_H : public BaseTile
@@ -77,7 +79,7 @@ public:
 	StraightTile_H() { id = 2; }
 	~StraightTile_H() {};
 
-	void FindNextTileCoords(Direction dir);
+	
 };
 
 // Bottom left corner Tile
@@ -87,7 +89,7 @@ public:
 	CornerTile_BL() { id = 3; }
 	~CornerTile_BL() {};
 
-	void FindNextTileCoords(Direction dir);
+
 };
 
 // Bottom right corner Tile
@@ -97,7 +99,7 @@ public:
 	CornerTile_BR() { id = 4; }
 	~CornerTile_BR() {};
 
-	void FindNextTileCoords(Direction dir);
+	
 };
 
 // Top left corner tile
@@ -107,7 +109,7 @@ public:
 	CornerTile_TL() { id = 5; }
 	~CornerTile_TL() {};
 
-	void FindNextTileCoords(Direction dir);
+	
 };
 
 // Top right corner tile
@@ -117,7 +119,7 @@ public:
 	CornerTile_TR() { id = 6; }
 	~CornerTile_TR() {};
 
-	void FindNextTileCoords(Direction dir);
+	
 };
 
 // End tile
