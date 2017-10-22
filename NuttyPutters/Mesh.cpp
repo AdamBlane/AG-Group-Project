@@ -1,5 +1,7 @@
 #include "Mesh.h"
 #include <vector>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 Mesh::Mesh(const std::string& fileName)
 {
@@ -339,6 +341,13 @@ void Mesh::generateMesh(Vertex * vertices, unsigned int numVertices, unsigned in
 
 	InitMesh(model);
 
+}
+
+double Mesh::toRads(double degrees)
+{
+	//performing conversion to radiants
+	double rads = (degrees * M_PI) / 180.0;
+	return rads;
 }
 
 void Mesh::InitMesh(const IndexedModel& model)

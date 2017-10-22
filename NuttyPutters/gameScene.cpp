@@ -206,8 +206,8 @@ void gameScene::setupTilesToBeDrawn()
 			// Create straight tile
 			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
 			// Rotate on x
-			tile.transform.getRot().x = -0.349066;
-			tile.transform.getPos().y += 1.8;
+			tile.transform.getRot().x = Mesh::toRads(-20.0);		//function to convert radiants to degrees
+			tile.transform.getPos().y += tile.getYAfterRotation(20.0);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
@@ -216,8 +216,8 @@ void gameScene::setupTilesToBeDrawn()
 			// Create straight tile
 			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
 			// Rotate on x
-			tile.transform.getRot().x = -0.349066;
-			tile.transform.getPos().y -= 1.8;
+			tile.transform.getRot().x = Mesh::toRads(-20.0);
+			tile.transform.getPos().y -= tile.getYAfterRotation(20.0);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
@@ -361,7 +361,8 @@ void gameScene::Init(GLFWwindow * win)
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 	// Setup camera
 	freeCam = new free_camera();
-	freeCam->set_Posistion(vec3(0, 0, 10));
+	freeCam->set_Posistion(vec3(0, 10, -10));
+	freeCam->rotate(-10.0, 0.0);
 	freeCam->set_Target(vec3(0, 0, 0));
 	freeCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
 	

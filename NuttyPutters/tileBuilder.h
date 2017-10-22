@@ -34,6 +34,12 @@ public:
 	//returns position of the tile
 	vec3 getPosition();
 
+	//returns tile dimensions
+	vec3 getDimension() { return measures; };
+
+	//Get translation on y axis after rotation of the tile using Pythagoras, knowing the angle of rotation(positive degrees) and half of tile length
+	double getYAfterRotation(double degreesOfRotation);
+
 	//draws a tile passing a shader, a transform and a camera, in order to call Update method of the shader itself and allowing different textures to be bound
 	void drawTile(Shader* shader, AllCamera::free_camera camera);
 
