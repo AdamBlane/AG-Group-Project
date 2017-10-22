@@ -161,7 +161,7 @@ void courseGenV2::CheckStraights()
 	// RAMP TESTING
 	if (dir.going_down)
 	{
-		// Following is + 8 on y axis (arbitrary atm)
+		// Following is + 3.8 on y axis (arbitrary atm)
 		vec3 followingPos = vec3(curTileCoords.x, curTileCoords.y + 3.8, curTileCoords.z + zDiff);
 		if (!tilePosTaken(followingPos))
 		{

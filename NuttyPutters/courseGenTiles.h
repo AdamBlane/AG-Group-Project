@@ -123,24 +123,26 @@ public:
 	
 };
 
+// RAMP - Ramp goes up, placed when course direction is going_down
+class UpRampDown : public BaseTile
+{
+public:
+	UpRampDown() { id = 7; }
+	~UpRampDown() {};
+};
+
+// RAMP - Goes down, placed when course dir is going_up
+class DownRampDown : public BaseTile
+{
+public:
+	DownRampDown() { id = 8; }
+	~DownRampDown() {};
+};
+
 // End tile
 class EndTile : public BaseTile
 {
 public:
-	EndTile() { id = 7; }
+	EndTile() { id = 9; }
 	~EndTile() {};
-};
-
-class UpRampDown : public BaseTile
-{
-public:
-	UpRampDown() { id = 8; }
-	~UpRampDown() {};
-};
-
-class DownRampDown : public BaseTile
-{
-public:
-	DownRampDown() { id = 9; }
-	~DownRampDown() {};
 };

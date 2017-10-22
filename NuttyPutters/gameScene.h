@@ -55,8 +55,6 @@ public:
 	// Setup scene
 	void Init(GLFWwindow* win);
 
-	// Draw a new course
-	void DrawNewCourse(int tiles);
-
+	// Loads a level based on given seed
 	void LoadGame();
 };

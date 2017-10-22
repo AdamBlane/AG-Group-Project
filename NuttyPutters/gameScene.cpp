@@ -106,10 +106,7 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	{
 		pos = (vec3(0, -WASDSPEED, 0));
 	}
-	if (glfwGetKey(win, GLFW_KEY_4))
-	{
-		DrawNewCourse(4);
-	}
+
 	// Move camera by new pos after input
 	freeCam->move(pos);
 
@@ -201,7 +198,7 @@ void gameScene::setupTilesToBeDrawn()
 	for (auto &t : algTiles)
 	{
 		// Ramp testing
-		if (t.id == 8)
+		if (t.id == 7)
 		{
 			// Create straight tile
 			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
@@ -211,7 +208,7 @@ void gameScene::setupTilesToBeDrawn()
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		if (t.id == 9)
+		if (t.id == 8)
 		{
 			// Create straight tile
 			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
@@ -280,7 +277,7 @@ void gameScene::setupTilesToBeDrawn()
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.id == 7) // end
+		else if (t.id == 9) // end
 		{
 			// Create start tile
 			Tile tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
@@ -368,41 +365,17 @@ void gameScene::Init(GLFWwindow * win)
 	
 }
 
-// Resets algTiles list to draw a new course
-void gameScene::DrawNewCourse(int tiles)
-{
-	algTiles.clear();
-	courseGenV2 cg(tiles);
-	algTiles = cg.run();
-	setupTilesToBeDrawn();
-}
 
 // Loads a level based on a seed
 void gameScene::LoadGame()
 {
-	// Load all seed info
-	vector<string> lines;
-	ifstream seeds("seeds.csv");
-	if (seeds.is_open())
-	{
-		string line;
-		while (getline(seeds, line))
-		{
-			// Add line to vector
-			lines.push_back(line);
-		}
-		seeds.close();
-	}
-	
-	cout << "Loaded" << endl;
-	for (auto &s : lines)
-	{
-		cout << s << endl;
-	}
+	// In order to draw a level, we need:
+	// Tile ID, Tile position
+	// For end tile, need direction (to know how much to rotate)
+	// ^ Unless there are 4 end tile types :p
+	string tileInfo = "0:0.0.0, 1:0.0.10, 1:0.0.20, 9:0.0.30";
 
 	
-
-
 
 
 }
