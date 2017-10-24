@@ -48,6 +48,8 @@ public:
 	Transform golfBallTransform;
 	// Movement of gb
 	float golfBallForce, timer, originalForceTimer = 0.0f;
+	// Is golf ball moving
+	bool golfBallMoving = false;
 
 	// Arrow
 	Mesh* arrowMesh;

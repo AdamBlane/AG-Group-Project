@@ -45,11 +45,21 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	chaseCam->move(golfBallTransform.getPos(), golfBallTransform.getRot());
 	chaseCam->update(0.00001);
 
-
-
 	// Handles all input with camera and player
 	Input(win);
 	
+	// Calculate mvp matrix
+	mat4 mvp;
+	// If camera type is free camera then
+	if (cameraType == 0)
+	{
+		mvp = freeCam->get_Projection() * freeCam->get_View();
+	}
+	// Else camera type is chase camera
+	else
+	{
+		mvp = chaseCam->get_Projection() * chaseCam->get_View();
+	}
 
 	// Bind texture shader
 	textureShader->Bind();
@@ -57,30 +67,29 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	// DRAW all tiles
 	for (auto &t : tiles)
 	{
-		t.drawTile(textureShader, *freeCam);
+		t.drawTile(textureShader, mvp);
 	}
 
-	mat4 mvp; 
-	if (cameraType == 0)
-	{
-		mvp = freeCam->get_Projection() * freeCam->get_View();
-	}
-	else
-	{
-		mvp = chaseCam->get_Projection() * chaseCam->get_View();
-	}
-
-	// DRAW golf ball cube
+	// Draw golf ball
 	golfBallTexture->Bind(0);
 	textureShader->Update(golfBallTransform, mvp);
 	golfBallMesh->Draw();
+
 	// Arrow
 	arrowTexture->Bind(0);
 	textureShader->Update(arrowTransform, mvp);
-	arrowTransform.setRot(glm::vec3(0, (chaseCam->get_target_rotation().y) + (camSpeed / 5) - 1.5708, 0));
+	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
+	arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
+	// If ball is not moving draw arrow (ie dont draw arrow when ball moving as not needed)
+	if (!golfBallMoving)
+	{
+		// Draw the arrow
+		arrowMesh->Draw();
+	}
+
+
 	// WHAT is shaderTrans - it's never set to anything
 	textureShader->Update(shaderTrans, (freeCam->get_Projection() * freeCam->get_View()));
-	
 	
 	glfwSwapBuffers(win);
 	glfwPollEvents();
@@ -283,7 +292,6 @@ void gameScene::Input(GLFWwindow* win)
 	cursor_x = current_x;
 	cursor_y = current_y;
 
-
 	// If button one is pressed change to free camera
 	if (glfwGetKey(win, GLFW_KEY_1))
 	{
@@ -337,26 +345,30 @@ void gameScene::Input(GLFWwindow* win)
 		// Move camera by new pos after input
 		freeCam->move(freeCamPos);
 	}
-
 	// Chase cam controls
 	else if (cameraType == 1)
 	{
-		// controls in the chase camera 
-		if (glfwGetKey(win, GLFW_KEY_D))
+		// If ball is not moving then allow for angle on chase camera to be changed
+		if (!golfBallMoving)
 		{
-			//function to rotate 
-			chaseCam->yaw_it(camSpeed / 5);
-			chaseCamAngle += (camSpeed / 5);
-		}
-		if (glfwGetKey(win, GLFW_KEY_A))
-		{
-			chaseCam->neg_yaw_it(camSpeed / 5);
-			chaseCamAngle -= (camSpeed / 5);
+			// controls in the chase camera 
+			if (glfwGetKey(win, GLFW_KEY_D))
+			{
+				//function to rotate 
+				chaseCam->yaw_it(camSpeed / 5);
+				// Decrease chase camera angle (out of 360 degrees)
+				chaseCamAngle -= (camSpeed / 5);
+			}
+			if (glfwGetKey(win, GLFW_KEY_A))
+			{
+				chaseCam->neg_yaw_it(camSpeed / 5);
+				// Increase chase camera angle (out of 360 degrees)
+				chaseCamAngle += (camSpeed / 5);
+			}
 		}
 		if (glfwGetKey(win, GLFW_KEY_S))
 		{
 			chaseCam->neg_pitch_it(camSpeed / 5, golfBallTransform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
-			//cout << golfBallTrans.getPos().y << endl << chaseCam->get_Posistion().y << endl << chaseCam->get_pos_offset().y << endl;
 		}
 		if (glfwGetKey(win, GLFW_KEY_W))
 		{
@@ -373,10 +385,21 @@ void gameScene::Input(GLFWwindow* win)
 		}
 	}
 
-
-
+	// If chase camera angle is greater than 360 reset to 0
+	if (chaseCamAngle > 6.28319)
+	{
+		chaseCamAngle = 0.0;
+	}
+	// If chase camera angle is less than 0 then reset to 360
+	else if (chaseCamAngle < 0)
+	{
+		chaseCamAngle = 6.28319;
+	}
+	// Print the camera angle
+	cout << "Camera angle: " << chaseCamAngle << endl;
 
 	// Player
+	// If P is pressed 
 	if (glfwGetKey(win, GLFW_KEY_P))
 	{
 		// Add value to the force
@@ -386,27 +409,82 @@ void gameScene::Input(GLFWwindow* win)
 		// Get the original force timer value which is used to slow down the ball
 		originalForceTimer = golfBallForce * timer;
 	}
+
 	// When P is realesed
 	if ((glfwGetKey(win, GLFW_KEY_P)) == false)
 	{
 		// If the ball is still moving forward
 		if ((golfBallForce * timer) > 0)
 		{
+			// Set golf ball moving to true
+			golfBallMoving = true;
+
 			// If the golf ball force (static value) multiplied by the timer (decreasing value) is lower than the original force timer dived by 32 then
 			if ((golfBallForce * timer) < ((originalForceTimer) / 32))
 			{
-				// The ball is in the last 32 of its movement
 				//cout << "Last 32rd" << endl;
 				// Set the timer decreasing to a lower value
 				timer -= 0.005;
-				// Move the golf ball
-				golfBallTransform.getPos() += vec3(0.0, 0.0, golfBallForce * timer);
+			}
+
+			else if ((golfBallForce * timer) < ((originalForceTimer) / 16))
+			{
+				//cout << "Last 16th" << endl;
+				timer -= 0.01;
+			}
+			else if ((golfBallForce * timer) < ((originalForceTimer) / 8))
+			{
+				//cout << "Last 8th" << endl;
+				timer -= 0.02;
+			}
+			else if ((golfBallForce * timer) < ((originalForceTimer) / 4))
+			{
+				//cout << "Last 4th" << endl;
+				timer -= 0.03;
+			}
+			else if ((golfBallForce * timer) < ((originalForceTimer) / 2))
+			{
+				//cout << "Last Half" << endl;
+				timer -= 0.04;
 			}
 			else
 			{
 				timer -= 0.05;
 				//cout << "Normal" << endl;
-				golfBallTransform.getPos() += vec3(0.0, 0.0, golfBallForce * timer);
+			}
+
+			// If camera angle is between 0 and 90
+			if (chaseCamAngle > 0 && chaseCamAngle < 1.5708)
+			{
+				// Update the golf ball position and the arrow position
+				// x = -sin(theta), z = cos(theta)
+				golfBallTransform.getPos() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
+				arrowTransform.getPos() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
+				golfBallTransform.getRot() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
+			}
+			// If camera angle is between 90 and 180
+			else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
+			{
+				// x = -cos(theta - 90), z = -sin(theta - 90)
+				golfBallTransform.getPos() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
+				arrowTransform.getPos() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
+				golfBallTransform.getRot() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
+			}
+			// If camera angle is between 180 and 270
+			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
+			{
+				// x = sin(theta - 180), z = -cos(theta - 180)
+				golfBallTransform.getPos() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
+				arrowTransform.getPos() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
+				golfBallTransform.getRot() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
+			}
+			// If camera angle is anything else
+			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
+			{
+				// x = cos(theta - 270), z = sin(theta- 270)
+				golfBallTransform.getPos() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
+				arrowTransform.getPos() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
+				golfBallTransform.getRot() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
 			}
 		}
 		// Else if the ball is stationary
@@ -414,8 +492,10 @@ void gameScene::Input(GLFWwindow* win)
 		{
 			// Reset the values of the ball
 			golfBallForce = 0.0;
+			golfBallMoving = false;
 		}
 	}
+
 }
 
 // Input - since real time controls don't seem to fit here (problem with accessing member vars)
@@ -472,12 +552,14 @@ void gameScene::Init(GLFWwindow * win)
 
 
 	// Add the golf ball to scene
-	golfBallMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(0.0f, 2.0f, 0.0f), 2.0f, 2.0f, 2.0f);
+	golfBallMesh = new Mesh("..\\NuttyPutters\\sphere.obj");
+	//golfBallMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(0.0f, 2.0f, 0.0f), 2.0f, 2.0f, 2.0f);
 	golfBallTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
 	golfBallTransform.getScale() = vec3(0.5);
+	golfBallTransform.getPos() = vec3(0.0, 1.0, 0.0);
 
 	// Arrow
-	arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.0, golfBallMesh->getGeomPos().y + 0.76, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
+	arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
 	arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	arrowTransform.getScale() = vec3(0.5);
 

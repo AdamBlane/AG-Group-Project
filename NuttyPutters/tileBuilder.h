@@ -41,7 +41,7 @@ public:
 	//double getYAfterRotation(double degreesOfRotation);
 
 	//draws a tile passing a shader, a transform and a camera, in order to call Update method of the shader itself and allowing different textures to be bound
-	void drawTile(Shader* shader, AllCamera::free_camera camera);
+	void drawTile(Shader* shader, glm::mat4 camera);
 
 	//Not used --> should bind textures from a starting index (usually 0)
 	void bindTextures(unsigned int startIndexs);
