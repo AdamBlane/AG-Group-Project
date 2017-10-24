@@ -6,37 +6,14 @@
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
 
-#define CHECK_GL_ERROR get_GL_error(__LINE__, __FILE__)
-
 using namespace AllCamera;
 
-/// Game scene holds all data to do with the game
 
 // Default constructor
 gameScene::gameScene() { }
 // Deconstructor
 gameScene::~gameScene() { }
 
-
-inline bool gameScene::get_GL_error(int line, const std::string &file) {
-	// Get the current error
-	GLenum error = glGetError();
-	// If there is an error display message
-	if (error) {
-		// Display error
-		std::cerr << "OpenGL Error: " << error << std::endl;
-		std::cerr << "At line " << line << " in file " << file << std::endl;
-		return true;
-	}
-	return false;
-}
-
-
-// Set number of players this game
-void gameScene::setPlayers(unsigned int players)
-{
-	playerCount = players;
-}
 
 // This is called by window manager
 // Checks how many players, calls appropriate screenContent method
@@ -63,71 +40,50 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Camera stuff
-	static double ratio_width = quarter_pi<float>() / 1600.0;
-	static double ratio_height = (quarter_pi<float>() * (1600 / 900)) / static_cast<float>(1600);
-	double current_x, current_y;
-	glfwGetCursorPos(win, &current_x, &current_y);
-	// Calc delta
-	double delta_x = current_x - cursor_x;
-	double delta_y = current_y - cursor_y;
-	// Multiply deltas by ratios
-	delta_x *=  ratio_width;
-	delta_y *= ratio_height * - 1; // -1 to invert on y axis
-	// Rotate camera by delta
-	freeCam->rotate(delta_x, delta_y);
-	freeCam->update(0.001);
-	// Update cursor pos
-	cursor_x = current_x;
-	cursor_y = current_y;
-	vec3 pos = vec3(0, 0, 0);
-	// Camera controls
-	if (glfwGetKey(win, GLFW_KEY_W))
-	{
-		pos = (vec3(0, 0, WASDSPEED));
-	}
-	if (glfwGetKey(win, GLFW_KEY_A))
-	{
-		pos = (vec3(-WASDSPEED, 0, 0));
-	}
-	if (glfwGetKey(win, GLFW_KEY_S))
-	{
-		pos = (vec3(0, 0, -WASDSPEED));
-	}
-	if (glfwGetKey(win, GLFW_KEY_D))
-	{
-		pos = (vec3(WASDSPEED, 0, 0));
-	}
-	if (glfwGetKey(win, GLFW_KEY_Q))
-	{
-		pos = (vec3(0, WASDSPEED, 0));
-	}
-	if (glfwGetKey(win, GLFW_KEY_E))
-	{
-		pos = (vec3(0, -WASDSPEED, 0));
-	}
+	// The getRot of golf ball - will this be troublesome? Don't want the camera
+	// to rotate along with the ball! 
+	chaseCam->move(golfBallTransform.getPos(), golfBallTransform.getRot());
+	chaseCam->update(0.00001);
 
-	// Move camera by new pos after input
-	freeCam->move(pos);
+
+
+	// Handles all input with camera and player
+	Input(win);
+	
 
 	// Bind texture shader
 	textureShader->Bind();
 	
-	
-	// Draw all tiles
+	// DRAW all tiles
 	for (auto &t : tiles)
 	{
 		t.drawTile(textureShader, *freeCam);
 	}
 
+	mat4 mvp; 
+	if (cameraType == 0)
+	{
+		mvp = freeCam->get_Projection() * freeCam->get_View();
+	}
+	else
+	{
+		mvp = chaseCam->get_Projection() * chaseCam->get_View();
+	}
 
+	// DRAW golf ball cube
+	golfBallTexture->Bind(0);
+	textureShader->Update(golfBallTransform, mvp);
+	golfBallMesh->Draw();
+	// Arrow
+	arrowTexture->Bind(0);
+	textureShader->Update(arrowTransform, mvp);
+	arrowTransform.setRot(glm::vec3(0, (chaseCam->get_target_rotation().y) + (camSpeed / 5) - 1.5708, 0));
+	// WHAT is shaderTrans - it's never set to anything
 	textureShader->Update(shaderTrans, (freeCam->get_Projection() * freeCam->get_View()));
 	
 	
 	glfwSwapBuffers(win);
 	glfwPollEvents();
-	
-
 }
 
 // Draw stuff for 2 players
@@ -198,23 +154,25 @@ void gameScene::setupTilesToBeDrawn()
 	for (auto &t : algTiles)
 	{
 		// Ramp testing
+		// Ramp up when dir is down
 		if (t.id == 7)
 		{
 			// Create straight tile
 			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
 			// Rotate on x
-			tile.transform.getRot().x = Mesh::toRads(-20.0);		//function to convert radiants to degrees
-			tile.transform.getPos().y += tile.getYAfterRotation(20.0);
+			tile.transform.getRot().x = -0.349066;		 
+			tile.transform.getPos().y += 1.8;
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
+		// Ramp down when dir is up
 		if (t.id == 8)
 		{
 			// Create straight tile
 			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
 			// Rotate on x
-			tile.transform.getRot().x = Mesh::toRads(-20.0);
-			tile.transform.getPos().y -= tile.getYAfterRotation(20.0);
+			tile.transform.getRot().x = -0.349066;
+			tile.transform.getPos().y -= 1.8;
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
@@ -305,7 +263,163 @@ void gameScene::setupTilesToBeDrawn()
 
 }
 
-// Input
+void gameScene::Input(GLFWwindow* win)
+{
+	// Free cam stuff
+	static double ratio_width = quarter_pi<float>() / 1600.0;
+	static double ratio_height = (quarter_pi<float>() * (1600 / 900)) / static_cast<float>(1600);
+	double current_x, current_y;
+	glfwGetCursorPos(win, &current_x, &current_y);
+	// Calc delta
+	double delta_x = current_x - cursor_x;
+	double delta_y = current_y - cursor_y;
+	// Multiply deltas by ratios
+	delta_x *= ratio_width;
+	delta_y *= ratio_height * -1; // -1 to invert on y axis
+	// Rotate camera by delta
+	freeCam->rotate(delta_x, delta_y);
+	freeCam->update(0.001);
+	// Update cursor pos
+	cursor_x = current_x;
+	cursor_y = current_y;
+
+
+	// If button one is pressed change to free camera
+	if (glfwGetKey(win, GLFW_KEY_1))
+	{
+		// Set camera version to free camera
+		cout << "Free Camera selected" << endl;
+		cameraType = 0;
+		// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
+		freeCam->set_Posistion(chaseCam->get_Posistion());
+	}
+
+	// If button two is pressed change to chase camera
+	if (glfwGetKey(win, GLFW_KEY_2))
+	{
+		// Set camera version to chase camera
+		cout << "Chase Camera selected" << endl;
+		cameraType = 1;
+	}
+
+	// Free cam controls
+	if (cameraType == 0)
+	{
+		// Create vector to apply to current cam pos
+		vec3 freeCamPos = vec3(0, 0, 0);
+
+		// Camera controls
+		if (glfwGetKey(win, GLFW_KEY_W))
+		{
+			freeCamPos = (vec3(0, 0, camSpeed));
+		}
+		if (glfwGetKey(win, GLFW_KEY_A))
+		{
+			freeCamPos = (vec3(-camSpeed, 0, 0));
+		}
+		if (glfwGetKey(win, GLFW_KEY_S))
+		{
+			freeCamPos = (vec3(0, 0, -camSpeed));
+		}
+		if (glfwGetKey(win, GLFW_KEY_D))
+		{
+			freeCamPos = (vec3(camSpeed, 0, 0));
+		}
+		if (glfwGetKey(win, GLFW_KEY_Q))
+		{
+			freeCamPos = (vec3(0, camSpeed, 0));
+		}
+		if (glfwGetKey(win, GLFW_KEY_E))
+		{
+			freeCamPos = (vec3(0, -camSpeed, 0));
+		}
+
+		// Move camera by new pos after input
+		freeCam->move(freeCamPos);
+	}
+
+	// Chase cam controls
+	else if (cameraType == 1)
+	{
+		// controls in the chase camera 
+		if (glfwGetKey(win, GLFW_KEY_D))
+		{
+			//function to rotate 
+			chaseCam->yaw_it(camSpeed / 5);
+			chaseCamAngle += (camSpeed / 5);
+		}
+		if (glfwGetKey(win, GLFW_KEY_A))
+		{
+			chaseCam->neg_yaw_it(camSpeed / 5);
+			chaseCamAngle -= (camSpeed / 5);
+		}
+		if (glfwGetKey(win, GLFW_KEY_S))
+		{
+			chaseCam->neg_pitch_it(camSpeed / 5, golfBallTransform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
+			//cout << golfBallTrans.getPos().y << endl << chaseCam->get_Posistion().y << endl << chaseCam->get_pos_offset().y << endl;
+		}
+		if (glfwGetKey(win, GLFW_KEY_W))
+		{
+			chaseCam->pitch_it(camSpeed / 5, golfBallTransform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
+		}
+		if (glfwGetKey(win, GLFW_KEY_Q))
+		{
+			//function to rotate 
+			chaseCam->zoom_out(camSpeed / 5);
+		}
+		if (glfwGetKey(win, GLFW_KEY_E))
+		{
+			chaseCam->zoom_in(camSpeed / 5);
+		}
+	}
+
+
+
+
+	// Player
+	if (glfwGetKey(win, GLFW_KEY_P))
+	{
+		// Add value to the force
+		golfBallForce += 0.01;
+		// Create a ball movement time
+		timer = golfBallForce * 10;
+		// Get the original force timer value which is used to slow down the ball
+		originalForceTimer = golfBallForce * timer;
+	}
+	// When P is realesed
+	if ((glfwGetKey(win, GLFW_KEY_P)) == false)
+	{
+		// If the ball is still moving forward
+		if ((golfBallForce * timer) > 0)
+		{
+			// If the golf ball force (static value) multiplied by the timer (decreasing value) is lower than the original force timer dived by 32 then
+			if ((golfBallForce * timer) < ((originalForceTimer) / 32))
+			{
+				// The ball is in the last 32 of its movement
+				//cout << "Last 32rd" << endl;
+				// Set the timer decreasing to a lower value
+				timer -= 0.005;
+				// Move the golf ball
+				golfBallTransform.getPos() += vec3(0.0, 0.0, golfBallForce * timer);
+			}
+			else
+			{
+				timer -= 0.05;
+				//cout << "Normal" << endl;
+				golfBallTransform.getPos() += vec3(0.0, 0.0, golfBallForce * timer);
+			}
+		}
+		// Else if the ball is stationary
+		else
+		{
+			// Reset the values of the ball
+			golfBallForce = 0.0;
+		}
+	}
+}
+
+// Input - since real time controls don't seem to fit here (problem with accessing member vars)
+// Let's scrap this function and add the exit code to update control funciton
 void gameScene::key_callbacks(GLFWwindow * win, int key, int scancode, int action, int mods)
 {
 	// Exit; close window
@@ -314,6 +428,7 @@ void gameScene::key_callbacks(GLFWwindow * win, int key, int scancode, int actio
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(0);
 	}
+
 }
 
 // Setup scene
@@ -329,8 +444,6 @@ void gameScene::Init(GLFWwindow * win)
 	glfwSetCursorPos(win, cursor_x, cursor_y);
 	// Assign input
 	glfwSetKeyCallback(win, key_callbacks);
-
-
 
 
 	// This sets up level gen
@@ -356,17 +469,35 @@ void gameScene::Init(GLFWwindow * win)
 
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-	// Setup camera
+
+
+	// Add the golf ball to scene
+	golfBallMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(0.0f, 2.0f, 0.0f), 2.0f, 2.0f, 2.0f);
+	golfBallTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
+	golfBallTransform.getScale() = vec3(0.5);
+
+	// Arrow
+	arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.0, golfBallMesh->getGeomPos().y + 0.76, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
+	arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
+	arrowTransform.getScale() = vec3(0.5);
+
+
+	// Setup cameras
 	freeCam = new free_camera();
 	freeCam->set_Posistion(vec3(0, 10, -10));
 	freeCam->rotate(-10.0, 0.0);
 	freeCam->set_Target(vec3(0, 0, 0));
 	freeCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
-	
+
+	chaseCam = new chase_camera();
+	chaseCam->set_target_pos(vec3(golfBallTransform.getPos()));
+	chaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
+	chaseCam->set_springiness(0.2f);
+	chaseCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
 }
 
 
-// Loads a level based on a seed
+// TODO Loads a level based on a seed
 void gameScene::LoadGame()
 {
 	// In order to draw a level, we need:

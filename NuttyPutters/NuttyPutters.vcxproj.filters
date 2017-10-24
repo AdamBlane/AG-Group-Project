@@ -25,15 +25,18 @@
     <Filter Include="Source Files\Game Logic">
       <UniqueIdentifier>{5484b192-6339-4fe2-b0c6-8a6019f832f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Cameras">
+      <UniqueIdentifier>{3e8f8538-c9be-41d0-8fdb-660cea731ebf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cameras">
+      <UniqueIdentifier>{f5dcab69-a22a-4385-8b8b-690ce6e99e0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="windowMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sceneMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gameScene.cpp">
@@ -75,24 +78,27 @@
     <ClCompile Include="stb_image.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="free_camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="target_camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tileBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="courseGenV2.cpp">
       <Filter>Source Files\Game Logic</Filter>
     </ClCompile>
+    <ClCompile Include="sceneMgr.cpp">
+      <Filter>Source Files\Scene Files</Filter>
+    </ClCompile>
+    <ClCompile Include="chase_camera.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="free_camera.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="target_camera.cpp">
+      <Filter>Source Files\Cameras</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="windowMgr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sceneMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gameScene.h">
@@ -125,9 +131,6 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="obj_loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -138,12 +141,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="free_camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="target_camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="glew_glfw.h">
@@ -160,6 +157,21 @@
     </ClInclude>
     <ClInclude Include="courseGenV2.h">
       <Filter>Header Files\Game Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneMgr.h">
+      <Filter>Header Files\Scene Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="free_camera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="target_camera.h">
+      <Filter>Header Files\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="chase_camera.h">
+      <Filter>Header Files\Cameras</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

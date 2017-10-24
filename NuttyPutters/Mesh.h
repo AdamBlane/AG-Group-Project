@@ -63,9 +63,6 @@ public:
 	//Texture for each Mesh
 	Texture *thisTexture;
 
-	//convert degrees to radiants
-	static double toRads(double degrees);
-
 	void InitMesh(const IndexedModel& model);
 
 	void Draw();

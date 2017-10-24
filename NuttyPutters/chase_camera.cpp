@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "chase_camera.h"
 
 namespace AllCamera
@@ -35,5 +34,46 @@ namespace AllCamera
 	void chase_camera::rotate(const glm::vec3 &delta_rotation)
 	{
 		camera_rot += delta_rotation;
+	}
+
+	void chase_camera::pitch_it(float rot, const glm::vec3 &target_location, const glm::vec3 &cam_location, float y_)
+	{
+		//if (4 >= cam_location.y - target_location.y)
+		{
+			target_rotaion += glm::vec3(rot, 0, 0);
+		}
+	}
+
+	void chase_camera::neg_pitch_it(float rot, const glm::vec3 &target_location, const glm::vec3 &cam_location , float y_)
+	{
+		//if (1.1 <= cam_location.y - target_location.y)
+		{
+			target_rotaion += glm::vec3(-rot, 0, 0);
+		}
+	}
+
+	void chase_camera::yaw_it(float rot)
+	{
+		target_rotaion += glm::vec3(0, rot, 0);
+	}
+
+	void chase_camera::neg_yaw_it(float rot)
+	{
+		target_rotaion += glm::vec3(0, -rot, 0);
+	}
+	void chase_camera::zoom_out(float rot)
+	{
+		if (chase_camera::get_pos_offset().z >= -10.0)
+		{
+			chase_camera::set_pos_offset(glm::vec3(chase_camera::get_pos_offset().x, chase_camera::get_pos_offset().y, chase_camera::get_pos_offset().z - rot));
+		}
+
+	}
+	void chase_camera::zoom_in(float rot)
+	{
+		if (chase_camera::get_pos_offset().z <= -2.5)
+		{
+			chase_camera::set_pos_offset(glm::vec3(chase_camera::get_pos_offset().x, chase_camera::get_pos_offset().y, chase_camera::get_pos_offset().z + rot));
+		}
 	}
 }

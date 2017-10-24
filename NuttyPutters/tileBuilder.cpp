@@ -94,12 +94,12 @@ void Tile::cornerTile()
 
 }
 
-double Tile::getYAfterRotation(double degreesOfRotation)
-{
-	double translationY = (Tile::getDimension().x / 2.0) * tan(Mesh::toRads(degreesOfRotation));
-
-	return translationY;
-}
+//double Tile::getYAfterRotation(double degreesOfRotation)
+//{
+//	double translationY = (Tile::getDimension().x / 2.0) * tan(Mesh::toRads(degreesOfRotation));
+//
+//	return translationY;
+//}
 
 //draws a tile passing a shader, a transform and a camera, in order to call Update method of the shader itself and allowing different textures to be bound
 void Tile::drawTile(Shader* shader, AllCamera::free_camera camera)
