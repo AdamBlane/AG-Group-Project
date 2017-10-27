@@ -34,6 +34,9 @@ public:
 	vector<Tile> tiles;
 	Shader* textureShader;
 	Transform shaderTrans;
+	// Tracks tile player is on 
+	// This is the index of algTiles (0 is always start tile)
+	int currentTile = 0;
 
 	// Cameras
 	free_camera* freeCam;	
@@ -74,4 +77,6 @@ public:
 
 	// TODO - Loads a level based on given seed
 	void LoadGame();
+	// Collisions
+	void Collisions();
 };

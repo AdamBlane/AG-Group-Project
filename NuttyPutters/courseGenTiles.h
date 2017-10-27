@@ -16,8 +16,6 @@ public:
 
 	Direction() {};
 	~Direction() {};
-
-	
 };
 
 // Tiles have a number id
@@ -28,9 +26,9 @@ public:
 // Corner_BR - 4
 // Corner_TL - 5
 // Corner_TR - 6
-// End - 7
-// UpRampDown - 8 (Ramp goes up, direction is down)
-// Base class - never needs to be instantiated
+// UpRampDown - 7
+// DownRampDown - 8
+// End - 9
 class BaseTile
 {
 public:
@@ -39,7 +37,7 @@ public:
 	// Each tile is identified by a number
 	int id;
 	// Tiles have a size (10x10 currently)
-	int size = 10;
+	float size = 10;
 	// Direction of travel once this tile is placed
 	Direction outDir;
 	// Accessor/Mutator of positions
@@ -47,6 +45,15 @@ public:
 	void SetNextCoords(vec3 coords) { nextCoords = coords; }
 	vec3 GetNextCoords() { return nextCoords; }
 	vec3 GetThisCoords() { return thisCoords; }
+
+	// is player on tile
+	// bool playerOnTile(vec3 playerPos)
+	  // if playerPos.x < thisCoords - size / 2
+	    // && playerPos.x > thisCoords + size / 2
+	  // if playerPos.z < thisCoords etc
+
+	// If inside x and z coords, return true
+
 };
 
 // Start Tile type, inherits from Tile
@@ -62,6 +69,10 @@ public:
 		outDir.going_down = true; // Always facing downwards
 	}
 	~StartTile() {};
+
+	// bool isPlayerBeyondBoundaries(vec3 playerPos);
+	  // if playerPos.x > thisCoords.x + 4 - ballRadius
+	     // return true
 };
 
 // Straight vertical tile

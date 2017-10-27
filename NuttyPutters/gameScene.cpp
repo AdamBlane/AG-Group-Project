@@ -40,6 +40,12 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// Collisions stuff - update ball position tracker
+	
+
+
+
+
 	// The getRot of golf ball - will this be troublesome? Don't want the camera
 	// to rotate along with the ball! 
 	chaseCam->move(golfBallTransform.getPos(), golfBallTransform.getRot());
@@ -528,24 +534,20 @@ void gameScene::Init(GLFWwindow * win)
 
 	// This sets up level gen
 	// More than 9 tiles has a potential to break it - ask me for deets (too long to type :D)
-	courseGenV2 courseGen(9);
+	//courseGenV2 courseGen(50);
 	// Runs the alg, returns map of tiles (pos, name)
-	algTiles = courseGen.run();
+	//algTiles = courseGen.run();
 	// Setup tiles
-	setupTilesToBeDrawn();
+	//setupTilesToBeDrawn();
 
-	//LoadGame();
-	for (auto &t : algTiles)
+	courseGenV2 cg(12);
+	for (int i = 0; i < 1000; ++i)
 	{
-		cout << t.id << endl;
+		cg.run();
 	}
-
-	//for (int i = 0; i < 1000; ++i)
-	//{
-	//	courseGenV2 cg(6);
-	//	cg.run();
-	//}
-	//cout << "done" << endl;
+	// Load game
+	LoadGame();
+	setupTilesToBeDrawn();
 
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
@@ -582,13 +584,261 @@ void gameScene::Init(GLFWwindow * win)
 // TODO Loads a level based on a seed
 void gameScene::LoadGame()
 {
-	// In order to draw a level, we need:
-	// Tile ID, Tile position
-	// For end tile, need direction (to know how much to rotate)
-	// ^ Unless there are 4 end tile types :p
-	string tileInfo = "0:0.0.0, 1:0.0.10, 1:0.0.20, 9:0.0.30";
+	// Seed is a list of numbers, which refer to tile type
+	int seed[] = { 1, 7, 3, 2, 4, 8, 1, 6, 5, 1, 1, 1, 9};
 
-	
+	// Iterate through each tile:
+	// Set it's position
+	// Update direction
+
+	// Start added first (this & next coords already set)
+	StartTile start;
+	algTiles.push_back(start);
+
+	vec3 curCoords;
+	float size = start.size;
 
 
+	for (auto &i : seed)
+	{
+		// Update current coordinates (next coords of last thing in list) 
+		curCoords = algTiles.back().GetNextCoords();
+
+		switch (i)
+		{
+		// Straight_V
+		case 1:
+		{
+			// Create tile
+			StraightTile_V straightV;
+			// Set its position
+			straightV.SetCoords(curCoords);
+			// Find next position - based on direction
+			if (algTiles.back().outDir.going_down)
+			{
+				// The position of next tile in list
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
+				straightV.SetNextCoords(nextPos);
+				// Set dir
+				straightV.outDir.going_down = true;
+			} 
+			else if (algTiles.back().outDir.going_up)
+			{
+				// The position of next tile in list
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
+				straightV.SetNextCoords(nextPos);
+				// Set dir
+				straightV.outDir.going_up = true;
+			}
+			// Add tile to list, finish (break)
+			algTiles.push_back(straightV);
+			break;
+		}
+		// Straight_H
+		case 2:
+		{
+			// Create tile
+			StraightTile_H straightH;
+			// Set its position
+			straightH.SetCoords(curCoords);
+			// Find next position
+			if (algTiles.back().outDir.going_right)
+			{
+				// Position of next tile in list
+				vec3 nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
+				straightH.SetNextCoords(nextPos);
+				// Set dir
+				straightH.outDir.going_right = true;
+			}
+			else if (algTiles.back().outDir.going_left)
+			{
+				// Position of next tile in list
+				vec3 nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
+				straightH.SetNextCoords(nextPos);
+				// Set dir
+				straightH.outDir.going_left = true;
+			}
+
+			// Add to list
+			algTiles.push_back(straightH);
+			break;
+		}
+		// Corner_BL
+		case 3: 
+		{
+			// Create tile
+			CornerTile_BL cornerBL;
+			// Set pos
+			cornerBL.SetCoords(curCoords);
+			// Find next position
+			if (algTiles.back().outDir.going_down)
+			{
+				// Last tile was going down; next tile is going right
+				vec3 nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
+				cornerBL.SetNextCoords(nextPos);
+				// Set dir
+				cornerBL.outDir.going_right = true;
+			}
+			else if (algTiles.back().outDir.going_left)
+			{
+				// Last tile was going left; next tile is going up
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
+				cornerBL.SetNextCoords(nextPos);
+				// Set dir
+				cornerBL.outDir.going_up = true;
+			}
+			// Add to list
+			algTiles.push_back(cornerBL);
+			break;
+		}
+		// Corner_BR
+		case 4:
+		{
+			// Create tile
+			CornerTile_BR cornerBR;
+			// Set pos
+			cornerBR.SetCoords(curCoords);
+			// Find next position
+			if (algTiles.back().outDir.going_down)
+			{
+				// Last tile was going down; next tile is going left
+				vec3 nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
+				cornerBR.SetNextCoords(nextPos);
+				// Set dir
+				cornerBR.outDir.going_left = true;
+			}
+			else if (algTiles.back().outDir.going_right)
+			{
+				// Last tile was going right; next tile is going up
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
+				cornerBR.SetNextCoords(nextPos);
+				// Set dir
+				cornerBR.outDir.going_up = true;
+			}
+			// Add to list
+			algTiles.push_back(cornerBR);
+			break;
+		}		
+		// Corner_TL
+		case 5:
+		{
+			// Create tile
+			CornerTile_TL cornerTL;
+			cornerTL.SetCoords(curCoords);
+			// Find next pos
+			if (algTiles.back().outDir.going_up)
+			{
+				// Last tile was going up; next going right
+				vec3 nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
+				cornerTL.SetNextCoords(nextPos);
+				// Set dir
+				cornerTL.outDir.going_right = true;
+			}
+			else if (algTiles.back().outDir.going_left)
+			{
+				// Last tile was going left; next tile going down
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
+				cornerTL.SetNextCoords(nextPos);
+				// Set dir
+				cornerTL.outDir.going_down = true;
+			}
+			// Add to list
+			algTiles.push_back(cornerTL);
+			break;
+		}
+		// Corner_TR
+		case 6:
+		{
+			// Create tile
+			CornerTile_TR cornerTR;
+			// Set pos
+			cornerTR.SetCoords(curCoords);
+			// Find next pos
+			if (algTiles.back().outDir.going_right)
+			{
+				// Last tile going right; next tile going down
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
+				cornerTR.SetNextCoords(nextPos);
+				// Set dir
+				cornerTR.outDir.going_down = true;
+			}
+			else if (algTiles.back().outDir.going_up)
+			{
+				// Last tile going up; next tile going left
+				vec3 nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
+				cornerTR.SetNextCoords(nextPos);
+				// Set dir
+				cornerTR.outDir.going_left = true;
+			}
+			// Add to list
+			algTiles.push_back(cornerTR);
+			break;
+		}
+		// UpRampDown
+		case 7:
+		{
+			// Create tile
+			UpRampDown upRamp;
+			upRamp.SetCoords(curCoords);
+			// Find next pos (always know dir is down when 7 is placed)
+			vec3 nextPos = vec3(curCoords.x, curCoords.y + 3.8, curCoords.z + size);
+			upRamp.SetNextCoords(nextPos);
+			upRamp.outDir.going_down = true;
+			algTiles.push_back(upRamp);
+			break;
+		}
+		// DownRampDown
+		case 8:
+		{
+			// Create tile
+			DownRampDown downRamp;
+			downRamp.SetCoords(curCoords);
+			// Find next pos (always know dir is up with tile 8)
+			vec3 nextPos = vec3(curCoords.x, curCoords.y - 3.8, curCoords.z - size);
+			downRamp.SetNextCoords(nextPos);
+			downRamp.outDir.going_up = true;
+			algTiles.push_back(downRamp);
+			break;
+		}
+
+		// End tile
+		case 9:
+		{
+			// Create end tile
+			EndTile end;
+			end.SetCoords(curCoords);
+			end.outDir = algTiles.back().outDir;
+			algTiles.push_back(end);
+			break;
+		}
+
+
+		} // Switch end
+
+
+	} // for loop end
+
+}
+
+void gameScene::Collisions()
+{
+	int tileTracker = 0;
+	// Check which tile player is on (do this every n frames, not each tick)
+	for (auto &t : algTiles)
+	{
+		// if (t.isPlayerOnTile)
+		  // currentTile = tileTracker
+		// if not, tileTracker++
+	}
+
+	// Switch on the currentTile 
+	switch (currentTile)
+	{
+	// On start tile
+	case 0:
+		// Call start tile's collisions checks
+		// if algTiles[currentTiles].isPlayerBeyondBoundaries(vec3 playerPos) == true
+		  // collision
+		break;
+	}
 }
