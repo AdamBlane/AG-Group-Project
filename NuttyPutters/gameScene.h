@@ -51,6 +51,7 @@ public:
 	Transform golfBallTransform;
 	// Movement of gb
 	float golfBallForce, timer, originalForceTimer = 0.0f;
+	vec3 gbVelocity, gbVelModifier;
 	// Is golf ball moving
 	bool golfBallMoving = false;
 

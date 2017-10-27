@@ -464,33 +464,55 @@ void gameScene::Input(GLFWwindow* win)
 			{
 				// Update the golf ball position and the arrow position
 				// x = -sin(theta), z = cos(theta)
-				golfBallTransform.getPos() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
-				arrowTransform.getPos() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
-				golfBallTransform.getRot() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
+				gbVelocity = vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
+				//golfBallTransform.getPos() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
+				//arrowTransform.getPos() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
+				//golfBallTransform.getRot() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
+				
+				golfBallTransform.getPos() += gbVelocity;
+				arrowTransform.getPos() += gbVelocity;
+				golfBallTransform.getRot() += gbVelocity;
+
+
 			}
 			// If camera angle is between 90 and 180
 			else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
 			{
 				// x = -cos(theta - 90), z = -sin(theta - 90)
-				golfBallTransform.getPos() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
-				arrowTransform.getPos() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
-				golfBallTransform.getRot() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
+				gbVelocity = vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
+				//golfBallTransform.getPos() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
+				//arrowTransform.getPos() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
+				//golfBallTransform.getRot() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
+				gbVelocity += gbVelModifier;
+				golfBallTransform.getPos() += gbVelocity;
+				arrowTransform.getPos() += gbVelocity;
+				golfBallTransform.getRot() += gbVelocity;
 			}
 			// If camera angle is between 180 and 270
 			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
 			{
 				// x = sin(theta - 180), z = -cos(theta - 180)
-				golfBallTransform.getPos() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
-				arrowTransform.getPos() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
-				golfBallTransform.getRot() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
+				gbVelocity = vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
+				//golfBallTransform.getPos() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
+				//arrowTransform.getPos() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
+				//golfBallTransform.getRot() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
+				gbVelocity += gbVelModifier;
+				golfBallTransform.getPos() += gbVelocity;
+				arrowTransform.getPos() += gbVelocity;
+				golfBallTransform.getRot() += gbVelocity;
 			}
 			// If camera angle is anything else
 			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
 			{
 				// x = cos(theta - 270), z = sin(theta- 270)
-				golfBallTransform.getPos() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
-				arrowTransform.getPos() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
-				golfBallTransform.getRot() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
+				gbVelocity = vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
+				//golfBallTransform.getPos() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
+				//arrowTransform.getPos() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
+				//golfBallTransform.getRot() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
+				gbVelocity += gbVelModifier;
+				golfBallTransform.getPos() += gbVelocity;
+				arrowTransform.getPos() += gbVelocity;
+				golfBallTransform.getRot() += gbVelocity;
 			}
 		}
 		// Else if the ball is stationary
@@ -811,7 +833,7 @@ void gameScene::LoadGame()
 
 void gameScene::Collisions()
 {
-	
+	gbVelModifier = vec3();
 	int tileTracker = 0;
 	// Check which tile player is on (do this every n frames, not each tick)
 	for (auto &t : algTiles)
@@ -837,7 +859,7 @@ void gameScene::Collisions()
 		// Need to do this to access start only methods (which includes col check)
 		StartTile start;
 		algTiles.at(0) = start;
-		golfBallTransform.setPos(start.CheckCollisions(golfBallTransform.getPos()));
+		gbVelModifier = start.CheckCollisions(golfBallTransform.getPos(), gbVelocity);
 	}
 		break;
 	}

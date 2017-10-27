@@ -78,19 +78,19 @@ public:
 	}
 	~StartTile() {};
 	// Checks whether player has hit boundaries of this tile
-	vec3 CheckCollisions(vec3 playerPos)
+	vec3 CheckCollisions(vec3 playerPos, vec3 vel)
 	{
 		// Check on X axis
 		if (playerPos.x > thisCoords.x + 3.5 || playerPos.x < thisCoords.x - 3.5)
 		{
 			// Hit boundary, revert x axis
-			playerPos.x = -playerPos.x;
+			vel.x = -vel.x;
 	
 			// Move to just inside boundary
 		//	playerPos.x -= (playerPos.x - 5);
 		}
 
-		return playerPos;
+		return vel;
 	}
 
 };
