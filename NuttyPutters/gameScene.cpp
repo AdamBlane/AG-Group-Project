@@ -40,8 +40,8 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Collisions stuff - update ball position tracker
-	
+	// Collisions stuff 
+	Collisions();
 
 
 
@@ -402,7 +402,7 @@ void gameScene::Input(GLFWwindow* win)
 		chaseCamAngle = 6.28319;
 	}
 	// Print the camera angle
-	cout << "Camera angle: " << chaseCamAngle << endl;
+	//cout << "Camera angle: " << chaseCamAngle << endl; no, don't
 
 	// Player
 	// If P is pressed 
@@ -531,20 +531,9 @@ void gameScene::Init(GLFWwindow * win)
 	// Assign input
 	glfwSetKeyCallback(win, key_callbacks);
 
+	
 
-	// This sets up level gen
-	// More than 9 tiles has a potential to break it - ask me for deets (too long to type :D)
-	//courseGenV2 courseGen(50);
-	// Runs the alg, returns map of tiles (pos, name)
-	//algTiles = courseGen.run();
-	// Setup tiles
-	//setupTilesToBeDrawn();
-
-	courseGenV2 cg(12);
-	for (int i = 0; i < 1000; ++i)
-	{
-		cg.run();
-	}
+	
 	// Load game
 	LoadGame();
 	setupTilesToBeDrawn();
@@ -585,7 +574,7 @@ void gameScene::Init(GLFWwindow * win)
 void gameScene::LoadGame()
 {
 	// Seed is a list of numbers, which refer to tile type
-	int seed[] = { 1, 7, 3, 2, 4, 8, 1, 6, 5, 1, 1, 1, 9};
+	int seed[] = {1, 3, 2, 6, 1, 1, 4, 5, 3, 9};
 
 	// Iterate through each tile:
 	// Set it's position
@@ -822,6 +811,7 @@ void gameScene::LoadGame()
 
 void gameScene::Collisions()
 {
+	
 	int tileTracker = 0;
 	// Check which tile player is on (do this every n frames, not each tick)
 	for (auto &t : algTiles)
@@ -829,16 +819,26 @@ void gameScene::Collisions()
 		// if (t.isPlayerOnTile)
 		  // currentTile = tileTracker
 		// if not, tileTracker++
+		if (t.isPlayerOnTile(golfBallTransform.getPos()))
+		{
+			currentTile = tileTracker;
+		}
+		else
+			tileTracker++;
 	}
+	cout << "Current tile: " << algTiles.at(currentTile).id << " : " << currentTile << "pos: " << golfBallTransform.getPos().x << ", " << golfBallTransform.getPos().z  << endl;
 
 	// Switch on the currentTile 
 	switch (currentTile)
 	{
 	// On start tile
 	case 0:
-		// Call start tile's collisions checks
-		// if algTiles[currentTiles].isPlayerBeyondBoundaries(vec3 playerPos) == true
-		  // collision
+	{
+		// Need to do this to access start only methods (which includes col check)
+		StartTile start;
+		algTiles.at(0) = start;
+		golfBallTransform.setPos(start.CheckCollisions(golfBallTransform.getPos()));
+	}
 		break;
 	}
 }

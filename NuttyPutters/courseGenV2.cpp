@@ -44,12 +44,7 @@ vector<BaseTile> courseGenV2::run()
 	end.outDir = dir;
 	gameTiles.push_back(end);
 
-	// Write seed to file
-	ofstream results("results12.csv", ofstream::app);
-	for (auto &t : gameTiles)
-		results << t.id;
 
-	results << endl;
 
 
 	return gameTiles;

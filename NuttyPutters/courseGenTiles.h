@@ -46,17 +46,25 @@ public:
 	vec3 GetNextCoords() { return nextCoords; }
 	vec3 GetThisCoords() { return thisCoords; }
 
-	// is player on tile
-	// bool playerOnTile(vec3 playerPos)
-	  // if playerPos.x < thisCoords - size / 2
-	    // && playerPos.x > thisCoords + size / 2
-	  // if playerPos.z < thisCoords etc
-
-	// If inside x and z coords, return true
+	// Returns true if player is within tile bounds
+	bool isPlayerOnTile(vec3 playerPos)
+	{
+		// Match on x first
+		if (playerPos.x > thisCoords.x - 4 && playerPos.x < thisCoords.x + 4)
+		{
+			// Then on z
+			if (playerPos.z > thisCoords.z - 4 && playerPos.z < thisCoords.z + 4)
+			{
+				// Player is on this tile
+				return true;
+			}
+		}
+		return false;
+	}
 
 };
 
-// Start Tile type, inherits from Tile
+// Start Tile type, inherits from Tileb
 class StartTile : public BaseTile
 {
 public:
@@ -69,10 +77,22 @@ public:
 		outDir.going_down = true; // Always facing downwards
 	}
 	~StartTile() {};
+	// Checks whether player has hit boundaries of this tile
+	vec3 CheckCollisions(vec3 playerPos)
+	{
+		// Check on X axis
+		if (playerPos.x > thisCoords.x + 3.5 || playerPos.x < thisCoords.x - 3.5)
+		{
+			// Hit boundary, revert x axis
+			playerPos.x = -playerPos.x;
+	
+			// Move to just inside boundary
+		//	playerPos.x -= (playerPos.x - 5);
+		}
 
-	// bool isPlayerBeyondBoundaries(vec3 playerPos);
-	  // if playerPos.x > thisCoords.x + 4 - ballRadius
-	     // return true
+		return playerPos;
+	}
+
 };
 
 // Straight vertical tile
