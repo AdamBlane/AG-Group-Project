@@ -38,7 +38,7 @@ namespace AllCamera
 
 	void chase_camera::pitch_it(float rot, const glm::vec3 &target_location, const glm::vec3 &cam_location, float y_)
 	{
-		//if (4 >= cam_location.y - target_location.y)
+		if (4 >= cam_location.y - target_location.y)
 		{
 			target_rotaion += glm::vec3(rot, 0, 0);
 		}
@@ -46,7 +46,7 @@ namespace AllCamera
 
 	void chase_camera::neg_pitch_it(float rot, const glm::vec3 &target_location, const glm::vec3 &cam_location , float y_)
 	{
-		//if (1.1 <= cam_location.y - target_location.y)
+		if (1.1 <= cam_location.y - target_location.y)
 		{
 			target_rotaion += glm::vec3(-rot, 0, 0);
 		}
