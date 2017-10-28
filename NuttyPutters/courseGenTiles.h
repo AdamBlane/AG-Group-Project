@@ -38,6 +38,10 @@ public:
 	int id;
 	// Tiles have a size (10x10 currently)
 	float size = 10;
+	// Golf ball radius
+	float radius = 0.5;
+	// Golf ball displacement after hitting boundary
+	float displace = 0.25;
 	// Direction of travel once this tile is placed
 	Direction outDir;
 	// Accessor/Mutator of positions
@@ -77,20 +81,36 @@ public:
 		outDir.going_down = true; // Always facing downwards
 	}
 	~StartTile() {};
+
 	// Checks whether player has hit boundaries of this tile
-	vec3 CheckCollisions(vec3 playerPos, vec3 vel)
+	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
 	{
-		// Check on X axis
-		if (playerPos.x > thisCoords.x + 3.5 || playerPos.x < thisCoords.x - 3.5)
+	
+		// Check on X axis - boundaries either side
+		if (playerPos.x > thisCoords.x + (4 - radius)) 
 		{
 			// Hit boundary, revert x axis
-			vel.x = -vel.x;
-	
-			// Move to just inside boundary
-		//	playerPos.x -= (playerPos.x - 5);
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x -= displace;
+		}
+		if (playerPos.x < thisCoords.x - (4 - radius))
+		{
+			// Hit boundary, reflect on x
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x += displace;
+		}
+		// Check on z axis - just one boundary
+		if (playerPos.z < thisCoords.z - (4 - radius))
+		{
+			// hit, revert z axis
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z += displace;
 		}
 
-		return vel;
+		return dir;
 	}
 
 };
@@ -102,6 +122,27 @@ public:
 	StraightTile_V() { id = 1; } 
 	~StraightTile_V() {};
 
+	// Checks whether player has hit boundaries of this tile
+	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
+	{
+
+		// Check on X axis - boundaries either side
+		if (playerPos.x > thisCoords.x + (4 - radius))
+		{
+			// Hit boundary, revert x axis
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x -= displace;
+		}
+		if (playerPos.x < thisCoords.x - (4 - radius))
+		{
+			// Hit boundary, revert x axis
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x += displace;
+		}
+		return dir;
+	}
 	
 };
 // Straight horizontal tile
@@ -111,7 +152,28 @@ public:
 	StraightTile_H() { id = 2; }
 	~StraightTile_H() {};
 
-	
+	// Checks whether player has hit boundaries of this tile
+	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
+	{
+
+		// Check on X axis - boundaries either side
+		if (playerPos.z > thisCoords.z + (4 - radius)) 
+		{
+			// Hit boundary, revert x axis
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z -= displace;
+		}
+		if (playerPos.z < thisCoords.z - (4 - radius))
+		{
+			// Hit boundary, revert x axis
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z += displace;
+		}
+
+		return dir;
+	}
 };
 
 // Bottom left corner Tile
@@ -121,7 +183,52 @@ public:
 	CornerTile_BL() { id = 3; }
 	~CornerTile_BL() {};
 
+	// Checks whether player has hit boundaries of this tile
+	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
+	{
 
+		// Check on X axis - left boundary
+		if (playerPos.x < thisCoords.x - (4 - radius))
+		{
+			// hit left boundary
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x += displace;
+		}
+
+		// Check x axis - left side of cube corner boundary
+		if (playerPos.x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
+			playerPos.z > thisCoords.z - 5 && // Between upper limit of tile/square
+			playerPos.z < thisCoords.z - 4) // and lower limit of square
+		{
+			// Hit going right, reflect on x
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x -= displace;
+		}
+
+		// Check z axis - lower boundary
+		if (playerPos.z > thisCoords.z + (4 - radius))
+		{
+			// hit middle
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z -= displace;
+		}
+		
+		// Check z axis - lower side of cube corner boundary
+		if (playerPos.z < thisCoords.z - (4 - radius) && 
+			playerPos.x > thisCoords.x + 4 &&
+			playerPos.x < thisCoords.x + 5)
+		{
+			// Hit going up, reflect on z
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z += displace;
+		}
+
+		return dir;
+	}
 };
 
 // Bottom right corner Tile
@@ -131,6 +238,52 @@ public:
 	CornerTile_BR() { id = 4; }
 	~CornerTile_BR() {};
 
+	// Checks whether player has hit boundaries of this tile
+	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
+	{
+		// Axis seems odd since tile has been rotated
+		// Check on X axis - left boundary
+		if (playerPos.x > thisCoords.x + (4 - radius))
+		{
+			// hit left boundary
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x -= displace;
+		}
+
+		// Check x axis - left side of cube corner boundary
+		if (playerPos.x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
+			playerPos.z > thisCoords.z - 5 && // Between upper limit of tile/square
+			playerPos.z < thisCoords.z - 4) // and lower limit of square
+		{
+			// Hit going right, reflect on x
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x += displace;
+		}
+
+		// Check z axis - lower boundary
+		if (playerPos.z > thisCoords.z + (4 - radius))
+		{
+			// hit middle
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z -= displace;
+		}
+
+		// Check z axis - lower side of cube corner boundary
+		if (playerPos.z < thisCoords.z - (4 - radius) &&
+			playerPos.x > thisCoords.x - 5 &&
+			playerPos.x < thisCoords.x - 4)
+		{
+			// Hit going up, reflect on z
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z += displace;
+		}
+
+		return dir;
+	}
 	
 };
 
@@ -141,7 +294,52 @@ public:
 	CornerTile_TL() { id = 5; }
 	~CornerTile_TL() {};
 
-	
+	// Checks whether player has hit boundaries of this tile
+	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
+	{
+		// Axis seems odd since tile has been rotated
+		// Check on X axis - left boundary
+		if (playerPos.x < thisCoords.x - (4 - radius))
+		{
+			// hit left boundary
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x += displace;
+		}
+
+		// Check x axis - left side of cube corner boundary
+		if (playerPos.x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
+			playerPos.z > thisCoords.z + 4 && // Between upper limit of tile/square
+			playerPos.z < thisCoords.z + 5) // and lower limit of square
+		{
+			// Hit going right, reflect on x
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x -= displace;
+		}
+
+		// Check z axis - lower boundary
+		if (playerPos.z < thisCoords.z - (4 - radius))
+		{
+			// hit middle
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z += displace;
+		}
+
+		// Check z axis - lower side of cube corner boundary
+		if (playerPos.z > thisCoords.z + (4 - radius) &&
+			playerPos.x > thisCoords.x + 4 &&
+			playerPos.x < thisCoords.x + 5)
+		{
+			// Hit going up, reflect on z
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z -= displace;
+		}
+
+		return dir;
+	}
 };
 
 // Top right corner tile
@@ -151,7 +349,52 @@ public:
 	CornerTile_TR() { id = 6; }
 	~CornerTile_TR() {};
 
-	
+	// Checks whether player has hit boundaries of this tile
+	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
+	{
+		// Axis seems odd since tile has been rotated
+		// Check on X axis - right boundary
+		if (playerPos.x > thisCoords.x + (4 - radius))
+		{
+			// hit left boundary
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x -= displace;
+		}
+
+		// Check x axis - left side of cube corner boundary
+		if (playerPos.x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
+			playerPos.z > thisCoords.z + 4 && // Between upper limit of tile/square
+			playerPos.z < thisCoords.z + 5) // and lower limit of square
+		{
+			// Hit going right, reflect on x
+			dir.x = -dir.x;
+			// Move away from boundary so as not to retrigger this
+			playerPos.x += displace;
+		}
+
+		// Check z axis - lower boundary
+		if (playerPos.z < thisCoords.z - (4 - radius))
+		{
+			// hit middle
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z += displace;
+		}
+
+		// Check z axis - lower side of cube corner boundary
+		if (playerPos.z > thisCoords.z + (4 - radius) &&
+			playerPos.x > thisCoords.x - 5 &&
+			playerPos.x < thisCoords.x - 4)
+		{
+			// Hit going up, reflect on z
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z -= displace;
+		}
+
+		return dir;
+	}
 };
 
 // RAMP - Ramp goes up, placed when course direction is going_down
@@ -170,10 +413,118 @@ public:
 	~DownRampDown() {};
 };
 
+// Bridge tile
+class Bridge_V : public BaseTile
+{
+public:
+	Bridge_V() { id = 10; }
+	~Bridge_V() {};
+
+
+};
+
 // End tile
 class EndTile : public BaseTile
 {
 public:
 	EndTile() { id = 9; }
 	~EndTile() {};
+
+	// Checks whether player has hit boundaries of this tile
+	vec3 CheckCollisions(vec3 playerPos, vec3 dir )
+	{
+		// Based on direction
+		if (outDir.going_up)
+		{
+			// Check on X axis - boundaries either side
+			if (playerPos.x > thisCoords.x + (4 - radius)) 
+			{
+				// Hit boundary, revert x axis
+				dir.x = -dir.x;
+				// Move away from boundary so as not to retrigger this
+				playerPos.x -= displace;
+			}
+			if (playerPos.x < thisCoords.x - (4 - radius))
+			{
+				// Hit boundary, revert x axis
+				dir.x = -dir.x;
+				// Move away from boundary so as not to retrigger this
+				playerPos.x += displace;
+			}
+			// Check on z axis - just one boundary
+			if (playerPos.z < thisCoords.z - (4 - radius))
+			{
+				// hit, revert z axis
+				dir.z = -dir.z;
+				// Move away from boundary so as not to retrigger this
+				playerPos.z += displace;
+			}
+		}
+		else if (outDir.going_down)
+		{
+			// Check on X axis - boundaries either side
+			if (playerPos.x > thisCoords.x + (4 - radius) || playerPos.x < thisCoords.x - (4 - radius))
+			{
+				// Hit boundary, revert x axis
+				dir.x = -dir.x;
+				// Move away from boundary so as not to retrigger this
+				playerPos.x -= displace;
+			}
+
+			// Check on z axis - just one boundary
+			if (playerPos.z > thisCoords.z + (4 - radius))
+			{
+				// hit, revert z axis
+				dir.z = -dir.z;
+				// Move away from boundary so as not to retrigger this
+				playerPos.z -= displace;
+			}
+		}
+		else if (outDir.going_left)
+		{
+			// Check on z axis - boundaries either side
+			if (playerPos.z < thisCoords.z - (4 - radius) || playerPos.z > thisCoords.z + (4 - radius))
+			{
+				dir.z = -dir.z;
+				// Move away from boundary so as not to retrigger this
+				playerPos.z += displace;
+			}
+			// Check on x - boundary to left
+			if (playerPos.x < thisCoords.x - (4 - radius))
+			{
+				dir.x = -dir.x;
+				// Move away from boundary so as not to retrigger this
+				playerPos.x += displace;
+			}
+		}
+		else if (outDir.going_right)
+		{
+			// Check on z axis - boundaries either side
+			if (playerPos.z < thisCoords.z - (4 - radius) || playerPos.z > thisCoords.z + (4 - radius))
+			{
+				dir.z = -dir.z;
+				// Move away from boundary so as not to retrigger this
+				playerPos.z += displace;
+			}
+			// Check on x - boundary to right
+			if (playerPos.x > thisCoords.x + (4 - radius))
+			{
+				dir.x = -dir.x;
+				// Move away from boundary so as not to retrigger this
+				playerPos.x -= displace;
+			}
+		}
+
+
+		// Check if over end hole
+		if (playerPos.x > thisCoords.x - 0.75 && playerPos.x < thisCoords.x + 0.75 &&
+			playerPos.z > thisCoords.z - 0.75 && playerPos.z < thisCoords.z + 0.75)
+		{
+			// Apply gravity
+			dir.y -= 0.2f;
+		}
+
+
+		return dir;
+	}
 };

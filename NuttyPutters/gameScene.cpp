@@ -40,8 +40,7 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Collisions stuff 
-	Collisions();
+
 
 
 
@@ -54,6 +53,9 @@ void gameScene::screenContent1P(GLFWwindow * win)
 	// Handles all input with camera and player
 	Input(win);
 	
+	// Collisions stuff 
+	Collisions();
+
 	// Calculate mvp matrix
 	mat4 mvp;
 	// If camera type is free camera then
@@ -253,7 +255,7 @@ void gameScene::setupTilesToBeDrawn()
 		else if (t.id == 9) // end
 		{
 			// Create start tile
-			Tile tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::END, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
 			// Consult direction to determine how much to rotate
 			if (t.outDir.going_up)
 			{
@@ -389,20 +391,21 @@ void gameScene::Input(GLFWwindow* win)
 		{
 			chaseCam->zoom_in(camSpeed / 5);
 		}
+
+
+		// If chase camera angle is greater than 360 reset to 0
+		if (chaseCamAngle > 6.28319)
+		{
+			chaseCamAngle = 0.0;
+		}
+		// If chase camera angle is less than 0 then reset to 360
+		else if (chaseCamAngle < 0)
+		{
+			chaseCamAngle = 6.28319;
+		}
 	}
 
-	// If chase camera angle is greater than 360 reset to 0
-	if (chaseCamAngle > 6.28319)
-	{
-		chaseCamAngle = 0.0;
-	}
-	// If chase camera angle is less than 0 then reset to 360
-	else if (chaseCamAngle < 0)
-	{
-		chaseCamAngle = 6.28319;
-	}
-	// Print the camera angle
-	//cout << "Camera angle: " << chaseCamAngle << endl; no, don't
+
 
 	// Player
 	// If P is pressed 
@@ -414,6 +417,40 @@ void gameScene::Input(GLFWwindow* win)
 		timer = golfBallForce * 10;
 		// Get the original force timer value which is used to slow down the ball
 		originalForceTimer = golfBallForce * timer;
+	
+	
+		// If camera angle is between 0 and 90
+		if (chaseCamAngle > 0 && chaseCamAngle < 1.5708)
+		{
+			// Update the golf ball position and the arrow position
+			// x = -sin(theta), z = cos(theta)
+			// Separate below statement into direction = vec3(-sin, 0, cos) (normalise)		
+			gbDirection = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
+
+
+
+		}
+		// If camera angle is between 90 and 180
+		else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
+		{
+			// x = -cos(theta - 90), z = -sin(theta - 90)
+			gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
+
+		}
+		// If camera angle is between 180 and 270
+		else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
+		{
+			// x = sin(theta - 180), z = -cos(theta - 180)
+			gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
+
+		}
+		// If camera angle is anything else
+		else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
+		{
+			// x = cos(theta - 270), z = sin(theta- 270)
+			gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
+
+		}
 	}
 
 	// When P is realesed
@@ -459,62 +496,15 @@ void gameScene::Input(GLFWwindow* win)
 				//cout << "Normal" << endl;
 			}
 
-			// If camera angle is between 0 and 90
-			if (chaseCamAngle > 0 && chaseCamAngle < 1.5708)
-			{
-				// Update the golf ball position and the arrow position
-				// x = -sin(theta), z = cos(theta)
-				gbVelocity = vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
-				//golfBallTransform.getPos() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
-				//arrowTransform.getPos() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
-				//golfBallTransform.getRot() += vec3(-sin(chaseCamAngle) * golfBallForce * timer, 0.0, cos(chaseCamAngle) * golfBallForce * timer);
-				
-				golfBallTransform.getPos() += gbVelocity;
-				arrowTransform.getPos() += gbVelocity;
-				golfBallTransform.getRot() += gbVelocity;
+			
 
+			// Set vel once
+			gbVelocity = gbDirection * (golfBallForce * timer);
+			golfBallTransform.getPos() += gbVelocity;
+			arrowTransform.getPos() += gbVelocity;
+			golfBallTransform.getRot() += gbVelocity;
+		} // End if (golf ball is moving)
 
-			}
-			// If camera angle is between 90 and 180
-			else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
-			{
-				// x = -cos(theta - 90), z = -sin(theta - 90)
-				gbVelocity = vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
-				//golfBallTransform.getPos() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
-				//arrowTransform.getPos() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
-				//golfBallTransform.getRot() += vec3(-cos(chaseCamAngle - 1.5708) * golfBallForce * timer, 0.0, -sin(chaseCamAngle - 1.5708) * golfBallForce * timer);
-				gbVelocity += gbVelModifier;
-				golfBallTransform.getPos() += gbVelocity;
-				arrowTransform.getPos() += gbVelocity;
-				golfBallTransform.getRot() += gbVelocity;
-			}
-			// If camera angle is between 180 and 270
-			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
-			{
-				// x = sin(theta - 180), z = -cos(theta - 180)
-				gbVelocity = vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
-				//golfBallTransform.getPos() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
-				//arrowTransform.getPos() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
-				//golfBallTransform.getRot() += vec3(sin(chaseCamAngle - 3.1416) * golfBallForce * timer, 0.0, -cos(chaseCamAngle - 3.1416) * golfBallForce * timer);
-				gbVelocity += gbVelModifier;
-				golfBallTransform.getPos() += gbVelocity;
-				arrowTransform.getPos() += gbVelocity;
-				golfBallTransform.getRot() += gbVelocity;
-			}
-			// If camera angle is anything else
-			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
-			{
-				// x = cos(theta - 270), z = sin(theta- 270)
-				gbVelocity = vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
-				//golfBallTransform.getPos() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
-				//arrowTransform.getPos() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
-				//golfBallTransform.getRot() += vec3(cos(chaseCamAngle - 4.71239) * golfBallForce * timer, 0.0, sin(chaseCamAngle - 4.71239) * golfBallForce * timer);
-				gbVelocity += gbVelModifier;
-				golfBallTransform.getPos() += gbVelocity;
-				arrowTransform.getPos() += gbVelocity;
-				golfBallTransform.getRot() += gbVelocity;
-			}
-		}
 		// Else if the ball is stationary
 		else
 		{
@@ -522,7 +512,8 @@ void gameScene::Input(GLFWwindow* win)
 			golfBallForce = 0.0;
 			golfBallMoving = false;
 		}
-	}
+		
+	} // End if (p is released)
 
 }
 
@@ -592,11 +583,12 @@ void gameScene::Init(GLFWwindow * win)
 }
 
 
-// TODO Loads a level based on a seed
+// Loads a level based on given seed
+// TODO load seed by file, choose random
 void gameScene::LoadGame()
 {
 	// Seed is a list of numbers, which refer to tile type
-	int seed[] = {1, 3, 2, 6, 1, 1, 4, 5, 3, 9};
+	int seed[] = {1, 3, 2, 4, 5, 6, 9};
 
 	// Iterate through each tile:
 	// Set it's position
@@ -831,9 +823,11 @@ void gameScene::LoadGame()
 
 }
 
+// Tracks current tile player is on (TODO improve performance)
+// Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-	gbVelModifier = vec3();
+	
 	int tileTracker = 0;
 	// Check which tile player is on (do this every n frames, not each tick)
 	for (auto &t : algTiles)
@@ -848,19 +842,75 @@ void gameScene::Collisions()
 		else
 			tileTracker++;
 	}
-	cout << "Current tile: " << algTiles.at(currentTile).id << " : " << currentTile << "pos: " << golfBallTransform.getPos().x << ", " << golfBallTransform.getPos().z  << endl;
+	cout << "Current tile: " << algTiles.at(currentTile).id << "at (" << algTiles.at(currentTile).thisCoords.x << ", " << algTiles.at(currentTile).thisCoords.x << ") " << " : " << currentTile << "pos: " << golfBallTransform.getPos().x << ", " << golfBallTransform.getPos().z  << endl;
 
 	// Switch on the currentTile 
-	switch (currentTile)
+	switch (algTiles.at(currentTile).id)
 	{
-	// On start tile
-	case 0:
-	{
-		// Need to do this to access start only methods (which includes col check)
-		StartTile start;
-		algTiles.at(0) = start;
-		gbVelModifier = start.CheckCollisions(golfBallTransform.getPos(), gbVelocity);
-	}
-		break;
+			// On start tile
+		case 0:
+		{
+			// Need to do this to access start only methods (which includes col check)
+			StartTile start;
+			gbDirection = start.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			break;
+		}
+		// On straight V tile
+		case 1:
+		{
+			StraightTile_V straightV;
+			straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			gbDirection = straightV.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			break;
+		}
+		// On straight H tile
+		case 2:
+		{
+			StraightTile_H straightH;
+			straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			gbDirection = straightH.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			break;
+		}
+		// On corner_BL tile
+		case 3:
+		{
+			CornerTile_BL cornerBL;
+			cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			gbDirection = cornerBL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			break;
+		}
+		// On corner_BR tile
+		case 4:
+		{
+			CornerTile_BR cornerBR;
+			cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			gbDirection = cornerBR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			break;
+		}
+		// On corner_TL tile
+		case 5:
+		{
+			CornerTile_TL cornerTL;
+			cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			gbDirection = cornerTL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			break;
+		}
+		// On corner_TR tile
+		case 6:
+		{
+			CornerTile_TR cornerTR;
+			cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			gbDirection = cornerTR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			break;
+		}
+		// End tile
+		case 9:
+		{
+			EndTile end;
+			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			end.outDir = algTiles.at(currentTile).outDir;
+			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			break;
+		}
 	}
 }

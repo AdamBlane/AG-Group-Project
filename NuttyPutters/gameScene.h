@@ -49,9 +49,14 @@ public:
 	Mesh* golfBallMesh;
 	Texture* golfBallTexture;
 	Transform golfBallTransform;
-	// Movement of gb
+	// Movement of gb, this is speed data
 	float golfBallForce, timer, originalForceTimer = 0.0f;
-	vec3 gbVelocity, gbVelModifier;
+	// Normalised direction vector
+	vec3 gbDirection;
+	// Dir * speed resulsts in velocity vector
+	vec3 gbVelocity;
+	// Last stationary position of golf ball
+
 	// Is golf ball moving
 	bool golfBallMoving = false;
 
