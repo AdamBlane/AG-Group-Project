@@ -403,6 +403,21 @@ class UpRampDown : public BaseTile
 public:
 	UpRampDown() { id = 7; }
 	~UpRampDown() {};
+
+	// Sets player height based on where it is on ramp
+	vec3 SetPlayerHeight(vec3 playerPos)
+	{
+		// First find how much to increment y for every 1 in z
+		float yInc = thisCoords.y / (size / 2);
+		// Then find distance travelled along tile
+		float difference = playerPos.z - thisCoords.z;
+		// Make relative to tile coords by adding half size
+		float y = yInc * (difference + (size / 2));
+		// Update player pos
+		playerPos.y = y + 1;
+
+		return playerPos;
+	}
 };
 
 // RAMP - Goes down, placed when course dir is going_up

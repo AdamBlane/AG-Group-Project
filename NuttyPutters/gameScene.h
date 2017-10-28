@@ -55,8 +55,6 @@ public:
 	vec3 gbDirection;
 	// Dir * speed resulsts in velocity vector
 	vec3 gbVelocity;
-	// Last stationary position of golf ball
-
 	// Is golf ball moving
 	bool golfBallMoving = false;
 

@@ -496,8 +496,6 @@ void gameScene::Input(GLFWwindow* win)
 				//cout << "Normal" << endl;
 			}
 
-			
-
 			// Set vel once
 			gbVelocity = gbDirection * (golfBallForce * timer);
 			golfBallTransform.getPos() += gbVelocity;
@@ -511,6 +509,7 @@ void gameScene::Input(GLFWwindow* win)
 			// Reset the values of the ball
 			golfBallForce = 0.0;
 			golfBallMoving = false;
+			
 		}
 		
 	} // End if (p is released)
@@ -588,7 +587,7 @@ void gameScene::Init(GLFWwindow * win)
 void gameScene::LoadGame()
 {
 	// Seed is a list of numbers, which refer to tile type
-	int seed[] = {1, 3, 2, 4, 5, 6, 9};
+	int seed[] = {1, 1, 7, 1, 9};
 
 	// Iterate through each tile:
 	// Set it's position
@@ -901,6 +900,15 @@ void gameScene::Collisions()
 			CornerTile_TR cornerTR;
 			cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			gbDirection = cornerTR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			break;
+		}
+		// Up ramp tile
+		case 7:
+		{
+			UpRampDown ramp;
+			ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			ramp.thisCoords.y += 1.8;
+			golfBallTransform.setPos(ramp.SetPlayerHeight(golfBallTransform.getPos()));
 			break;
 		}
 		// End tile
