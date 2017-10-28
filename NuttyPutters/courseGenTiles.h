@@ -122,6 +122,17 @@ public:
 	StraightTile_V() { id = 1; } 
 	~StraightTile_V() {};
 
+	// Ensure player never goes through floor
+	vec3 SetPlayerHeight(vec3 playerPos)
+	{
+		if (playerPos.y < 1)
+		{
+			playerPos.y = thisCoords.y + 1;
+		}
+
+		return playerPos;
+	}
+
 	// Checks whether player has hit boundaries of this tile
 	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
 	{
@@ -418,6 +429,7 @@ public:
 
 		return playerPos;
 	}
+
 };
 
 // RAMP - Goes down, placed when course dir is going_up

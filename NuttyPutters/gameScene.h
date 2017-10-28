@@ -54,9 +54,9 @@ public:
 	// Normalised direction vector
 	vec3 gbDirection;
 	// Dir * speed resulsts in velocity vector
-	vec3 gbVelocity;
+	vec3 gbVelocity, downForce;
 	// Is golf ball moving
-	bool golfBallMoving = false;
+	bool golfBallMoving = false, onRamp = false;
 
 	// Arrow
 	Mesh* arrowMesh;
