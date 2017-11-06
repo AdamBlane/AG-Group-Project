@@ -8,8 +8,11 @@ playerSelectScene::~playerSelectScene() { }
 
 
 // Draw stuff for this scene
-void playerSelectScene::screenContent(GLFWwindow * win)
+void playerSelectScene::Loop(GLFWwindow * win)
 {
+	// Input
+	Input(win);
+
 	float ratio;
 	int width, height;
 
@@ -42,35 +45,27 @@ void playerSelectScene::screenContent(GLFWwindow * win)
 	glfwPollEvents();
 }
 
-// Input
-void playerSelectScene::key_callbacks(GLFWwindow * win, int key, int scancode, int action, int mods)
+// Act on user input 
+void playerSelectScene::Input(GLFWwindow* win)
 {
 	// Move back to start scene
-	if (key == GLFW_KEY_B && action == GLFW_PRESS)
+	if (glfwGetKey(win, GLFW_KEY_B))
 	{
 		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(1);
+		windowMgr::getInstance()->sceneManager.changeScene(1); // This calls init for scene
 	}
 	// Move to game scene with 1 player
-	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+	if (glfwGetKey(win, GLFW_KEY_1))
 	{
-		// Tell sceneManager's game how many players
-		windowMgr::getInstance()->sceneManager.gameScene.setPlayers(1);
-		// Move to game scene
-		windowMgr::getInstance()->sceneManager.changeScene(6);
+		// Access singleton instance to update it's sceneManager's state
+		windowMgr::getInstance()->sceneManager.changeScene(6); // This calls init for scene
 	}
-	// Move back to game scene with 2 players
-	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-	{
-		// Tell sceneManager's game how many players
-		windowMgr::getInstance()->sceneManager.gameScene.setPlayers(2);
-		// Move to game scene
-		windowMgr::getInstance()->sceneManager.changeScene(6);
-	}
+
+
 }
 
-// Setup scene; add callbacks
+// Setup scene; does nothing atm
 void playerSelectScene::Init(GLFWwindow * win)
 {
-	glfwSetKeyCallback(win, key_callbacks);
+	// TODO
 }

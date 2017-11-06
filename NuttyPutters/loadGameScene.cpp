@@ -9,8 +9,12 @@ loadGameScene::~loadGameScene() { }
 
 
 // Draw stuff
-void loadGameScene::screenContent(GLFWwindow * win)
+void loadGameScene::Loop(GLFWwindow * win)
 {
+	// Input
+	Input(win);
+
+
 	float ratio;
 	int width, height;
 
@@ -43,18 +47,20 @@ void loadGameScene::screenContent(GLFWwindow * win)
 	glfwPollEvents();
 }
 
-// Input - go back to main menu
-void loadGameScene::key_callbacks(GLFWwindow * win, int key, int scancode, int action, int mods)
+// Act on input
+void loadGameScene::Input(GLFWwindow * win)
 {
-	if (key == GLFW_KEY_B && action == GLFW_PRESS)
+	if (glfwGetKey(win, GLFW_KEY_B))
 	{
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 }
 
-// Setup scene; add key callbacks
+
+
+// Setup scene; does nothing atm
 void loadGameScene::Init(GLFWwindow * win)
 {
-	glfwSetKeyCallback(win, key_callbacks);
+	// TODO
 }

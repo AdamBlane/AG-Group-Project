@@ -11,9 +11,10 @@ public:
 	~playerSelectScene();
 
 	// Draw stuff
-	void screenContent(GLFWwindow* win);
+	void Loop(GLFWwindow* win);
 	// Input
-	static void key_callbacks(GLFWwindow* win, int key, int scancode, int action, int mods);
+	void Input(GLFWwindow* win);
+
 	// Setup scene
 	void Init(GLFWwindow* win);
 };
