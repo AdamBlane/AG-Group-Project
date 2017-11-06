@@ -1,12 +1,10 @@
 // Externals
-#include <time.h>
-#include <iostream>
-#include <sstream>
+
 // Internals
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
 
-using namespace AllCamera;
+
 
 
 // Default constructor
@@ -71,7 +69,7 @@ void gameScene::Init(GLFWwindow* window)
 void gameScene::LoadGame()
 {
 	// Seed is a list of numbers, which refer to tile type
-	int seed[] = { 1, 3, 2, 4, 1, 5, 2, 6, 1, 9};
+	int seed[] = { 1, 3, 2, 4, 1, 5, 2, 6, 1, 3, 2, 4, 1, 5, 2, 6, 1, 9 };
 
 	// Iterate through each tile:
 	// Set it's position
@@ -443,7 +441,7 @@ void gameScene::Loop(GLFWwindow* window)
 
 }
 
-
+// Act on input
 void gameScene::Input(GLFWwindow* window)
 {
 	// Exit
@@ -471,7 +469,7 @@ void gameScene::Input(GLFWwindow* window)
 		cameraType = 1;
 	}
 
-	// Free cam controls
+	// FREE CAM controls
 	if (cameraType == 0)
 	{
 		// Create vector to apply to current cam pos
@@ -480,33 +478,33 @@ void gameScene::Input(GLFWwindow* window)
 		// Camera controls
 		if (glfwGetKey(window, GLFW_KEY_W))
 		{
-			freeCamPos = (vec3(0, 0, camSpeed));
+			freeCamPos = (vec3(0, 0, camSpeed * dt));
 		}
 		if (glfwGetKey(window, GLFW_KEY_A))
 		{
-			freeCamPos = (vec3(-camSpeed, 0, 0));
+			freeCamPos = (vec3(-camSpeed * dt, 0, 0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_S))
 		{
-			freeCamPos = (vec3(0, 0, -camSpeed));
+			freeCamPos = (vec3(0, 0, -camSpeed * dt));
 		}
 		if (glfwGetKey(window, GLFW_KEY_D))
 		{
-			freeCamPos = (vec3(camSpeed, 0, 0));
+			freeCamPos = (vec3(camSpeed * dt, 0, 0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_Q))
 		{
-			freeCamPos = (vec3(0, camSpeed, 0));
+			freeCamPos = (vec3(0, camSpeed * dt, 0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_E))
 		{
-			freeCamPos = (vec3(0, -camSpeed, 0));
+			freeCamPos = (vec3(0, -camSpeed * dt, 0));
 		}
 
 		// Move camera by new pos after input
 		freeCam->move(freeCamPos);
 	}
-	// Chase cam controls
+	// CHASE CAM controls
 	else if (cameraType == 1)
 	{
 		// If ball is not moving then allow for angle on chase camera to be changed
@@ -516,33 +514,33 @@ void gameScene::Input(GLFWwindow* window)
 			if (glfwGetKey(window, GLFW_KEY_D))
 			{
 				//function to rotate 
-				chaseCam->yaw_it(camSpeed / 8);
+				chaseCam->yaw_it(camSpeed * dt * 0.5);
 				// Decrease chase camera angle (out of 360 degrees)
-				chaseCamAngle -= (camSpeed / 8);
+				chaseCamAngle -= (camSpeed * dt * 0.5);
 			}
 			if (glfwGetKey(window, GLFW_KEY_A))
 			{
-				chaseCam->neg_yaw_it(camSpeed / 8);
+				chaseCam->neg_yaw_it(camSpeed * dt * 0.5);
 				// Increase chase camera angle (out of 360 degrees)
-				chaseCamAngle += (camSpeed / 8);
+				chaseCamAngle += (camSpeed * dt * 0.5);
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_S))
 		{
-			chaseCam->neg_pitch_it(camSpeed / 5, golfBallTransform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
+			chaseCam->neg_pitch_it(camSpeed * dt * 0.5, golfBallTransform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_W))
 		{
-			chaseCam->pitch_it(camSpeed / 5, golfBallTransform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
+			chaseCam->pitch_it(camSpeed * dt * 0.5, golfBallTransform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_Q))
 		{
 			//function to rotate 
-			chaseCam->zoom_out(camSpeed / 5);
+			chaseCam->zoom_out(camSpeed * dt * 0.5);
 		}
 		if (glfwGetKey(window, GLFW_KEY_E))
 		{
-			chaseCam->zoom_in(camSpeed / 5);
+			chaseCam->zoom_in(camSpeed * dt * 0.5);
 		}
 
 
@@ -559,13 +557,15 @@ void gameScene::Input(GLFWwindow* window)
 	}
 
 
-
-	// Player
+	// PLAYER
 	// If P is pressed 
 	if (glfwGetKey(window, GLFW_KEY_P))
 	{
 		if (!golfBallMoving)
 		{
+			// Start counter
+			Pcounter += dt;
+
 			// SET DIRECTION BASED ON CHASE CAM ANGLE
 			// If camera angle is between 0 and 90
 			if (chaseCamAngle > 0 && chaseCamAngle < 1.5708)
@@ -609,8 +609,11 @@ void gameScene::Input(GLFWwindow* window)
 		if (pPressed)
 		{
 			golfBallMoving = true;
-			// Add an impulse
-			speed += 20;
+			// Force to apply is held in counter
+			Pcounter *= 2;
+
+			speed += Pcounter;
+
 			pPressed = false;
 		} 	
 	} // End if (p is released)
@@ -646,18 +649,18 @@ void gameScene::Update(GLFWwindow* window)
 	// PLAYER UPDATE
 	// Velocity is direction by speed by delta time
 	gbVelocity = (gbDirection * speed);
-	// Friction
-	if (speed > 0 + 0.001) // this magic number is epsilon
-		speed -= speed * 0.01;
-	else
+	// Apply friction when moving
+	if (speed > 0 + 0.01) // this magic number is epsilon
+		speed -= speed * 0.01; // this magic number is friction
+	else // Prevent it moving forever
 	{
 		speed = 0;
 		golfBallMoving = false;
 	}
-		
-
+	// Lock to frame rate
 	gbVelocity *= dt;
-	// Update positions
+
+	// Update positions of ball and arrow
 	golfBallTransform.getPos() += gbVelocity;
 	arrowTransform.getPos() += gbVelocity;
 	golfBallTransform.getRot() += gbVelocity;
@@ -692,7 +695,7 @@ void gameScene::Collisions()
 		case 0:
 		{
 			// Need to do this to access start only methods (which includes col check)
-			onRamp = false;
+			//onRamp = false;
 			StartTile start;
 			gbDirection = start.CheckCollisions(golfBallTransform.getPos(), gbDirection);
 			break;
@@ -700,7 +703,7 @@ void gameScene::Collisions()
 		// On straight V tile
 		case 1:
 		{
-			onRamp = false;
+			//onRamp = false;
 			StraightTile_V straightV;
 			straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			// Ensure don't go through floor
@@ -711,7 +714,7 @@ void gameScene::Collisions()
 		// On straight H tile
 		case 2:
 		{
-			onRamp = false;
+			//onRamp = false;
 			StraightTile_H straightH;
 			straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			gbDirection = straightH.CheckCollisions(golfBallTransform.getPos(), gbDirection);
@@ -720,7 +723,7 @@ void gameScene::Collisions()
 		// On corner_BL tile
 		case 3:
 		{
-			onRamp = false;
+			//onRamp = false;
 			CornerTile_BL cornerBL;
 			cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			gbDirection = cornerBL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
@@ -729,7 +732,7 @@ void gameScene::Collisions()
 		// On corner_BR tile
 		case 4:
 		{
-			onRamp = false;
+			//onRamp = false;
 			CornerTile_BR cornerBR;
 			cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			gbDirection = cornerBR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
@@ -738,7 +741,7 @@ void gameScene::Collisions()
 		// On corner_TL tile
 		case 5:
 		{
-			onRamp = false;
+			//onRamp = false;
 			CornerTile_TL cornerTL;
 			cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			gbDirection = cornerTL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
@@ -747,7 +750,7 @@ void gameScene::Collisions()
 		// On corner_TR tile
 		case 6:
 		{
-			onRamp = false;
+			//onRamp = false;
 			CornerTile_TR cornerTR;
 			cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			gbDirection = cornerTR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
@@ -761,13 +764,13 @@ void gameScene::Collisions()
 			ramp.thisCoords.y += 1.8;
 			// Set player height
 			golfBallTransform.setPos(ramp.SetPlayerHeight(golfBallTransform.getPos()));
-			onRamp = true;
+			//onRamp = true;
 			break;
 		}
 		// End tile
 		case 9:
 		{
-			onRamp = false;
+			//onRamp = false;
 			EndTile end;
 			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			end.outDir = algTiles.at(currentTile).outDir;

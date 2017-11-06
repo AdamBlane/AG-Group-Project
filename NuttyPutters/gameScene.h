@@ -2,6 +2,10 @@
 // Externals
 #include "glew_glfw.h"
 #include <map>
+#include <time.h>
+#include <iostream>
+#include <sstream>
+#include <chrono>
 // Internals
 #include "courseGenV2.h"
 #include "Shader.h"
@@ -13,6 +17,7 @@
 
 
 using namespace AllCamera;
+using namespace std::chrono;
 
 class gameScene
 {
@@ -23,26 +28,20 @@ public:
 	~gameScene();
 
 
-	// Game tiles list, resulting from Alg (by M)
-	vector<BaseTile> algTiles;
-	// Tile meshes to be rendered, created by V
-	vector<Tile> tiles;
+	// General game variables
+	vector<BaseTile> algTiles; // Game tiles list, resulting from Alg (by M)	
+	vector<Tile> tiles; // Tile meshes to be rendered, created by V
 	Shader* textureShader;
-	Transform shaderTrans;
-	// Tracks tile player is on 
-	// This is the index of algTiles (0 is always start tile)
-	int currentTile = 0;
-
-	// Lock to 60fps
-	float dt = 0.016;
-	// Ball speed
-	float speed = 1.0f;
+	Transform shaderTrans;		
+	int currentTile = 0; // Tracks tile player is on 
+	float dt = 0.016; // Lock to 60fps
 	bool pPressed = false;
-	float f = 0.1f;
+	float Pcounter;
+	
 
 	// Cameras
 	free_camera* freeCam;	
-	float camSpeed = 0.1f; // camSpeed WAS called WASDSPEED
+	float camSpeed = 2.0f; // camSpeed WAS called WASDSPEED
 	chase_camera* chaseCam;
 	float chaseCamAngle, cameraType;// for switching on/off free/chase cam
 	double cursor_x, cursor_y = 0.0;// For finding cursor pos on screen
@@ -51,15 +50,10 @@ public:
 	Mesh* golfBallMesh;
 	Texture* golfBallTexture;
 	Transform golfBallTransform;
-	// Movement of gb, this is speed data
-	float golfBallForce, timer, originalForceTimer = 0.0f;
-	// Normalised direction vector
-	vec3 gbDirection;
-	// Dir * speed resulsts in velocity vector
-	vec3 gbVelocity, friction, impulse;
-	// Is golf ball moving
-	bool golfBallMoving = false, onRamp = false;
-
+	vec3 gbDirection; // Normalised direction vector
+	vec3 gbVelocity; // Velocity is dir * speed	
+	bool golfBallMoving = false; // Is golf ball moving
+	float speed = 1.0f; // Ball speed
 	// Arrow
 	Mesh* arrowMesh;
 	Texture* arrowTexture;
