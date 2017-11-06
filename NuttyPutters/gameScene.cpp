@@ -29,9 +29,9 @@ void gameScene::Init(GLFWwindow* window)
 
 
 	// LEVEL GEN
-	courseGenV2 cg(12);
-	algTiles = cg.run();
-	//LoadGame();
+	//courseGenV2 cg(12);
+	//algTiles = cg.run();
+	LoadGame();
 	// Take alg tiles, turn into render tiles
 	SetupTilesToBeDrawn();
 
@@ -71,7 +71,7 @@ void gameScene::Init(GLFWwindow* window)
 void gameScene::LoadGame()
 {
 	// Seed is a list of numbers, which refer to tile type
-	int seed[] = { 1, 1, 1, 7, 1, 9 };
+	int seed[] = { 1, 3, 2, 4, 1, 5, 2, 6, 1, 9};
 
 	// Iterate through each tile:
 	// Set it's position
@@ -516,15 +516,15 @@ void gameScene::Input(GLFWwindow* window)
 			if (glfwGetKey(window, GLFW_KEY_D))
 			{
 				//function to rotate 
-				chaseCam->yaw_it(camSpeed / 5);
+				chaseCam->yaw_it(camSpeed / 8);
 				// Decrease chase camera angle (out of 360 degrees)
-				chaseCamAngle -= (camSpeed / 5);
+				chaseCamAngle -= (camSpeed / 8);
 			}
 			if (glfwGetKey(window, GLFW_KEY_A))
 			{
-				chaseCam->neg_yaw_it(camSpeed / 5);
+				chaseCam->neg_yaw_it(camSpeed / 8);
 				// Increase chase camera angle (out of 360 degrees)
-				chaseCamAngle += (camSpeed / 5);
+				chaseCamAngle += (camSpeed / 8);
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_S))
@@ -564,115 +564,55 @@ void gameScene::Input(GLFWwindow* window)
 	// If P is pressed 
 	if (glfwGetKey(window, GLFW_KEY_P))
 	{
-		// Add value to the force
-		golfBallForce += 0.01;
-		// Create a ball movement time
-		timer = golfBallForce * 10;
-		// Get the original force timer value which is used to slow down the ball
-		originalForceTimer = golfBallForce * timer;
-	
-	
-		// If camera angle is between 0 and 90
-		if (chaseCamAngle > 0 && chaseCamAngle < 1.5708)
+		if (!golfBallMoving)
 		{
-			// Update the golf ball position and the arrow position
-			// x = -sin(theta), z = cos(theta)
-			// Separate below statement into direction = vec3(-sin, 0, cos) (normalise)		
-			gbDirection = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
-		}
-		// If camera angle is between 90 and 180
-		else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
-		{
-			// x = -cos(theta - 90), z = -sin(theta - 90)
-			gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
+			// SET DIRECTION BASED ON CHASE CAM ANGLE
+			// If camera angle is between 0 and 90
+			if (chaseCamAngle > 0 && chaseCamAngle < 1.5708)
+			{
+				// Update the golf ball position and the arrow position
+				// x = -sin(theta), z = cos(theta)
+				// Separate below statement into direction = vec3(-sin, 0, cos) (normalise)		
+				gbDirection = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
+			}
+			// If camera angle is between 90 and 180
+			else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
+			{
+				// x = -cos(theta - 90), z = -sin(theta - 90)
+				gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
 
-		}
-		// If camera angle is between 180 and 270
-		else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
-		{
-			// x = sin(theta - 180), z = -cos(theta - 180)
-			gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
+			}
+			// If camera angle is between 180 and 270
+			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
+			{
+				// x = sin(theta - 180), z = -cos(theta - 180)
+				gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
 
-		}
-		// If camera angle is anything else
-		else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
-		{
-			// x = cos(theta - 270), z = sin(theta- 270)
-			gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
+			}
+			// If camera angle is anything else
+			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
+			{
+				// x = cos(theta - 270), z = sin(theta- 270)
+				gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
 
+			}
+
+			pPressed = true;
 		}
+
 	}
 
 	// When P is realesed
 	if ((glfwGetKey(window, GLFW_KEY_P)) == false)
 	{
-		// If the ball is still moving forward
-		if ((golfBallForce * timer) > 0)
+		// Only work if p was just released
+		if (pPressed)
 		{
-			// Set golf ball moving to true
 			golfBallMoving = true;
-
-			// If the golf ball force (static value) multiplied by the timer (decreasing value) is lower than the original force timer dived by 32 then
-			if ((golfBallForce * timer) < ((originalForceTimer) / 32))
-			{
-				//cout << "Last 32rd" << endl;
-				// Set the timer decreasing to a lower value
-				timer -= 0.005;
-			}
-
-			else if ((golfBallForce * timer) < ((originalForceTimer) / 16))
-			{
-				//cout << "Last 16th" << endl;
-				timer -= 0.01;
-			}
-			else if ((golfBallForce * timer) < ((originalForceTimer) / 8))
-			{
-				//cout << "Last 8th" << endl;
-				timer -= 0.02;
-			}
-			else if ((golfBallForce * timer) < ((originalForceTimer) / 4))
-			{
-				//cout << "Last 4th" << endl;
-				timer -= 0.03;
-			}
-			else if ((golfBallForce * timer) < ((originalForceTimer) / 2))
-			{
-				//cout << "Last Half" << endl;
-				timer -= 0.04;
-			}
-			else
-			{
-				timer -= 0.05;
-				//cout << "Normal" << endl;
-			}
-	
-			// Set vel once
-			// Check if on ramp (apply gravity if so)
-			if (onRamp)
-			{
-				gbVelocity = gbDirection * (golfBallForce * timer);
-				gbVelocity += vec3(0, 0, -0.1f);
-				cout << "Vel (" << gbVelocity.x << ", " << gbVelocity.z << endl;
-			}
-			else
-			{
-				gbVelocity = gbDirection * (golfBallForce * timer);
-			}
-
-			golfBallTransform.getPos() += gbVelocity;
-			arrowTransform.getPos() += gbVelocity;
-			golfBallTransform.getRot() += gbVelocity;
-		} // End if (golf ball is moving)
-
-		// Else if the ball is stationary
-		else
-		{
-			// Reset the values of the ball
-			golfBallForce = 0.0;
-			golfBallMoving = false;
-			
-		}
-		
+			// Add an impulse
+			speed += 20;
+			pPressed = false;
+		} 	
 	} // End if (p is released)
 
 }
@@ -702,6 +642,25 @@ void gameScene::Update(GLFWwindow* window)
 	// to rotate along with the ball! 
 	chaseCam->move(golfBallTransform.getPos(), golfBallTransform.getRot());
 	chaseCam->update(0.00001);
+
+	// PLAYER UPDATE
+	// Velocity is direction by speed by delta time
+	gbVelocity = (gbDirection * speed);
+	// Friction
+	if (speed > 0 + 0.001) // this magic number is epsilon
+		speed -= speed * 0.01;
+	else
+	{
+		speed = 0;
+		golfBallMoving = false;
+	}
+		
+
+	gbVelocity *= dt;
+	// Update positions
+	golfBallTransform.getPos() += gbVelocity;
+	arrowTransform.getPos() += gbVelocity;
+	golfBallTransform.getRot() += gbVelocity;
 }
 
 

@@ -22,10 +22,7 @@ public:
 	// Deconstructor
 	~gameScene();
 
-	
-	// For finding cursor pos on screen
-	double cursor_x, cursor_y = 0.0;
-	
+
 	// Game tiles list, resulting from Alg (by M)
 	vector<BaseTile> algTiles;
 	// Tile meshes to be rendered, created by V
@@ -36,12 +33,19 @@ public:
 	// This is the index of algTiles (0 is always start tile)
 	int currentTile = 0;
 
+	// Lock to 60fps
+	float dt = 0.016;
+	// Ball speed
+	float speed = 1.0f;
+	bool pPressed = false;
+	float f = 0.1f;
+
 	// Cameras
 	free_camera* freeCam;	
 	float camSpeed = 0.1f; // camSpeed WAS called WASDSPEED
 	chase_camera* chaseCam;
-	float chaseCamAngle;
-	float cameraType; // for switching on/off free/chase cam
+	float chaseCamAngle, cameraType;// for switching on/off free/chase cam
+	double cursor_x, cursor_y = 0.0;// For finding cursor pos on screen
 	
 	// Golf ball
 	Mesh* golfBallMesh;
@@ -52,7 +56,7 @@ public:
 	// Normalised direction vector
 	vec3 gbDirection;
 	// Dir * speed resulsts in velocity vector
-	vec3 gbVelocity, downForce;
+	vec3 gbVelocity, friction, impulse;
 	// Is golf ball moving
 	bool golfBallMoving = false, onRamp = false;
 
@@ -61,16 +65,15 @@ public:
 	Texture* arrowTexture;
 	Transform arrowTransform;
 
+
+
 	// Setup scene
 	void Init(GLFWwindow* window);
-
-
 	// Loads level based on seed
 	void LoadGame();
-
 	// Translates list of alg tiles (M) into mesh tiles (V)
 	void SetupTilesToBeDrawn();
-
+	// Game loop and its functions
 	void Loop(GLFWwindow* window);
 	void Input(GLFWwindow* window);
 	void Update(GLFWwindow* window);
