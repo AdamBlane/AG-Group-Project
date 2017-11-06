@@ -3,13 +3,6 @@ image: Visual Studio 2017
 
 only_commits:
   message: test
-  
-branches :
-only :
--master
--m
--a 
-
  
 configuration:
 - Release
