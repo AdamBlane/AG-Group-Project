@@ -10,4 +10,4 @@ build:
   parallel: true
   verbosity: minimal
 artifacts:
-- path: x64/Debug$(configuration)/NuttyPutters.exe
+- path: x64/Release$(configuration)/NuttyPutters.exe
