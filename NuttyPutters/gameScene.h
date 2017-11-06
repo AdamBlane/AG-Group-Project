@@ -6,6 +6,8 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
+#include <random>
+#include <sstream>
 // Internals
 #include "courseGenV2.h"
 #include "Shader.h"
@@ -53,7 +55,7 @@ public:
 	vec3 gbDirection; // Normalised direction vector
 	vec3 gbVelocity; // Velocity is dir * speed	
 	bool golfBallMoving = false; // Is golf ball moving
-	float speed = 1.0f; // Ball speed
+	float speed; // Ball speed
 	// Arrow
 	Mesh* arrowMesh;
 	Texture* arrowTexture;

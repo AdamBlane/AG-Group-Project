@@ -24,11 +24,12 @@ void gameScene::Init(GLFWwindow* window)
 	// Get initial cursor pos
 	glfwSetCursorPos(window, cursor_x, cursor_y);
 
-
-
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
+
+
+
 	LoadGame();
 	// Take alg tiles, turn into render tiles
 	SetupTilesToBeDrawn();
@@ -69,20 +70,38 @@ void gameScene::Init(GLFWwindow* window)
 void gameScene::LoadGame()
 {
 	// Seed is a list of numbers, which refer to tile type
-	int seed[] = { 1, 3, 2, 4, 1, 5, 2, 6, 1, 3, 2, 4, 1, 5, 2, 6, 1, 9 };
-
-	// Iterate through each tile:
-	// Set it's position
-	// Update direction
+	int seed[12];
+	// Insert start
+	seed[0] = 0;
+	// Open seeds file 
+	ifstream seedsFile("res12.csv");
+	// find how many lines in seed file (hardcoded for now)
+	int seedsCount = 341;
+	// pick random number in that range
+	default_random_engine rng(random_device{}());
+	uniform_int_distribution<int> distribution(0, seedsCount);
+	int choice = distribution(rng);
+	// read that line
+	string line;
+	for (int l = 0; l < choice; ++l)
+	{
+		getline(seedsFile, line);
+	} // last iteration will be on desired line, so line should be correct seed now
+	// parse seed into array
+	for (int i = 0; i < 11; ++i)
+	{
+		seed[i+1] = line[i] - 48;
+	}
+	
 
 	// Start added first (this & next coords already set)
 	StartTile start;
 	algTiles.push_back(start);
-
+	// Track currently looked at coords
 	vec3 curCoords;
+	// Update size tracker
 	float size = start.size;
-
-
+	// For each number in seed array
 	for (auto &i : seed)
 	{
 		// Update current coordinates (next coords of last thing in list) 
@@ -298,7 +317,6 @@ void gameScene::LoadGame()
 
 
 		} // Switch end
-
 
 	} // for loop end
 
@@ -610,7 +628,7 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			golfBallMoving = true;
 			// Force to apply is held in counter
-			Pcounter *= 2;
+			Pcounter *= 3; // slightly magic number (Pc isn't enough on its own)
 			// Apply to speed
 			speed += Pcounter;
 			// Reset
@@ -653,8 +671,15 @@ void gameScene::Update(GLFWwindow* window)
 	gbVelocity = (gbDirection * speed);
 	// Apply friction when moving
 	if (speed > 0 + 0.01) // this magic number is epsilon
+	{
 		speed -= speed * 0.01; // this magic number is friction
-	else // Prevent it moving forever
+		 // Rotation is cross product of direction and up
+		vec3 rot = (cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
+		rot *= speed * dt;
+		golfBallTransform.getRot() += rot;
+	}
+	// Prevent it moving forever
+	else 
 	{
 		speed = 0;
 		golfBallMoving = false;
@@ -665,7 +690,8 @@ void gameScene::Update(GLFWwindow* window)
 	// Update positions of ball and arrow
 	golfBallTransform.getPos() += gbVelocity;
 	arrowTransform.getPos() += gbVelocity;
-	golfBallTransform.getRot() += gbVelocity;
+
+	
 }
 
 
