@@ -611,9 +611,11 @@ void gameScene::Input(GLFWwindow* window)
 			golfBallMoving = true;
 			// Force to apply is held in counter
 			Pcounter *= 2;
-
+			// Apply to speed
 			speed += Pcounter;
-
+			// Reset
+			Pcounter = 0;
+			// Flip
 			pPressed = false;
 		} 	
 	} // End if (p is released)
