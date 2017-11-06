@@ -4,7 +4,7 @@ image: Visual Studio 2017
 only_commits:
   message: /test/
   
-branch :
+branches :
 only :
 -master
 -m
