@@ -16,6 +16,7 @@
 #include "free_camera.h"
 #include "chase_camera.h"
 #include "tileBuilder.h"
+#include "target_camera.h"
 
 
 using namespace AllCamera;
@@ -53,6 +54,7 @@ public:
 	chase_camera* chaseCam;
 	float chaseCamAngle, cameraType;// for switching on/off free/chase cam
 	double cursor_x, cursor_y = 0.0;// For finding cursor pos on screen
+	target_camera* tarCam;
 	
 	// Golf ball
 	Mesh* golfBallMesh;
@@ -67,6 +69,27 @@ public:
 	Texture* arrowTexture;
 	Transform arrowTransform;
 
+	// HUD
+	// Stroke Label 
+	Mesh* strokeLabelMesh;
+	Texture* strokeLabelTexture;
+	Transform strokeLabelTrans;
+	// Power Label
+	Mesh* powerLabelMesh;
+	Texture* powerLabelTexture;
+	Transform powerLabelTrans;
+	// Player Label
+	Mesh* playerLabelMesh;
+	Texture* playerLabelTexture;
+	Transform playerLabelTrans;
+	// Power Bar Outline
+	Mesh* powerBarOutlineDisplayMesh;
+	Texture* powerBarOutlineDisplayTexture;
+	Transform powerBarOutlineDisplayTrans;
+	// Power Bar
+	Mesh* powerBarMesh;
+	Texture* powerBarTexture;
+	Transform powerBarTrans;
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)

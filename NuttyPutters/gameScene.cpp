@@ -66,6 +66,33 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	chaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	chaseCam->set_springiness(0.2f);
 	chaseCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+
+	tarCam = new target_camera();
+	tarCam->set_Posistion(vec3(0, 0, 5.0f));
+	tarCam->set_Target(vec3(0, 0, 0));
+	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+
+	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
+	// Stroke HUD Label setup
+	strokeLabelMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(-6.0, -3.0, 0.0), 1.0f, 1.0f, 0.0f);
+	strokeLabelTexture = new Texture("..\\NuttyPutters\\one.jpg");
+	strokeLabelTrans.getScale() = vec3(0.5);
+	// Player HUD Labelsetup
+	playerLabelMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(-5.5, 3.0, 0.0), 2.0f, 0.5f, 0.0f);
+	playerLabelTexture = new Texture("..\\NuttyPutters\\playerone.jpg");
+	playerLabelTrans.getScale() = vec3(0.5);
+	// Power HUD Label setup
+	powerLabelMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(6.0, -2.75, 0.0), 2.0f, 0.5f, 0.0f);
+	powerLabelTexture = new Texture("..\\NuttyPutters\\power.jpg");
+	powerLabelTrans.getScale() = vec3(0.5);
+	// Power Bar Outline HUD setup
+	powerBarOutlineDisplayMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(5.0, -3.25, 0.0), 4.0f, 0.5f, 0.0f);
+	powerBarOutlineDisplayTexture = new Texture("..\\NuttyPutters\\powerbar.jpg");
+	powerBarOutlineDisplayTrans.getScale() = vec3(0.5);
+	// Power Bar HUD setup
+	powerBarMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(5.0, -3.25, 0.0), 0.1f, 0.3f, 0.0f);
+	powerBarTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
+	powerBarTrans.getScale() = vec3(0.5);
 }
 
 // Loads either random level of certain size, or level by seed
@@ -797,6 +824,9 @@ void gameScene::Update(GLFWwindow* window)
 	chaseCam->move(golfBallTransform.getPos(), golfBallTransform.getRot());
 	chaseCam->update(0.00001);
 
+	// Update target camera
+	tarCam->update(0.00001);
+
 	// PLAYER UPDATE
 	// Velocity is direction by speed by delta time
 	gbVelocity = (gbDirection * speed);
@@ -955,6 +985,35 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		mvp = chaseCam->get_Projection() * chaseCam->get_View();
 	}
+	// If camera type is target camera - used for HUD elements - then
+	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
+
+	// Set depth range to near to allow for HUD elements to be rendered and drawn
+	glDepthRange(0, 0.01);
+
+	// Bind, update and draw the stroke label HUD
+	strokeLabelTexture->Bind(0);
+	textureShader->Update(strokeLabelTrans, hudVP);
+	strokeLabelMesh->Draw();
+	// Bind, update and draw the player label HUD
+	playerLabelTexture->Bind(0);
+	textureShader->Update(playerLabelTrans, hudVP);
+	playerLabelMesh->Draw();
+	// Bind, update and draw the power label HUD
+	powerLabelTexture->Bind(0);
+	textureShader->Update(powerLabelTrans, hudVP);
+	powerLabelMesh->Draw();
+	// Bind, update and draw the power bar HUD
+	powerBarTexture->Bind(0);
+	textureShader->Update(powerBarTrans, hudVP);
+	powerBarMesh->Draw();
+	// Bind, update and draw the power bar outline HUD
+	powerBarOutlineDisplayTexture->Bind(0);
+	textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
+	powerBarOutlineDisplayMesh->Draw();
+
+	// Reset the depth range to allow for objects at a distance to be rendered
+	glDepthRange(0.01, 1.0);
 
 	// Bind texture shader
 	textureShader->Bind();
@@ -995,6 +1054,9 @@ void gameScene::Render(GLFWwindow* window)
 
 	// WHAT is shaderTrans - it's never set to anything
 	textureShader->Update(shaderTrans, (freeCam->get_Projection() * freeCam->get_View()));
+
+	// Fully reset depth range for next frame - REQUIRED
+	glDepthRange(0, 1.0);
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
