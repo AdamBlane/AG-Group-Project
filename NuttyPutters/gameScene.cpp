@@ -9,9 +9,9 @@ gameScene::gameScene() { }
 // Deconstructor
 gameScene::~gameScene() { }
 
-// Setup scene
-void gameScene::Init(GLFWwindow* window)
-{
+// Setup scene; seed is an optional param passed in by loadGameScene
+void gameScene::Init(GLFWwindow* window, int courseLength, string seed) 
+{									   //intercourselimit ;p
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -24,10 +24,13 @@ void gameScene::Init(GLFWwindow* window)
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
+	
+	// Record desired course size if no seed given
+	courseSize = courseLength;
 
+	// Load game
+	LoadGame(seed); 
 
-
-	LoadGame(); // optional parameter of seed
 	// Take alg tiles, turn into render tiles
 	SetupTilesToBeDrawn();
 
@@ -65,38 +68,48 @@ void gameScene::Init(GLFWwindow* window)
 	chaseCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
 }
 
-// Loads a level based on given seed
-void gameScene::LoadGame()
+// Loads either random level of certain size, or level by seed
+void gameScene::LoadGame(string seed)
 {
 	// Only get seed from file if not given to us from load game screen
-	
-	// Seed chosen is found in file
-	// Some magic numbers in the following section; for milestone 2, will replace after
-	// Seed is a list of numbers, which refer to tile type
-	int seed[12];
-	// Insert start
-	seed[0] = 0;
-	// Open seeds file 
-	ifstream seedsFile("res12.csv");
-	// find how many lines in seed file (hardcoded for now)
-	int seedsCount = 341;
-	// pick random number in that range
-	default_random_engine rng(random_device{}());
-	uniform_int_distribution<int> distribution(0, seedsCount);
-	int choice = distribution(rng);
-	// read that line
-	string line;
-	for (int l = 0; l < choice; ++l)
+	if (seed == "seed") // it's the default value
+	{ 
+		// Some magic numbers in the following section; for milestone 2, will replace after
+		// Insert start
+		levelSeed.push_back(0);
+		// Open seeds file 
+		ifstream seedsFile("res12.csv");
+		// find how many lines in seed file (hardcoded for now)
+		int seedsCount = 341;
+		// pick random number in that range
+		default_random_engine rng(random_device{}());
+		uniform_int_distribution<int> distribution(0, seedsCount);
+		int choice = distribution(rng);
+		// read that line
+		string line;
+		for (int l = 0; l < choice; ++l)
+		{
+			getline(seedsFile, line);
+		} // last iteration will be on desired line, so line should be correct seed now
+		// parse seed into array
+		for (int c = 0; c < line.length(); ++c)
+		{
+			// Convert each character in string to int
+			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 0, or - 48
+		}
+
+
+	} // end if seed is default
+	else // this has been given a seed value
 	{
-		getline(seedsFile, line);
-	} // last iteration will be on desired line, so line should be correct seed now
-	// parse seed into array
-	for (int i = 0; i < 11; ++i)
-	{
-		seed[i+1] = line[i] - 48;
+		// Parse into ints as above
+		for (int c = 0; c < seed.length(); ++c)
+		{
+			levelSeed.push_back(seed[c] - 48);
+		}
 	}
-	
-	//int seed[] = { 1, 1, 1, 1, 1, 1, 1, 1, 9 };
+
+
 
 	// Start added first (this & next coords already set)
 	StartTile start;
@@ -106,7 +119,7 @@ void gameScene::LoadGame()
 	// Update size tracker
 	float size = start.size;
 	// For each number in seed array
-	for (auto &i : seed)
+	for (auto &i : levelSeed)
 	{
 		// Update current coordinates (next coords of last thing in list) 
 		curCoords = algTiles.back().GetNextCoords();

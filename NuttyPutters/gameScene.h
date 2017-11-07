@@ -33,14 +33,17 @@ public:
 	// General game variables
 	vector<BaseTile> algTiles; // Game tiles list, resulting from Alg (by M)	
 	vector<Tile> tiles; // Tile meshes to be rendered, created by V
-	vector<Tile> sceneryTiles;
+	vector<Tile> sceneryTiles; // sceneryTile to be renederd
+	vector<int> levelSeed; // This course seed; each tile has an int id
+	int courseSize; // Total number of tiles this level
+
 	Shader* textureShader;
 	Transform shaderTrans;		
 	int currentTile = 0; // Tracks tile player is on 
 	float dt = 0.016; // Lock to 60fps
-	bool pPressed = false;
-	float Pcounter;
-	bool levelSaved = false;
+	bool pPressed = false; // Prevent shooting ball again whilst already moving
+	float Pcounter; // This is a force counter (TODO: rename)
+	bool levelSaved = false; // Prevent saving same level more than once
 
 	// Cameras
 	free_camera* freeCam;	
@@ -67,10 +70,11 @@ public:
 	vector<Transform> treeTransforms;
 
 
-	// Setup scene
-	void Init(GLFWwindow* window);
-	// Loads level based on seed
-	void LoadGame();
+	// Setup scene. Last seed params is optional; = denotes default value
+	// If called from loadGameScene, requrie seed value(as string)
+	void Init(GLFWwindow* window, int courseLength, string seed = "seed"); 
+	// Loads level of given size; random if no optional seed given
+	void LoadGame(string seed);
 	// Fills space around level with scenery tiles
 	void FillScenery();
 	// Translates list of alg tiles (M) into mesh tiles (V)

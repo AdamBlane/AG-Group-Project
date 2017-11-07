@@ -58,9 +58,10 @@ void playerSelectScene::Input(GLFWwindow* win)
 	if (glfwGetKey(win, GLFW_KEY_1))
 	{
 		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(6); // This calls init for scene
+		windowMgr::getInstance()->sceneManager.changeScene(6, courseLength); // This calls init for scene
 	}
-
+	
+	// TOOD - Have something affect course length here
 
 }
 
