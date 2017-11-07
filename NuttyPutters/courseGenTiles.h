@@ -41,7 +41,7 @@ public:
 	// Golf ball radius
 	float radius = 0.5;
 	// Golf ball displacement after hitting boundary
-	float displace = 0.25;
+	float displace = 0.0f;
 	// Direction of travel once this tile is placed
 	Direction outDir;
 	// Accessor/Mutator of positions

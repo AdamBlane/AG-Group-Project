@@ -92,7 +92,7 @@ private:
 
 	//this is broken. DON'T USE IT!!!!
 	void golfHole();
-
+	// Texture filename
 	std::string filename;
 
 

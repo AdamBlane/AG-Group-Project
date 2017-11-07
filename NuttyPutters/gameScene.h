@@ -40,7 +40,7 @@ public:
 	float dt = 0.016; // Lock to 60fps
 	bool pPressed = false;
 	float Pcounter;
-	
+	bool levelSaved = false;
 
 	// Cameras
 	free_camera* freeCam;	
@@ -62,9 +62,9 @@ public:
 	Texture* arrowTexture;
 	Transform arrowTransform;
 	// Tree
-	Mesh* treeMesh;
+	vector<Mesh*> treeMeshes;
 	Texture* treeTexture;
-	Transform treeTransform;
+	vector<Transform> treeTransforms;
 
 
 	// Setup scene

@@ -55,12 +55,37 @@ void loadGameScene::Input(GLFWwindow * win)
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
+
+	// Load a level (picks first for now)
+	if (glfwGetKey(win, GLFW_KEY_L))
+	{
+		// Access singleton instance to update it's sceneManager's state
+		windowMgr::getInstance()->sceneManager.changeScene(6); // Call init...
+	}
+
+
 }
 
 
 
-// Setup scene; does nothing atm
+// Setup scene; display choice saved games
 void loadGameScene::Init(GLFWwindow * win)
 {
-	// TODO
+	// Open up file for reading
+	ifstream saves("saves.csv");
+	// To hold all read lines
+	vector<string> lines;
+	// Read all saved games
+	while (!saves.eof())
+	{
+		string s;
+		getline(saves, s);
+		lines.push_back(s);
+	}
+	// Display in console for now
+	for (auto &l : lines)
+		cout << l << endl;
+
+
+
 }

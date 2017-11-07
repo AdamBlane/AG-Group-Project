@@ -4,9 +4,6 @@
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
 
-
-
-
 // Default constructor
 gameScene::gameScene() { }
 // Deconstructor
@@ -30,7 +27,7 @@ void gameScene::Init(GLFWwindow* window)
 
 
 
-	LoadGame();
+	LoadGame(); // optional parameter of seed
 	// Take alg tiles, turn into render tiles
 	SetupTilesToBeDrawn();
 
@@ -71,33 +68,35 @@ void gameScene::Init(GLFWwindow* window)
 // Loads a level based on given seed
 void gameScene::LoadGame()
 {
+	// Only get seed from file if not given to us from load game screen
+	
 	// Seed chosen is found in file
 	// Some magic numbers in the following section; for milestone 2, will replace after
 	// Seed is a list of numbers, which refer to tile type
-	//int seed[12];
-	//// Insert start
-	//seed[0] = 0;
-	//// Open seeds file 
-	//ifstream seedsFile("res12.csv");
-	//// find how many lines in seed file (hardcoded for now)
-	//int seedsCount = 341;
-	//// pick random number in that range
-	//default_random_engine rng(random_device{}());
-	//uniform_int_distribution<int> distribution(0, seedsCount);
-	//int choice = distribution(rng);
-	//// read that line
-	//string line;
-	//for (int l = 0; l < choice; ++l)
-	//{
-	//	getline(seedsFile, line);
-	//} // last iteration will be on desired line, so line should be correct seed now
-	//// parse seed into array
-	//for (int i = 0; i < 11; ++i)
-	//{
-	//	seed[i+1] = line[i] - 48;
-	//}
+	int seed[12];
+	// Insert start
+	seed[0] = 0;
+	// Open seeds file 
+	ifstream seedsFile("res12.csv");
+	// find how many lines in seed file (hardcoded for now)
+	int seedsCount = 341;
+	// pick random number in that range
+	default_random_engine rng(random_device{}());
+	uniform_int_distribution<int> distribution(0, seedsCount);
+	int choice = distribution(rng);
+	// read that line
+	string line;
+	for (int l = 0; l < choice; ++l)
+	{
+		getline(seedsFile, line);
+	} // last iteration will be on desired line, so line should be correct seed now
+	// parse seed into array
+	for (int i = 0; i < 11; ++i)
+	{
+		seed[i+1] = line[i] - 48;
+	}
 	
-	int seed[] = { 1, 9 };
+	//int seed[] = { 1, 1, 1, 1, 1, 1, 1, 1, 9 };
 
 	// Start added first (this & next coords already set)
 	StartTile start;
@@ -348,7 +347,7 @@ void gameScene::FillScenery()
 			zMin = t.thisCoords.z;
 	}
 	// Add another tile's width to boundaries
-	xMin -= 10; // To add another layer to the boundary, 
+	xMin -= 10; // To add another layer to the boundary, add 10 to each value
 	zMin -= 20;
 	xMax += 20;
 	zMax += 10;
@@ -377,13 +376,16 @@ void gameScene::FillScenery()
 			if (!posTaken)
 			{
 				// Create straight tile
-				Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", thisPos);
+				//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
+				Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg", thisPos);		
 				//tile.transform.getRot().x = -0.785398;
 				// Add to list of tiles to be rendered
 				sceneryTiles.push_back(tile);
+
+
 			}
-		}
-	}
+		} // end x block
+	} // end z block
 }
 
 // Creates tile classes to be drawn
@@ -533,6 +535,47 @@ void gameScene::Input(GLFWwindow* window)
 		windowMgr::getInstance()->sceneManager.changeScene(0);	
 		cout << "Pressed B" << endl;
 	}
+	// Pause
+	if (glfwGetKey(window, GLFW_KEY_P))
+	{
+		cout << "game paused" << endl;
+		bool paused = true;
+		while (paused)
+		{			
+			// Change scene bg colour while paused? 
+
+			// Need this or we get stuck in loop
+			glfwPollEvents();
+			// Save this level (move this code later to end of game, so we can save score with it)
+			if (glfwGetKey(window, GLFW_KEY_S))
+			{
+				// Only save this level once
+				if (!levelSaved)
+				{
+					// Open file to append level seed 
+					ofstream saves("saves.csv", ofstream::app);
+					// ID of each tile makes up seed
+					for (auto &t : algTiles)
+					{
+						saves << t.id;
+					}
+					saves << endl;
+					cout << "Level saved" << endl;
+					levelSaved = true;
+				}
+
+			}
+
+			// Unpause
+			if (glfwGetKey(window, GLFW_KEY_U))
+			{
+				paused = false;
+				break;		
+			}
+		} // end while paused
+		cout << "Unpaused" << endl;
+	} // end pause
+
 	// If button one is pressed change to free camera
 	if (glfwGetKey(window, GLFW_KEY_1))
 	{
@@ -641,12 +684,12 @@ void gameScene::Input(GLFWwindow* window)
 
 	// PLAYER
 	// If P is pressed 
-	if (glfwGetKey(window, GLFW_KEY_P))
+	if (glfwGetKey(window, GLFW_KEY_SPACE))
 	{
 		if (!golfBallMoving)
 		{
 			// Start counter
-			Pcounter += dt;
+			Pcounter += 0.5f;
 
 			// SET DIRECTION BASED ON CHASE CAM ANGLE
 			// If camera angle is between 0 and 90
@@ -685,14 +728,14 @@ void gameScene::Input(GLFWwindow* window)
 	}
 
 	// When P is realesed
-	if ((glfwGetKey(window, GLFW_KEY_P)) == false)
+	if ((glfwGetKey(window, GLFW_KEY_SPACE)) == false)
 	{
 		// Only work if p was just released
 		if (pPressed)
 		{
 			golfBallMoving = true;
 			// Force to apply is held in counter
-			Pcounter *= 3; // slightly magic number (Pc isn't enough on its own)
+			//Pcounter *= 3; // slightly magic number (Pc isn't enough on its own)
 			// Apply to speed
 			speed += Pcounter;
 			// Reset
@@ -734,12 +777,12 @@ void gameScene::Update(GLFWwindow* window)
 	// Velocity is direction by speed by delta time
 	gbVelocity = (gbDirection * speed);
 	// Apply friction when moving
-	if (speed > 0 + 0.01) // this magic number is epsilon
+	if (speed > 0 + 0.5) // this magic number is epsilon
 	{
-		speed -= speed * 0.01; // this magic number is friction
+		speed -= speed * 0.03; // this magic number is friction
 		 // Rotation is cross product of direction and up
-		vec3 rot = (cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
-		rot *= speed * dt;
+		vec3 rot = normalize(cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
+		rot *=  speed *  dt;
 		golfBallTransform.getRot() += -rot;
 	}
 	// Prevent it moving forever
@@ -902,7 +945,12 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		t.drawTile(textureShader, mvp);
 	}
-
+	// Draw all trees
+	//for (int i = 0; i < treeMeshes.size(); ++i)
+	//{
+	//	treeMeshes.at(i)->Draw();
+	//	textureShader->Update(treeTransforms.at(i), mvp);
+	//}
 	// Draw golf ball
 	golfBallTexture->Bind(0);
 	textureShader->Update(golfBallTransform, mvp);
