@@ -11,7 +11,7 @@ gameScene::~gameScene() { }
 
 // Setup scene; seed is an optional param passed in by loadGameScene
 void gameScene::Init(GLFWwindow* window, int courseLength, string seed) 
-{									   //intercourselimit ;p
+{									
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -520,6 +520,11 @@ void gameScene::SetupTilesToBeDrawn()
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
+	// Calculate dt
+	lastFrame = thisFrame;
+	thisFrame = glfwGetTime();
+	dt = (float)(thisFrame - lastFrame);
+
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -638,6 +643,12 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			freeCamPos = (vec3(0, -camSpeed * dt, 0));
 		}
+		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
+		{
+			camSpeed = 10.0f;
+		}
+		else
+			camSpeed = 2.0f;
 
 		// Move camera by new pos after input
 		freeCam->move(freeCamPos);

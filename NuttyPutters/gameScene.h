@@ -31,15 +31,17 @@ public:
 
 
 	// General game variables
-	vector<BaseTile> algTiles; // Game tiles list, resulting from Alg (by M)	
+	vector<BaseTile> algTiles; // Game tiles list; these tiles have position data (by M)
 	vector<Tile> tiles; // Tile meshes to be rendered, created by V
-	vector<Tile> sceneryTiles; // sceneryTile to be renederd
+	vector<Tile> sceneryTiles; // sceneryTiles to be renederd
 	vector<int> levelSeed; // This course seed; each tile has an int id
 	int courseSize; // Total number of tiles this level
 
 	Shader* textureShader;
 	Transform shaderTrans;		
 	int currentTile = 0; // Tracks tile player is on 
+	double lastFrame = 0;
+	double thisFrame = glfwGetTime();
 	float dt = 0.016; // Lock to 60fps
 	bool pPressed = false; // Prevent shooting ball again whilst already moving
 	float Pcounter; // This is a force counter (TODO: rename)
@@ -64,14 +66,10 @@ public:
 	Mesh* arrowMesh;
 	Texture* arrowTexture;
 	Transform arrowTransform;
-	// Tree
-	vector<Mesh*> treeMeshes;
-	Texture* treeTexture;
-	vector<Transform> treeTransforms;
 
 
 	// Setup scene. Last seed params is optional; = denotes default value
-	// If called from loadGameScene, requrie seed value(as string)
+	// If called from loadGameScene, requires seed value(as string)
 	void Init(GLFWwindow* window, int courseLength, string seed = "seed"); 
 	// Loads level of given size; random if no optional seed given
 	void LoadGame(string seed);
