@@ -34,6 +34,9 @@ void gameScene::Init(GLFWwindow* window)
 	// Take alg tiles, turn into render tiles
 	SetupTilesToBeDrawn();
 
+	// Setup scenery tiles
+	FillScenery();
+
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
@@ -66,33 +69,35 @@ void gameScene::Init(GLFWwindow* window)
 }
 
 // Loads a level based on given seed
-// TODO load seed by file, choose random
 void gameScene::LoadGame()
 {
+	// Seed chosen is found in file
+	// Some magic numbers in the following section; for milestone 2, will replace after
 	// Seed is a list of numbers, which refer to tile type
-	int seed[12];
-	// Insert start
-	seed[0] = 0;
-	// Open seeds file 
-	ifstream seedsFile("res12.csv");
-	// find how many lines in seed file (hardcoded for now)
-	int seedsCount = 341;
-	// pick random number in that range
-	default_random_engine rng(random_device{}());
-	uniform_int_distribution<int> distribution(0, seedsCount);
-	int choice = distribution(rng);
-	// read that line
-	string line;
-	for (int l = 0; l < choice; ++l)
-	{
-		getline(seedsFile, line);
-	} // last iteration will be on desired line, so line should be correct seed now
-	// parse seed into array
-	for (int i = 0; i < 11; ++i)
-	{
-		seed[i+1] = line[i] - 48;
-	}
+	//int seed[12];
+	//// Insert start
+	//seed[0] = 0;
+	//// Open seeds file 
+	//ifstream seedsFile("res12.csv");
+	//// find how many lines in seed file (hardcoded for now)
+	//int seedsCount = 341;
+	//// pick random number in that range
+	//default_random_engine rng(random_device{}());
+	//uniform_int_distribution<int> distribution(0, seedsCount);
+	//int choice = distribution(rng);
+	//// read that line
+	//string line;
+	//for (int l = 0; l < choice; ++l)
+	//{
+	//	getline(seedsFile, line);
+	//} // last iteration will be on desired line, so line should be correct seed now
+	//// parse seed into array
+	//for (int i = 0; i < 11; ++i)
+	//{
+	//	seed[i+1] = line[i] - 48;
+	//}
 	
+	int seed[] = { 1, 9 };
 
 	// Start added first (this & next coords already set)
 	StartTile start;
@@ -320,6 +325,65 @@ void gameScene::LoadGame()
 
 	} // for loop end
 
+}
+
+// Populates scenery tiles
+void gameScene::FillScenery()
+{
+	// Get boundary positions of level tiles in x and z
+	float xMax = 0;
+	float xMin = 0;
+	float zMax = 0; 
+	float zMin = 0;
+	for (auto &t : algTiles)
+	{
+		if (t.thisCoords.x > xMax)
+			xMax = t.thisCoords.x;
+		if (t.thisCoords.x < xMin)
+			xMin = t.thisCoords.x;
+
+		if (t.thisCoords.z > zMax)
+			zMax = t.thisCoords.z;
+		if (t.thisCoords.z < zMin)
+			zMin = t.thisCoords.z;
+	}
+	// Add another tile's width to boundaries
+	xMin -= 10; // To add another layer to the boundary, 
+	zMin -= 20;
+	xMax += 20;
+	zMax += 10;
+
+	// Starting in corner, fill with scenery tile if not already filled by level tile
+	// Z
+	for (int zPos = zMax; zPos > zMin; zPos -= 10) // 10 = tile size
+	{
+		// Work in rows; every x for a single z
+		for (int xPos = xMin; xPos < xMax; xPos += 10)
+		{
+			vec3 thisPos = vec3(xPos, 0.0f, zPos); // Not dealing with ramps for now
+			cout << thisPos.x << ", " << thisPos.z << endl;
+			// Check if this pos is already taken by a level tile
+			bool posTaken = false;
+			// Contains search; there will only be one match
+			for (int i = 0; i < algTiles.size(); ++i)
+			{
+				if (algTiles.at(i).thisCoords == thisPos)
+				{
+					// We have a match
+					posTaken = true;
+				}
+			}
+			// If able to create a scenery tile...
+			if (!posTaken)
+			{
+				// Create straight tile
+				Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", thisPos);
+				//tile.transform.getRot().x = -0.785398;
+				// Add to list of tiles to be rendered
+				sceneryTiles.push_back(tile);
+			}
+		}
+	}
 }
 
 // Creates tile classes to be drawn
@@ -676,7 +740,7 @@ void gameScene::Update(GLFWwindow* window)
 		 // Rotation is cross product of direction and up
 		vec3 rot = (cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
 		rot *= speed * dt;
-		golfBallTransform.getRot() += rot;
+		golfBallTransform.getRot() += -rot;
 	}
 	// Prevent it moving forever
 	else 
@@ -802,7 +866,8 @@ void gameScene::Collisions()
 			EndTile end;
 			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			end.outDir = algTiles.at(currentTile).outDir;
-			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed);
+			
 			break;
 		}
 	}
@@ -827,8 +892,13 @@ void gameScene::Render(GLFWwindow* window)
 	// Bind texture shader
 	textureShader->Bind();
 
-	// DRAW all tiles
+	// DRAW all level tiles
 	for (auto &t : tiles)
+	{
+		t.drawTile(textureShader, mvp);
+	}
+	// DRAW all scenery tiles
+	for (auto &t : sceneryTiles)
 	{
 		t.drawTile(textureShader, mvp);
 	}

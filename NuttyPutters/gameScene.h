@@ -33,6 +33,7 @@ public:
 	// General game variables
 	vector<BaseTile> algTiles; // Game tiles list, resulting from Alg (by M)	
 	vector<Tile> tiles; // Tile meshes to be rendered, created by V
+	vector<Tile> sceneryTiles;
 	Shader* textureShader;
 	Transform shaderTrans;		
 	int currentTile = 0; // Tracks tile player is on 
@@ -60,13 +61,18 @@ public:
 	Mesh* arrowMesh;
 	Texture* arrowTexture;
 	Transform arrowTransform;
-
+	// Tree
+	Mesh* treeMesh;
+	Texture* treeTexture;
+	Transform treeTransform;
 
 
 	// Setup scene
 	void Init(GLFWwindow* window);
 	// Loads level based on seed
 	void LoadGame();
+	// Fills space around level with scenery tiles
+	void FillScenery();
 	// Translates list of alg tiles (M) into mesh tiles (V)
 	void SetupTilesToBeDrawn();
 	// Game loop and its functions

@@ -147,7 +147,7 @@ void Tile::cornerTile()
 void Tile::obstacle()
 {
 
-	cout << "Has obstacle!" << endl << endl << endl;
+//	cout << "Has obstacle!" << endl << endl << endl;
 
 
 }

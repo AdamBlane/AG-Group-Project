@@ -458,7 +458,7 @@ public:
 	~EndTile() {};
 
 	// Checks whether player has hit boundaries of this tile
-	vec3 CheckCollisions(vec3 playerPos, vec3 dir )
+	vec3 CheckCollisions(vec3 playerPos, vec3 dir, float speed)
 	{
 		// Based on direction
 		if (outDir.going_up)
@@ -544,12 +544,13 @@ public:
 
 
 		// Check if over end hole
-		if (playerPos.x > thisCoords.x - 0.75 && playerPos.x < thisCoords.x + 0.75 &&
-			playerPos.z > thisCoords.z - 0.75 && playerPos.z < thisCoords.z + 0.75)
-		{
-			// Apply gravity
-			dir.y -= 0.2f;
-		}
+		if(speed < 2)
+			if (playerPos.x > thisCoords.x - 0.75 && playerPos.x < thisCoords.x + 0.75 &&
+				playerPos.z > thisCoords.z - 0.75 && playerPos.z < thisCoords.z + 0.75)
+			{
+				// Apply gravity
+				dir.y -= 0.2f;
+			}
 
 
 		return dir;
