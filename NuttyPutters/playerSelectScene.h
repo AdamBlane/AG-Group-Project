@@ -10,6 +10,10 @@ public:
 	playerSelectScene();
 	~playerSelectScene();
 
+
+	// Difficulty; number of tiles in level
+	int courseLength = 12;
+
 	// Draw stuff
 	void Loop(GLFWwindow* win);
 	// Input
