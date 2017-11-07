@@ -11,9 +11,9 @@ public:
 	~optionsScene();
 
 	// Draw stuff
-	void screenContent(GLFWwindow* win);
-	// Input
-	static void key_callbacks(GLFWwindow* win, int key, int scancode, int action, int mods);
-	// Setup
+	void Loop(GLFWwindow* win);
+
+	void Input(GLFWwindow* win);
+
 	void Init(GLFWwindow* win);
 };

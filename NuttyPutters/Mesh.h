@@ -37,7 +37,8 @@ public:
 		RECTANGLE,
 		PLANE,
 		BOX,
-		CUBOID
+		CUBOID,
+		GOLF_HOLE_GROUND
 
 	};
 	Mesh() {};
@@ -55,13 +56,17 @@ public:
 	//PLANE: only 1 side is necessary
 	//BOX: only 1 side is necessary
 	//CUBOID: all 3 sides are necessary
-	Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f);
+	Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f, bool isFloor = false);
 
 	//Get position of geometry created by geometry builder
 	glm::vec3 getGeomPos();
 
+	//converts degrees to radians
+	static double toRads(double degreesAngle);
+
 	//Texture for each Mesh
 	Texture *thisTexture;
+	bool isThisFloor = false;
 
 	void InitMesh(const IndexedModel& model);
 
@@ -85,6 +90,9 @@ private:
 	void box();
 	void cuboid();
 
+	//this is broken. DON'T USE IT!!!!
+	void golfHole();
+	// Texture filename
 	std::string filename;
 
 
@@ -100,7 +108,7 @@ private:
 	GLfloat halfSide1 = 0.5f;
 	GLfloat halfSide2 = 0.5f;
 	GLfloat halfSide3 = 0.5f;
-
+	GLfloat thisHole = 1.4;
 
 	enum
 	{

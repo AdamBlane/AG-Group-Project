@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="chase_camera.cpp" />
     <ClCompile Include="courseGenerator.cpp" />
+    <ClCompile Include="courseGenV2.cpp" />
     <ClCompile Include="free_camera.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="gameTiles.cpp" />
@@ -41,8 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="chase_camera.h" />
     <ClInclude Include="checkError.h" />
     <ClInclude Include="courseGenerator.h" />
+    <ClInclude Include="courseGenTiles.h" />
+    <ClInclude Include="courseGenV2.h" />
     <ClInclude Include="free_camera.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="gameTiles.h" />

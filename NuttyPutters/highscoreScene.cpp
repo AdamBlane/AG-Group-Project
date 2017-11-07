@@ -10,8 +10,12 @@ highscoreScene::~highscoreScene() { }
 
 
 // Draw stuff
-void highscoreScene::screenContent(GLFWwindow * win)
+void highscoreScene::Loop(GLFWwindow * win)
 {
+	// Input
+	Input(win);
+
+
 	float ratio;
 	int width, height;
 
@@ -44,19 +48,19 @@ void highscoreScene::screenContent(GLFWwindow * win)
 	glfwPollEvents();
 }
 
-// Input
-void highscoreScene::key_callbacks(GLFWwindow * win, int key, int scancode, int action, int mods)
+
+void highscoreScene::Input(GLFWwindow* win)
 {
-	// Go back to start scene
-	if (key == GLFW_KEY_B && action == GLFW_PRESS)
+	if (glfwGetKey(win, GLFW_KEY_B))
 	{
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 }
 
-// Setup
+
+// Setup; does nothing atm
 void highscoreScene::Init(GLFWwindow * win)
 {
-	glfwSetKeyCallback(win, key_callbacks);
+	// TODO
 }

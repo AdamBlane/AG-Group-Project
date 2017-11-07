@@ -9,8 +9,12 @@ optionsScene::~optionsScene() { }
 
 
 // Draw stuff
-void optionsScene::screenContent(GLFWwindow * win)
+void optionsScene::Loop(GLFWwindow * win)
 {
+	// Input
+	Input(win);
+
+
 	float ratio;
 	int width, height;
 
@@ -43,19 +47,18 @@ void optionsScene::screenContent(GLFWwindow * win)
 	glfwPollEvents();
 }
 
-// Input
-void optionsScene::key_callbacks(GLFWwindow * win, int key, int scancode, int action, int mods)
+// Act on input
+void optionsScene::Input(GLFWwindow * win)
 {
-	// Move back to start scene
-	if (key == GLFW_KEY_B && action == GLFW_PRESS)
+	if (glfwGetKey(win, GLFW_KEY_B))
 	{
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 }
 
-// Setup
+// Setup; does nothing atm
 void optionsScene::Init(GLFWwindow * win)
 {
-	glfwSetKeyCallback(win, key_callbacks);
+	// TODO
 }

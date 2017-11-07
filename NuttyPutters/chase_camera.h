@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "Camera.h"
 
 namespace AllCamera
@@ -47,5 +46,11 @@ namespace AllCamera
 			void update(float delta_time);
 			void move(const glm::vec3 &new_target_pos, const glm::vec3 &new_target_rotation);
 			void rotate(const glm::vec3 &delta_rotation);
+			void pitch_it(float rot, const glm::vec3 &target_location, const glm::vec3 &cam_location , float y_);
+			void yaw_it(float rot);
+			void neg_yaw_it(float rot);
+			void neg_pitch_it(float rot, const glm::vec3 &target_location, const glm::vec3 &cam_location ,float y_ );
+			void zoom_in(float rot);
+			void zoom_out(float rot);
 	};
 }

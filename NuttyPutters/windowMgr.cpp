@@ -83,32 +83,32 @@ void windowMgr::Update()
 		// Start scene
 		case 1:
 			// Draw content
-			sceneManager.startScene.screenContent(win);			
+			sceneManager.startScene.Loop(win);			
 			break;
 		// Player Select scene
 		case 2:
 			// Draw content
-			sceneManager.playerSelectScene.screenContent(win);
+			sceneManager.playerSelectScene.Loop(win);
 			break;
 		// Load Game scene
 		case 3:
 			// Draw content
-			sceneManager.loadGameScene.screenContent(win);
+			sceneManager.loadGameScene.Loop(win);
 			break;
 		// Highscore scene
 		case 4:
 			// Draw content
-			sceneManager.highscoreScene.screenContent(win);
+			sceneManager.highscoreScene.Loop(win);
 			break;
 		// Options scene
 		case 5:
 			// Draw content
-			sceneManager.optionsScene.screenContent(win);
+			sceneManager.optionsScene.Loop(win);
 			break;
 		// Game scene
 		case 6:
 			// Draw
-			sceneManager.gameScene.checkPlayers(win);
+			sceneManager.gameScene.Loop(win);
 			break;
 		default: break;
 		}
