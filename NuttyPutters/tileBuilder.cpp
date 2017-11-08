@@ -1,18 +1,24 @@
 #include "tileBuilder.h"
 #include <time.h>
+#include <random>
 
-Tile::Tile(typeTile desiredType, string floorTexture, string borderTexture, vec3 newPosition, vec3 newMeasures)
+Tile::Tile(typeTile desiredType, vec3 newPosition, string floorTexture, string borderTexture, string bridgeSurroundingTexture)
 {
 	//setting tile properties
 	//tilePos = newPosition;
 	srand(time(NULL));
 	transform.getPos() = newPosition;
-	measures = newMeasures;
 
 	this_borderTexture = borderTexture;
 	this_floorTexture = floorTexture;
+	this_bridgeSurroundingTexture = bridgeSurroundingTexture;
 	thisTile = desiredType;
 
+	if (thisTile == STRAIGHT)
+	{
+		//Setting randomly the bool for the straight tile
+		hasObstacle = randomNumber(0, 1);
+	}
 
 	//create tile method to generate meshes composing the tile
 	createTile();
@@ -41,6 +47,9 @@ void Tile::createTile()
 		break;
 	case STRAIGHT:
 		straightTile();
+		break;
+	case THICKER_STRAIGHT:
+		thickerStraightTile();
 		break;
 	case BRIDGE:
 		bridgeTile();
@@ -84,6 +93,8 @@ void Tile::endTile()
 	Mesh *floor4 = new Mesh(Mesh::CUBOID, this_floorTexture, vec3(tilePos.x + (ballSizeMargin * 2.0), tilePos.y, tilePos.z), ((measures.x - ballSizeMargin) / 1.95), measures.y, ballSizeMargin - 0.1, true);
 	tileContent.push_back(floor4);
 
+	///////Trying to set a plane on top of hole to set a texture and pretend it is a circle hole
+
 	//Mesh *holePlane = new Mesh(Mesh::PLANE, this_floorTexture, vec3(tilePos.x, tilePos.y + ((measures.y / 2) + 0.1), tilePos.z), measures.x, true);
 	//tileContent.push_back(holePlane);
 
@@ -95,6 +106,12 @@ void Tile::endTile()
 
 	Mesh *border3 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)), measures.x - (measures.y * 2), measures.y, measures.y);
 	tileContent.push_back(border3);
+
+	//////Tring to rotate a piece of border to have the texture stretched on same direction as others
+
+	//Mesh *border3 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)), measures.y, measures.y, measures.z - (measures.y * 2));
+	//border3->thisTransform.setRot(glm::vec3(0, Mesh::toRads(90), 0));
+	//tileContent.push_back(border3);
 }
 
 void Tile::straightTile()
@@ -109,8 +126,7 @@ void Tile::straightTile()
 	Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
 	tileContent.push_back(border2);
 
-	//Setting randomly the bool for the straight tile
-	hasObstacle = randomBool();
+
 	//if hasObstacle is true, it calls the obstacle method
 	if (hasObstacle)
 	{
@@ -118,13 +134,76 @@ void Tile::straightTile()
 	}
 }
 
+void Tile::thickerStraightTile()
+{
+	int randomTunnel = randomNumber(0, 2);
+
+	Mesh *floor = new Mesh(Mesh::CUBOID, this_floorTexture, tilePos, measures.x, measures.y, measures.z, true);
+	tileContent.push_back(floor);
+
+	switch (randomTunnel)
+	{
+	case 0:
+		middleTunnel();
+		break;
+	case 1:
+		leftTunnel();
+		break;
+	case 2:
+		rightTunnel();
+		break;
+	default:
+		middleTunnel();
+		break;
+	}
+}
+
+void Tile::leftTunnel()
+{
+	Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 3)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 1, measures.y, measures.z);
+	tileContent.push_back(border1);
+
+	Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 1)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 3, measures.y, measures.z);
+	tileContent.push_back(border2);
+
+}
+
+void Tile::rightTunnel()
+{
+	Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 1)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 3, measures.y, measures.z);
+	tileContent.push_back(border1);
+
+	Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 3)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 1, measures.y, measures.z);
+	tileContent.push_back(border2);
+
+}
+
+void Tile::middleTunnel()
+{
+	Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 2)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 2, measures.y, measures.z);
+	tileContent.push_back(border1);
+
+	Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 2)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 2, measures.y, measures.z);
+	tileContent.push_back(border2);
+
+}
+
 void Tile::bridgeTile()
 {
-	//Mesh *floor1 = new Mesh(Mesh::CUBOID, this_floorTexture, vec3(tilePos.x, tilePos.y, tilePos.z - ((measures.x / 2)) - 1), measures.x, measures.y, measures.y, true);
-	//tileContent.push_back(floor1);
+	Mesh *floor = new Mesh(Mesh::PLANE, this_floorTexture, vec3(tilePos.x, tilePos.y - (measures.y / 3), tilePos.z), measures.x, true);
+	tileContent.push_back(floor);
 
-	Mesh *bridge = new Mesh(Mesh::CUBOID, this_borderTexture, tilePos, ballSizeMargin, measures.y, measures.z - (measures.y * 2));
+	Mesh *surrounding = new Mesh(Mesh::PLANE, this_bridgeSurroundingTexture, tilePos, measures.x, false, true);
+	tileContent.push_back(surrounding);
+
+	Mesh *bridge = new Mesh(Mesh::CUBOID, this_borderTexture, tilePos, ballSizeMargin, measures.y, measures.z);
 	tileContent.push_back(bridge);
+
+	Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + (measures.y / 2), tilePos.z), measures.y, measures.y * 2, measures.z);
+	tileContent.push_back(border1);
+
+	Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + (measures.y / 2), tilePos.z), measures.y, measures.y * 2, measures.z);
+	tileContent.push_back(border2);
 }
 
 void Tile::cornerTile()
@@ -143,13 +222,55 @@ void Tile::cornerTile()
 
 }
 
+int Tile::randomNumber(int min, int max)
+{
+	// Create random engine 	
+	default_random_engine random(random_device{}());
+	uniform_int_distribution<int> range(min, max);
+	int getRandom = range(random);
+
+	return getRandom;
+}
+
 //obstacle method generating obstacles of different types
 void Tile::obstacle()
 {
+	int randomObstacle = randomNumber(0, 1);
 
-//	cout << "Has obstacle!" << endl << endl << endl;
+	switch (randomObstacle)
+	{
+	case 0:
+		cout << "Has obstacle 0!" << endl << endl << endl;
+		obstacleSlalom();
+		break;
+	case 1:
+		cout << "Has obstacle 1!" << endl << endl << endl;
+		obstacleCube();
+		break;
+	default:
+		obstacleCube();
+		break;
+	}
 
+}
 
+void Tile::obstacleCube()
+{
+	Mesh *cube = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x, tilePos.y + measures.y, tilePos.z), measures.y*2, measures.y, measures.y*2);
+	tileObstacle.push_back(cube);
+
+}
+
+void Tile::obstacleSlalom()
+{
+	Mesh *bar1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z + ballSizeMargin * 2), measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
+	tileObstacle.push_back(bar1);
+
+	Mesh *bar2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z - ballSizeMargin * 2), measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
+	tileObstacle.push_back(bar2);
+
+	////Doesn't work :(
+	//obstacleTransform.getRot().y = Mesh::toRads(90);
 }
 
 //calculation for the scale of a ramp tile, that needs to be a bit longer after rotation
@@ -172,7 +293,7 @@ double Tile::getYAfterRotation(double degreesOfRotation)
 }
 
 //draws a tile passing a shader, a transform and a camera, in order to call Update method of the shader itself and allowing different textures to be bound
-void Tile::drawTile(Shader* shader, glm::mat4 camera)
+void Tile::drawTile(Shader* shader, glm::mat4 camera, Shader* waterShader)
 {
 	//one shader can be used to render more than 1 texture, but in must be updated after different textures are bind to it.
 	//texture binded after a new shader.Update() should have index 0
@@ -187,6 +308,14 @@ void Tile::drawTile(Shader* shader, glm::mat4 camera)
 			t->Draw();
 
 		}
+		else if (t->isThisFluid == true)
+		{
+			t->thisTexture->Bind(1);
+
+
+			waterShader->Update(transform, camera);
+			t->Draw();
+		}
 		else
 		{
 			t->thisTexture->Bind(0);
@@ -198,6 +327,19 @@ void Tile::drawTile(Shader* shader, glm::mat4 camera)
 			t->Draw();
 		}
 	}
+
+	if (hasObstacle == true)
+	{
+		for (auto &o : tileObstacle)
+		{
+			o->thisTexture->Bind(0);
+
+			//updates the shader with texture and draws the obstacle
+			shader->Update(transform, camera);
+			o->Draw();
+		}
+	}
+
 }
 
 //This method is not used at the moment

@@ -10,7 +10,7 @@ Mesh::Mesh(const std::string& fileName)
 	InitMesh(model);
 }
 
-Mesh::Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2, GLfloat size3, bool isFloor)
+Mesh::Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2, GLfloat size3, bool isFloor, bool isFluid)
 {
 	//setting starting geometry properties
 	thisShape = shape;
@@ -24,6 +24,7 @@ Mesh::Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfl
 	halfSide3 = side3 / 2.0f;
 	thisTexture = new Texture(filename);
 	isThisFloor = isFloor;
+	isThisFluid = isFluid;
 
 	//calling method to create desired shape
 	chooseGeometry();
