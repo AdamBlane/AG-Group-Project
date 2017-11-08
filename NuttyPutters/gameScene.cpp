@@ -407,7 +407,7 @@ void gameScene::FillScenery()
 			{
 				// Create straight tile
 				//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
-				Tile tile(Tile::STRAIGHT, thisPos, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg");
+				Tile tile(Tile::SCENERY, thisPos, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg");
 				//tile.transform.getRot().x = -0.785398;
 				// Add to list of tiles to be rendered
 				sceneryTiles.push_back(tile);

@@ -23,7 +23,8 @@ public:
 		STRAIGHT,
 		THICKER_STRAIGHT,
 		BRIDGE,
-		CORNER
+		CORNER,
+		SCENERY
 
 	};
 
@@ -84,6 +85,7 @@ private:
 	void startTile();
 	void endTile();
 	void straightTile();
+	void sceneryTile();
 
 	void thickerStraightTile();
 	void leftTunnel();

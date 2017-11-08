@@ -57,6 +57,9 @@ void Tile::createTile()
 	case CORNER:
 		cornerTile();
 		break;
+	case SCENERY:
+		sceneryTile();
+		break;
 	default:
 		straightTile();
 		break;
@@ -132,6 +135,13 @@ void Tile::straightTile()
 	{
 		obstacle();
 	}
+}
+
+void Tile::sceneryTile()
+{
+	//Create a mesh forming the tile, then add it to a vector of Meshes
+	Mesh *floor = new Mesh(Mesh::CUBOID, this_floorTexture, tilePos, measures.x, measures.y, measures.z, true);
+	tileContent.push_back(floor);
 }
 
 void Tile::thickerStraightTile()
