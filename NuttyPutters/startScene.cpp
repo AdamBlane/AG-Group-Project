@@ -1,9 +1,8 @@
+// Externals
 
-
-
-#include "startScene.h"
-#include "windowMgr.h"
-
+// Internals
+#include "gameScene.h"
+#include "windowMgr.h" // to access singleton
 
 /// Start scene contains all render and input data for this scene
 
@@ -13,45 +12,42 @@ startScene::startScene() { }
 // Deconstructor
 startScene::~startScene() { }
 
+// Setup; does nothing atm
+void startScene::Init(GLFWwindow* win)
+{
+	// Setup texture shader
+	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
-// Draw stuff
+	// Setup target camera
+	tarCam = new target_camera();
+	tarCam->set_Posistion(vec3(0, 0, 5.0f));
+	tarCam->set_Target(vec3(0, 0, 0));
+	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+
+	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
+	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
+	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.jpg", vec3(0.0, 0.0, 0.0), 1.0f, 1.0f);
+}
+
 void startScene::Loop(GLFWwindow* win)
 {
+	// Calculate dt
+	lastFrame = thisFrame;
+	thisFrame = glfwGetTime();
+	dt = (float)(thisFrame - lastFrame);
+
+	// Scene background
+	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// Input
 	Input(win);
 
-	float ratio;
-	int width, height;
+	// Update
+	Update(win);
 
-	// Get size of window in case resized
-	glfwGetFramebufferSize(win, &width, &height);
-	ratio = width / (float)height;
-	// Make viewport match window size
-	// 0,0 = bottom left corner, takes half of screen sideways
-	glViewport(0, 0, width, height);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-	glMatrixMode(GL_MODELVIEW);
-
-	glLoadIdentity();
-	glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.0f);
-
-	glBegin(GL_TRIANGLES);
-	glColor3f(1.f, 0.f, 0.f);
-	glVertex3f(-0.6f, -0.4f, 0.f);
-	//glColor3f(0.f, 1.f, 0.f);
-	glVertex3f(0.6f, -0.4f, 0.f);
-	//glColor3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.6f, 0.f);
-	glEnd();
-
-	glfwSwapBuffers(win);
-	glfwPollEvents();
-
-	
+	// Render
+	Render(win);
 }
 
 // Act on input
@@ -89,10 +85,38 @@ void startScene::Input(GLFWwindow * win)
 	}
 }
 
-// Setup; does nothing atm
-void startScene::Init(GLFWwindow* win)
+void startScene::Update(GLFWwindow* win)
 {
-	// TODO
+	// Update target camera
+	tarCam->update(0.00001);
 }
 
+void startScene::Render(GLFWwindow* win)
+{
+	// If camera type is target camera - used for HUD elements - then
+	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
 
+	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
+	// Set depth range to near to allow for HUD elements to be rendered and drawn
+	glDepthRange(0, 0.01);
+
+	// Bind, update and draw the stroke label HUD
+	startGameLabelMesh->thisTexture->Bind(0);
+	textureShader->Update(startGameLabelTrans, hudVP);
+	startGameLabelMesh->Draw();
+
+	// Reset the depth range to allow for objects at a distance to be rendered
+	glDepthRange(0.01, 1.0);
+	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
+
+	// Render any background stuff if required here
+
+	// Fully reset depth range for next frame - REQUIRED
+	glDepthRange(0, 1.0);
+
+	// Bind texture shader
+	textureShader->Bind();
+
+	glfwSwapBuffers(win);
+	glfwPollEvents();
+}
