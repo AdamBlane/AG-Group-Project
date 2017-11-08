@@ -722,7 +722,6 @@ void gameScene::Input(GLFWwindow* window)
 		}
 	}
 
-
 	// PLAYER
 	// If P is pressed 
 	if (glfwGetKey(window, GLFW_KEY_SPACE))
@@ -783,11 +782,16 @@ void gameScene::Input(GLFWwindow* window)
 			//Pcounter *= 3; // slightly magic number (Pc isn't enough on its own)
 			// Apply to speed
 			speed += Pcounter;
-			// Reset
-			Pcounter = 0;
-			// Reset the power bar
-			powerBarTrans.getPos() = vec3(1.6, -1.625, 0.0);
-			powerBarTrans.getScale().x = 0.1f;
+			//repeat until Pcounter is reset to 0
+			while (Pcounter > 0.0)
+			{
+				//This just inverts the increasing in size and positions done before when P was pressed
+				powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
+				powerBarTrans.getPos().x -= Pcounter / 100.0f;
+				powerBarTrans.getScale().x -= Pcounter / 5.0f;
+				//Decrease Pcounter until reaches 0
+				Pcounter -= 0.5;
+			}
 			
 			// Flip
 			pPressed = false;
