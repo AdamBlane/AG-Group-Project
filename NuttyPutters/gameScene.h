@@ -38,6 +38,10 @@ public:
 	vector<int> levelSeed; // This course seed; each tile has an int id
 	int courseSize; // Total number of tiles this level
 
+	// Gameplay variables
+	GLint64 timeBeenInScene = 0; // Time from when the scene is fully loaded
+	int strokeCounter = 0;
+
 	Shader* textureShader;
 	Transform shaderTrans;		
 	int currentTile = 0; // Tracks tile player is on 
@@ -52,7 +56,7 @@ public:
 	free_camera* freeCam;	
 	float camSpeed = 2.0f; // camSpeed WAS called WASDSPEED
 	chase_camera* chaseCam;
-	float chaseCamAngle, cameraType;// for switching on/off free/chase cam
+	float chaseCamAngle, cameraType = 1;// for switching on/off free/chase cam
 	double cursor_x, cursor_y = 0.0;// For finding cursor pos on screen
 	target_camera* tarCam;
 	
@@ -85,6 +89,20 @@ public:
 	// Power Bar
 	Mesh* powerBarMesh;
 	Transform powerBarTrans;
+	// Centre Information Label
+	Mesh* centreInformationLabelMesh;
+	Transform centreInformationLabelTrans;
+	// Timer information
+	Mesh* timerFirstUnitLabelMesh;
+	Mesh* timerSecondUnitLabelMesh;
+	Mesh* timerThirdUnitLabelMesh;
+	Mesh* timerForthUnitLabelMesh;
+	Mesh* timerColonLabelMesh;
+	Transform timerFirstUnitLabelTrans;
+	Transform timerSecondUnitLabelTrans;
+	Transform timerThirdUnitLabelTrans;
+	Transform timerForthUnitLabelTrans;
+	Transform timerColonLabelTrans;
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)

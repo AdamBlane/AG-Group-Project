@@ -74,15 +74,27 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup
-	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.jpg", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
+	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\zero.png", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
 	// Player HUD Labelsetup
-	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.jpg", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
+	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.png", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
 	// Power HUD Label setup
-	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.jpg", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
+	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.png", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
 	// Power Bar Outline HUD setup
 	powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
 	// Power Bar HUD setup
 	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
+	// Centre Bar HUD setup
+	centreInformationLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\info.png", vec3(0.0, 0.0, 0.0), 2.0f, 2.0f);
+	// Timer HUD setup
+	timerFirstUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.0, 1.5, 0.0), 0.25f, 0.25f);
+	timerSecondUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(2.15, 1.5, 0.0), 0.25f, 0.25f);
+	timerThirdUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.35, 1.5, 0.0), 0.25f, 0.25f);
+	timerForthUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.5, 1.5, 0.0), 0.25f, 0.25f);
+	timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(2.25, 1.525, 0.0), 0.25f, 0.25f);
+
+	// Enable alpha blending to allow for transparency
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 // Loads either random level of certain size, or level by seed
@@ -793,6 +805,55 @@ void gameScene::Input(GLFWwindow* window)
 				Pcounter -= 0.5;
 			}
 			
+			// Increment stroke counter by one
+			strokeCounter += 1;
+
+			// Switch statement which changes the stroke counter based on how many strokes the player has taken
+			switch (strokeCounter)
+			{
+				case 0:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\zero.png");
+					break;
+				case 1:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\one.png");
+					break;
+				case 2:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\two.png");
+					break;
+				case 3:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\three.png");
+					break;
+				case 4:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\four.png");
+					break;
+				case 5:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\five.png");
+					break;
+				case 6:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\six.png");
+					break;
+				case 7:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\seven.png");
+					break;
+				case 8:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\eight.png");
+					break;
+				case 9:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nine.png");
+					break;
+				case 10:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ten.png");
+					break;
+				case 11:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\eleven.png");
+					break;
+				case 12:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\twelve.png");
+					break;
+				case 13:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+					break;
+			}
 			// Flip
 			pPressed = false;
 		} 	
@@ -803,6 +864,11 @@ void gameScene::Input(GLFWwindow* window)
 // Update positions
 void gameScene::Update(GLFWwindow* window)
 {
+	// Time been in scene - a counter which increase one second every second - is used for displaying HUDs at different points of the gameplay
+	glGetInteger64v(GL_TIMESTAMP, &timeBeenInScene);
+	timeBeenInScene = timeBeenInScene / 1000000000.0;
+	cout << timeBeenInScene << endl;
+
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
 	static double ratio_height = (quarter_pi<float>() * (1600 / 900)) / static_cast<float>(1600);
@@ -994,26 +1060,54 @@ void gameScene::Render(GLFWwindow* window)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	// Bind, update and draw the stroke label HUD
-	strokeLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(strokeLabelTrans, hudVP);
-	strokeLabelMesh->Draw();
-	// Bind, update and draw the player label HUD
-	playerLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(playerLabelTrans, hudVP);
-	playerLabelMesh->Draw();
-	// Bind, update and draw the power label HUD
-	powerLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(powerLabelTrans, hudVP);
-	powerLabelMesh->Draw();
-	// Bind, update and draw the power bar HUD
-	powerBarMesh->thisTexture->Bind(0);
-	textureShader->Update(powerBarTrans, hudVP);
-	powerBarMesh->Draw();
-	// Bind, update and draw the power bar outline HUD
-	powerBarOutlineDisplayMesh->thisTexture->Bind(0);
-	textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
-	powerBarOutlineDisplayMesh->Draw();
+	// If time in scene is less than 10 seconds then display loading message
+	if (timeBeenInScene < 10)
+	{
+		// Bind, update and draw the centre information label HUD
+		centreInformationLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationLabelTrans, hudVP);
+		centreInformationLabelMesh->Draw();
+	}
+	// Else then display remaining gameplay HUDs
+	else
+	{
+		// Bind, update and draw the stroke label HUD
+		strokeLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(strokeLabelTrans, hudVP);
+		strokeLabelMesh->Draw();
+		// Bind, update and draw the player label HUD
+		playerLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(playerLabelTrans, hudVP);
+		playerLabelMesh->Draw();
+		// Bind, update and draw the power label HUD
+		powerLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(powerLabelTrans, hudVP);
+		powerLabelMesh->Draw();
+		// Bind, update and draw the power bar HUD
+		powerBarMesh->thisTexture->Bind(0);
+		textureShader->Update(powerBarTrans, hudVP);
+		powerBarMesh->Draw();
+		// Bind, update and draw the power bar outline HUD
+		powerBarOutlineDisplayMesh->thisTexture->Bind(0);
+		textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
+		powerBarOutlineDisplayMesh->Draw();
+		// Bind, update and draw the timer HUDs
+		timerFirstUnitLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerFirstUnitLabelTrans, hudVP);
+		timerFirstUnitLabelMesh->Draw();
+		timerSecondUnitLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerSecondUnitLabelTrans, hudVP);
+		timerSecondUnitLabelMesh->Draw();
+		timerThirdUnitLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerThirdUnitLabelTrans, hudVP);
+		timerThirdUnitLabelMesh->Draw();
+		timerForthUnitLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerForthUnitLabelTrans, hudVP);
+		timerForthUnitLabelMesh->Draw();
+		timerColonLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerColonLabelTrans, hudVP);
+		timerColonLabelMesh->Draw();
+	}
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
@@ -1054,7 +1148,6 @@ void gameScene::Render(GLFWwindow* window)
 		// Draw the arrow
 		arrowMesh->Draw();
 	}
-
 
 	// WHAT is shaderTrans - it's never set to anything
 	textureShader->Update(shaderTrans, (freeCam->get_Projection() * freeCam->get_View()));

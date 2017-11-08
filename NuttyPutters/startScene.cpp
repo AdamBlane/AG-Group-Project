@@ -26,7 +26,7 @@ void startScene::Init(GLFWwindow* win)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.jpg", vec3(0.0, 0.0, 0.0), 1.0f, 1.0f);
+	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.png", vec3(0.0, 0.0, 0.0), 1.0f, 1.0f);
 }
 
 void startScene::Loop(GLFWwindow* win)
