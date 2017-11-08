@@ -72,23 +72,18 @@ public:
 	// HUD
 	// Stroke Label 
 	Mesh* strokeLabelMesh;
-	Texture* strokeLabelTexture;
 	Transform strokeLabelTrans;
 	// Power Label
 	Mesh* powerLabelMesh;
-	Texture* powerLabelTexture;
 	Transform powerLabelTrans;
 	// Player Label
 	Mesh* playerLabelMesh;
-	Texture* playerLabelTexture;
 	Transform playerLabelTrans;
 	// Power Bar Outline
 	Mesh* powerBarOutlineDisplayMesh;
-	Texture* powerBarOutlineDisplayTexture;
 	Transform powerBarOutlineDisplayTrans;
 	// Power Bar
 	Mesh* powerBarMesh;
-	Texture* powerBarTexture;
 	Transform powerBarTrans;
 
 	// Setup scene. Last seed params is optional; = denotes default value

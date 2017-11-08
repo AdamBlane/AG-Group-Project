@@ -74,25 +74,15 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup
-	strokeLabelMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(-6.0, -3.0, 0.0), 1.0f, 1.0f, 0.0f);
-	strokeLabelTexture = new Texture("..\\NuttyPutters\\one.jpg");
-	strokeLabelTrans.getScale() = vec3(0.5);
+	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.jpg", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
 	// Player HUD Labelsetup
-	playerLabelMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(-5.5, 3.0, 0.0), 2.0f, 0.5f, 0.0f);
-	playerLabelTexture = new Texture("..\\NuttyPutters\\playerone.jpg");
-	playerLabelTrans.getScale() = vec3(0.5);
+	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.jpg", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
 	// Power HUD Label setup
-	powerLabelMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(6.0, -2.75, 0.0), 2.0f, 0.5f, 0.0f);
-	powerLabelTexture = new Texture("..\\NuttyPutters\\power.jpg");
-	powerLabelTrans.getScale() = vec3(0.5);
+	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.jpg", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
 	// Power Bar Outline HUD setup
-	powerBarOutlineDisplayMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(5.0, -3.25, 0.0), 4.0f, 0.5f, 0.0f);
-	powerBarOutlineDisplayTexture = new Texture("..\\NuttyPutters\\powerbar.jpg");
-	powerBarOutlineDisplayTrans.getScale() = vec3(0.5);
+	powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
 	// Power Bar HUD setup
-	powerBarMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(5.0, -3.25, 0.0), 0.1f, 0.3f, 0.0f);
-	powerBarTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
-	powerBarTrans.getScale() = vec3(0.5);
+	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
 }
 
 // Loads either random level of certain size, or level by seed
@@ -741,6 +731,10 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			// Start counter
 			Pcounter += 0.5f;
+			// Update the power bar based on the the Pcounter value 
+			powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
+			powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
+			powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
 
 			// SET DIRECTION BASED ON CHASE CAM ANGLE
 			// If camera angle is between 0 and 90
@@ -791,6 +785,10 @@ void gameScene::Input(GLFWwindow* window)
 			speed += Pcounter;
 			// Reset
 			Pcounter = 0;
+			// Reset the power bar
+			powerBarTrans.getPos() = vec3(1.6, -1.625, 0.0);
+			powerBarTrans.getScale().x = 0.1f;
+			
 			// Flip
 			pPressed = false;
 		} 	
@@ -988,32 +986,34 @@ void gameScene::Render(GLFWwindow* window)
 	// If camera type is target camera - used for HUD elements - then
 	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
 
+	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
 	// Bind, update and draw the stroke label HUD
-	strokeLabelTexture->Bind(0);
+	strokeLabelMesh->thisTexture->Bind(0);
 	textureShader->Update(strokeLabelTrans, hudVP);
 	strokeLabelMesh->Draw();
 	// Bind, update and draw the player label HUD
-	playerLabelTexture->Bind(0);
+	playerLabelMesh->thisTexture->Bind(0);
 	textureShader->Update(playerLabelTrans, hudVP);
 	playerLabelMesh->Draw();
 	// Bind, update and draw the power label HUD
-	powerLabelTexture->Bind(0);
+	powerLabelMesh->thisTexture->Bind(0);
 	textureShader->Update(powerLabelTrans, hudVP);
 	powerLabelMesh->Draw();
 	// Bind, update and draw the power bar HUD
-	powerBarTexture->Bind(0);
+	powerBarMesh->thisTexture->Bind(0);
 	textureShader->Update(powerBarTrans, hudVP);
 	powerBarMesh->Draw();
 	// Bind, update and draw the power bar outline HUD
-	powerBarOutlineDisplayTexture->Bind(0);
+	powerBarOutlineDisplayMesh->thisTexture->Bind(0);
 	textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
 	powerBarOutlineDisplayMesh->Draw();
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
+	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
 
 	// Bind texture shader
 	textureShader->Bind();
