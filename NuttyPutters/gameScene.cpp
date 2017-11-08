@@ -25,7 +25,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
 	
-	// Record desired course size if no seed given
+	// Record desired course size 
 	courseSize = courseLength;
 
 	// Load game

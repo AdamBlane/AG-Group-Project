@@ -7,7 +7,7 @@
 #include <sstream>
 #include <chrono>
 #include <random>
-#include <sstream>
+
 // Internals
 #include "Mesh.h"
 #include "Transform.h"
@@ -28,10 +28,10 @@ public:
 	// Create a texture shader which is used to bind textures to geometry
 	Shader* textureShader;
 
-	// Used to lock framerate
+	// Used to lock frame rate
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
-	float dt = 0.016; // Lock to 60fps
+	float dt = 0.016; // For first frame, will be updated thereafter
 
 	// HUD geometry
 	// Start Game Label 

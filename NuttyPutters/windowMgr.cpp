@@ -5,7 +5,7 @@
 #include "windowMgr.h"
 
 /// windowMgr is a singleton class, accessed by all the scene files
-/// It initialises and sets up the window, & contains the Update loop
+/// It initialises and sets up the window, & contains the main game loop
 /// On window close, it runs through closing steps
 /// Called from main.cpp
 
@@ -39,7 +39,7 @@ GLFWwindow* windowMgr::Init()
 
 
 	// Create window
-	win = glfwCreateWindow(1600, 900, "Test", NULL, NULL);
+	win = glfwCreateWindow(1600, 900, "Nutty Putters", NULL, NULL);
 
 	// Check window was created successfully
 	if (!win)

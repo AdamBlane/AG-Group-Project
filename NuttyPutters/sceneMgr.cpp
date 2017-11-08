@@ -4,7 +4,7 @@
 /// Scene Manager is a property of windowMgr
 /// It tracks gamestate, called by scene files on particular input
 
-// Constructor
+// Constructor; set to start scene
 sceneMgr::sceneMgr()
 {
 	// On construction, first scene is start menu
@@ -54,10 +54,5 @@ void sceneMgr::changeScene(unsigned int newScene, int courseLength, string seed)
 	}
 }
 
-// Returns current scene number
-unsigned int sceneMgr::getScene()
-{
-	return curScene;
-}
 
 

@@ -7,7 +7,7 @@
 #include <sstream>
 #include <chrono>
 #include <random>
-#include <sstream>
+
 // Internals
 #include "courseGenV2.h"
 #include "Shader.h"
@@ -34,16 +34,18 @@ public:
 	// General game variables
 	vector<BaseTile> algTiles; // Game tiles list; these tiles have position data (by M)
 	vector<Tile> tiles; // Tile meshes to be rendered, created by V
-	vector<Tile> sceneryTiles; // sceneryTiles to be renederd
+	vector<Tile> sceneryTiles; // sceneryTiles to be renedered
 	vector<int> levelSeed; // This course seed; each tile has an int id
 	int courseSize; // Total number of tiles this level
 
 	Shader* textureShader;
 	Transform shaderTrans;		
 	int currentTile = 0; // Tracks tile player is on 
+	// Track fps to give dt
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
-	float dt = 0.016; // Lock to 60fps
+	float dt = 0.016; // First frame; reset thereafter
+	// Rename
 	bool pPressed = false; // Prevent shooting ball again whilst already moving
 	float Pcounter; // This is a force counter (TODO: rename)
 	bool levelSaved = false; // Prevent saving same level more than once

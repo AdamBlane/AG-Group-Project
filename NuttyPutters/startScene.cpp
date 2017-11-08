@@ -12,7 +12,7 @@ startScene::startScene() { }
 // Deconstructor
 startScene::~startScene() { }
 
-// Setup; does nothing atm
+// Setup
 void startScene::Init(GLFWwindow* win)
 {
 	// Setup texture shader
