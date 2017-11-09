@@ -30,7 +30,7 @@ public:
 
 	// Scene get/set; optional param: difficulty via course size, load game seed string
 	void changeScene(unsigned int newScene, int courseLength = 12, string seed = "seed"); 
-	unsigned int getScene();
+	unsigned int getScene() { return curScene; }
 
 
 };

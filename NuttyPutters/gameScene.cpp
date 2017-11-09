@@ -11,7 +11,11 @@ gameScene::~gameScene() { }
 
 // Setup scene; seed is an optional param passed in by loadGameScene
 void gameScene::Init(GLFWwindow* window, int courseLength, string seed) 
-{									   //intercourselimit ;p
+{	
+	keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+	keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+	keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+	keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -25,7 +29,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
 	
-	// Record desired course size if no seed given
+	// Record desired course size 
 	courseSize = courseLength;
 
 	// Load game
@@ -66,6 +70,23 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	chaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	chaseCam->set_springiness(0.2f);
 	chaseCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+
+	tarCam = new target_camera();
+	tarCam->set_Posistion(vec3(0, 0, 5.0f));
+	tarCam->set_Target(vec3(0, 0, 0));
+	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+
+	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
+	// Stroke HUD Label setup
+	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.jpg", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
+	// Player HUD Labelsetup
+	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.jpg", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
+	// Power HUD Label setup
+	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.jpg", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
+	// Power Bar Outline HUD setup
+	powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
+	// Power Bar HUD setup
+	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
 }
 
 // Loads either random level of certain size, or level by seed
@@ -102,6 +123,8 @@ void gameScene::LoadGame(string seed)
 	} // end if seed is default
 	else // this has been given a seed value
 	{
+		// Prevent this level being saved again
+		levelSaved = true;
 		// Parse into ints as above
 		for (int c = 0; c < seed.length(); ++c)
 		{
@@ -390,7 +413,7 @@ void gameScene::FillScenery()
 			{
 				// Create straight tile
 				//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
-				Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg", thisPos);		
+				Tile tile(Tile::SCENERY, thisPos, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg");
 				//tile.transform.getRot().x = -0.785398;
 				// Add to list of tiles to be rendered
 				sceneryTiles.push_back(tile);
@@ -412,7 +435,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 7)
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y += 1.8;
@@ -423,7 +446,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 8)
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y -= 1.8;
@@ -433,7 +456,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 0) // Start
 		{
 			// Create start tile
-			Tile tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::START, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Start tile needs rotating 180 (should always face down)
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -442,14 +465,14 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 1) // Straight V
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 2) // Straight H
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Straight needs rotating by 90, since it's vertical by default
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -458,7 +481,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 3) // Corner BL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -467,7 +490,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 4) // Corner BR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -476,14 +499,14 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 5) // Corner TL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 6) // Corner TR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = -1.5708;
 			// Add to list of tiles to be rendered
@@ -492,7 +515,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 9) // end
 		{
 			// Create start tile
-			Tile tile(Tile::END, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::END, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Consult direction to determine how much to rotate
 			if (t.outDir.going_up)
 			{
@@ -520,6 +543,11 @@ void gameScene::SetupTilesToBeDrawn()
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
+	// Calculate dt
+	lastFrame = thisFrame;
+	thisFrame = glfwGetTime();
+	dt = (float)(thisFrame - lastFrame);
+
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -541,6 +569,7 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
+
 	// Exit
 	if (glfwGetKey(window, GLFW_KEY_B))
 	{
@@ -555,8 +584,6 @@ void gameScene::Input(GLFWwindow* window)
 		bool paused = true;
 		while (paused)
 		{			
-			// Change scene bg colour while paused? 
-
 			// Need this or we get stuck in loop
 			glfwPollEvents();
 			// Save this level (move this code later to end of game, so we can save score with it)
@@ -575,6 +602,39 @@ void gameScene::Input(GLFWwindow* window)
 					saves << endl;
 					cout << "Level saved" << endl;
 					levelSaved = true;
+
+					// Also save image of level
+					//EmptyClipboard();
+					// Alt press below ensures only game window is captured
+					keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+					keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+					keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+					keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+
+
+					// The above saves the game window capture to clipboard
+					// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
+					HWND hwnd = GetDesktopWindow(); 
+					if (!OpenClipboard(hwnd))
+						cout << "Error with HWND" << endl;
+					OpenClipboard(NULL);
+					HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
+					if (hBitmap == NULL)
+						cout << "Error with clipboard bmp data" << endl;
+					CloseClipboard();
+					CImage image;
+					image.Attach(hBitmap);
+					//image.Save("test.bmp", Gdiplus::ImageFormatBMP);
+					// Build string to save with level seed name
+					string fileName;
+					for (auto &i : levelSeed)
+					{
+						fileName += to_string(i);
+					}
+					fileName += ".bmp";
+					image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
+					cout << "course image saved as " << fileName << endl;	
+	
 				}
 
 			}
@@ -638,6 +698,12 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			freeCamPos = (vec3(0, -camSpeed * dt, 0));
 		}
+		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
+		{
+			camSpeed = 10.0f;
+		}
+		else
+			camSpeed = 2.0f;
 
 		// Move camera by new pos after input
 		freeCam->move(freeCamPos);
@@ -694,7 +760,6 @@ void gameScene::Input(GLFWwindow* window)
 		}
 	}
 
-
 	// PLAYER
 	// If P is pressed 
 	if (glfwGetKey(window, GLFW_KEY_SPACE))
@@ -703,6 +768,10 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			// Start counter
 			Pcounter += 0.5f;
+			// Update the power bar based on the the Pcounter value 
+			powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
+			powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
+			powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
 
 			// SET DIRECTION BASED ON CHASE CAM ANGLE
 			// If camera angle is between 0 and 90
@@ -718,26 +787,21 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				// x = -cos(theta - 90), z = -sin(theta - 90)
 				gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
-
 			}
 			// If camera angle is between 180 and 270
 			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
 			{
 				// x = sin(theta - 180), z = -cos(theta - 180)
 				gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
-
 			}
 			// If camera angle is anything else
 			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
 			{
 				// x = cos(theta - 270), z = sin(theta- 270)
 				gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
-
 			}
-
 			pPressed = true;
 		}
-
 	}
 
 	// When P is realesed
@@ -751,8 +815,17 @@ void gameScene::Input(GLFWwindow* window)
 			//Pcounter *= 3; // slightly magic number (Pc isn't enough on its own)
 			// Apply to speed
 			speed += Pcounter;
-			// Reset
-			Pcounter = 0;
+			//repeat until Pcounter is reset to 0
+			while (Pcounter > 0.0)
+			{
+				//This just inverts the increasing in size and positions done before when P was pressed
+				powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
+				powerBarTrans.getPos().x -= Pcounter / 100.0f;
+				powerBarTrans.getScale().x -= Pcounter / 5.0f;
+				//Decrease Pcounter until reaches 0
+				Pcounter -= 0.5;
+			}
+			
 			// Flip
 			pPressed = false;
 		} 	
@@ -785,6 +858,9 @@ void gameScene::Update(GLFWwindow* window)
 	// to rotate along with the ball! 
 	chaseCam->move(golfBallTransform.getPos(), golfBallTransform.getRot());
 	chaseCam->update(0.00001);
+
+	// Update target camera
+	tarCam->update(0.00001);
 
 	// PLAYER UPDATE
 	// Velocity is direction by speed by delta time
@@ -944,6 +1020,37 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		mvp = chaseCam->get_Projection() * chaseCam->get_View();
 	}
+	// If camera type is target camera - used for HUD elements - then
+	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
+
+	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
+	// Set depth range to near to allow for HUD elements to be rendered and drawn
+	glDepthRange(0, 0.01);
+
+	// Bind, update and draw the stroke label HUD
+	strokeLabelMesh->thisTexture->Bind(0);
+	textureShader->Update(strokeLabelTrans, hudVP);
+	strokeLabelMesh->Draw();
+	// Bind, update and draw the player label HUD
+	playerLabelMesh->thisTexture->Bind(0);
+	textureShader->Update(playerLabelTrans, hudVP);
+	playerLabelMesh->Draw();
+	// Bind, update and draw the power label HUD
+	powerLabelMesh->thisTexture->Bind(0);
+	textureShader->Update(powerLabelTrans, hudVP);
+	powerLabelMesh->Draw();
+	// Bind, update and draw the power bar HUD
+	powerBarMesh->thisTexture->Bind(0);
+	textureShader->Update(powerBarTrans, hudVP);
+	powerBarMesh->Draw();
+	// Bind, update and draw the power bar outline HUD
+	powerBarOutlineDisplayMesh->thisTexture->Bind(0);
+	textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
+	powerBarOutlineDisplayMesh->Draw();
+
+	// Reset the depth range to allow for objects at a distance to be rendered
+	glDepthRange(0.01, 1.0);
+	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
 
 	// Bind texture shader
 	textureShader->Bind();
@@ -984,6 +1091,9 @@ void gameScene::Render(GLFWwindow* window)
 
 	// WHAT is shaderTrans - it's never set to anything
 	textureShader->Update(shaderTrans, (freeCam->get_Projection() * freeCam->get_View()));
+
+	// Fully reset depth range for next frame - REQUIRED
+	glDepthRange(0, 1.0);
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();

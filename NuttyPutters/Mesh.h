@@ -56,7 +56,7 @@ public:
 	//PLANE: only 1 side is necessary
 	//BOX: only 1 side is necessary
 	//CUBOID: all 3 sides are necessary
-	Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f, bool isFloor = false);
+	Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f, bool isFloor = false, bool isFluid = false);
 
 	//Get position of geometry created by geometry builder
 	glm::vec3 getGeomPos();
@@ -66,7 +66,11 @@ public:
 
 	//Texture for each Mesh
 	Texture *thisTexture;
+
+	std::string filename;
+
 	bool isThisFloor = false;
+	bool isThisFluid = false;
 
 	void InitMesh(const IndexedModel& model);
 
@@ -92,8 +96,6 @@ private:
 
 	//this is broken. DON'T USE IT!!!!
 	void golfHole();
-	// Texture filename
-	std::string filename;
 
 
 	void generateMesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);

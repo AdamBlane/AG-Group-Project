@@ -6,10 +6,6 @@
 // Internals
 #include "sceneMgr.h"
 
-
-
-
-
 class windowMgr
 {
 private:
