@@ -49,7 +49,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	switch (button_manager)
 	{
 		case 1:
-			backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
+			backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
 			break;
 	}
 	if (glfwGetKey(win, GLFW_KEY_SPACE) && total_time >= 5.0f)
