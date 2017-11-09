@@ -557,10 +557,7 @@ void gameScene::SetupTilesToBeDrawn()
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
-	// Calculate dt
-	lastFrame = thisFrame;
-	thisFrame = glfwGetTime();
-	dt = (float)(thisFrame - lastFrame);
+
 
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
@@ -597,7 +594,7 @@ void gameScene::Input(GLFWwindow* window)
 		cout << "game paused" << endl;
 		bool paused = true;
 		while (paused)
-		{			
+		{		
 			// Need this or we get stuck in loop
 			glfwPollEvents();
 			// Save this level (move this code later to end of game, so we can save score with it)
@@ -850,6 +847,13 @@ void gameScene::Input(GLFWwindow* window)
 // Update positions
 void gameScene::Update(GLFWwindow* window)
 {
+	// Calculate dt
+	lastFrame = thisFrame;
+	thisFrame = glfwGetTime();
+	dt = (float)(thisFrame - lastFrame);
+	if (dt > 0.03)
+		dt = 0.016;
+
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
 	static double ratio_height = (quarter_pi<float>() * (1600 / 900)) / static_cast<float>(1600);
