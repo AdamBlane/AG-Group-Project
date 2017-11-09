@@ -7,6 +7,9 @@
 #include <sstream>
 #include <chrono>
 #include <random>
+#include <windows.h>
+#include <atlimage.h>
+#include <gdiplusimaging.h>
 
 // Internals
 #include "courseGenV2.h"

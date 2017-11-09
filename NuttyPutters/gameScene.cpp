@@ -11,7 +11,11 @@ gameScene::~gameScene() { }
 
 // Setup scene; seed is an optional param passed in by loadGameScene
 void gameScene::Init(GLFWwindow* window, int courseLength, string seed) 
-{									
+{	
+	keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+	keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+	keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+	keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -119,6 +123,8 @@ void gameScene::LoadGame(string seed)
 	} // end if seed is default
 	else // this has been given a seed value
 	{
+		// Prevent this level being saved again
+		levelSaved = true;
 		// Parse into ints as above
 		for (int c = 0; c < seed.length(); ++c)
 		{
@@ -563,6 +569,7 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
+
 	// Exit
 	if (glfwGetKey(window, GLFW_KEY_B))
 	{
@@ -577,8 +584,6 @@ void gameScene::Input(GLFWwindow* window)
 		bool paused = true;
 		while (paused)
 		{			
-			// Change scene bg colour while paused? 
-
 			// Need this or we get stuck in loop
 			glfwPollEvents();
 			// Save this level (move this code later to end of game, so we can save score with it)
@@ -597,6 +602,39 @@ void gameScene::Input(GLFWwindow* window)
 					saves << endl;
 					cout << "Level saved" << endl;
 					levelSaved = true;
+
+					// Also save image of level
+					//EmptyClipboard();
+					// Alt press below ensures only game window is captured
+					keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+					keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+					keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+					keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+
+
+					// The above saves the game window capture to clipboard
+					// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
+					HWND hwnd = GetDesktopWindow(); 
+					if (!OpenClipboard(hwnd))
+						cout << "Error with HWND" << endl;
+					OpenClipboard(NULL);
+					HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
+					if (hBitmap == NULL)
+						cout << "Error with clipboard bmp data" << endl;
+					CloseClipboard();
+					CImage image;
+					image.Attach(hBitmap);
+					//image.Save("test.bmp", Gdiplus::ImageFormatBMP);
+					// Build string to save with level seed name
+					string fileName;
+					for (auto &i : levelSeed)
+					{
+						fileName += to_string(i);
+					}
+					fileName += ".bmp";
+					image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
+					cout << "course image saved as " << fileName << endl;	
+	
 				}
 
 			}
@@ -749,26 +787,21 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				// x = -cos(theta - 90), z = -sin(theta - 90)
 				gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
-
 			}
 			// If camera angle is between 180 and 270
 			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
 			{
 				// x = sin(theta - 180), z = -cos(theta - 180)
 				gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
-
 			}
 			// If camera angle is anything else
 			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
 			{
 				// x = cos(theta - 270), z = sin(theta- 270)
 				gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
-
 			}
-
 			pPressed = true;
 		}
-
 	}
 
 	// When P is realesed
