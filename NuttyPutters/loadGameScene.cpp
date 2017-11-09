@@ -10,6 +10,19 @@ loadGameScene::~loadGameScene() { }
 // Setup scene; display choice saved games
 void loadGameScene::Init(GLFWwindow* win)
 {
+	// Setup texture shader
+	textureShader = new Shader("..\\NuttyPutters\\textureShader");
+
+	// Setup target camera
+	tarCam = new target_camera();
+	tarCam->set_Posistion(vec3(0, 0, 5.0f));
+	tarCam->set_Target(vec3(0, 0, 0));
+	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+
+	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
+	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
+	background = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\optbackground.png", vec3(0.0, 0.0, -1.0), 9.5f, 5.5f);
+
 	// Load images into grid
 	cout << "Load Game Screen" << endl;
 
@@ -31,7 +44,8 @@ void loadGameScene::Loop(GLFWwindow* win)
 {
 	// Input
 	Input(win);
-
+	//upadate
+	Update(win);
 	// Render
 	Render(win);
 
@@ -97,36 +111,36 @@ void loadGameScene::Input(GLFWwindow* win)
 	
 }
 
+void loadGameScene::Update(GLFWwindow* win)
+{
+	// Update target camera
+	tarCam->update(0.00001);
+}
 // Draw stuff
 void loadGameScene::Render(GLFWwindow* win)
 {
-	float ratio;
-	int width, height;
+	// If camera type is target camera - used for HUD elements - then
+	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
 
-	// Get size of window in case resized
-	glfwGetFramebufferSize(win, &width, &height);
-	ratio = width / (float)height;
-	// Make viewport match window size
-	// 0,0 = bottom left corner, takes half of screen sideways
-	glViewport(0, 0, width, height);
-	glClear(GL_COLOR_BUFFER_BIT);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-	glMatrixMode(GL_MODELVIEW);
+	glDepthRange(0, 0.01);
 
-	glLoadIdentity();
-	glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.0f);
+	background->thisTexture->Bind(0);
+	textureShader->Update(backgroundTrans, hudVP);
+	background->Draw();
 
-	glBegin(GL_TRIANGLES);
-	glColor3f(1.f, 0.f, 0.f);
-	glVertex3f(-0.6f, -0.4f, 0.f);
-	glColor3f(0.f, 1.f, 0.f);
-	glVertex3f(0.6f, -0.4f, 0.f);
-	//glColor3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.6f, 0.f);
-	glEnd();
+	/*backButton->thisTexture->Bind(0);
+	textureShader->Update(backButtonTrans, hudVP);
+	backButton->Draw();*/
+
+	// Reset the depth range to allow for objects at a distance to be rendered
+	glDepthRange(0.01, 1.0);
+
+	// Fully reset depth range for next frame - REQUIRED
+	glDepthRange(0, 1.0);
+
+	// Bind texture shader
+	textureShader->Bind();
 
 	glfwSwapBuffers(win);
 	glfwPollEvents();

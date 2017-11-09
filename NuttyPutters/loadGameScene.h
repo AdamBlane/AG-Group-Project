@@ -68,7 +68,7 @@ public:
 	// Setup
 	void Init(GLFWwindow* win);
 	// Update
-	//void Update(GLFWwindow* window);
+	void Update(GLFWwindow* window);
 	// Render
 	void Render(GLFWwindow* window);
 
