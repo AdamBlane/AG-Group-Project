@@ -53,7 +53,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	arrowTransform.getScale() = vec3(0.5);
 
-
 	// Setup cameras
 	freeCam = new free_camera();
 	freeCam->set_Posistion(vec3(0, 10, -10));
@@ -84,13 +83,16 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Power Bar HUD setup
 	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
 	// Centre Bar HUD setup
-	centreInformationLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\info.png", vec3(0.0, 0.0, 0.0), 2.0f, 2.0f);
+	centreInformationHeaderLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hole1.png", vec3(0.0, 1.0, 0.0), 4.0f, 2.0f);
 	// Timer HUD setup
 	timerFirstUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.0, 1.5, 0.0), 0.25f, 0.25f);
 	timerSecondUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(2.15, 1.5, 0.0), 0.25f, 0.25f);
 	timerThirdUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.35, 1.5, 0.0), 0.25f, 0.25f);
 	timerForthUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.5, 1.5, 0.0), 0.25f, 0.25f);
 	timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(2.25, 1.525, 0.0), 0.25f, 0.25f);
+
+	// Set the amount of time the user has to complete the hole
+	holeTimer = 120;
 
 	// Enable alpha blending to allow for transparency
 	glEnable(GL_BLEND);
@@ -358,6 +360,7 @@ void gameScene::LoadGame(string seed)
 			end.SetCoords(curCoords);
 			end.outDir = algTiles.back().outDir;
 			algTiles.push_back(end);
+
 			break;
 		}
 
@@ -543,7 +546,6 @@ void gameScene::SetupTilesToBeDrawn()
 			tiles.push_back(tile);
 		}
 	}
-
 }
 
 // Main game loop 
@@ -610,7 +612,6 @@ void gameScene::Input(GLFWwindow* window)
 					cout << "Level saved" << endl;
 					levelSaved = true;
 				}
-
 			}
 
 			// Unpause
@@ -632,13 +633,18 @@ void gameScene::Input(GLFWwindow* window)
 		// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
 		freeCam->set_Posistion(chaseCam->get_Posistion());
 	}
-
 	// If button two is pressed change to chase camera
 	if (glfwGetKey(window, GLFW_KEY_2))
 	{
 		// Set camera version to chase camera
 		cout << "Chase Camera selected" << endl;
 		cameraType = 1;
+	}
+
+	// If the X button is pressed then continue on with game -used for HUD elements
+	if (glfwGetKey(window, GLFW_KEY_X))
+	{
+		continuePressed = true;
 	}
 
 	// FREE CAM controls
@@ -677,7 +683,9 @@ void gameScene::Input(GLFWwindow* window)
 			camSpeed = 10.0f;
 		}
 		else
+		{
 			camSpeed = 2.0f;
+		}
 
 		// Move camera by new pos after input
 		freeCam->move(freeCamPos);
@@ -721,7 +729,6 @@ void gameScene::Input(GLFWwindow* window)
 			chaseCam->zoom_in(camSpeed * dt * 0.5);
 		}
 
-
 		// If chase camera angle is greater than 360 reset to 0
 		if (chaseCamAngle > 6.28319)
 		{
@@ -749,7 +756,7 @@ void gameScene::Input(GLFWwindow* window)
 
 			// SET DIRECTION BASED ON CHASE CAM ANGLE
 			// If camera angle is between 0 and 90
-			if (chaseCamAngle > 0 && chaseCamAngle < 1.5708)
+			if (chaseCamAngle >= 0 && chaseCamAngle < 1.5708)
 			{
 				// Update the golf ball position and the arrow position
 				// x = -sin(theta), z = cos(theta)
@@ -761,26 +768,21 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				// x = -cos(theta - 90), z = -sin(theta - 90)
 				gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
-
 			}
 			// If camera angle is between 180 and 270
 			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
 			{
 				// x = sin(theta - 180), z = -cos(theta - 180)
 				gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
-
 			}
 			// If camera angle is anything else
 			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
 			{
 				// x = cos(theta - 270), z = sin(theta- 270)
 				gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
-
 			}
-
 			pPressed = true;
 		}
-
 	}
 
 	// When P is realesed
@@ -864,10 +866,9 @@ void gameScene::Input(GLFWwindow* window)
 // Update positions
 void gameScene::Update(GLFWwindow* window)
 {
-	// Time been in scene - a counter which increase one second every second - is used for displaying HUDs at different points of the gameplay
-	glGetInteger64v(GL_TIMESTAMP, &timeBeenInScene);
-	timeBeenInScene = timeBeenInScene / 1000000000.0;
-	cout << timeBeenInScene << endl;
+	currentTimeInScene = glfwGetTime();
+	timeRemainingInSeconds = holeTimer - currentTimeInScene;
+	//cout << "Time the user has left: " << timeRemainingInSeconds << endl;
 
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
@@ -920,9 +921,134 @@ void gameScene::Update(GLFWwindow* window)
 	golfBallTransform.getPos() += gbVelocity;
 	arrowTransform.getPos() += gbVelocity;
 
-	
-}
+	timeRemainingInMinutes = timeRemainingInSeconds / 60;
+	timeRemainingInTenths = (timeRemainingInSeconds - (timeRemainingInMinutes * 60)) / 10;
+	timeRemainingInSeconds = timeRemainingInSeconds - (timeRemainingInMinutes * 60) - (timeRemainingInTenths * 10);
+	//cout << "Mins and secs: " << timeRemainingInMinutes << " " << timeRemainingInTenths << " " << timeRemainingInSeconds << endl;
 
+	switch (timeRemainingInMinutes)
+	{
+		case 0:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+			break;
+		case 1:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+			break;
+		case 2:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+			break;
+		case 3:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+			break;
+		case 4:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+			break;
+		case 5:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+			break;
+		case 6:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+			break;
+		case 7:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+			break;
+		case 8:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+			break;
+		case 9:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+			break;
+		default:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+			break;
+	}
+
+	switch (timeRemainingInTenths)
+	{
+	case 0:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+		break;
+	case 1:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+		break;
+	case 2:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+		break;
+	case 3:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+		break;
+	case 4:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+		break;
+	case 5:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+		break;
+	case 6:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+		break;
+	case 7:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+		break;
+	case 8:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+		break;
+	case 9:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+		break;
+	default:
+		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+		break;
+	}
+
+	switch (timeRemainingInSeconds)
+	{
+	case 0:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+		break;
+	case 1:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+		break;
+	case 2:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+		break;
+	case 3:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+		break;
+	case 4:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+		break;
+	case 5:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+		break;
+	case 6:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+		break;
+	case 7:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+		break;
+	case 8:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+		break;
+	case 9:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+		break;
+	default:
+		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+		break;
+	}
+
+	if (timeRemainingInSeconds < 0)
+	{
+		cout << "Unlucky. You ran out of time!" << endl;
+		hasUserCompletedHole = true;
+		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+	}
+	if (strokeCounter > 12)
+	{
+		cout << "Unlucky. You ran out of strokes!" << endl;
+		hasUserCompletedHole = true;
+	}
+}
 
 // Tracks current tile player is on (TODO improve performance)
 // Calls collision checking code of tile player is on
@@ -1031,7 +1157,7 @@ void gameScene::Collisions()
 			EndTile end;
 			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			end.outDir = algTiles.at(currentTile).outDir;
-			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed);
+			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed, hasUserCompletedHole);
 			
 			break;
 		}
@@ -1060,13 +1186,13 @@ void gameScene::Render(GLFWwindow* window)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	// If time in scene is less than 10 seconds then display loading message
-	if (timeBeenInScene < 10)
+	// If the continue button equals false then display centre information
+	if (!continuePressed && !hasUserCompletedHole)
 	{
 		// Bind, update and draw the centre information label HUD
-		centreInformationLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationLabelTrans, hudVP);
-		centreInformationLabelMesh->Draw();
+		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
+		centreInformationHeaderLabelMesh->Draw();
 	}
 	// Else then display remaining gameplay HUDs
 	else

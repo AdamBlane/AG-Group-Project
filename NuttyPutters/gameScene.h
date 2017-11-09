@@ -40,7 +40,13 @@ public:
 
 	// Gameplay variables
 	GLint64 timeBeenInScene = 0; // Time from when the scene is fully loaded
-	int strokeCounter = 0;
+	int strokeCounter = 0; // Counts the amount of strokes the player takes
+	bool continuePressed = false; // Variable used to see if the user has pressed a key - used for HUDs
+	int holeTimer = 0; // The amount time the user to get the ball in the hole
+	int timeRemainingInSeconds = 0, timeRemainingInTenths = 0, timeRemainingInMinutes = 0;
+	int currentTimeInScene; // Current time since scene was loaded
+	vector<int> userScore;
+	bool hasUserCompletedHole = false;
 
 	Shader* textureShader;
 	Transform shaderTrans;		
@@ -90,8 +96,8 @@ public:
 	Mesh* powerBarMesh;
 	Transform powerBarTrans;
 	// Centre Information Label
-	Mesh* centreInformationLabelMesh;
-	Transform centreInformationLabelTrans;
+	Mesh* centreInformationHeaderLabelMesh;
+	Transform centreInformationHeaderLabelTrans;
 	// Timer information
 	Mesh* timerFirstUnitLabelMesh;
 	Mesh* timerSecondUnitLabelMesh;
