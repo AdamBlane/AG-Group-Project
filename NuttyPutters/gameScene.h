@@ -95,9 +95,13 @@ public:
 	// Power Bar
 	Mesh* powerBarMesh;
 	Transform powerBarTrans;
-	// Centre Information Label
+	// Centre Information Labels
 	Mesh* centreInformationHeaderLabelMesh;
 	Transform centreInformationHeaderLabelTrans;
+	Mesh* centreInformationFooterOneLabelMesh;
+	Transform centreInformationFooterOneLabelTrans;
+	Mesh* centreInformationFooterTwoLabelMesh;
+	Transform centreInformationFooterTwoLabelTrans;
 	// Timer information
 	Mesh* timerFirstUnitLabelMesh;
 	Mesh* timerSecondUnitLabelMesh;

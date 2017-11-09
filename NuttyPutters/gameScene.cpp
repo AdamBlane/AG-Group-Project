@@ -75,7 +75,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Stroke HUD Label setup
 	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\zero.png", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
 	// Player HUD Labelsetup
-	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.png", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
+	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.png", vec3(-2.75, 1.7, 0.0), 1.0f, 0.25f);
 	// Power HUD Label setup
 	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.png", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
 	// Power Bar Outline HUD setup
@@ -83,13 +83,15 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Power Bar HUD setup
 	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
 	// Centre Bar HUD setup
-	centreInformationHeaderLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hole1.png", vec3(0.0, 1.0, 0.0), 4.0f, 2.0f);
+	centreInformationHeaderLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hole1.png", vec3(0.0, 0.5, 0.0), 4.0f, 2.0f);
+	centreInformationFooterOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\par4.png", vec3(0.0, -0.5, 0.0), 2.0f, 0.5f);
+	centreInformationFooterTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\timetwo.png", vec3(0.0, -1.0, 0.0), 2.0f, 0.5f);;
 	// Timer HUD setup
-	timerFirstUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.0, 1.5, 0.0), 0.25f, 0.25f);
-	timerSecondUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(2.15, 1.5, 0.0), 0.25f, 0.25f);
-	timerThirdUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.35, 1.5, 0.0), 0.25f, 0.25f);
-	timerForthUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.5, 1.5, 0.0), 0.25f, 0.25f);
-	timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(2.25, 1.525, 0.0), 0.25f, 0.25f);
+	timerFirstUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.8, 1.7, 0.0), 0.25f, 0.25f);
+	timerSecondUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(2.95, 1.7, 0.0), 0.25f, 0.25f);
+	timerThirdUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.15, 1.7, 0.0), 0.25f, 0.25f);
+	timerForthUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.3, 1.7, 0.0), 0.25f, 0.25f);
+	timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(3.05, 1.725, 0.0), 0.25f, 0.25f);
 
 	// Set the amount of time the user has to complete the hole
 	holeTimer = 120;
@@ -1157,7 +1159,7 @@ void gameScene::Collisions()
 			EndTile end;
 			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			end.outDir = algTiles.at(currentTile).outDir;
-			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed, hasUserCompletedHole);
+			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed);
 			
 			break;
 		}
@@ -1193,6 +1195,12 @@ void gameScene::Render(GLFWwindow* window)
 		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
 		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
 		centreInformationHeaderLabelMesh->Draw();
+		centreInformationFooterOneLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationFooterOneLabelTrans, hudVP);
+		centreInformationFooterOneLabelMesh->Draw();
+		centreInformationFooterTwoLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationFooterTwoLabelTrans, hudVP);
+		centreInformationFooterTwoLabelMesh->Draw();
 	}
 	// Else then display remaining gameplay HUDs
 	else
