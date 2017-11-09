@@ -33,6 +33,10 @@ public:
 	// Deconstructor
 	~gameScene();
 
+	//Trying Skybox
+	Mesh* sky;
+	Transform skyTransform;
+	Shader* skyShader;
 
 	// General game variables
 	vector<BaseTile> algTiles; // Game tiles list; these tiles have position data (by M)

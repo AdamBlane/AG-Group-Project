@@ -44,6 +44,17 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
+	vector<string> filenames;
+	//negx and posx are inverted (mistery)
+	filenames.push_back("..\\NuttyPutters\\skyboxes\\left.png");	//negx
+	filenames.push_back("..\\NuttyPutters\\skyboxes\\right.png");	//posx
+	filenames.push_back("..\\NuttyPutters\\skyboxes\\top.png");		//posy
+	filenames.push_back("..\\NuttyPutters\\skyboxes\\bot.png");		//negy
+	filenames.push_back("..\\NuttyPutters\\skyboxes\\back.png");	//posz
+	filenames.push_back("..\\NuttyPutters\\skyboxes\\front.png");	//negz
+
+	sky = new Mesh(filenames);
+	skyShader = new Shader("..\\NuttyPutters\\skyShader");
 
 	// Add the golf ball to scene
 	golfBallMesh = new Mesh("..\\NuttyPutters\\sphere.obj");
@@ -87,6 +98,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
 	// Power Bar HUD setup
 	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 // Loads either random level of certain size, or level by seed
@@ -1051,7 +1065,11 @@ void gameScene::Render(GLFWwindow* window)
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
+	skyShader->Bind();
 
+	sky->thisTexture->Bind(0);
+	skyShader->Update(skyTransform, mvp);
+	sky->Draw();
 	// Bind texture shader
 	textureShader->Bind();
 
