@@ -112,8 +112,9 @@ void startScene::Input(GLFWwindow * win)
 			break;
 
 	}
-	if (glfwGetKey(win, GLFW_KEY_SPACE))
+	if (glfwGetKey(win, GLFW_KEY_SPACE) && total_time >= 5.0f)
 	{
+		total_time = 0.0f;
 		if (button_manager == 6)
 		{
 			windowMgr::getInstance()->sceneManager.changeScene(0);
@@ -121,7 +122,7 @@ void startScene::Input(GLFWwindow * win)
 		}
 		else if (button_manager == 5)
 		{
-			//for internet code calum do this here 
+			ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
 		}
 		else
 		{
