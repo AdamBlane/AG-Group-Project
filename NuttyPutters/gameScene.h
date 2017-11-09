@@ -61,7 +61,7 @@ public:
 	free_camera* freeCam;	
 	float camSpeed = 2.0f; // camSpeed WAS called WASDSPEED
 	chase_camera* chaseCam;
-	float chaseCamAngle, cameraType;// for switching on/off free/chase cam
+	float chaseCamAngle, cameraType = 1;// for switching on/off free/chase cam
 	double cursor_x, cursor_y = 0.0;// For finding cursor pos on screen
 	target_camera* tarCam;
 	

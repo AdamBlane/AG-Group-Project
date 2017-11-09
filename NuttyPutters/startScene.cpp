@@ -112,7 +112,7 @@ void startScene::Input(GLFWwindow * win)
 			break;
 
 	}
-	if (glfwGetKey(win, GLFW_KEY_SPACE) && total_time >= 5.0f)
+	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
 	{
 		total_time = 0.0f;
 		if (button_manager == 6)
@@ -156,7 +156,7 @@ void startScene::Input(GLFWwindow * win)
 			button_manager++;
 		}
 	}
-	total_time += 0.5f;
+	total_time += 1.0f;
 }
 
 void startScene::Update(GLFWwindow* win)

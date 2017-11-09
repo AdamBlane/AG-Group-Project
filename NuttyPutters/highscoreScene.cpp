@@ -52,7 +52,7 @@ void highscoreScene::Input(GLFWwindow* win)
 			backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
 			break;
 	}
-	if (glfwGetKey(win, GLFW_KEY_SPACE) && total_time >= 5.0f)
+	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
 	{
 		total_time = 0.0f;
 		if (button_manager == 1)
@@ -84,7 +84,7 @@ void highscoreScene::Input(GLFWwindow* win)
 			button_manager++;
 		}
 	}
-	total_time += 0.5f;
+	total_time += 1.0f;
 }
 
 void highscoreScene::Update(GLFWwindow* win)
