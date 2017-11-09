@@ -36,7 +36,7 @@ public:
 
 	int button_manager = 1;
 
-	float total_time = 5.0f;
+	float total_time = 2.0f;
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);
