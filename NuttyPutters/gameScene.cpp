@@ -12,10 +12,6 @@ gameScene::~gameScene() { }
 // Setup scene; seed is an optional param passed in by loadGameScene
 void gameScene::Init(GLFWwindow* window, int courseLength, string seed) 
 {	
-	keybd_event(VK_MENU, 0, 0, 0); //Alt Press
-	keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
-	keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
-	keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -557,10 +553,7 @@ void gameScene::SetupTilesToBeDrawn()
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
-	// Calculate dt
-	lastFrame = thisFrame;
-	thisFrame = glfwGetTime();
-	dt = (float)(thisFrame - lastFrame);
+
 
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
@@ -597,7 +590,7 @@ void gameScene::Input(GLFWwindow* window)
 		cout << "game paused" << endl;
 		bool paused = true;
 		while (paused)
-		{			
+		{		
 			// Need this or we get stuck in loop
 			glfwPollEvents();
 			// Save this level (move this code later to end of game, so we can save score with it)
@@ -618,37 +611,34 @@ void gameScene::Input(GLFWwindow* window)
 					levelSaved = true;
 
 					// Also save image of level
-					//EmptyClipboard();
 					// Alt press below ensures only game window is captured
-					keybd_event(VK_MENU, 0, 0, 0); //Alt Press
-					keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
-					keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
-					keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+					//keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+					//keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+					//keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+					//keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 
 
-					// The above saves the game window capture to clipboard
-					// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
-					HWND hwnd = GetDesktopWindow(); 
-					if (!OpenClipboard(hwnd))
-						cout << "Error with HWND" << endl;
-					OpenClipboard(NULL);
-					HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
-					if (hBitmap == NULL)
-						cout << "Error with clipboard bmp data" << endl;
-					CloseClipboard();
-					CImage image;
-					image.Attach(hBitmap);
-					//image.Save("test.bmp", Gdiplus::ImageFormatBMP);
-					// Build string to save with level seed name
-					string fileName;
-					for (auto &i : levelSeed)
-					{
-						fileName += to_string(i);
-					}
-					fileName += ".bmp";
-					image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
-					cout << "course image saved as " << fileName << endl;	
-	
+					//// The above saves the game window capture to clipboard
+					//// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
+					//HWND hwnd = GetDesktopWindow(); 
+					//if (!OpenClipboard(hwnd))
+					//	cout << "Error with HWND" << endl;
+					//OpenClipboard(NULL);
+					//HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
+					//if (hBitmap == NULL)
+					//	cout << "Error with clipboard bmp data" << endl;
+					//CloseClipboard();
+					//CImage image;
+					//image.Attach(hBitmap);
+					//// Build string to save with level seed name
+					//string fileName;
+					//for (auto &i : levelSeed)
+					//{
+					//	fileName += to_string(i);
+					//}
+					//fileName += ".bmp";
+					//image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
+					//cout << "course image saved as " << fileName << endl;	
 				}
 
 			}
@@ -850,6 +840,13 @@ void gameScene::Input(GLFWwindow* window)
 // Update positions
 void gameScene::Update(GLFWwindow* window)
 {
+	// Calculate dt
+	lastFrame = thisFrame;
+	thisFrame = glfwGetTime();
+	dt = (float)(thisFrame - lastFrame);
+	if (dt > 0.03)
+		dt = 0.016;
+
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
 	static double ratio_height = (quarter_pi<float>() * (1600 / 900)) / static_cast<float>(1600);
