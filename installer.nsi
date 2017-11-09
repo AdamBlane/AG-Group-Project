@@ -53,9 +53,32 @@ functionEnd
 section "install"
 	# Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
 	setOutPath $INSTDIR
-	# Files added here should be removed by the uninstaller (see section "uninstall")
-	file "x64\Debug\NuttyPutters.exe"
-	# Add any other files for the install directory (license files, app data, etc) here
+	# Release folder contents
+	file "x64\Release\*.*"
+	# All images required in install dir
+	file "NuttyPutters\*.jpg" 
+	file "NuttyPutters\*.png"
+	# Save files
+	file "NuttyPutters\*.csv"
+	# Object files
+	file "NuttyPutters\*.obj"
+	# Shaders
+	file  "NuttyPutters\*.frag"
+	file  "NuttyPutters\*.vert"
+	# Readme
+	file "NuttyPutters\README.txt"
+	createDirectory "$INSTDIR\highscore\"
+	SetOutPath "$INSTDIR\highscore\"
+	file /r "NuttyPutters\highscore\"
+	createDirectory "$INSTDIR\Mainmenu\"
+	SetOutPath "$INSTDIR\Mainmenu\"
+	file /r "NuttyPutters\Mainmenu\"
+	createDirectory "$INSTDIR\skyboxes\"
+	SetOutPath "$INSTDIR\skyboxes\"
+	file /r "NuttyPutters\skyboxes\"
+
+
+	
     #file /r "x64\Debug\*.*"
 	#file /r "NuttyPutters\x64\Debug\*.*"
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
@@ -105,32 +128,18 @@ section "uninstall"
 	rmDir "$SMPROGRAMS\${COMPANYNAME}"
  
 	# Remove files
-	delete $INSTDIR\app.exe
-	delete $INSTDIR\icon.ico
-	delete $INSTDIR\res\audio\*.*
-	delete $INSTDIR\res\img\game\*.*
-	delete $INSTDIR\res\img\menuScreen\*.*
-	delete $INSTDIR\res\img\pauseScreen\*.*
-	delete $INSTDIR\res\img\settingsScreen\*.*	
-	delete $INSTDIR\res\img\spaceShips\*.*
-	delete $INSTDIR\res\img\startScreen\*.*
-	delete $INSTDIR\res\img\*.*
-	delete $INSTDIR\res\*.*
+	delete $INSTDIR\Mainmenu\*.*
+	delete $INSTDIR\skyboxes\*.*
+	delete $INSTDIR\highscore\*.*
     delete $INSTDIR\*.*
-	
 	# Always delete uninstaller as the last action
-	delete $INSTDIR\*.*
-	delete $INSTDIR\mattsGameUninstall.exe
-	rmDir $INSTDIR\res\audio
-	rmDir $INSTDIR\res\img\game
-	rmDir $INSTDIR\res\img\menuScreen
-	rmDir $INSTDIR\res\img\pauseScreen
-	rmDir $INSTDIR\res\img\settingsScreen
-	rmDir $INSTDIR\res\img\spaceShips
-	rmDir $INSTDIR\res\img\startScreen
-	rmDir $INSTDIR\res\img
-	rmDir $INSTDIR\res
-	rmDir $INSTDIR\
+	delete $INSTDIR\NuttyPuttersUninstall.exe
+	rmDir $INSTDIR\Mainmenu
+	rmDir $INSTDIR\skyboxes
+	rmDir $INSTDIR\highscore
+	
+	
+
 	
  
 	# Try to remove the install directory - this will only happen if it is empty
