@@ -12,7 +12,7 @@ startScene::startScene() { }
 // Deconstructor
 startScene::~startScene() { }
 
-// Setup
+// Setup; does nothing atm
 void startScene::Init(GLFWwindow* win)
 {
 	// Setup texture shader
@@ -26,7 +26,8 @@ void startScene::Init(GLFWwindow* win)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.jpg", vec3(0.0, 0.0, 0.0), 1.0f, 1.0f);
+	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\background.png", vec3(0.0, 0.0, -1.0), 9.5f, 5.5f);
+
 }
 
 void startScene::Loop(GLFWwindow* win)
@@ -53,36 +54,109 @@ void startScene::Loop(GLFWwindow* win)
 // Act on input
 void startScene::Input(GLFWwindow * win)
 {
-	// Move to player select scene
-	if (glfwGetKey(win, GLFW_KEY_P))
+	switch (button_manager)
 	{
-		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(2);
+		//cases for the buttons to switch to each screen
+		case 1:
+			startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start(1).png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
+			loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
+			highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
+			optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
+		    internetButton  = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
+			exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
+			break;
+
+		case 2:
+			startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
+			loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load(1).png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
+			highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
+			optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
+			internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
+			exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
+			break;
+
+		case 3:
+			startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
+			loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
+			highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore(1).png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
+			optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
+			internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
+			exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
+			break;
+
+		case 4:
+			startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
+			loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
+			highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
+			optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options(1).png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
+			internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
+			exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
+			break;
+
+		case 5:
+			startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
+			loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
+			highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
+			optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
+			internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet(1).png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
+			exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
+			break;
+
+		case 6:
+			startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
+			loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
+			highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
+			optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
+			internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
+			exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit(1).png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
+			break;
+
 	}
-	// Move to load game scene
-	if (glfwGetKey(win, GLFW_KEY_L))
+	if (glfwGetKey(win, GLFW_KEY_SPACE) && total_time >= 5.0f)
 	{
-		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(3);
+		total_time = 0.0f;
+		if (button_manager == 6)
+		{
+			windowMgr::getInstance()->sceneManager.changeScene(0);
+
+		}
+		else if (button_manager == 5)
+		{
+			ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
+		}
+		else
+		{
+			windowMgr::getInstance()->sceneManager.changeScene(button_manager + 1);
+		}
+
 	}
-	// Move to highscore scene
-	if (glfwGetKey(win, GLFW_KEY_H))
+
+
+	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 5.0f)
 	{
-		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(4);
+		total_time = 0.0f;
+		if (button_manager == 1)
+		{
+			button_manager = 6;
+		}
+		else
+		{
+			button_manager--;
+		}
 	}
-	// Move to options scene
-	if (glfwGetKey(win, GLFW_KEY_O))
+	if (glfwGetKey(win, GLFW_KEY_DOWN) && total_time >= 5.0f)
 	{
-		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(5);
+		total_time = 0.0f;
+		if (button_manager == 6)
+		{
+			button_manager = 1;
+		}
+		else
+		{
+			button_manager++;
+		}
 	}
-	// Exit game
-	if (glfwGetKey(win, GLFW_KEY_E))
-	{
-		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(0);
-	}
+	total_time += 0.5f;
 }
 
 void startScene::Update(GLFWwindow* win)
@@ -104,6 +178,30 @@ void startScene::Render(GLFWwindow* win)
 	startGameLabelMesh->thisTexture->Bind(0);
 	textureShader->Update(startGameLabelTrans, hudVP);
 	startGameLabelMesh->Draw();
+
+	startGameButton->thisTexture->Bind(0);
+	textureShader->Update(startGameButtonTrans, hudVP);
+	startGameButton->Draw();
+
+	exitButton->thisTexture->Bind(0);
+	textureShader->Update(exitButtonTrans, hudVP);
+	exitButton->Draw();
+
+	highButton->thisTexture->Bind(0);
+	textureShader->Update(highButtonTrans, hudVP);
+	highButton->Draw();
+
+	internetButton->thisTexture->Bind(0);
+	textureShader->Update(internetButtonTrans, hudVP);
+	internetButton->Draw();
+
+	optButton->thisTexture->Bind(0);
+	textureShader->Update(optButtonTrans, hudVP);
+	optButton->Draw();
+	
+	loadButton->thisTexture->Bind(0);
+	textureShader->Update(loadButtonTrans, hudVP);
+	loadButton->Draw();
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);

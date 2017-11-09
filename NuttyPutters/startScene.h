@@ -7,7 +7,7 @@
 #include <sstream>
 #include <chrono>
 #include <random>
-
+#include <sstream>
 // Internals
 #include "Mesh.h"
 #include "Transform.h"
@@ -28,15 +28,35 @@ public:
 	// Create a texture shader which is used to bind textures to geometry
 	Shader* textureShader;
 
-	// Used to lock frame rate
+	// Used to lock framerate
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
-	float dt = 0.016; // For first frame, will be updated thereafter
+	float dt = 0.016; // Lock to 60fps
 
-	// HUD geometry
-	// Start Game Label 
+					  // HUD geometry
+					  // Start Game Label 
 	Mesh* startGameLabelMesh;
 	Transform startGameLabelTrans;
+	int button_manager = 1;
+	float total_time = 5.0f;
+
+	Mesh* startGameButton;
+	Transform startGameButtonTrans;
+
+	Mesh* exitButton;
+	Transform exitButtonTrans;
+
+	Mesh* highButton;
+	Transform highButtonTrans;
+
+	Mesh* internetButton;
+	Transform internetButtonTrans;
+
+	Mesh* optButton;
+	Transform optButtonTrans;
+
+	Mesh* loadButton;
+	Transform loadButtonTrans;
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);
