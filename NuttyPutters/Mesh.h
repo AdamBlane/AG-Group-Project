@@ -38,6 +38,7 @@ public:
 		PLANE,
 		BOX,
 		CUBOID,
+		SKYBOX,
 		GOLF_HOLE_GROUND
 
 	};
@@ -57,6 +58,9 @@ public:
 	//BOX: only 1 side is necessary
 	//CUBOID: all 3 sides are necessary
 	Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f, bool isFloor = false, bool isFluid = false);
+
+
+	Mesh(const std::vector<std::string> &filenames);
 
 	//Get position of geometry created by geometry builder
 	glm::vec3 getGeomPos();
@@ -85,6 +89,8 @@ private:
 
 	typeShape thisShape = CUBOID;
 
+
+
 	void chooseGeometry();
 
 	void triangle();
@@ -93,6 +99,7 @@ private:
 	void plane();
 	void box();
 	void cuboid();
+	void skyBox();
 
 	//this is broken. DON'T USE IT!!!!
 	void golfHole();
@@ -102,6 +109,10 @@ private:
 
 	//starting position of geometry
 	glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	GLfloat skySize1 = 500.0f;
+	GLfloat skySize2 = 500.0f;
+	GLfloat skySize3 = 500.0f;
 
 	//starting size of geometry
 	GLfloat side1 = 1.0f;

@@ -30,6 +30,13 @@ Mesh::Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfl
 	chooseGeometry();
 }
 
+Mesh::Mesh(const std::vector<std::string>& filenames)
+{
+	thisTexture = new Texture(filenames[0], filenames[1], filenames[2], filenames[3], filenames[4], filenames[5]);
+	thisShape = SKYBOX;
+	chooseGeometry();
+}
+
 glm::vec3 Mesh::getGeomPos()
 {
 	return position;
@@ -91,6 +98,9 @@ void Mesh::chooseGeometry()
 		break;
 	case GOLF_HOLE_GROUND:
 		golfHole();
+		break;
+	case SKYBOX:
+		skyBox();
 		break;
 	default:
 		cuboid();
@@ -322,6 +332,86 @@ void Mesh::cuboid()
 		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
 		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
 		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(1.0, 1.0))
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2, 3, 4, 5,
+		6, 7, 8, 9, 10, 11,
+		12, 13, 14, 15, 16, 17,
+		18, 19, 20, 21, 22, 23,
+		24, 25, 26, 27, 28, 29,
+		30, 31, 32, 33, 34, 35
+	};
+
+	generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+}
+
+void Mesh::skyBox()
+{
+	//Counter-clock wise
+
+	Vertex vertices[] = {
+		/////////FRONT
+		//TR1
+		Vertex(glm::vec3(position.x - skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z + skySize3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+
+		//TR2
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z + skySize3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y + skySize2, position.z + skySize3), glm::vec2(1.0, 1.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+
+
+		/////////BACK
+		//TR1
+		Vertex(glm::vec3(position.x - skySize1, position.y - skySize2, position.z - skySize3), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z - skySize3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
+		//TR2
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z - skySize3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(1.0, 1.0)),
+
+		/////////LEFT
+		//TR1
+		Vertex(glm::vec3(position.x - skySize1, position.y - skySize2, position.z - skySize3), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+		//TR2
+		Vertex(glm::vec3(position.x - skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z + skySize3), glm::vec2(1.0, 1.0)),
+
+		/////////RIGHT
+		//TR1
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z - skySize3), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
+		//TR2
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y + skySize2, position.z + skySize3), glm::vec2(1.0, 1.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
+
+		/////////TOP
+		//TR1
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z + skySize3), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y + skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+		//TR2
+		Vertex(glm::vec3(position.x + skySize1, position.y + skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y + skySize2, position.z - skySize3), glm::vec2(1.0, 1.0)),
+
+		/////////BOTTOM
+		//TR1
+		Vertex(glm::vec3(position.x - skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(0.0, 0.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y - skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
+		//TR2
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z + skySize3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x + skySize1, position.y - skySize2, position.z - skySize3), glm::vec2(1.0, 1.0)),
+		Vertex(glm::vec3(position.x - skySize1, position.y - skySize2, position.z - skySize3), glm::vec2(0.0, 1.0)),
 	};
 
 	unsigned int indices[] = {
