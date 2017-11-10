@@ -94,7 +94,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(3.05, 1.725, 0.0), 0.25f, 0.25f);
 
 	// Set the amount of time the user has to complete the hole
-	holeTimer = 120;
+	holeTimer = 40;
 
 	// Enable alpha blending to allow for transparency
 	glEnable(GL_BLEND);
@@ -1039,16 +1039,27 @@ void gameScene::Update(GLFWwindow* window)
 		break;
 	}
 
-	if (timeRemainingInSeconds < 0)
+	// If the timer is lower than zero sceonds and if user is out of time is false
+	if (timeRemainingInSeconds < 0 && !isUserOutOfTime)
 	{
+		// Print error
 		cout << "Unlucky. You ran out of time!" << endl;
-		hasUserCompletedHole = true;
-		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+		// Update booleans to true
+		isUserOutOfTime = true; // Used to notify the game if the user has ran out of time
+		hasUserFinishedHole = true; // Used to notify the game if the user has completed/failed
+		// Update texture
+		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outoftime.png");
 	}
-	if (strokeCounter > 12)
+	// If the user takes more than 10 strokes and if the user is out of strokes is false
+	if (strokeCounter > 12 && !isUserOutOfStrokes)
 	{
+		// Print erro
 		cout << "Unlucky. You ran out of strokes!" << endl;
-		hasUserCompletedHole = true;
+		// Update booleans
+		isUserOutOfStrokes = true; // Used to notify the game if the user has run out of strokes
+		hasUserFinishedHole = true; // Used to notify the game if the user has finished the hole
+		// Update texture
+		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outofshots.png");
 	}
 }
 
@@ -1189,7 +1200,7 @@ void gameScene::Render(GLFWwindow* window)
 	glDepthRange(0, 0.01);
 
 	// If the continue button equals false then display centre information
-	if (!continuePressed && !hasUserCompletedHole)
+	if (!continuePressed)
 	{
 		// Bind, update and draw the centre information label HUD
 		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
@@ -1201,6 +1212,13 @@ void gameScene::Render(GLFWwindow* window)
 		centreInformationFooterTwoLabelMesh->thisTexture->Bind(0);
 		textureShader->Update(centreInformationFooterTwoLabelTrans, hudVP);
 		centreInformationFooterTwoLabelMesh->Draw();
+	}
+	// If the user has run out of shots then display end hole output
+	else if (hasUserFinishedHole || isUserOutOfStrokes)
+	{
+		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
+		centreInformationHeaderLabelMesh->Draw();
 	}
 	// Else then display remaining gameplay HUDs
 	else
