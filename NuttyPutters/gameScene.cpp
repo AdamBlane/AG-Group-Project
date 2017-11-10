@@ -845,6 +845,17 @@ void gameScene::Input(GLFWwindow* window)
 		} 	
 	} // End if (p is released)
 
+	  //This function resets the scene to an empty screen
+	if (glfwGetKey(window, GLFW_KEY_C))
+	{
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clean the screen and the depth buffer
+		glLoadIdentity();
+		glfwSwapBuffers(window);
+
+		windowMgr::getInstance()->sceneManager.changeScene(1);
+	}
+
 }
 
 // Update positions
