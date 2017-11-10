@@ -17,7 +17,7 @@
 #include "chase_camera.h"
 #include "tileBuilder.h"
 #include "target_camera.h"
-
+#include "courseGenTiles.h"
 
 using namespace AllCamera;
 using namespace std::chrono;
@@ -44,11 +44,12 @@ public:
 	bool continuePressed = false; // Variable used to see if the user has pressed a key - used for HUDs
 	int holeTimer = 0; // The amount time the user to get the ball in the hole
 	int timeRemainingInSeconds = 0, timeRemainingInTenths = 0, timeRemainingInMinutes = 0;
-	int currentTimeInScene; // Current time since scene was loaded
-	vector<int> userScore;
-	bool hasUserCompletedHole = false;
-	bool isUserOutOfTime = false;
-	bool isUserOutOfStrokes = false;
+	int timeSinceContinueWasPressed;  // The time since the user has pressed the continue button
+	bool hasUserCompletedHole = false; // Boolean which tells the game if the user has completed the hole
+	bool hasUserCompletedHoleTextures = false; // Boolean which tells the game to update the textures based on if the user has completed the hole
+	bool isUserOutOfTime = false; // Boolean which tells the game if they are out of time
+	bool isUserOutOfStrokes = false; // Boolean which tells the game if they are out of strokes
+	int timeToThisMethod = 0; // Time to this method - used for countdown HUD
 
 	Shader* textureShader;
 	Transform shaderTrans;		

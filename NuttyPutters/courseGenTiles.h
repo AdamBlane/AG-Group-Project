@@ -457,6 +457,11 @@ public:
 	EndTile() { id = 9; }
 	~EndTile() {};
 
+	bool ballInHole = false;
+
+	// Getters
+	inline bool getBallInHole () { return ballInHole; }
+
 	// Checks whether player has hit boundaries of this tile
 	vec3 CheckCollisions(vec3 playerPos, vec3 dir, float speed)
 	{
@@ -550,6 +555,7 @@ public:
 			{
 				// Apply gravity
 				dir.y -= 0.2f;
+				ballInHole = true;
 			}
 
 

@@ -93,7 +93,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(3.05, 1.725, 0.0), 0.25f, 0.25f);
 
 	// Set the amount of time the user has to complete the hole
-	holeTimer = 40;
+	holeTimer = 80;
+	
 
 	// Enable alpha blending to allow for transparency
 	glEnable(GL_BLEND);
@@ -867,10 +868,6 @@ void gameScene::Input(GLFWwindow* window)
 // Update positions
 void gameScene::Update(GLFWwindow* window)
 {
-	currentTimeInScene = glfwGetTime();
-	timeRemainingInSeconds = holeTimer - currentTimeInScene;
-	//cout << "Time the user has left: " << timeRemainingInSeconds << endl;
-
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
 	static double ratio_height = (quarter_pi<float>() * (1600 / 900)) / static_cast<float>(1600);
@@ -922,13 +919,28 @@ void gameScene::Update(GLFWwindow* window)
 	golfBallTransform.getPos() += gbVelocity;
 	arrowTransform.getPos() += gbVelocity;
 
-	timeRemainingInMinutes = timeRemainingInSeconds / 60;
-	timeRemainingInTenths = (timeRemainingInSeconds - (timeRemainingInMinutes * 60)) / 10;
-	timeRemainingInSeconds = timeRemainingInSeconds - (timeRemainingInMinutes * 60) - (timeRemainingInTenths * 10);
-	//cout << "Mins and secs: " << timeRemainingInMinutes << " " << timeRemainingInTenths << " " << timeRemainingInSeconds << endl;
-
-	switch (timeRemainingInMinutes)
+	// If the continue button is pressed 
+	if (continuePressed)
 	{
+		// If the time taken to reach this method is zero then
+		if (timeToThisMethod == 0)
+		{
+			// Get the time to this method
+			timeToThisMethod = glfwGetTime();
+		}
+		// Get the time since continue was pressed by taking away the time to this method 
+		timeSinceContinueWasPressed = glfwGetTime() - timeToThisMethod;
+		// Get the time remaining in seconds by taking away the time the user has to complete the hole 
+		timeRemainingInSeconds = holeTimer - timeSinceContinueWasPressed;
+		// Get the time in minutes, tenths and seconds - 0M:TS
+		timeRemainingInMinutes = timeRemainingInSeconds / 60;
+		timeRemainingInTenths = (timeRemainingInSeconds - (timeRemainingInMinutes * 60)) / 10;
+		timeRemainingInSeconds = timeRemainingInSeconds - (timeRemainingInMinutes * 60) - (timeRemainingInTenths * 10);
+		//cout << "Mins and secs: " << timeRemainingInMinutes << " " << timeRemainingInTenths << " " << timeRemainingInSeconds << endl;
+
+		// Switch statements which update the minutes, tenths and seconds meshes
+		switch (timeRemainingInMinutes)
+		{
 		case 0:
 			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
 			break;
@@ -962,118 +974,82 @@ void gameScene::Update(GLFWwindow* window)
 		default:
 			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
 			break;
-	}
+		}
 
-	switch (timeRemainingInTenths)
-	{
-	case 0:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
-		break;
-	case 1:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
-		break;
-	case 2:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
-		break;
-	case 3:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
-		break;
-	case 4:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
-		break;
-	case 5:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
-		break;
-	case 6:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
-		break;
-	case 7:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
-		break;
-	case 8:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
-		break;
-	case 9:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
-		break;
-	default:
-		timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
-		break;
-	}
+		switch (timeRemainingInTenths)
+		{
+		case 0:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+			break;
+		case 1:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+			break;
+		case 2:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+			break;
+		case 3:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+			break;
+		case 4:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+			break;
+		case 5:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+			break;
+		case 6:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+			break;
+		case 7:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+			break;
+		case 8:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+			break;
+		case 9:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+			break;
+		default:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+			break;
+		}
 
-	switch (timeRemainingInSeconds)
-	{
-	case 0:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
-		break;
-	case 1:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
-		break;
-	case 2:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
-		break;
-	case 3:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
-		break;
-	case 4:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
-		break;
-	case 5:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
-		break;
-	case 6:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
-		break;
-	case 7:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
-		break;
-	case 8:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
-		break;
-	case 9:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
-		break;
-	default:
-		timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
-		break;
+		switch (timeRemainingInSeconds)
+		{
+		case 0:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+			break;
+		case 1:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+			break;
+		case 2:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+			break;
+		case 3:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+			break;
+		case 4:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+			break;
+		case 5:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+			break;
+		case 6:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+			break;
+		case 7:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+			break;
+		case 8:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+			break;
+		case 9:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+			break;
+		default:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+			break;
+		}
 	}
-
-	// If the timer is lower than zero sceonds and if user is out of time is false
-	if (timeRemainingInSeconds < 0 && !isUserOutOfTime)
-	{
-		// Print error
-		cout << "Unlucky. You ran out of time!" << endl;
-		// Update booleans to true
-		isUserOutOfTime = true; // Used to notify the game if the user has ran out of time
-		// Update texture
-		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outoftime.png");
-		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
-		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
-	}
-	// If the user takes more than 10 strokes and if the user is out of strokes is false
-	if (strokeCounter > 12 && !isUserOutOfStrokes)
-	{
-		// Print error
-		cout << "Unlucky. You ran out of strokes!" << endl;
-		// Update booleans
-		isUserOutOfStrokes = true; // Used to notify the game if the user has run out of strokes
-		// Update textures
-		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outofshots.png");
-		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
-		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
-	}
-	// If the user completes the hole then
-	//if (!hasUserCompletedHole)
-	//{
-	//	// Print error
-	//	cout << "Unlucky. You ran out of strokes!" << endl;
-	//	// Update booleans
-	//	isUserOutOfStrokes = true; // Used to notify the game if the user has run out of strokes
-	//	// Update textures
-	//	centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\holecomplete.png");
-	//	centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
-	//	centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
-	//}
 }
 
 // Tracks current tile player is on (TODO improve performance)
@@ -1184,7 +1160,13 @@ void gameScene::Collisions()
 			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			end.outDir = algTiles.at(currentTile).outDir;
 			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed);
-			
+
+			// If user hasnt completed hole then - get
+			if (!hasUserCompletedHole)
+			{
+				hasUserCompletedHole = end.getBallInHole();
+			}
+
 			break;
 		}
 	}
@@ -1212,35 +1194,41 @@ void gameScene::Render(GLFWwindow* window)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	// If the continue button equals false then display centre information
-	if (!continuePressed)
+	// If the user completes the hole then
+	if (hasUserCompletedHole && !hasUserCompletedHoleTextures)
 	{
-		// Bind, update and draw the centre information label HUD
-		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
-		centreInformationHeaderLabelMesh->Draw();
-		centreInformationFooterOneLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationFooterOneLabelTrans, hudVP);
-		centreInformationFooterOneLabelMesh->Draw();
-		centreInformationFooterTwoLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationFooterTwoLabelTrans, hudVP);
-		centreInformationFooterTwoLabelMesh->Draw();
+		// Update boolean to true
+		hasUserCompletedHoleTextures = true; // To update textures if hole is complete
+		// Update textures
+		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\holecomplete.png");
+		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
 	}
-	// If the user has run out of shots then display end hole output
-	else if (isUserOutOfTime || isUserOutOfStrokes)
+	// If the timer is lower than zero sceonds and if user is out of time is false
+	if (timeRemainingInSeconds < 0 && !isUserOutOfTime)
 	{
-		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
-		centreInformationHeaderLabelMesh->Draw();
-		centreInformationFooterOneLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationFooterOneLabelTrans, hudVP);
-		centreInformationFooterOneLabelMesh->Draw();
-		centreInformationFooterTwoLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationFooterTwoLabelTrans, hudVP);
-		centreInformationFooterTwoLabelMesh->Draw();
+		// Update boolean to true
+		isUserOutOfTime = true; // Used to notify the game if the user has ran out of time
+		// Update textures
+		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outoftime.png");
+		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
 	}
-	else if (hasUserCompletedHole)
+	// If the user takes more than 10 strokes and if the user is out of strokes is false
+	if (strokeCounter > 12 && !isUserOutOfStrokes)
 	{
+		// Update boolean to true
+		isUserOutOfStrokes = true; // Used to notify the game if the user has run out of strokes
+		// Update textures
+		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outofshots.png");
+		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
+	}
+
+	// If user has completed the hole or if the continue button hasnt been pressed of if the user has run out of time or if the user has run out of strokes
+	if (hasUserCompletedHole || !continuePressed || isUserOutOfTime || isUserOutOfStrokes )
+	{
+		// Update the various centre informatiom elements
 		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
 		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
 		centreInformationHeaderLabelMesh->Draw();
