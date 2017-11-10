@@ -36,10 +36,13 @@ GLFWwindow* windowMgr::Init()
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
-
-
 	// Create window
-	win = glfwCreateWindow(1600, 900, "Nutty Putters", NULL, NULL);
+	win = glfwCreateWindow(width, height, "Nutty Putters", NULL, NULL);
+
+	//glfwSetWindowSize(win, 2000, 1000);
+	//glfwSetWindowPos(win, 0, 0);
+	//glfwGetWindowSize(win, &width , &height);
+	//glfwGetWindowPos(win, &PosX, &PosY);
 
 	// Check window was created successfully
 	if (!win)

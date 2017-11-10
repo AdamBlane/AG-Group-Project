@@ -64,24 +64,24 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	arrowTransform.getScale() = vec3(0.5);
 
-
+	//auto height = win.
 	// Setup cameras
 	freeCam = new free_camera();
 	freeCam->set_Posistion(vec3(0, 10, -10));
 	freeCam->rotate(-10.0, 0.0);
 	freeCam->set_Target(vec3(0, 0, 0));
-	freeCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+	freeCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
 	chaseCam = new chase_camera();
 	chaseCam->set_target_pos(vec3(golfBallTransform.getPos()));
 	chaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	chaseCam->set_springiness(0.2f);
-	chaseCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+	chaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
 	tarCam = new target_camera();
 	tarCam->set_Posistion(vec3(0, 0, 5.0f));
 	tarCam->set_Target(vec3(0, 0, 0));
-	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup

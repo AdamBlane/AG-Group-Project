@@ -66,6 +66,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="tileBuilder.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="window.h" />
     <ClInclude Include="windowMgr.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
