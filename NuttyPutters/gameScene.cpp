@@ -114,7 +114,7 @@ void gameScene::LoadGame(string seed)
 		int seedsCount = 341;
 		// pick random number in that range
 		default_random_engine rng(random_device{}());
-		uniform_int_distribution<int> distribution(0, seedsCount);
+		uniform_int_distribution<int> distribution(1, seedsCount);
 		int choice = distribution(rng);
 		// read that line
 		string line;
