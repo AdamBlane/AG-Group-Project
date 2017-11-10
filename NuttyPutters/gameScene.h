@@ -46,7 +46,7 @@ public:
 	int timeRemainingInSeconds = 0, timeRemainingInTenths = 0, timeRemainingInMinutes = 0;
 	int currentTimeInScene; // Current time since scene was loaded
 	vector<int> userScore;
-	bool hasUserFinishedHole = false;
+	bool hasUserCompletedHole = false;
 	bool isUserOutOfTime = false;
 	bool isUserOutOfStrokes = false;
 

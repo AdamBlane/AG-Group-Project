@@ -71,7 +71,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	tarCam->set_Target(vec3(0, 0, 0));
 	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
 
-	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup
 	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\zero.png", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
 	// Player HUD Labelsetup
@@ -83,7 +82,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Power Bar HUD setup
 	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
 	// Centre Bar HUD setup
-	centreInformationHeaderLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hole1.png", vec3(0.0, 0.5, 0.0), 4.0f, 2.0f);
+	centreInformationHeaderLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hole1.png", vec3(0.0, 0.8, 0.0), 4.0f, 2.0f);
 	centreInformationFooterOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\par4.png", vec3(0.0, -0.5, 0.0), 2.0f, 0.5f);
 	centreInformationFooterTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\timetwo.png", vec3(0.0, -1.0, 0.0), 2.0f, 0.5f);;
 	// Timer HUD setup
@@ -1046,21 +1045,35 @@ void gameScene::Update(GLFWwindow* window)
 		cout << "Unlucky. You ran out of time!" << endl;
 		// Update booleans to true
 		isUserOutOfTime = true; // Used to notify the game if the user has ran out of time
-		hasUserFinishedHole = true; // Used to notify the game if the user has completed/failed
 		// Update texture
 		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outoftime.png");
+		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
 	}
 	// If the user takes more than 10 strokes and if the user is out of strokes is false
 	if (strokeCounter > 12 && !isUserOutOfStrokes)
 	{
-		// Print erro
+		// Print error
 		cout << "Unlucky. You ran out of strokes!" << endl;
 		// Update booleans
 		isUserOutOfStrokes = true; // Used to notify the game if the user has run out of strokes
-		hasUserFinishedHole = true; // Used to notify the game if the user has finished the hole
-		// Update texture
+		// Update textures
 		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outofshots.png");
+		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
 	}
+	// If the user completes the hole then
+	//if (!hasUserCompletedHole)
+	//{
+	//	// Print error
+	//	cout << "Unlucky. You ran out of strokes!" << endl;
+	//	// Update booleans
+	//	isUserOutOfStrokes = true; // Used to notify the game if the user has run out of strokes
+	//	// Update textures
+	//	centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\holecomplete.png");
+	//	centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+	//	centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
+	//}
 }
 
 // Tracks current tile player is on (TODO improve performance)
@@ -1214,11 +1227,29 @@ void gameScene::Render(GLFWwindow* window)
 		centreInformationFooterTwoLabelMesh->Draw();
 	}
 	// If the user has run out of shots then display end hole output
-	else if (hasUserFinishedHole || isUserOutOfStrokes)
+	else if (isUserOutOfTime || isUserOutOfStrokes)
 	{
 		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
 		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
 		centreInformationHeaderLabelMesh->Draw();
+		centreInformationFooterOneLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationFooterOneLabelTrans, hudVP);
+		centreInformationFooterOneLabelMesh->Draw();
+		centreInformationFooterTwoLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationFooterTwoLabelTrans, hudVP);
+		centreInformationFooterTwoLabelMesh->Draw();
+	}
+	else if (hasUserCompletedHole)
+	{
+		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
+		centreInformationHeaderLabelMesh->Draw();
+		centreInformationFooterOneLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationFooterOneLabelTrans, hudVP);
+		centreInformationFooterOneLabelMesh->Draw();
+		centreInformationFooterTwoLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationFooterTwoLabelTrans, hudVP);
+		centreInformationFooterTwoLabelMesh->Draw();
 	}
 	// Else then display remaining gameplay HUDs
 	else
