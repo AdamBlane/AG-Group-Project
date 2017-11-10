@@ -8,7 +8,7 @@
 #include "highscoreScene.h"
 #include "optionsScene.h"
 #include "gameScene.h"
-
+#include "glfw3.h"
 
 class sceneMgr {
 public:

@@ -18,7 +18,7 @@ void highscoreScene::Init(GLFWwindow * win)
 	tarCam = new target_camera();
 	tarCam->set_Posistion(vec3(0, 0, 5.0f));
 	tarCam->set_Target(vec3(0, 0, 0));
-	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale

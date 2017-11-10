@@ -16,7 +16,7 @@ void optionsScene::Init(GLFWwindow * win)
 	tarCam = new target_camera();
 	tarCam->set_Posistion(vec3(0, 0, 5.0f));
 	tarCam->set_Target(vec3(0, 0, 0));
-	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
@@ -47,23 +47,43 @@ void optionsScene::Input(GLFWwindow* win)
 	switch (button_manager)
 	{
 		case 1:
+			wiwButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\wiw(1).png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
+			fullButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\full.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
+			backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back.png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
+			break;
+		case 2:
+			wiwButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\wiw.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
+			fullButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\full(1).png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
+			backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back.png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
+			break;
+		case 3:
+			wiwButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\wiw.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
+			fullButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\full.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
 			backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
 			break;
 	}
-	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
+	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 3.0f)
 	{
 		total_time = 0.0f;
-		if (button_manager == 1)
+		switch (button_manager)
 		{
-			windowMgr::getInstance()->sceneManager.changeScene(1);
-		}
-	}
-	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
-	{
-		total_time = 0.0f;
-		if (button_manager == 1)
-		{
-			windowMgr::getInstance()->sceneManager.changeScene(1);
+			case 1:
+				windowMgr::getInstance()->width = 1600;
+				windowMgr::getInstance()->height = 900;
+				glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+				glfwSetWindowPos(win, 200, 200);
+				optionsScene::Init(win);
+				break;
+			case 2:
+				windowMgr::getInstance()->width = 2000;
+				windowMgr::getInstance()->height = 1000;
+				glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+				glfwSetWindowPos(win, 0, 0);
+				optionsScene::Init(win);
+				break;
+			case 3:
+				windowMgr::getInstance()->sceneManager.changeScene(1);
+				break;
 		}
 	}
 	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 5.0f)
@@ -71,7 +91,7 @@ void optionsScene::Input(GLFWwindow* win)
 		total_time = 0.0f;
 		if (button_manager == 1)
 		{
-			button_manager = 1;
+			button_manager = 3;
 		}
 		else
 		{
@@ -81,7 +101,7 @@ void optionsScene::Input(GLFWwindow* win)
 	if (glfwGetKey(win, GLFW_KEY_DOWN) && total_time >= 5.0f)
 	{
 		total_time = 0.0f;
-		if (button_manager == 1)
+		if (button_manager == 3)
 		{
 			button_manager = 1;
 		}
@@ -113,6 +133,14 @@ void optionsScene::Render(GLFWwindow* win)
 	backButton->thisTexture->Bind(0);
 	textureShader->Update(backButtonTrans, hudVP);
 	backButton->Draw();
+
+	wiwButton->thisTexture->Bind(0);
+	textureShader->Update(wiwButtonTrans, hudVP);
+	wiwButton->Draw();
+
+	fullButton->thisTexture->Bind(0);
+	textureShader->Update(fullButtonTrans, hudVP);
+	fullButton->Draw();
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
