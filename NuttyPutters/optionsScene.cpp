@@ -46,9 +46,17 @@ void optionsScene::Input(GLFWwindow* win)
 {
 	switch (button_manager)
 	{
-	case 1:
-		backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
-		break;
+		case 1:
+			backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
+			break;
+	}
+	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
+	{
+		total_time = 0.0f;
+		if (button_manager == 1)
+		{
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+		}
 	}
 	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
 	{
