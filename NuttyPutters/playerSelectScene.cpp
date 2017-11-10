@@ -21,7 +21,7 @@ void playerSelectScene::Loop(GLFWwindow * win)
 	ratio = width / (float)height;
 	// Make viewport match window size
 	glViewport(0, 0, width, height);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();

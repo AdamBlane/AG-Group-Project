@@ -23,35 +23,42 @@ void sceneMgr::changeScene(unsigned int newScene, int courseLength, string seed)
 	// Initialise the new scene
 	switch (curScene)
 	{
-	// Exit
+		// Exit
 	case 0: break;
-	// Start scene
-	case 1: 
+		// Start scene
+	case 1:
+		startScene.~startScene();
 		// Setup, pass in window held by winMgr
 		startScene.Init(windowMgr::getInstance()->win);
 		break;
-	// Player select
+		// Player select
 	case 2:
+		playerSelectScene.~playerSelectScene();
 		playerSelectScene.Init(windowMgr::getInstance()->win);
 		break;
-	// Load game
+		// Load game
 	case 3:
+		loadGameScene.~loadGameScene();
 		loadGameScene.Init(windowMgr::getInstance()->win);
 		break;
-	// Highscore
+		// Highscore
 	case 4:
+		highscoreScene.~highscoreScene();
 		highscoreScene.Init(windowMgr::getInstance()->win);
 		break;
-	// Options
+		// Options
 	case 5:
+		optionsScene.~optionsScene();
 		optionsScene.Init(windowMgr::getInstance()->win);
 		break;
-	// Game scene
+		// Game scene
 	case 6:
 		// This can take 2 optional params - course size, seed string
+		gameScene.~gameScene();
 		gameScene.Init(windowMgr::getInstance()->win, courseLength, seed);
 		break;
 	}
+
 }
 
 
