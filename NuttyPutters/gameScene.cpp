@@ -743,78 +743,80 @@ void gameScene::Input(GLFWwindow* window)
 		}
 	}
 
-	// PLAYER
-	// If P is pressed 
-	if (glfwGetKey(window, GLFW_KEY_SPACE))
+	// Only allow ball movement if continue has been pressed
+	if (continuePressed)
 	{
-		if (!golfBallMoving)
+		// If P is pressed 
+		if (glfwGetKey(window, GLFW_KEY_SPACE))
 		{
-			// Start counter
-			Pcounter += 0.5f;
-			// Update the power bar based on the the Pcounter value 
-			powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
-			powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
-			powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
+			if (!golfBallMoving)
+			{
+				// Start counter
+				Pcounter += 0.5f;
+				// Update the power bar based on the the Pcounter value 
+				powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
+				powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
+				powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
 
-			// SET DIRECTION BASED ON CHASE CAM ANGLE
-			// If camera angle is between 0 and 90
-			if (chaseCamAngle >= 0 && chaseCamAngle < 1.5708)
-			{
-				// Update the golf ball position and the arrow position
-				// x = -sin(theta), z = cos(theta)
-				// Separate below statement into direction = vec3(-sin, 0, cos) (normalise)		
-				gbDirection = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
+				// SET DIRECTION BASED ON CHASE CAM ANGLE
+				// If camera angle is between 0 and 90
+				if (chaseCamAngle >= 0 && chaseCamAngle < 1.5708)
+				{
+					// Update the golf ball position and the arrow position
+					// x = -sin(theta), z = cos(theta)
+					// Separate below statement into direction = vec3(-sin, 0, cos) (normalise)		
+					gbDirection = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
+				}
+				// If camera angle is between 90 and 180
+				else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
+				{
+					// x = -cos(theta - 90), z = -sin(theta - 90)
+					gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
+				}
+				// If camera angle is between 180 and 270
+				else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
+				{
+					// x = sin(theta - 180), z = -cos(theta - 180)
+					gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
+				}
+				// If camera angle is anything else
+				else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
+				{
+					// x = cos(theta - 270), z = sin(theta- 270)
+					gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
+				}
+				pPressed = true;
 			}
-			// If camera angle is between 90 and 180
-			else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
-			{
-				// x = -cos(theta - 90), z = -sin(theta - 90)
-				gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
-			}
-			// If camera angle is between 180 and 270
-			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
-			{
-				// x = sin(theta - 180), z = -cos(theta - 180)
-				gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
-			}
-			// If camera angle is anything else
-			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
-			{
-				// x = cos(theta - 270), z = sin(theta- 270)
-				gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
-			}
-			pPressed = true;
 		}
-	}
 
-	// When P is realesed
-	if ((glfwGetKey(window, GLFW_KEY_SPACE)) == false)
-	{
-		// Only work if p was just released
-		if (pPressed)
+		// When Space is realesed
+		if ((glfwGetKey(window, GLFW_KEY_SPACE)) == false)
 		{
-			golfBallMoving = true;
-			// Force to apply is held in counter
-			//Pcounter *= 3; // slightly magic number (Pc isn't enough on its own)
-			// Apply to speed
-			speed += Pcounter;
-			//repeat until Pcounter is reset to 0
-			while (Pcounter > 0.0)
+			// Only work if space was just released
+			if (pPressed)
 			{
-				//This just inverts the increasing in size and positions done before when P was pressed
-				powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
-				powerBarTrans.getPos().x -= Pcounter / 100.0f;
-				powerBarTrans.getScale().x -= Pcounter / 5.0f;
-				//Decrease Pcounter until reaches 0
-				Pcounter -= 0.5;
-			}
-			
-			// Increment stroke counter by one
-			strokeCounter += 1;
+				golfBallMoving = true;
+				// Force to apply is held in counter
+				//Pcounter *= 3; // slightly magic number (Pc isn't enough on its own)
+				// Apply to speed
+				speed += Pcounter;
+				//repeat until Pcounter is reset to 0
+				while (Pcounter > 0.0)
+				{
+					//This just inverts the increasing in size and positions done before when P was pressed
+					powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
+					powerBarTrans.getPos().x -= Pcounter / 100.0f;
+					powerBarTrans.getScale().x -= Pcounter / 5.0f;
+					//Decrease Pcounter until reaches 0
+					Pcounter -= 0.5;
+				}
 
-			// Switch statement which changes the stroke counter based on how many strokes the player has taken
-			switch (strokeCounter)
-			{
+				// Increment stroke counter by one
+				strokeCounter += 1;
+
+				// Switch statement which changes the stroke counter based on how many strokes the player has taken
+				switch (strokeCounter)
+				{
 				case 0:
 					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\zero.png");
 					break;
@@ -857,11 +859,12 @@ void gameScene::Input(GLFWwindow* window)
 				case 13:
 					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
 					break;
+				}
+				// Flip
+				pPressed = false;
 			}
-			// Flip
-			pPressed = false;
-		} 	
-	} // End if (p is released)
+		} // End if (p is released)
+	}
 
 }
 
