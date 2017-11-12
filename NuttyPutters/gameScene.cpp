@@ -9,9 +9,9 @@ gameScene::gameScene() { }
 // Deconstructor
 gameScene::~gameScene() { }
 
-// Setup scene
-void gameScene::Init(GLFWwindow* window)
-{
+// Setup scene; seed is an optional param passed in by loadGameScene
+void gameScene::Init(GLFWwindow* window, int courseLength, string seed) 
+{									
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -24,10 +24,13 @@ void gameScene::Init(GLFWwindow* window)
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
+	
+	// Record desired course size if no seed given
+	courseSize = courseLength;
 
+	// Load game
+	LoadGame(seed); 
 
-
-	LoadGame(); // optional parameter of seed
 	// Take alg tiles, turn into render tiles
 	SetupTilesToBeDrawn();
 
@@ -50,7 +53,6 @@ void gameScene::Init(GLFWwindow* window)
 	arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	arrowTransform.getScale() = vec3(0.5);
 
-
 	// Setup cameras
 	freeCam = new free_camera();
 	freeCam->set_Posistion(vec3(0, 10, -10));
@@ -63,40 +65,84 @@ void gameScene::Init(GLFWwindow* window)
 	chaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	chaseCam->set_springiness(0.2f);
 	chaseCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+
+	tarCam = new target_camera();
+	tarCam->set_Posistion(vec3(0, 0, 5.0f));
+	tarCam->set_Target(vec3(0, 0, 0));
+	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
+
+	// Stroke HUD Label setup
+	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\zero.png", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
+	// Player HUD Labelsetup
+	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.png", vec3(-2.75, 1.7, 0.0), 1.0f, 0.25f);
+	// Power HUD Label setup
+	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.png", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
+	// Power Bar Outline HUD setup
+	powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
+	// Power Bar HUD setup
+	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
+	// Centre Bar HUD setup
+	centreInformationHeaderLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hole1.png", vec3(0.0, 0.8, 0.0), 4.0f, 2.0f);
+	centreInformationFooterOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\par4.png", vec3(0.0, -0.5, 0.0), 2.0f, 0.5f);
+	centreInformationFooterTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\timetwo.png", vec3(0.0, -1.0, 0.0), 2.0f, 0.5f);;
+	// Timer HUD setup
+	timerFirstUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.8, 1.7, 0.0), 0.25f, 0.25f);
+	timerSecondUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(2.95, 1.7, 0.0), 0.25f, 0.25f);
+	timerThirdUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.15, 1.7, 0.0), 0.25f, 0.25f);
+	timerForthUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.3, 1.7, 0.0), 0.25f, 0.25f);
+	timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(3.05, 1.725, 0.0), 0.25f, 0.25f);
+
+	// Set the amount of time the user has to complete the hole
+	holeTimer = 80;
+	
+
+	// Enable alpha blending to allow for transparency
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-// Loads a level based on given seed
-void gameScene::LoadGame()
+// Loads either random level of certain size, or level by seed
+void gameScene::LoadGame(string seed)
 {
 	// Only get seed from file if not given to us from load game screen
-	
-	// Seed chosen is found in file
-	// Some magic numbers in the following section; for milestone 2, will replace after
-	// Seed is a list of numbers, which refer to tile type
-	int seed[12];
-	// Insert start
-	seed[0] = 0;
-	// Open seeds file 
-	ifstream seedsFile("res12.csv");
-	// find how many lines in seed file (hardcoded for now)
-	int seedsCount = 341;
-	// pick random number in that range
-	default_random_engine rng(random_device{}());
-	uniform_int_distribution<int> distribution(0, seedsCount);
-	int choice = distribution(rng);
-	// read that line
-	string line;
-	for (int l = 0; l < choice; ++l)
+	if (seed == "seed") // it's the default value
+	{ 
+		// Some magic numbers in the following section; for milestone 2, will replace after
+		// Insert start
+		levelSeed.push_back(0);
+		// Open seeds file 
+		ifstream seedsFile("res12.csv");
+		// find how many lines in seed file (hardcoded for now)
+		int seedsCount = 341;
+		// pick random number in that range
+		default_random_engine rng(random_device{}());
+		uniform_int_distribution<int> distribution(0, seedsCount);
+		int choice = distribution(rng);
+		// read that line
+		string line;
+		for (int l = 0; l < choice; ++l)
+		{
+			getline(seedsFile, line);
+		} // last iteration will be on desired line, so line should be correct seed now
+		// parse seed into array
+		for (int c = 0; c < line.length(); ++c)
+		{
+			// Convert each character in string to int
+			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 0, or - 48
+		}
+
+
+	} // end if seed is default
+	else // this has been given a seed value
 	{
-		getline(seedsFile, line);
-	} // last iteration will be on desired line, so line should be correct seed now
-	// parse seed into array
-	for (int i = 0; i < 11; ++i)
-	{
-		seed[i+1] = line[i] - 48;
+		// Parse into ints as above
+		for (int c = 0; c < seed.length(); ++c)
+		{
+			levelSeed.push_back(seed[c] - 48);
+		}
 	}
-	
-	//int seed[] = { 1, 1, 1, 1, 1, 1, 1, 1, 9 };
+
+
 
 	// Start added first (this & next coords already set)
 	StartTile start;
@@ -106,7 +152,7 @@ void gameScene::LoadGame()
 	// Update size tracker
 	float size = start.size;
 	// For each number in seed array
-	for (auto &i : seed)
+	for (auto &i : levelSeed)
 	{
 		// Update current coordinates (next coords of last thing in list) 
 		curCoords = algTiles.back().GetNextCoords();
@@ -316,6 +362,7 @@ void gameScene::LoadGame()
 			end.SetCoords(curCoords);
 			end.outDir = algTiles.back().outDir;
 			algTiles.push_back(end);
+
 			break;
 		}
 
@@ -377,7 +424,7 @@ void gameScene::FillScenery()
 			{
 				// Create straight tile
 				//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
-				Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg", thisPos);		
+				Tile tile(Tile::SCENERY, thisPos, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg");
 				//tile.transform.getRot().x = -0.785398;
 				// Add to list of tiles to be rendered
 				sceneryTiles.push_back(tile);
@@ -399,7 +446,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 7)
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y += 1.8;
@@ -410,7 +457,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 8)
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y -= 1.8;
@@ -420,7 +467,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 0) // Start
 		{
 			// Create start tile
-			Tile tile(Tile::START, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::START, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Start tile needs rotating 180 (should always face down)
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -429,14 +476,14 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 1) // Straight V
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 2) // Straight H
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Straight needs rotating by 90, since it's vertical by default
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -445,7 +492,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 3) // Corner BL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -454,7 +501,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 4) // Corner BR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -463,14 +510,14 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 5) // Corner TL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 6) // Corner TR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = -1.5708;
 			// Add to list of tiles to be rendered
@@ -479,7 +526,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 9) // end
 		{
 			// Create start tile
-			Tile tile(Tile::END, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg", t.thisCoords);
+			Tile tile(Tile::END, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Consult direction to determine how much to rotate
 			if (t.outDir.going_up)
 			{
@@ -501,12 +548,16 @@ void gameScene::SetupTilesToBeDrawn()
 			tiles.push_back(tile);
 		}
 	}
-
 }
 
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
+	// Calculate dt
+	lastFrame = thisFrame;
+	thisFrame = glfwGetTime();
+	dt = (float)(thisFrame - lastFrame);
+
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -563,7 +614,6 @@ void gameScene::Input(GLFWwindow* window)
 					cout << "Level saved" << endl;
 					levelSaved = true;
 				}
-
 			}
 
 			// Unpause
@@ -585,13 +635,18 @@ void gameScene::Input(GLFWwindow* window)
 		// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
 		freeCam->set_Posistion(chaseCam->get_Posistion());
 	}
-
 	// If button two is pressed change to chase camera
 	if (glfwGetKey(window, GLFW_KEY_2))
 	{
 		// Set camera version to chase camera
 		cout << "Chase Camera selected" << endl;
 		cameraType = 1;
+	}
+
+	// If the X button is pressed then continue on with game -used for HUD elements
+	if (glfwGetKey(window, GLFW_KEY_X))
+	{
+		continuePressed = true;
 	}
 
 	// FREE CAM controls
@@ -624,6 +679,14 @@ void gameScene::Input(GLFWwindow* window)
 		if (glfwGetKey(window, GLFW_KEY_E))
 		{
 			freeCamPos = (vec3(0, -camSpeed * dt, 0));
+		}
+		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
+		{
+			camSpeed = 10.0f;
+		}
+		else
+		{
+			camSpeed = 2.0f;
 		}
 
 		// Move camera by new pos after input
@@ -668,7 +731,6 @@ void gameScene::Input(GLFWwindow* window)
 			chaseCam->zoom_in(camSpeed * dt * 0.5);
 		}
 
-
 		// If chase camera angle is greater than 360 reset to 0
 		if (chaseCamAngle > 6.28319)
 		{
@@ -681,7 +743,6 @@ void gameScene::Input(GLFWwindow* window)
 		}
 	}
 
-
 	// PLAYER
 	// If P is pressed 
 	if (glfwGetKey(window, GLFW_KEY_SPACE))
@@ -690,10 +751,14 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			// Start counter
 			Pcounter += 0.5f;
+			// Update the power bar based on the the Pcounter value 
+			powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
+			powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
+			powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
 
 			// SET DIRECTION BASED ON CHASE CAM ANGLE
 			// If camera angle is between 0 and 90
-			if (chaseCamAngle > 0 && chaseCamAngle < 1.5708)
+			if (chaseCamAngle >= 0 && chaseCamAngle < 1.5708)
 			{
 				// Update the golf ball position and the arrow position
 				// x = -sin(theta), z = cos(theta)
@@ -705,26 +770,21 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				// x = -cos(theta - 90), z = -sin(theta - 90)
 				gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
-
 			}
 			// If camera angle is between 180 and 270
 			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
 			{
 				// x = sin(theta - 180), z = -cos(theta - 180)
 				gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
-
 			}
 			// If camera angle is anything else
 			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
 			{
 				// x = cos(theta - 270), z = sin(theta- 270)
 				gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
-
 			}
-
 			pPressed = true;
 		}
-
 	}
 
 	// When P is realesed
@@ -738,8 +798,66 @@ void gameScene::Input(GLFWwindow* window)
 			//Pcounter *= 3; // slightly magic number (Pc isn't enough on its own)
 			// Apply to speed
 			speed += Pcounter;
-			// Reset
-			Pcounter = 0;
+			//repeat until Pcounter is reset to 0
+			while (Pcounter > 0.0)
+			{
+				//This just inverts the increasing in size and positions done before when P was pressed
+				powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
+				powerBarTrans.getPos().x -= Pcounter / 100.0f;
+				powerBarTrans.getScale().x -= Pcounter / 5.0f;
+				//Decrease Pcounter until reaches 0
+				Pcounter -= 0.5;
+			}
+			
+			// Increment stroke counter by one
+			strokeCounter += 1;
+
+			// Switch statement which changes the stroke counter based on how many strokes the player has taken
+			switch (strokeCounter)
+			{
+				case 0:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\zero.png");
+					break;
+				case 1:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\one.png");
+					break;
+				case 2:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\two.png");
+					break;
+				case 3:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\three.png");
+					break;
+				case 4:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\four.png");
+					break;
+				case 5:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\five.png");
+					break;
+				case 6:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\six.png");
+					break;
+				case 7:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\seven.png");
+					break;
+				case 8:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\eight.png");
+					break;
+				case 9:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nine.png");
+					break;
+				case 10:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ten.png");
+					break;
+				case 11:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\eleven.png");
+					break;
+				case 12:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\twelve.png");
+					break;
+				case 13:
+					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+					break;
+			}
 			// Flip
 			pPressed = false;
 		} 	
@@ -773,6 +891,9 @@ void gameScene::Update(GLFWwindow* window)
 	chaseCam->move(golfBallTransform.getPos(), golfBallTransform.getRot());
 	chaseCam->update(0.00001);
 
+	// Update target camera
+	tarCam->update(0.00001);
+
 	// PLAYER UPDATE
 	// Velocity is direction by speed by delta time
 	gbVelocity = (gbDirection * speed);
@@ -798,9 +919,138 @@ void gameScene::Update(GLFWwindow* window)
 	golfBallTransform.getPos() += gbVelocity;
 	arrowTransform.getPos() += gbVelocity;
 
-	
-}
+	// If the continue button is pressed 
+	if (continuePressed)
+	{
+		// If the time taken to reach this method is zero then
+		if (timeToThisMethod == 0)
+		{
+			// Get the time to this method
+			timeToThisMethod = glfwGetTime();
+		}
+		// Get the time since continue was pressed by taking away the time to this method 
+		timeSinceContinueWasPressed = glfwGetTime() - timeToThisMethod;
+		// Get the time remaining in seconds by taking away the time the user has to complete the hole 
+		timeRemainingInSeconds = holeTimer - timeSinceContinueWasPressed;
+		// Get the time in minutes, tenths and seconds - 0M:TS
+		timeRemainingInMinutes = timeRemainingInSeconds / 60;
+		timeRemainingInTenths = (timeRemainingInSeconds - (timeRemainingInMinutes * 60)) / 10;
+		timeRemainingInSeconds = timeRemainingInSeconds - (timeRemainingInMinutes * 60) - (timeRemainingInTenths * 10);
+		//cout << "Mins and secs: " << timeRemainingInMinutes << " " << timeRemainingInTenths << " " << timeRemainingInSeconds << endl;
 
+		// Switch statements which update the minutes, tenths and seconds meshes
+		switch (timeRemainingInMinutes)
+		{
+		case 0:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+			break;
+		case 1:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+			break;
+		case 2:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+			break;
+		case 3:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+			break;
+		case 4:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+			break;
+		case 5:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+			break;
+		case 6:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+			break;
+		case 7:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+			break;
+		case 8:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+			break;
+		case 9:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+			break;
+		default:
+			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+			break;
+		}
+
+		switch (timeRemainingInTenths)
+		{
+		case 0:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+			break;
+		case 1:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+			break;
+		case 2:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+			break;
+		case 3:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+			break;
+		case 4:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+			break;
+		case 5:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+			break;
+		case 6:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+			break;
+		case 7:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+			break;
+		case 8:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+			break;
+		case 9:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+			break;
+		default:
+			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+			break;
+		}
+
+		switch (timeRemainingInSeconds)
+		{
+		case 0:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+			break;
+		case 1:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+			break;
+		case 2:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+			break;
+		case 3:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+			break;
+		case 4:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+			break;
+		case 5:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+			break;
+		case 6:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+			break;
+		case 7:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+			break;
+		case 8:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+			break;
+		case 9:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+			break;
+		default:
+			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+			break;
+		}
+	}
+}
 
 // Tracks current tile player is on (TODO improve performance)
 // Calls collision checking code of tile player is on
@@ -910,7 +1160,13 @@ void gameScene::Collisions()
 			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			end.outDir = algTiles.at(currentTile).outDir;
 			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed);
-			
+
+			// If user hasnt completed hole then - get
+			if (!hasUserCompletedHole)
+			{
+				hasUserCompletedHole = end.getBallInHole();
+			}
+
 			break;
 		}
 	}
@@ -931,6 +1187,102 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		mvp = chaseCam->get_Projection() * chaseCam->get_View();
 	}
+	// If camera type is target camera - used for HUD elements - then
+	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
+
+	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
+	// Set depth range to near to allow for HUD elements to be rendered and drawn
+	glDepthRange(0, 0.01);
+
+	// If the user completes the hole then
+	if (hasUserCompletedHole && !hasUserCompletedHoleTextures)
+	{
+		// Update boolean to true
+		hasUserCompletedHoleTextures = true; // To update textures if hole is complete
+		// Update textures
+		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\holecomplete.png");
+		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
+	}
+	// If the timer is lower than zero sceonds and if user is out of time is false
+	if (timeRemainingInSeconds < 0 && !isUserOutOfTime)
+	{
+		// Update boolean to true
+		isUserOutOfTime = true; // Used to notify the game if the user has ran out of time
+		// Update textures
+		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outoftime.png");
+		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
+	}
+	// If the user takes more than 10 strokes and if the user is out of strokes is false
+	if (strokeCounter > 12 && !isUserOutOfStrokes)
+	{
+		// Update boolean to true
+		isUserOutOfStrokes = true; // Used to notify the game if the user has run out of strokes
+		// Update textures
+		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outofshots.png");
+		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
+	}
+
+	// If user has completed the hole or if the continue button hasnt been pressed of if the user has run out of time or if the user has run out of strokes
+	if (hasUserCompletedHole || !continuePressed || isUserOutOfTime || isUserOutOfStrokes )
+	{
+		// Update the various centre informatiom elements
+		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
+		centreInformationHeaderLabelMesh->Draw();
+		centreInformationFooterOneLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationFooterOneLabelTrans, hudVP);
+		centreInformationFooterOneLabelMesh->Draw();
+		centreInformationFooterTwoLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(centreInformationFooterTwoLabelTrans, hudVP);
+		centreInformationFooterTwoLabelMesh->Draw();
+	}
+	// Else then display remaining gameplay HUDs
+	else
+	{
+		// Bind, update and draw the stroke label HUD
+		strokeLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(strokeLabelTrans, hudVP);
+		strokeLabelMesh->Draw();
+		// Bind, update and draw the player label HUD
+		playerLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(playerLabelTrans, hudVP);
+		playerLabelMesh->Draw();
+		// Bind, update and draw the power label HUD
+		powerLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(powerLabelTrans, hudVP);
+		powerLabelMesh->Draw();
+		// Bind, update and draw the power bar HUD
+		powerBarMesh->thisTexture->Bind(0);
+		textureShader->Update(powerBarTrans, hudVP);
+		powerBarMesh->Draw();
+		// Bind, update and draw the power bar outline HUD
+		powerBarOutlineDisplayMesh->thisTexture->Bind(0);
+		textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
+		powerBarOutlineDisplayMesh->Draw();
+		// Bind, update and draw the timer HUDs
+		timerFirstUnitLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerFirstUnitLabelTrans, hudVP);
+		timerFirstUnitLabelMesh->Draw();
+		timerSecondUnitLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerSecondUnitLabelTrans, hudVP);
+		timerSecondUnitLabelMesh->Draw();
+		timerThirdUnitLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerThirdUnitLabelTrans, hudVP);
+		timerThirdUnitLabelMesh->Draw();
+		timerForthUnitLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerForthUnitLabelTrans, hudVP);
+		timerForthUnitLabelMesh->Draw();
+		timerColonLabelMesh->thisTexture->Bind(0);
+		textureShader->Update(timerColonLabelTrans, hudVP);
+		timerColonLabelMesh->Draw();
+	}
+
+	// Reset the depth range to allow for objects at a distance to be rendered
+	glDepthRange(0.01, 1.0);
+	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
 
 	// Bind texture shader
 	textureShader->Bind();
@@ -968,9 +1320,11 @@ void gameScene::Render(GLFWwindow* window)
 		arrowMesh->Draw();
 	}
 
-
 	// WHAT is shaderTrans - it's never set to anything
 	textureShader->Update(shaderTrans, (freeCam->get_Projection() * freeCam->get_View()));
+
+	// Fully reset depth range for next frame - REQUIRED
+	glDepthRange(0, 1.0);
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();

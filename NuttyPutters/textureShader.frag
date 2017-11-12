@@ -10,6 +10,16 @@ layout (location = 0) out vec4 out_colour;
 
 void main()
 {
-	// Simply set outgoing colour
-	out_colour = texture(tex, tex_coord);
+	vec4 g = texture(tex, tex_coord);
+	
+	if (g.a >= 0.3f && g.a < 1.0f)
+	{
+		g.a = 0.8f;
+	}
+	else if (g.a < 0.3f)
+	{
+		discard;
+	}
+	out_colour = g;
+
 }
