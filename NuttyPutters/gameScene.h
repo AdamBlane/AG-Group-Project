@@ -39,7 +39,8 @@ public:
 	int courseSize; // Total number of tiles this level
 
 	// Gameplay variables
-	GLint64 timeBeenInScene = 0; // Time from when the scene is fully loaded
+	int timeBeenInScene = 0; // Time from when the scene is fully loaded
+	int timeCounter = 0;
 	int strokeCounter = 0; // Counts the amount of strokes the player takes
 	bool continuePressed = false; // Variable used to see if the user has pressed a key - used for HUDs
 	int holeTimer = 0; // The amount time the user to get the ball in the hole
@@ -116,6 +117,9 @@ public:
 	Transform timerThirdUnitLabelTrans;
 	Transform timerForthUnitLabelTrans;
 	Transform timerColonLabelTrans;
+	// Loading screen
+	Mesh* loadingMesh;
+	Transform loadingTrans;
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)

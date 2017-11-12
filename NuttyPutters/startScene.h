@@ -37,30 +37,6 @@ public:
 	// Start Game Label 
 	Mesh* playersLabelMesh;
 	Transform playersLabelTrans;
-	// Numbers Labels
-	Mesh* numberOneLabelMesh;
-	Mesh* numberTwoLabelMesh;
-	Mesh* numberThreeLabelMesh;
-	Mesh* numberFourLabelMesh;
-	Transform numberOneLabelTrans;
-	Transform numberTwoLabelTrans;
-	Transform numberThreeLabelTrans;
-	Transform numberFourLabelTrans;
-	// Difficulty Labels
-	Mesh* easyLabelMesh;
-	Mesh* mediumLabelMesh;
-	Mesh* hardLabelMesh;
-	Transform easyLabelTrans;
-	Transform mediumLabelTrans;
-	Transform hardLabelTrans;
-	// Option Labels 
-	Mesh* startGameLabelMesh;
-	Transform startGameLabelTrans;
-	Mesh* returnLabelMesh;
-	Transform returnLabelTrans;
-	// Background
-	Mesh* startSceneBackgroundMesh;
-	Transform startSceneBackgroundTrans;
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);

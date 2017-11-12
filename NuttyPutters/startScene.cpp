@@ -26,7 +26,7 @@ void startScene::Init(GLFWwindow* win)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-	startSceneBackgroundMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.png", vec3(0.0, 0.0, 0.0), 1.0f, 1.0f);
+	playersLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.png", vec3(0.0, 0.0, 0.0), 1.0f, 1.0f);
 }
 
 void startScene::Loop(GLFWwindow* win)
@@ -101,9 +101,9 @@ void startScene::Render(GLFWwindow* win)
 	glDepthRange(0, 0.01);
 
 	// Bind, update and draw the stroke label HUD
-	startSceneBackgroundMesh->thisTexture->Bind(0);
-	textureShader->Update(startSceneBackgroundTrans, hudVP);
-	startSceneBackgroundMesh->Draw();
+	playersLabelMesh->thisTexture->Bind(0);
+	textureShader->Update(playersLabelTrans, hudVP);
+	playersLabelMesh->Draw();
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);

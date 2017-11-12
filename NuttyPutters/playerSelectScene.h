@@ -33,9 +33,42 @@ public:
 	float dt = 0.016; // Lock to 60fps
 
 	// HUD geometry
-	// Start Game Label 
+	// Numbers Labels
+	Mesh* playersLabelMesh;
+	Mesh* numberOneLabelMesh;
+	Mesh* numberTwoLabelMesh;
+	Mesh* numberThreeLabelMesh;
+	Mesh* numberFourLabelMesh;
+	Transform playersLabelTrans;
+	Transform numberOneLabelTrans;
+	Transform numberTwoLabelTrans;
+	Transform numberThreeLabelTrans;
+	Transform numberFourLabelTrans;
+	// Difficulty Labels
+	Mesh* difficultyLabelMesh;
+	Mesh* easyLabelMesh;
+	Mesh* mediumLabelMesh;
+	Mesh* hardLabelMesh;
+	Transform difficultyLabelTrans;
+	Transform easyLabelTrans;
+	Transform mediumLabelTrans;
+	Transform hardLabelTrans;
+	// Option Labels 
 	Mesh* startGameLabelMesh;
 	Transform startGameLabelTrans;
+	Mesh* returnLabelMesh;
+	Transform returnLabelTrans;
+	// Background
+	Mesh* playerSelectBackgroundMesh;
+	Transform playerSelectBackgroundTrans;
+
+	// Used for selection of labels
+	int playerSelect = 1;
+	int difficultySelect = 1;
+	int buttonSelect = 1;
+	int playerChoice = 0;
+	int difficultyChoice = 0;
+	float total_time = 5.0f;
 
 	// Difficulty; number of tiles in level - NOT SURE WHAT THIS IS
 	int courseLength = 12;

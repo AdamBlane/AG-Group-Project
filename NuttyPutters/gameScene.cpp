@@ -91,11 +91,12 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	timerThirdUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.15, 1.7, 0.0), 0.25f, 0.25f);
 	timerForthUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.3, 1.7, 0.0), 0.25f, 0.25f);
 	timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(3.05, 1.725, 0.0), 0.25f, 0.25f);
+	// Set the texture of the loading screen
+	loadingMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\loadingscreen.png", vec3(0, 0.0, 0.0), 8.0f, 5.0f);
 
 	// Set the amount of time the user has to complete the hole
 	holeTimer = 80;
 	
-
 	// Enable alpha blending to allow for transparency
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -922,6 +923,15 @@ void gameScene::Update(GLFWwindow* window)
 	golfBallTransform.getPos() += gbVelocity;
 	arrowTransform.getPos() += gbVelocity;
 
+	// If the time been in scene is equal to zero then
+	if (timeBeenInScene == 0)
+	{
+		// Get the amount of time been in scene
+		timeBeenInScene = glfwGetTime();
+	}
+	// Increment time Counter - used for splash screen
+	timeCounter++;
+
 	// If the continue button is pressed 
 	if (continuePressed)
 	{
@@ -1196,6 +1206,15 @@ void gameScene::Render(GLFWwindow* window)
 	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
+
+	// If timeCounter - which is a variable that increases as of when the scene has loaded is less than the time been in scene + a value that can be changed then
+	if (timeCounter < timeBeenInScene + 300)
+	{
+		// Display loading screen
+		loadingMesh->thisTexture->Bind(0);
+		textureShader->Update(loadingTrans, hudVP);
+		loadingMesh->Draw();
+	}
 
 	// If the user completes the hole then
 	if (hasUserCompletedHole && !hasUserCompletedHoleTextures)
