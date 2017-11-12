@@ -1,7 +1,18 @@
 #pragma once
-
-// GLFW
+// Externals
 #include "glew_glfw.h"
+#include <map>
+#include <time.h>
+#include <iostream>
+#include <sstream>
+#include <chrono>
+#include <random>
+#include <sstream>
+// Internals
+#include "Mesh.h"
+#include "Transform.h"
+#include "target_camera.h"
+#include "Shader.h"
 
 class playerSelectScene
 {
@@ -10,15 +21,33 @@ public:
 	playerSelectScene();
 	~playerSelectScene();
 
+	// Create a target camera - used for HUD elements
+	AllCamera::target_camera* tarCam;
 
-	// Difficulty; number of tiles in level
+	// Create a texture shader which is used to bind textures to geometry
+	Shader* textureShader;
+
+	// Used to lock framerate
+	double lastFrame = 0;
+	double thisFrame = glfwGetTime();
+	float dt = 0.016; // Lock to 60fps
+
+	// HUD geometry
+	// Start Game Label 
+	Mesh* startGameLabelMesh;
+	Transform startGameLabelTrans;
+
+	// Difficulty; number of tiles in level - NOT SURE WHAT THIS IS
 	int courseLength = 12;
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);
-	// Input
+	// Input 
 	void Input(GLFWwindow* win);
-
-	// Setup scene
+	// Setup
 	void Init(GLFWwindow* win);
+	// Update
+	void Update(GLFWwindow* window);
+	// Render
+	void Render(GLFWwindow* window);
 };
