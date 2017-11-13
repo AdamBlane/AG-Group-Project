@@ -36,6 +36,7 @@ public:
 	// HUD geometry
 	// Start Game Label 
 	Mesh* playersLabelMesh;
+	Texture texture;
 	Transform playersLabelTrans;
 
 	// Draw stuff

@@ -4,8 +4,8 @@
 #include <iostream>
 
 
-// Consturctor
-Texture::Texture(const std::string& fileName)
+// This method replaces old constructor (Does the same thing)
+void Texture::GenerateTexture(const std::string& fileName)
 {
 	// Store the width, height and number of components that make up a texture
 	// NumCoponents is rarely used but good to have incase using complex textures

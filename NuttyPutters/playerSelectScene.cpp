@@ -20,19 +20,19 @@ void playerSelectScene::Init(GLFWwindow * win)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-	playersLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\players.png", vec3(-0.4, 1.4, 0.0), 2.8f, 0.7f);
-	//numberThreeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nthree.png", vec3(1.5, 1.725, 0.0), 0.5f, 0.5f);
-	//numberFourLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nfour.png", vec3(2.0, 1.725, 0.0), 0.5f, 0.5f);
-	difficultyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\difficulty.png", vec3(0.0, 0.7, 0.0), 2.8f, 0.7f);
-	playerSelectBackgroundMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\grass.png", vec3(0, 0.0, 0.0), 10.0f, 10.0f);
+	//playersLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\players.png", vec3(-0.4, 1.4, 0.0), 2.8f, 0.7f);
+	////numberThreeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nthree.png", vec3(1.5, 1.725, 0.0), 0.5f, 0.5f);
+	////numberFourLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nfour.png", vec3(2.0, 1.725, 0.0), 0.5f, 0.5f);
+	//difficultyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\difficulty.png", vec3(0.0, 0.7, 0.0), 2.8f, 0.7f);
+	//playerSelectBackgroundMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\grass.png", vec3(0, 0.0, 0.0), 10.0f, 10.0f);
 
-	numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\noneU.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
-	numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
-	easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easyU.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
-	mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\med.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
-	hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
-	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
-	returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
+	//numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\noneU.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
+	//numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
+	//easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easyU.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
+	//mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\med.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
+	//hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
+	//startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
+	//returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
 }
 
 // Draw stuff for this scene
@@ -71,13 +71,13 @@ void playerSelectScene::Input(GLFWwindow* win)
 			switch (playerSelect)
 			{
 				case 1:
-					numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\noneU.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
-					numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
+					//numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\noneU.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
+					//numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
 					selectedPlayers = 1;
 					break;
 				case 2:
-					numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\none.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
-					numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwoU.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
+					//numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\none.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
+					//numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwoU.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
 					selectedPlayers = 2;
 					break;
 			}
@@ -114,29 +114,29 @@ void playerSelectScene::Input(GLFWwindow* win)
 				}
 			}
 
-			startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
-			returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
+			//startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
+			//returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
 
 			break;
 		case 2:
 			switch (difficultySelect)
 			{
 				case 1:
-					easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easyU.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
+					/*easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easyU.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
 					mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\med.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
-					hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
+					hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);*/
 					selectedDifficulty = 1;
 					break;
 				case 2:
-					easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easy.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
-					mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\medU.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
-					hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
+					//easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easy.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
+					//mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\medU.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
+					//hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
 					selectedDifficulty = 2;
 					break;
 				case 3:
-					easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easy.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
+				/*	easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easy.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
 					mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\med.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
-					hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hardU.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
+					hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hardU.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);*/
 					selectedDifficulty = 3;
 					break;
 			}
@@ -174,17 +174,17 @@ void playerSelectScene::Input(GLFWwindow* win)
 				}
 			}
 
-			startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
-			returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
+		//	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
+		//	returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
 
 			break;
 		case 3:
-			startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgameU.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
-			returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
+		//	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgameU.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
+		//	returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
 			break;
 		case 4:
-			startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
-			returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenuU.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
+		//	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
+		//	returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenuU.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
 			break;
 	}
 
@@ -257,39 +257,39 @@ void playerSelectScene::Render(GLFWwindow* win)
 	glDepthRange(0, 0.01);
 
 	// Bind, update and draw the background
-	playerSelectBackgroundMesh->thisTexture->Bind(0);
-	textureShader->Update(playerSelectBackgroundTrans, hudVP);
-	playerSelectBackgroundMesh->Draw();
-	// Bind, update and draw the number label HUDs
-	playersLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(playersLabelTrans, hudVP);
-	playersLabelMesh->Draw();
-	numberOneLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(numberOneLabelTrans, hudVP);
-	numberOneLabelMesh->Draw();
-	numberTwoLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(numberTwoLabelTrans, hudVP);
-	numberTwoLabelMesh->Draw();
-	// Bind, update and draw the difficulty HUDs
-	difficultyLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(difficultyLabelTrans, hudVP);
-	difficultyLabelMesh->Draw();
-	easyLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(easyLabelTrans, hudVP);
-	easyLabelMesh->Draw();
-	mediumLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(mediumLabelTrans, hudVP);
-	mediumLabelMesh->Draw();
-	hardLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(hardLabelTrans, hudVP);
-	hardLabelMesh->Draw();
-	// Bind, update and draw option HUDs
-	startGameLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(startGameLabelTrans, hudVP);
-	startGameLabelMesh->Draw();
-	returnLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(returnLabelTrans, hudVP);
-	returnLabelMesh->Draw();
+	//playerSelectBackgroundMesh->thisTexture->Bind(0);
+	//textureShader->Update(playerSelectBackgroundTrans, hudVP);
+	//playerSelectBackgroundMesh->Draw();
+	//// Bind, update and draw the number label HUDs
+	//playersLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(playersLabelTrans, hudVP);
+	//playersLabelMesh->Draw();
+	//numberOneLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(numberOneLabelTrans, hudVP);
+	//numberOneLabelMesh->Draw();
+	//numberTwoLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(numberTwoLabelTrans, hudVP);
+	//numberTwoLabelMesh->Draw();
+	//// Bind, update and draw the difficulty HUDs
+	//difficultyLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(difficultyLabelTrans, hudVP);
+	//difficultyLabelMesh->Draw();
+	//easyLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(easyLabelTrans, hudVP);
+	//easyLabelMesh->Draw();
+	//mediumLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(mediumLabelTrans, hudVP);
+	//mediumLabelMesh->Draw();
+	//hardLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(hardLabelTrans, hudVP);
+	//hardLabelMesh->Draw();
+	//// Bind, update and draw option HUDs
+	//startGameLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(startGameLabelTrans, hudVP);
+	//startGameLabelMesh->Draw();
+	//returnLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(returnLabelTrans, hudVP);
+	//returnLabelMesh->Draw();
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);

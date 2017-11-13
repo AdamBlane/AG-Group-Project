@@ -49,24 +49,30 @@ public:
 	//Constructor to load a OBJ file from its file path
 	Mesh(const std::string& fileName);
 
-	//Constructor to generate a shape using geometry, taking type of shape, file path for texture, position and dimensions:
+	//Constructor to generate a shape using geometry, taking type of shape, position and dimensions:
 	//TRIANGLE: only 1 side is necessary
 	//QUAD: only 1 side is necessary
 	//RECTANGLE: only 2 sides are necessary
 	//PLANE: only 1 side is necessary
 	//BOX: only 1 side is necessary
 	//CUBOID: all 3 sides are necessary
-	Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f, bool isFloor = false, bool isFluid = false);
+	Mesh(typeShape shape, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f, bool isFloor = false, bool isFluid = false);
 
 	//Get position of geometry created by geometry builder
 	glm::vec3 getGeomPos();
 
 	//converts degrees to radians
 	static double toRads(double degreesAngle);
+	
+	// Change this mesh's texture
+	void SetTexture(Texture tex);
 
-	//Texture for each Mesh
-	Texture *thisTexture;
+	//Texture for this Mesh
+	//Texture *thisTexture;
+	// This mesh's texture (not a pointer, since we can init here using default constructor)
+	Texture myTex;
 
+	// This is the texture filename
 	std::string filename;
 
 	bool isThisFloor = false;

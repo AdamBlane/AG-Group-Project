@@ -48,15 +48,15 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
 	// Add the golf ball to scene
-	golfBallMesh = new Mesh("..\\NuttyPutters\\sphere.obj");
+	/*golfBallMesh = new Mesh("..\\NuttyPutters\\sphere.obj");
 	golfBallTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
 	golfBallTransform.getScale() = vec3(0.5);
-	golfBallTransform.getPos() = vec3(0.0, 1.0, 0.0);
+	golfBallTransform.getPos() = vec3(0.0, 1.0, 0.0);*/
 
 	// Arrow
-	arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
-	arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
-	arrowTransform.getScale() = vec3(0.5);
+	//arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
+	//arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
+	//arrowTransform.getScale() = vec3(0.5);
 
 	// Setup cameras
 	freeCam = new free_camera();
@@ -77,27 +77,27 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
 
 	// Stroke HUD Label setup
-	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\zero.png", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
-	// Player HUD Labelsetup
-	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.png", vec3(-2.75, 1.7, 0.0), 1.0f, 0.25f);
-	// Power HUD Label setup
-	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.png", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
-	// Power Bar Outline HUD setup
-	powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
-	// Power Bar HUD setup
-	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
-	// Centre Bar HUD setup
-	centreInformationHeaderLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hole1.png", vec3(0.0, 0.8, 0.0), 4.0f, 2.0f);
-	centreInformationFooterOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\par4.png", vec3(0.0, -0.5, 0.0), 2.0f, 0.5f);
-	centreInformationFooterTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\timetwo.png", vec3(0.0, -1.0, 0.0), 2.0f, 0.5f);;
-	// Timer HUD setup
-	timerFirstUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.8, 1.7, 0.0), 0.25f, 0.25f);
-	timerSecondUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(2.95, 1.7, 0.0), 0.25f, 0.25f);
-	timerThirdUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.15, 1.7, 0.0), 0.25f, 0.25f);
-	timerForthUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.3, 1.7, 0.0), 0.25f, 0.25f);
-	timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(3.05, 1.725, 0.0), 0.25f, 0.25f);
-	// Set the texture of the loading screen
-	loadingMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\loadingscreen.png", vec3(0, 0.0, 0.0), 8.0f, 5.0f);
+	//strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\zero.png", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
+	//// Player HUD Labelsetup
+	//playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.png", vec3(-2.75, 1.7, 0.0), 1.0f, 0.25f);
+	//// Power HUD Label setup
+	//powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.png", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
+	//// Power Bar Outline HUD setup
+	//powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
+	//// Power Bar HUD setup
+	//powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
+	//// Centre Bar HUD setup
+	//centreInformationHeaderLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hole1.png", vec3(0.0, 0.8, 0.0), 4.0f, 2.0f);
+	//centreInformationFooterOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\par4.png", vec3(0.0, -0.5, 0.0), 2.0f, 0.5f);
+	//centreInformationFooterTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\timetwo.png", vec3(0.0, -1.0, 0.0), 2.0f, 0.5f);;
+	//// Timer HUD setup
+	//timerFirstUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(2.8, 1.7, 0.0), 0.25f, 0.25f);
+	//timerSecondUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(2.95, 1.7, 0.0), 0.25f, 0.25f);
+	//timerThirdUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.15, 1.7, 0.0), 0.25f, 0.25f);
+	//timerForthUnitLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\nzero.png", vec3(3.3, 1.7, 0.0), 0.25f, 0.25f);
+	//timerColonLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\semiColon.png", vec3(3.05, 1.725, 0.0), 0.25f, 0.25f);
+	//// Set the texture of the loading screen
+	//loadingMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\loadingscreen.png", vec3(0, 0.0, 0.0), 8.0f, 5.0f);
 
 	// Set the amount of time the user has to complete the hole
 	holeTimer = 80;
@@ -820,46 +820,46 @@ void gameScene::Input(GLFWwindow* window)
 				switch (strokeCounter)
 				{
 				case 0:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\zero.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\zero.png");
 					break;
 				case 1:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\one.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\one.png");
 					break;
 				case 2:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\two.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\two.png");
 					break;
 				case 3:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\three.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\three.png");
 					break;
 				case 4:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\four.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\four.png");
 					break;
 				case 5:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\five.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\five.png");
 					break;
 				case 6:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\six.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\six.png");
 					break;
 				case 7:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\seven.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\seven.png");
 					break;
 				case 8:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\eight.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\eight.png");
 					break;
 				case 9:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nine.png");
+				//	strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nine.png");
 					break;
 				case 10:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ten.png");
+					//strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ten.png");
 					break;
 				case 11:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\eleven.png");
+				//	strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\eleven.png");
 					break;
 				case 12:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\twelve.png");
+				//	strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\twelve.png");
 					break;
 				case 13:
-					strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+				//	strokeLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
 					break;
 				}
 				// Flip
@@ -956,111 +956,111 @@ void gameScene::Update(GLFWwindow* window)
 		switch (timeRemainingInMinutes)
 		{
 		case 0:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
 			break;
 		case 1:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
 			break;
 		case 2:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
 			break;
 		case 3:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
 			break;
 		case 4:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
 			break;
 		case 5:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
 			break;
 		case 6:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+			//timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
 			break;
 		case 7:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
 			break;
 		case 8:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
 			break;
 		case 9:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
 			break;
 		default:
-			timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+		//	timerSecondUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
 			break;
 		}
 
 		switch (timeRemainingInTenths)
 		{
 		case 0:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+		//	timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
 			break;
 		case 1:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+		//	timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
 			break;
 		case 2:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+		//	timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
 			break;
 		case 3:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+		//	timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
 			break;
 		case 4:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+			//timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
 			break;
 		case 5:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+			//timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
 			break;
 		case 6:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+		//	timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
 			break;
 		case 7:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+		//	timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
 			break;
 		case 8:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+		//	timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
 			break;
 		case 9:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+		//	timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
 			break;
 		default:
-			timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+		//	timerThirdUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
 			break;
 		}
 
 		switch (timeRemainingInSeconds)
 		{
 		case 0:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
+		//	timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nzero.png");
 			break;
 		case 1:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
+		//	timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\none.png");
 			break;
 		case 2:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
+		//	timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\ntwo.png");
 			break;
 		case 3:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
+		//	timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nthree.png");
 			break;
 		case 4:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
+		//	timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfour.png");
 			break;
 		case 5:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
+		//	timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nfive.png");
 			break;
 		case 6:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
+		//	timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nsix.png");
 			break;
 		case 7:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
+			//timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nseven.png");
 			break;
 		case 8:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
+		//	timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\neight.png");
 			break;
 		case 9:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
+			//timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\nnine.png");
 			break;
 		default:
-			timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
+		//	timerForthUnitLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\x.png");
 			break;
 		}
 	}
@@ -1212,9 +1212,9 @@ void gameScene::Render(GLFWwindow* window)
 	if (timeCounter < timeBeenInScene + 300)
 	{
 		// Display loading screen
-		loadingMesh->thisTexture->Bind(0);
+		/*loadingMesh->thisTexture->Bind(0);
 		textureShader->Update(loadingTrans, hudVP);
-		loadingMesh->Draw();
+		loadingMesh->Draw();*/
 	}
 
 	// If the user completes the hole then
@@ -1223,9 +1223,9 @@ void gameScene::Render(GLFWwindow* window)
 		// Update boolean to true
 		hasUserCompletedHoleTextures = true; // To update textures if hole is complete
 		// Update textures
-		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\holecomplete.png");
+	/*	centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\holecomplete.png");
 		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
-		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");*/
 	}
 	// If the timer is lower than zero sceonds and if user is out of time is false
 	if (timeRemainingInSeconds < 0 && !isUserOutOfTime)
@@ -1233,9 +1233,9 @@ void gameScene::Render(GLFWwindow* window)
 		// Update boolean to true
 		isUserOutOfTime = true; // Used to notify the game if the user has ran out of time
 		// Update textures
-		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outoftime.png");
-		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
-		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
+		//centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outoftime.png");
+		//centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
+		//centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
 	}
 	// If the user takes more than 10 strokes and if the user is out of strokes is false
 	if (strokeCounter > 12 && !isUserOutOfStrokes)
@@ -1243,64 +1243,64 @@ void gameScene::Render(GLFWwindow* window)
 		// Update boolean to true
 		isUserOutOfStrokes = true; // Used to notify the game if the user has run out of strokes
 		// Update textures
-		centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outofshots.png");
+	/*	centreInformationHeaderLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\outofshots.png");
 		centreInformationFooterOneLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\savegame.png");
-		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");
+		centreInformationFooterTwoLabelMesh->thisTexture = new Texture("..\\NuttyPutters\\mainmenu.png");*/
 	}
 
 	// If user has completed the hole or if the continue button hasnt been pressed of if the user has run out of time or if the user has run out of strokes
 	if (hasUserCompletedHole || !continuePressed || isUserOutOfTime || isUserOutOfStrokes )
 	{
 		// Update the various centre informatiom elements
-		centreInformationHeaderLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
-		centreInformationHeaderLabelMesh->Draw();
-		centreInformationFooterOneLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationFooterOneLabelTrans, hudVP);
-		centreInformationFooterOneLabelMesh->Draw();
-		centreInformationFooterTwoLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(centreInformationFooterTwoLabelTrans, hudVP);
-		centreInformationFooterTwoLabelMesh->Draw();
+		//centreInformationHeaderLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(centreInformationHeaderLabelTrans, hudVP);
+		//centreInformationHeaderLabelMesh->Draw();
+		//centreInformationFooterOneLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(centreInformationFooterOneLabelTrans, hudVP);
+		//centreInformationFooterOneLabelMesh->Draw();
+		//centreInformationFooterTwoLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(centreInformationFooterTwoLabelTrans, hudVP);
+		//centreInformationFooterTwoLabelMesh->Draw();
 	}
 	// Else then display remaining gameplay HUDs
 	else
 	{
 		// Bind, update and draw the stroke label HUD
-		strokeLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(strokeLabelTrans, hudVP);
-		strokeLabelMesh->Draw();
-		// Bind, update and draw the player label HUD
-		playerLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(playerLabelTrans, hudVP);
-		playerLabelMesh->Draw();
-		// Bind, update and draw the power label HUD
-		powerLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(powerLabelTrans, hudVP);
-		powerLabelMesh->Draw();
-		// Bind, update and draw the power bar HUD
-		powerBarMesh->thisTexture->Bind(0);
-		textureShader->Update(powerBarTrans, hudVP);
-		powerBarMesh->Draw();
-		// Bind, update and draw the power bar outline HUD
-		powerBarOutlineDisplayMesh->thisTexture->Bind(0);
-		textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
-		powerBarOutlineDisplayMesh->Draw();
-		// Bind, update and draw the timer HUDs
-		timerFirstUnitLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(timerFirstUnitLabelTrans, hudVP);
-		timerFirstUnitLabelMesh->Draw();
-		timerSecondUnitLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(timerSecondUnitLabelTrans, hudVP);
-		timerSecondUnitLabelMesh->Draw();
-		timerThirdUnitLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(timerThirdUnitLabelTrans, hudVP);
-		timerThirdUnitLabelMesh->Draw();
-		timerForthUnitLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(timerForthUnitLabelTrans, hudVP);
-		timerForthUnitLabelMesh->Draw();
-		timerColonLabelMesh->thisTexture->Bind(0);
-		textureShader->Update(timerColonLabelTrans, hudVP);
-		timerColonLabelMesh->Draw();
+		//strokeLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(strokeLabelTrans, hudVP);
+		//strokeLabelMesh->Draw();
+		//// Bind, update and draw the player label HUD
+		//playerLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(playerLabelTrans, hudVP);
+		//playerLabelMesh->Draw();
+		//// Bind, update and draw the power label HUD
+		//powerLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(powerLabelTrans, hudVP);
+		//powerLabelMesh->Draw();
+		//// Bind, update and draw the power bar HUD
+		//powerBarMesh->thisTexture->Bind(0);
+		//textureShader->Update(powerBarTrans, hudVP);
+		//powerBarMesh->Draw();
+		//// Bind, update and draw the power bar outline HUD
+		//powerBarOutlineDisplayMesh->thisTexture->Bind(0);
+		//textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
+		//powerBarOutlineDisplayMesh->Draw();
+		//// Bind, update and draw the timer HUDs
+		//timerFirstUnitLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(timerFirstUnitLabelTrans, hudVP);
+		//timerFirstUnitLabelMesh->Draw();
+		//timerSecondUnitLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(timerSecondUnitLabelTrans, hudVP);
+		//timerSecondUnitLabelMesh->Draw();
+		//timerThirdUnitLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(timerThirdUnitLabelTrans, hudVP);
+		//timerThirdUnitLabelMesh->Draw();
+		//timerForthUnitLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(timerForthUnitLabelTrans, hudVP);
+		//timerForthUnitLabelMesh->Draw();
+		//timerColonLabelMesh->thisTexture->Bind(0);
+		//textureShader->Update(timerColonLabelTrans, hudVP);
+		//timerColonLabelMesh->Draw();
 	}
 
 	// Reset the depth range to allow for objects at a distance to be rendered

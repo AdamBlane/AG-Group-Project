@@ -26,7 +26,14 @@ void startScene::Init(GLFWwindow* win)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-	playersLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.png", vec3(0.0, 0.0, 0.0), 1.0f, 1.0f);
+
+	// TEST - Create the mesh first
+	playersLabelMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0, 0.0, 0.0), 1.0f, 1.0f);
+
+	// Then assign texture to the mesh
+	playersLabelMesh->SetTexture(texture);
+	// Then init texture
+	texture.GenerateTexture("..\\NuttyPutters\\easy.png");
 }
 
 void startScene::Loop(GLFWwindow* win)
@@ -101,7 +108,7 @@ void startScene::Render(GLFWwindow* win)
 	glDepthRange(0, 0.01);
 
 	// Bind, update and draw the stroke label HUD
-	playersLabelMesh->thisTexture->Bind(0);
+	playersLabelMesh->myTex.Bind(0);
 	textureShader->Update(playersLabelTrans, hudVP);
 	playersLabelMesh->Draw();
 

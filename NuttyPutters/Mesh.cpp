@@ -10,11 +10,10 @@ Mesh::Mesh(const std::string& fileName)
 	InitMesh(model);
 }
 
-Mesh::Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2, GLfloat size3, bool isFloor, bool isFluid)
+Mesh::Mesh(typeShape shape, glm::vec3 newPosition, GLfloat size1, GLfloat size2, GLfloat size3, bool isFloor, bool isFluid)
 {
 	//setting starting geometry properties
 	thisShape = shape;
-	filename = fileTexture;
 	position = newPosition;
 	side1 = size1;
 	side2 = size2;
@@ -22,7 +21,6 @@ Mesh::Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfl
 	halfSide1 = side1 / 2.0f;
 	halfSide2 = side2 / 2.0f;
 	halfSide3 = side3 / 2.0f;
-	thisTexture = new Texture(filename);
 	isThisFloor = isFloor;
 	isThisFluid = isFluid;
 
@@ -34,6 +32,13 @@ glm::vec3 Mesh::getGeomPos()
 {
 	return position;
 }
+
+// This reassigns this mesh's texture property
+void Mesh::SetTexture(Texture tex)
+{
+	myTex = tex;
+}
+
 
 double Mesh::toRads(double degreesAngle)
 {
@@ -64,6 +69,7 @@ Mesh::Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, un
 Mesh::~Mesh()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayObject);
+
 }
 
 //method to create geometry from chosen type
