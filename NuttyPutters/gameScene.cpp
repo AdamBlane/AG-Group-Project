@@ -448,7 +448,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 7)
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y += 1.8;
@@ -459,7 +459,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 8)
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y -= 1.8;
@@ -469,7 +469,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 0) // Start
 		{
 			// Create start tile
-			Tile tile(Tile::START, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::START, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Start tile needs rotating 180 (should always face down)
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -478,14 +478,14 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 1) // Straight V
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 2) // Straight H
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Straight needs rotating by 90, since it's vertical by default
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -494,7 +494,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 3) // Corner BL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -503,7 +503,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 4) // Corner BR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -512,14 +512,14 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 5) // Corner TL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 6) // Corner TR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = -1.5708;
 			// Add to list of tiles to be rendered
@@ -528,7 +528,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 9) // end
 		{
 			// Create start tile
-			Tile tile(Tile::END, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::END, t.thisCoords, "..\\NuttyPutters\\grass.png", "..\\NuttyPutters\\woodn.jpg");
 			// Consult direction to determine how much to rotate
 			if (t.outDir.going_up)
 			{
