@@ -21,6 +21,14 @@ public:
 	playerSelectScene();
 	~playerSelectScene();
 
+	// Gameplay 
+	int selectedPlayers = 0;
+	int selectedDifficulty = 0;
+
+	// Getters
+	inline bool selectedAmountOfPlayers() { return selectedPlayers; }
+	inline bool selectedChosenDifficulty() { return selectedDifficulty; }
+
 	// Create a target camera - used for HUD elements
 	AllCamera::target_camera* tarCam;
 

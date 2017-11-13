@@ -10,7 +10,7 @@ gameScene::gameScene() { }
 gameScene::~gameScene() { }
 
 // Setup scene; seed is an optional param passed in by loadGameScene
-void gameScene::Init(GLFWwindow* window, int courseLength, string seed) 
+void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 {									
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
@@ -37,13 +37,18 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Setup scenery tiles
 	FillScenery();
 
+
+	playerSelectScene PSS;
+	//PSS = playerSelectScene();
+	selectedPlayers = PSS.selectedAmountOfPlayers();
+	selectedDifficulty = PSS.selectedChosenDifficulty();
+	cout << "Players: " << selectedPlayers << " Difficulty: " << selectedDifficulty << endl;
+
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
-
 	// Add the golf ball to scene
 	golfBallMesh = new Mesh("..\\NuttyPutters\\sphere.obj");
-	//golfBallMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(0.0f, 2.0f, 0.0f), 2.0f, 2.0f, 2.0f);
 	golfBallTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
 	golfBallTransform.getScale() = vec3(0.5);
 	golfBallTransform.getPos() = vec3(0.0, 1.0, 0.0);
@@ -131,8 +136,6 @@ void gameScene::LoadGame(string seed)
 			// Convert each character in string to int
 			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 0, or - 48
 		}
-
-
 	} // end if seed is default
 	else // this has been given a seed value
 	{
@@ -142,8 +145,6 @@ void gameScene::LoadGame(string seed)
 			levelSeed.push_back(seed[c] - 48);
 		}
 	}
-
-
 
 	// Start added first (this & next coords already set)
 	StartTile start;

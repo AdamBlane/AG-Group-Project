@@ -52,6 +52,12 @@ public:
 	bool isUserOutOfStrokes = false; // Boolean which tells the game if they are out of strokes
 	int timeToThisMethod = 0; // Time to this method - used for countdown HUD
 
+	// Player information
+	int selectedDifficulty = 1; // The selected difficulty on the player select screen
+	int selectedPlayers = 1; // The amount of players selected on the player select screen
+	int playerOneShots = 0; // The amount of shots users one has taken
+	int playerTwoShots = 0; // The amount of shots uer two has taken
+
 	Shader* textureShader;
 	Transform shaderTrans;		
 	int currentTile = 0; // Tracks tile player is on 
@@ -123,7 +129,7 @@ public:
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)
-	void Init(GLFWwindow* window, int courseLength, string seed = "seed"); 
+	void Init(GLFWwindow* window, int courseLength, string seed = "seed");
 	// Loads level of given size; random if no optional seed given
 	void LoadGame(string seed);
 	// Fills space around level with scenery tiles

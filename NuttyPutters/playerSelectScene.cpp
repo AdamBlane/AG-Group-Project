@@ -73,12 +73,12 @@ void playerSelectScene::Input(GLFWwindow* win)
 				case 1:
 					numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\noneU.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
 					numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
-					playerChoice = 1;
+					selectedPlayers = 1;
 					break;
 				case 2:
 					numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\none.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
 					numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwoU.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
-					playerChoice = 2;
+					selectedPlayers = 2;
 					break;
 			}
 			// If the player presses down and 5 total_time has passed then
@@ -125,16 +125,19 @@ void playerSelectScene::Input(GLFWwindow* win)
 					easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easyU.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
 					mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\med.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
 					hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
+					selectedDifficulty = 1;
 					break;
 				case 2:
 					easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easy.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
 					mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\medU.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
 					hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
+					selectedDifficulty = 2;
 					break;
 				case 3:
 					easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easy.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
 					mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\med.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
 					hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hardU.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
+					selectedDifficulty = 3;
 					break;
 			}
 
