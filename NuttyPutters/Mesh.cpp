@@ -3,26 +3,24 @@
 #include <vector>
 #include <math.h>
 
-
+// Create mesh from given obj file
 Mesh::Mesh(const std::string& fileName)
 {
 	IndexedModel model = OBJModel(fileName).ToIndexedModel();
 	InitMesh(model);
 }
 
-Mesh::Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfloat size1, GLfloat size2, GLfloat size3, bool isFloor, bool isFluid)
+// Create mesh of a certain shape
+// Matt - I have edited this by removing tex file path, any setting/init of texture within this constructor
+Mesh::Mesh(typeShape shape, glm::vec3 newPosition, GLfloat size1, GLfloat size2, GLfloat size3, bool isFloor, bool isFluid)
 {
 	//setting starting geometry properties
 	thisShape = shape;
-	filename = fileTexture;
 	position = newPosition;
 	side1 = size1;
 	side2 = size2;
 	side3 = size3;
-	halfSide1 = side1 / 2.0f;
-	halfSide2 = side2 / 2.0f;
-	halfSide3 = side3 / 2.0f;
-	thisTexture = new Texture(filename);
+	SetHalfSides();
 	isThisFloor = isFloor;
 	isThisFluid = isFluid;
 
@@ -30,25 +28,49 @@ Mesh::Mesh(typeShape shape, std::string fileTexture, glm::vec3 newPosition, GLfl
 	chooseGeometry();
 }
 
+// Skybox constructor
+// TODO - needs editing such that it does not create a new texture, 
+// instead it takes an already initialised texture(s) as param
 Mesh::Mesh(const std::vector<std::string>& filenames)
 {
-	thisTexture = new Texture(filenames[0], filenames[1], filenames[2], filenames[3], filenames[4], filenames[5]);
+	//thisTexture = new Texture(filenames[0], filenames[1], filenames[2], filenames[3], filenames[4], filenames[5]);
 	thisShape = SKYBOX;
 	chooseGeometry();
 }
 
-glm::vec3 Mesh::getGeomPos()
+// Returns position of mesh geometry
+glm::vec3 Mesh::GetGeomPos()
 {
 	return position;
 }
 
-double Mesh::toRads(double degreesAngle)
+// Convert degrees to radians
+double Mesh::DegtoRads(double degreesAngle)
 {
 	double rads = (degreesAngle * M_PI) / 180.0;
 	return rads;
 }
 
+// Set the scale of this mesh
+void Mesh::SetScale(GLfloat size1, GLfloat size2, GLfloat size3)
+{
+	side1 = size1;
+	side2 = size2;
+	side3 = size3;
+	SetHalfSides();
+	// Then redraw vertices for this typeshape
+	chooseGeometry();
+}
 
+void Mesh::SetPos(glm::vec3 pos)
+{
+	position = pos;
+	// Now redraw
+	chooseGeometry();
+}
+
+// General constructor -> not used at the moment
+// TODO - delete this if will never be used
 Mesh::Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices)
 {
 	IndexedModel model;
@@ -67,7 +89,7 @@ Mesh::Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, un
 	InitMesh(model);
 }
 
-
+// Deconstructor
 Mesh::~Mesh()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayObject);
@@ -661,6 +683,8 @@ void Mesh::generateMesh(Vertex * vertices, unsigned int numVertices, unsigned in
 	InitMesh(model);
 
 }
+
+
 
 void Mesh::InitMesh(const IndexedModel& model)
 {

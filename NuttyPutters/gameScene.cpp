@@ -60,9 +60,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	golfBallTransform.getPos() = vec3(0.0, 1.0, 0.0);
 
 	// Arrow
-	arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
-	arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
-	arrowTransform.getScale() = vec3(0.5);
+	//arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
+	//arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
+	//arrowTransform.getScale() = vec3(0.5);
 
 	//auto height = win.
 	// Setup cameras
@@ -85,15 +85,15 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup
-	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.jpg", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
+//	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.jpg", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
 	// Player HUD Labelsetup
-	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.jpg", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
+//	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.jpg", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
 	// Power HUD Label setup
-	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.jpg", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
+//	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.jpg", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
 	// Power Bar Outline HUD setup
-	powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
+//	powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
 	// Power Bar HUD setup
-	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
+//	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -773,7 +773,7 @@ void gameScene::Input(GLFWwindow* window)
 			// Start counter
 			Pcounter += 0.5f;
 			// Update the power bar based on the the Pcounter value 
-			powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
+			//powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
 			powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
 			powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
 
@@ -823,7 +823,7 @@ void gameScene::Input(GLFWwindow* window)
 			while (Pcounter > 0.0)
 			{
 				//This just inverts the increasing in size and positions done before when P was pressed
-				powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
+			//	powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
 				powerBarTrans.getPos().x -= Pcounter / 100.0f;
 				powerBarTrans.getScale().x -= Pcounter / 5.0f;
 				//Decrease Pcounter until reaches 0
@@ -1050,23 +1050,23 @@ void gameScene::Render(GLFWwindow* window)
 	glDepthRange(0, 0.01);
 
 	// Bind, update and draw the stroke label HUD
-	strokeLabelMesh->thisTexture->Bind(0);
+	//strokeLabelMesh->thisTexture->Bind(0);
 	textureShader->Update(strokeLabelTrans, hudVP);
 	strokeLabelMesh->Draw();
 	// Bind, update and draw the player label HUD
-	playerLabelMesh->thisTexture->Bind(0);
+	//playerLabelMesh->thisTexture->Bind(0);
 	textureShader->Update(playerLabelTrans, hudVP);
 	playerLabelMesh->Draw();
 	// Bind, update and draw the power label HUD
-	powerLabelMesh->thisTexture->Bind(0);
+	//powerLabelMesh->thisTexture->Bind(0);
 	textureShader->Update(powerLabelTrans, hudVP);
 	powerLabelMesh->Draw();
 	// Bind, update and draw the power bar HUD
-	powerBarMesh->thisTexture->Bind(0);
+	//powerBarMesh->thisTexture->Bind(0);
 	textureShader->Update(powerBarTrans, hudVP);
 	powerBarMesh->Draw();
 	// Bind, update and draw the power bar outline HUD
-	powerBarOutlineDisplayMesh->thisTexture->Bind(0);
+	//powerBarOutlineDisplayMesh->thisTexture->Bind(0);
 	textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
 	powerBarOutlineDisplayMesh->Draw();
 
@@ -1075,7 +1075,7 @@ void gameScene::Render(GLFWwindow* window)
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
 	skyShader->Bind();
 
-	sky->thisTexture->Bind(0);
+	//sky->thisTexture->Bind(0);
 	skyShader->Update(skyTransform, mvp);
 	sky->Draw();
 	// Bind texture shader

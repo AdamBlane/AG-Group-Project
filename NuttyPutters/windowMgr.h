@@ -24,19 +24,24 @@ class windowMgr
 		// Track gamestate
 		sceneMgr sceneManager;
 
-		//void set_height(int &value) { height = value; }
-		//void set_width(int &value) { width = value; }
-
+		// TODO - what is this? Set pos actually sets height & width?!
 		void set_PosX(int &value) { height = value; }
 		void set_PosY(int &value) { width = value; }
 
+		// Window width and height values
 		int width = 1600, height = 900;
+		// TODO - position of what? 
 		int PosX, PosY;
-		//static int get_height() { return height; }
-		//static int get_width() { return height; }
+		
+		// Store pointers to all meshes and textures required by game
+		// These are initialised once on the heap, in the Init() function of winMgr
+		vector<Mesh*> meshes;
+		map<std::string, Texture*> textures;
+		// Iterator to search through map
+		map<std::string, Texture*>::iterator it;
 
-		//static int get_PosX() { return PosX; }
-		//static int get_PosY() { return PosY; }
+
+
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
 		// Game update loop
