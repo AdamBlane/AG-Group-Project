@@ -22,7 +22,7 @@ void highscoreScene::Init(GLFWwindow * win)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-	background = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\background.png", vec3(0.0, 0.0, -1.0), 9.5f, 5.5f);
+	//background = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\background.png", vec3(0.0, 0.0, -1.0), 9.5f, 5.5f);
 }
 
 
@@ -49,7 +49,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	switch (button_manager)
 	{
 		case 1:
-			backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
+		//	backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
 			break;
 	}
 	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
@@ -100,11 +100,11 @@ void highscoreScene::Render(GLFWwindow* win)
 
 	
 	glDepthRange(0, 0.01);
-	background->thisTexture->Bind(0);
+	//background->thisTexture->Bind(0);
 	textureShader->Update(backgroundTrans, hudVP);
 	background->Draw();
 
-	backButton->thisTexture->Bind(0);
+	//backButton->thisTexture->Bind(0);
 	textureShader->Update(backButtonTrans, hudVP);
 	backButton->Draw();
 

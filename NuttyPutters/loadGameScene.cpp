@@ -21,7 +21,7 @@ void loadGameScene::Init(GLFWwindow* win)
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-	background = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\optbackground.png", vec3(0.0, 0.0, -1.0), 9.5f, 5.5f);
+	//background = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\optbackground.png", vec3(0.0, 0.0, -1.0), 9.5f, 5.5f);
 
 	// Load images into grid
 	cout << "Load Game Screen" << endl;
@@ -125,7 +125,7 @@ void loadGameScene::Render(GLFWwindow* win)
 
 	glDepthRange(0, 0.01);
 
-	background->thisTexture->Bind(0);
+	//background->thisTexture->Bind(0);
 	textureShader->Update(backgroundTrans, hudVP);
 	background->Draw();
 
