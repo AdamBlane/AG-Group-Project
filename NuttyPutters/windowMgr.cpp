@@ -62,12 +62,12 @@ GLFWwindow* windowMgr::Init()
 	}
 
 	// Initialise max number of meshes any scene uses (game scene probably)
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 8; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
 	}
-	// Initialise a texture, then add it to the textures map
+	// Initialise all textures, then add to the textures map
 	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
 	Texture* startGameBtnSelected = new Texture("..\\NuttyPutters\\Mainmenu\\startSelected.png");
@@ -94,7 +94,8 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("exitBtnSelected", exitBtnSelected));
 	Texture* exitBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\exitUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("exitBtnUnselected", exitBtnUnselected));
-
+	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\highscore\\optbackground.png");
+	textures.insert(std::pair<std::string, Texture*>("loadGameBackground", loadGameBackground));
 
 
 	// Setup start scene
