@@ -37,35 +37,16 @@ public:
 	// This determines which button should be highlighted
 	int button_manager = 1;
 	float total_time = 5.0f;
-
+	bool downPressed = false;
 	// SPIKE - save last button index visited; that's the button to make tex = unselected
 
-	// HUD Elements
+	// HUD Elements - additional pointers kept here for readability (not strictly necessary)
 	// Only need one transform (can be reused for each mesh)
 	Transform startSceneTransform;
-	// Meshes
-	Mesh* background;
-	Mesh* startGameButton;
-	Mesh* loadGameButton;
-	Mesh* highscoresButton;
-	Mesh* optionsButton;
-	Mesh* internetButton;
-	Mesh* exitButton;
-	// Their textures
-	Texture* backgroundTex;
-	Texture* startGameBtnSelected;
-	Texture* startGameBtnUnselected;
-	Texture* loadGameBtnSelected;
-	Texture* loadGameBtnUnselected;
-	Texture* highscoresBtnSelected;
-	Texture* highscoresBtnUnselected;
-	Texture* optionsBtnSelected;
-	Texture* optionsBtnUnselected;
-	Texture* internetBtnSelected;
-	Texture* internetBtnUnselected;
-	Texture* exitBtnSelected;
-	Texture* exitBtnUnselected;
-	
+
+	// Background Mesh   0
+	// StartGameBtn      1
+	// LoadGameBtn		 2
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);

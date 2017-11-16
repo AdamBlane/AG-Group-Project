@@ -19,12 +19,19 @@ void loadGameScene::Init(GLFWwindow* win)
 	tarCam->set_Target(vec3(0, 0, 0));
 	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
-	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
-	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-	//background = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\optbackground.png", vec3(0.0, 0.0, -1.0), 9.5f, 5.5f);
+
+
+	cout << "Textures before load: " << windowMgr::getInstance()->textures.size() << endl;
+
+	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["loadGameBackground"]);
+
+
+	cout << "Textures after load: " << windowMgr::getInstance()->textures.size() << endl;
 
 	// Load images into grid
-	cout << "Load Game Screen" << endl;
+	cout << "Load Game Screen" <<  windowMgr::getInstance()->meshes.size() << endl;
 
 	// Read all saved seeds
 	ifstream saves("saves.csv");
@@ -125,14 +132,13 @@ void loadGameScene::Render(GLFWwindow* win)
 
 	glDepthRange(0, 0.01);
 
-	//background->thisTexture->Bind(0);
-	textureShader->Update(backgroundTrans, hudVP);
-	background->Draw();
+	
 
-	/*backButton->thisTexture->Bind(0);
-	textureShader->Update(backButtonTrans, hudVP);
-	backButton->Draw();*/
 
+
+	windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
+	textureShader->Update(loadGameTransform, hudVP);
+	windowMgr::getInstance()->meshes.at(0)->Draw();
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
 

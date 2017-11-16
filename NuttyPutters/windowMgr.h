@@ -38,7 +38,7 @@ class windowMgr
 		vector<Mesh*> meshes;
 		map<std::string, Texture*> textures;
 		// Iterator to search through map
-		map<std::string, Texture*>::iterator it;
+		//map<std::string, Texture*>::iterator it;
 
 
 
