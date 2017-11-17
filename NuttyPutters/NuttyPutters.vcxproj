@@ -72,7 +72,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B8C5F35-878F-4759-A02E-6A535FE8BF0E}</ProjectGuid>
     <RootNamespace>NuttyPutters</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
