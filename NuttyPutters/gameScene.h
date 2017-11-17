@@ -44,6 +44,7 @@ public:
 	vector<Tile> sceneryTiles; // sceneryTiles to be renedered
 	vector<int> levelSeed; // This course seed; each tile has an int id
 	int courseSize; // Total number of tiles this level
+	vector<int> obstacles;
 
 	Shader* textureShader;
 	Transform shaderTrans;		
@@ -109,5 +110,6 @@ public:
 	void Input(GLFWwindow* window);
 	void Update(GLFWwindow* window);
 	void Collisions();
+	vec3 CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, float displace, float radius);
 	void Render(GLFWwindow* window);
 };

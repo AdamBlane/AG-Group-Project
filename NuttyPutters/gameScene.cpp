@@ -423,7 +423,7 @@ void gameScene::FillScenery()
 			{
 				// Create straight tile
 				//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
-				Tile tile(Tile::SCENERY, thisPos, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg");
+				Tile tile(Tile::SCENERY, thisPos, 0, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg");
 				//tile.transform.getRot().x = -0.785398;
 				// Add to list of tiles to be rendered
 				sceneryTiles.push_back(tile);
@@ -437,15 +437,28 @@ void gameScene::FillScenery()
 // Creates tile classes to be drawn
 void gameScene::SetupTilesToBeDrawn()
 {
+	int index = 0;
+
 	// TILE CREATION
 	for (auto &t : algTiles)
 	{
+		int obstacleID = 0;
+		bool hasObstacle = false;
+
 		// Ramp testing
 		// Ramp up when dir is down
 		if (t.id == 7)
 		{
+			hasObstacle = Tile::randomNumber(0, 1);
+			if (hasObstacle)
+			{
+				obstacleID = Tile::randomNumber(1, 2);
+				//save this tile position in algTiles
+				obstacles.push_back(index);
+				obstacles.push_back(obstacleID);
+			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y += 1.8;
@@ -456,7 +469,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 8)
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y -= 1.8;
@@ -466,7 +479,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 0) // Start
 		{
 			// Create start tile
-			Tile tile(Tile::START, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::START, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Start tile needs rotating 180 (should always face down)
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -475,14 +488,14 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 1) // Straight V
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 2) // Straight H
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Straight needs rotating by 90, since it's vertical by default
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -491,7 +504,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 3) // Corner BL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -500,7 +513,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 4) // Corner BR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -509,14 +522,14 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 5) // Corner TL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 6) // Corner TR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = -1.5708;
 			// Add to list of tiles to be rendered
@@ -525,7 +538,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 9) // end
 		{
 			// Create start tile
-			Tile tile(Tile::END, t.thisCoords, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::END, t.thisCoords, obstacleID,"..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Consult direction to determine how much to rotate
 			if (t.outDir.going_up)
 			{
@@ -955,6 +968,25 @@ void gameScene::Collisions()
 			// Ensure don't go through floor
 			golfBallTransform.setPos(straightV.SetPlayerHeight(golfBallTransform.getPos()));
 			gbDirection = straightV.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+
+			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+			{
+				if (currentTile == obstacles.at(i))
+				{
+					switch (obstacles.at(i + 1))
+					{
+					case 1:
+
+						break;
+					case 2:
+						gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, golfBallTransform.getPos(),
+							gbDirection, straightV.displace, straightV.radius);
+						break;
+					default:
+						break;
+					}
+				}
+			}
 			break;
 		}
 		// On straight H tile
@@ -964,6 +996,24 @@ void gameScene::Collisions()
 			StraightTile_H straightH;
 			straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			gbDirection = straightH.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+			{
+				if (currentTile == obstacles.at(i))
+				{
+					switch (obstacles.at(i + 1))
+					{
+					case 1:
+
+						break;
+					case 2:
+						gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, golfBallTransform.getPos(),
+							gbDirection, straightH.displace, straightH.radius);
+						break;
+					default:
+						break;
+					}
+				}
+			}
 			break;
 		}
 		// On corner_BL tile
@@ -1026,6 +1076,58 @@ void gameScene::Collisions()
 		}
 	}
 }
+
+vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, float displace, float radius)
+{
+	// M - here, you're checking for player pos within an x range
+	// Check x axis - left side of cube corner boundary
+	if (playerPos.x > coords.x - (1 + radius) && playerPos.x < coords.x + (1 + radius))
+	{
+		// M - This section should be removed, only one deflection (-dir) should take place for each collision
+		// the above if statement only checks what x range the ball is in - not if it should actually collide
+		// Hit going right, reflect on x
+		dir.x = -dir.x;
+		// Move away from boundary so as not to retrigger this
+		playerPos.x -= displace;
+
+
+
+		//lower boundary of cube
+		// M - change this to read 'if player.z < coords.z + (1 + radius) && dir of travel is towards this boundary
+		//   dir will be up when gbDir.z is negative
+		if (playerPos.z > coords.z - (1 + radius) && playerPos.z < coords.z + (1 + radius))
+		{
+			// Hit going right, reflect on x
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z -= displace;
+		}
+
+
+		// M -Add another if statement as above, this time checking for upper boundary of cube
+		// player.z > coords.z - (1 + radius) && dir.z is positive
+
+	}
+
+	// M - Repeat above for the following z block (change x with z)
+	if (playerPos.z > coords.z - (1 + radius) && playerPos.z < coords.z + (1 + radius))
+	{
+		// Hit going right, reflect on x
+		dir.x = -dir.x;
+		// Move away from boundary so as not to retrigger this
+		playerPos.x -= displace;
+
+		if (playerPos.x > coords.x - (1 + radius) && playerPos.x < coords.x + (1 + radius))
+		{
+			// Hit going right, reflect on x
+			dir.z = -dir.z;
+			// Move away from boundary so as not to retrigger this
+			playerPos.z -= displace;
+		}
+	}
+	return dir;
+}
+
 
 // Draw stuff
 void gameScene::Render(GLFWwindow* window)

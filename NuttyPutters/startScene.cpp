@@ -33,16 +33,22 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
 	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
 
-
 	// Perform setup of initial button configs - (un)selected textures
 	// Pick next item in meshes list (increment the number by 1 each time)
 	windowMgr::getInstance()->meshes.at(1)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(0.0f, 1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
-
 	windowMgr::getInstance()->meshes.at(2)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.0f, 0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(3)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(0.0f, 0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0f, -0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(5)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(0.0f, -0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(6)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -1.5f, 0.0f));
+
+
 
 	cout << "Textures after start: " << windowMgr::getInstance()->textures.size() << endl;
 	
@@ -76,77 +82,57 @@ void startScene::Input(GLFWwindow * win)
 	{
 		//cases for the buttons to switch to each screen
 		case 1:
-			//startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start(1).png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
-			//loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
-			//highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
-			//optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
-		 //   internetButton  = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
-			//exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
-			// Only need these 3 for now when using keyboard to navigate - 
-			// When using mouse would need to use more
-			
 			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
 			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
 			break;
 
 		case 2:
-			//startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
-			//loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load(1).png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
-			//highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
-			//optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
-			//internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
-			//exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
-			
 			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
 			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
 			break;
 
 		case 3:
-			//startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
-			//loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
-			//highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore(1).png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
-			//optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
-			//internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
-			//exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
-			
-
-			
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
 			break;
 
 		case 4:
-			//startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
-			//loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
-			//highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
-			//optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options(1).png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
-			//internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
-			//exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
-			
-
-			
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
 			break;
 
 		case 5:
-			//startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
-			//loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
-			//highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
-			//optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
-			//internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet(1).png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
-			//exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit.png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
-
-			
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
 			break;
 
 		case 6:
-			//startGameButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\start.png", vec3(0.0, 1.5, 0.0), 1.8f, 0.6f);
-			//loadButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\load.png", vec3(0.0, 0.9, 0.0), 1.8f, 0.6f);
-			//highButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\HighScore.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
-			//optButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\options.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
-			//internetButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\Internet.png", vec3(0.0, -0.9, 0.0), 1.8f, 0.6f);
-			//exitButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\Mainmenu\\exit(1).png", vec3(0.0, -1.5, 0.0), 1.8f, 0.6f);
-		
-
-			
-			
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnSelected"]);	
 			break;
 
 	}
@@ -170,7 +156,7 @@ void startScene::Input(GLFWwindow * win)
 	}
 
 
-	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 5.0f)
+	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 3.0f)
 	{
 		total_time = 0.0f;
 		if (button_manager == 1)
@@ -187,7 +173,7 @@ void startScene::Input(GLFWwindow * win)
 		downPressed = true;
 	}
 
-	if (!glfwGetKey(win, GLFW_KEY_DOWN))
+	if (!glfwGetKey(win, GLFW_KEY_DOWN) && total_time >= 3.0f)
 	{
 		if (downPressed)
 		{
@@ -224,18 +210,14 @@ void startScene::Render(GLFWwindow* win)
 
 	// Bind, update and draw HUD elements
 
+	for (int a = 0; a < 7; a++)
+	{
+		windowMgr::getInstance()->meshes.at(a)->thisTexture.Bind(0);
+		textureShader->Update(startSceneTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(a)->Draw();
+	}
+	
 
-	windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
-	textureShader->Update(startSceneTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(0)->Draw();
-
-	windowMgr::getInstance()->meshes.at(1)->thisTexture.Bind(0);
-	textureShader->Update(startSceneTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(1)->Draw();
-
-	windowMgr::getInstance()->meshes.at(2)->thisTexture.Bind(0);
-	textureShader->Update(startSceneTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(2)->Draw();
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
