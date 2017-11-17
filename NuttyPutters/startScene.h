@@ -46,7 +46,9 @@ public:
 	// Background Mesh   0
 	// StartGameBtn      1
 	// LoadGameBtn		 2
-
+	string string_1, stirng_2;
+	string is_selected = "S";
+	string is_selected = "Uns";
 	// Draw stuff
 	void Loop(GLFWwindow* win);
 	// Input 

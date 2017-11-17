@@ -1,0 +1,45 @@
+static void cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
+{
+	cout << xpos << " : " << ypos << endl;
+	//to check if its around buttons
+	if (xpos >= ((windowMgr::getInstance()->width/4) + (windowMgr::getInstance()->width/8) + (windowMgr::getInstance()->width/400))
+		&& (xpos <= (windowMgr::getInstance()->width / 2) + (windowMgr::getInstance()->width / 16) + (windowMgr::getInstance()->width / 160) 
+			+ (windowMgr::getInstance()->width / 20) + (windowMgr::getInstance()->width / 400) + (windowMgr::getInstance()->width / 800)))
+	{
+		cout << "now" << endl;
+	}
+}
+
+void CursorEnterCallback(GLFWwindow *win, int entered)
+{
+	if (entered)
+	{
+		cursor_inside = true;
+		cout << "Entered Window" << endl;
+	}
+	else
+	{
+		cursor_inside = false;
+		cout << "Left window" << endl;
+	}
+}
+
+void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+	{
+		cout << "Right button pressed" << endl;
+	}
+}
+
+void startScene::Init(GLFWwindow* win)
+{
+	glfwSetCursorPosCallback(win, cursorPositionCallback);
+
+	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+	glfwSetCursorEnterCallback(win, CursorEnterCallback);
+
+	glfwSetMouseButtonCallback(win, mouseButtonCallback);
+
+	glfwSetInputMode(win, GLFW_STICKY_MOUSE_BUTTONS, 1);
