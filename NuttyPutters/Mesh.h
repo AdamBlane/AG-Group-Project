@@ -69,6 +69,10 @@ public:
 
 	//Texture for this Mesh
 	Texture thisTexture;
+
+	// Skybox texture
+	Texture* skyTex;
+
 	// Setter for mesh texture takes in a pointer to texture
 	void SetTexture(Texture* tex) { thisTexture = *tex; }
 

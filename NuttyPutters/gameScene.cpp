@@ -1153,24 +1153,24 @@ void gameScene::Render(GLFWwindow* window)
 
 	// Bind, update and draw the stroke label HUD
 	//strokeLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(strokeLabelTrans, hudVP);
-	strokeLabelMesh->Draw();
+	//textureShader->Update(strokeLabelTrans, hudVP);
+	//strokeLabelMesh->Draw();
 	// Bind, update and draw the player label HUD
 	//playerLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(playerLabelTrans, hudVP);
-	playerLabelMesh->Draw();
-	// Bind, update and draw the power label HUD
-	//powerLabelMesh->thisTexture->Bind(0);
-	textureShader->Update(powerLabelTrans, hudVP);
-	powerLabelMesh->Draw();
-	// Bind, update and draw the power bar HUD
-	//powerBarMesh->thisTexture->Bind(0);
-	textureShader->Update(powerBarTrans, hudVP);
-	powerBarMesh->Draw();
-	// Bind, update and draw the power bar outline HUD
-	//powerBarOutlineDisplayMesh->thisTexture->Bind(0);
-	textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
-	powerBarOutlineDisplayMesh->Draw();
+	//textureShader->Update(playerLabelTrans, hudVP);
+	//playerLabelMesh->Draw();
+	//// Bind, update and draw the power label HUD
+	////powerLabelMesh->thisTexture->Bind(0);
+	//textureShader->Update(powerLabelTrans, hudVP);
+	//powerLabelMesh->Draw();
+	//// Bind, update and draw the power bar HUD
+	////powerBarMesh->thisTexture->Bind(0);
+	//textureShader->Update(powerBarTrans, hudVP);
+	//powerBarMesh->Draw();
+	//// Bind, update and draw the power bar outline HUD
+	////powerBarOutlineDisplayMesh->thisTexture->Bind(0);
+	//textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
+	//powerBarOutlineDisplayMesh->Draw();
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
