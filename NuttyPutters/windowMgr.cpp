@@ -36,6 +36,7 @@ GLFWwindow* windowMgr::Init()
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
+
 	width = 1600, height = 900;
 	PosX = 100, PosY = 100;
 	// Create window
@@ -59,8 +60,11 @@ GLFWwindow* windowMgr::Init()
 		std::cout << "Glew failed to initialise!" << std::endl;
 	}
 
-	// Initialise max number of meshes any scene uses (game scene probably)
+	// Setup texture shader
+	//textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
+
+	// Initialise max number of meshes any scene uses (game scene probably)
 	for (int i = 0; i < 10; ++i)
 
 	{

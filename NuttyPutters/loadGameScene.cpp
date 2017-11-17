@@ -10,7 +10,7 @@ loadGameScene::~loadGameScene() { }
 // Setup scene; display choice saved games
 void loadGameScene::Init(GLFWwindow* win)
 {
-	// Setup texture shader
+
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
 	// Setup target camera
@@ -35,7 +35,7 @@ void loadGameScene::Init(GLFWwindow* win)
 	int images = seeds.size(); // Total number of saves images to show
 	int imCount = 1;
 
-	// Create meshes
+	// Setup meshes
 	for (int x = -1; x < 2; ++x)
 		// This will be -1, 0, 1
 	{
@@ -133,10 +133,20 @@ void loadGameScene::Input(GLFWwindow* win)
 
 	}
 	// Select this level to load
-	if (glfwGetKey(win, GLFW_KEY_ENTER))
+	if (glfwGetKey(win, GLFW_KEY_R))
 	{
-		// Current seed is index of seeds list, send as optional param
-		windowMgr::getInstance()->sceneManager.changeScene(6, 12,seeds.at(currentSeed)); // 12 is mandatory course lenght (to be disregarded dw)
+		enterPressed = true;
+	}
+
+	if (!glfwGetKey(win, GLFW_KEY_R))
+	{
+		if (enterPressed)
+		{
+			// Current seed is index of seeds list, send as optional param
+			windowMgr::getInstance()->sceneManager.changeScene(6, 12, seeds.at(currentSeed)); // 12 is mandatory course lenght (to be disregarded dw)
+		
+			enterPressed = false;
+		}
 	}
 	
 }

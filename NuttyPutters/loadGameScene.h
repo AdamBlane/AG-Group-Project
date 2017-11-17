@@ -32,13 +32,12 @@ public:
 	vector<string> seeds;
 	// Seed navigation
 	int currentSeed = 0; // Index of seeds
-	bool leftPressed, rightPressed;
+	bool leftPressed, rightPressed, enterPressed = false;
 
 	// Create a target camera - used for HUD elements
 	AllCamera::target_camera* tarCam;
 
 	Shader* textureShader;
-
 	// HUD elements
 	Transform loadGameTransform;
 	// Meshes

@@ -33,7 +33,7 @@ Mesh::Mesh(typeShape shape, glm::vec3 newPosition, GLfloat size1, GLfloat size2,
 // instead it takes an already initialised texture(s) as param
 Mesh::Mesh(const std::vector<std::string>& filenames)
 {
-	//thisTexture = new Texture(filenames[0], filenames[1], filenames[2], filenames[3], filenames[4], filenames[5]);
+	skyTex = new Texture(filenames[0], filenames[1], filenames[2], filenames[3], filenames[4], filenames[5]);
 	thisShape = SKYBOX;
 	chooseGeometry();
 }
