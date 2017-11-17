@@ -36,8 +36,6 @@ GLFWwindow* windowMgr::Init()
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
-	// Create window
-	//win = glfwCreateWindow(width, height, "Nutty Putters", NULL, NULL);
 
 	width = 1600, height = 900;
 	PosX = 100, PosY = 100;
