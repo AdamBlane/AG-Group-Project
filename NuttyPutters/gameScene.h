@@ -35,66 +35,44 @@ public:
 
 	//Trying Skybox
 	Mesh* sky;
-	Transform skyTransform;
-	Shader* skyShader;
+	
 
 	// General game variables
 	vector<BaseTile> algTiles; // Game tiles list; these tiles have position data (by M)
 	vector<Tile> tiles; // Tile meshes to be rendered, created by V
-	vector<Tile> sceneryTiles; // sceneryTiles to be renedered
+	vector<Tile> sceneryTiles; // sceneryTiles to be rendered
 	vector<int> levelSeed; // This course seed; each tile has an int id
 	int courseSize; // Total number of tiles this level
-	vector<int> obstacles;
+	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
 
-	Shader* textureShader;
-	Transform shaderTrans;		
-	int currentTile = 0; // Tracks tile player is on 
+	
+	// Spatial (tile!) partitioning - tracks which tile player is currently on		
+	int currentTile = 0; 
 	// Track fps to give dt
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
-	float dt = 0.016; // First frame; reset thereafter
+	float dt = 0.016; // First frame; is reset thereafter
 	// Rename
 	bool pPressed = false; // Prevent shooting ball again whilst already moving
 	float Pcounter; // This is a force counter (TODO: rename)
 	bool levelSaved = false; // Prevent saving same level more than once
 
-	// Cameras
-	free_camera* freeCam;	
-	float camSpeed = 2.0f; // camSpeed WAS called WASDSPEED
-	chase_camera* chaseCam;
-	float chaseCamAngle, cameraType = 1;// for switching on/off free/chase cam
-	double cursor_x, cursor_y = 0.0;// For finding cursor pos on screen
-	target_camera* tarCam;
+	// Camera variables
+	float camSpeed = 2.0f; 
+	float chaseCamAngle, cameraType; // for switching between free/chase cam
+    // For finding cursor pos on screen (used for free cam)
+	double cursor_x, cursor_y = 0.0; 
+
 	
-	// Golf ball
-	//Mesh* golfBallMesh;
-	//Texture* golfBallTexture;
-	Transform player1Transform;
+	// Player variables
+	Transform player1Transform, arrowTransform;
+	// TODO - will need to rename dir & vel to p1Vel, p2vel etc
 	vec3 gbDirection; // Normalised direction vector
 	vec3 gbVelocity; // Velocity is dir * speed	
 	bool golfBallMoving = false; // Is golf ball moving
 	float speed; // Ball speed
-	// Arrow
-	Mesh* arrowMesh;
-	Texture* arrowTexture;
-	Transform arrowTransform;
 
-	// HUD
-	// Stroke Label 
-	Mesh* strokeLabelMesh;
-	Transform strokeLabelTrans;
-	// Power Label
-	Mesh* powerLabelMesh;
-	Transform powerLabelTrans;
-	// Player Label
-	Mesh* playerLabelMesh;
-	Transform playerLabelTrans;
-	// Power Bar Outline
-	Mesh* powerBarOutlineDisplayMesh;
-	Transform powerBarOutlineDisplayTrans;
-	// Power Bar
-	Mesh* powerBarMesh;
-	Transform powerBarTrans;
+
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)
