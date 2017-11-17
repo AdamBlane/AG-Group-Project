@@ -39,8 +39,9 @@ class windowMgr
 		map<std::string, Texture*> textures;
 		// Iterator to search through map
 		//map<std::string, Texture*>::iterator it;
-		 
-
+		
+		//Shader* textureShader;
+		Mesh* player1Mesh;
 
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
