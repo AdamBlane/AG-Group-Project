@@ -69,26 +69,6 @@ void Mesh::SetPos(glm::vec3 pos)
 	chooseGeometry();
 }
 
-// General constructor -> not used at the moment
-// TODO - delete this if will never be used
-Mesh::Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices)
-{
-	IndexedModel model;
-
-	for (unsigned int i = 0; i < numVertices; i++)
-	{
-		model.positions.push_back(*vertices[i].GetPos());
-		model.texCoords.push_back(*vertices[i].GetTexCoord());
-	}
-
-	for (unsigned int i = 0; i < numIndices; i++)
-	{
-		model.indices.push_back(indices[i]);
-	}
-
-	InitMesh(model);
-}
-
 // Deconstructor
 Mesh::~Mesh()
 {
@@ -117,9 +97,6 @@ void Mesh::chooseGeometry()
 		break;
 	case CUBOID:
 		cuboid();
-		break;
-	case GOLF_HOLE_GROUND:
-		golfHole();
 		break;
 	case SKYBOX:
 		skyBox();
@@ -154,13 +131,13 @@ void Mesh::quad()
 {
 	Vertex vertices[] = {
 		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z), glm::vec2(0.0, 0.0)), //index 0
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z), glm::vec2(1.0, 0.0)), //index 1
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z), glm::vec2(0.0, 1.0)), //index 2
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z), glm::vec2(1.0, 1.0)), //index 0
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z), glm::vec2(0.0, 1.0)), //index 1
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z), glm::vec2(1.0, 0.0)), //index 2
 		//TR2
 		///get index 2
 		///get index 1
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z), glm::vec2(1.0, 1.0)), //index 3
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z), glm::vec2(0.0, 0.0)), //index 3
 	};
 
 	unsigned int indices[] = {
@@ -448,223 +425,6 @@ void Mesh::skyBox()
 	generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
 }
 
-//this is broken. DON'T USE IT!!!!
-void Mesh::golfHole()
-{
-	//Counter-clock wise
-
-	Vertex vertices[] = {
-		////////////////////////////------------ FIRST BIG CUBOID
-		/////////FRONT
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		//TR2
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 1.0)),
-
-		/////////BACK
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		//TR2
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-
-		/////////LEFT
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		//TR2
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 1.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-
-		/////////RIGHT
-		//TR1
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		//TR2
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 1.0)),
-
-		/////////TOP
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		//TR2
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 1.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-
-		/////////BOTTOM
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		//TR2
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.57)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z + (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 1.0)),
-
-
-		////////////////////////////------------ SECOND BIG CUBOID
-		/////////FRONT
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		//TR2
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.43)),
-
-		/////////BACK
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		//TR2
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.43)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-
-		/////////LEFT
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		//TR2
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.43)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-
-		/////////RIGHT
-		//TR1
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		//TR2
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.43)),
-
-		/////////TOP
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		//TR2
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.43)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-
-		/////////BOTTOM
-		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		//TR2
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) + (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, (position.z - (thisHole * 2)) - (halfSide3 - thisHole * 2)), glm::vec2(1.0, 0.43)),
-
-		////////////////////////////------------ FIRST SMALL CUBOID
-		/////////FRONT
-		//TR1
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		//TR2
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.57)),
-
-		/////////BACK
-		//TR1
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		//TR2
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.43, 0.57)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-
-		/////////LEFT
-		//TR1
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		//TR2
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.57)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-
-		/////////RIGHT
-		//TR1
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		//TR2
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.57)),
-
-		/////////TOP
-		//TR1
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		//TR2
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.43, 0.57)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y + halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-
-		/////////BOTTOM
-		//TR1
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.0, 0.43)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		//TR2
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z + (thisHole / 2.3)), glm::vec2(0.43, 0.0)),
-		Vertex(glm::vec3(position.x - (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.0, 0.57)),
-		Vertex(glm::vec3(position.x + (halfSide1 - (thisHole * 2)), position.y - halfSide2, position.z - (thisHole / 2.3)), glm::vec2(0.43, 0.57))
-
-	};
-
-	unsigned int indices[] = {
-		0, 1, 2, 3, 4, 5,
-		6, 7, 8, 9, 10, 11,
-		12, 13, 14, 15, 16, 17,
-		18, 19, 20, 21, 22, 23,
-		24, 25, 26, 27, 28, 29,
-		30, 31, 32, 33, 34, 35,
-		36, 37, 38, 39, 40, 41,
-		42, 43, 44, 45, 46, 47,
-		48, 49, 50, 51, 52, 53,
-		54, 55, 56, 57, 58, 59,
-		60, 61, 62, 63, 64, 65,
-		66, 67, 68, 69, 70, 71,
-		72, 74, 74, 75, 76, 77,
-		78, 79, 80, 81, 82, 83,
-		84, 85, 86, 87, 88, 89,
-		90, 91, 92, 93, 94, 95,
-		96, 97, 98, 99, 100, 101,
-		102, 103, 104, 105, 106, 107
-	};
-
-	generateMesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
-
-}
-
 void Mesh::generateMesh(Vertex * vertices, unsigned int numVertices, unsigned int * indices, unsigned int numIndices)
 {
 	IndexedModel model;
@@ -683,7 +443,6 @@ void Mesh::generateMesh(Vertex * vertices, unsigned int numVertices, unsigned in
 	InitMesh(model);
 
 }
-
 
 
 void Mesh::InitMesh(const IndexedModel& model)
