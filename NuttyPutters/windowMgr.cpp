@@ -36,7 +36,7 @@ GLFWwindow* windowMgr::Init()
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
-
+	// This is already set in header - unnecessary @ADAM?
 	width = 1600, height = 900;
 	PosX = 100, PosY = 100;
 	// Create window
@@ -60,13 +60,34 @@ GLFWwindow* windowMgr::Init()
 		std::cout << "Glew failed to initialise!" << std::endl;
 	}
 
+	// ############################ SHADERS ############################
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
+	// Setup skybox shader
+	skyboxShader = new Shader("..\\NuttyPutters\\skyShader");
+	// ############################ CAMERAS ############################
+	// Target camera for hud
+	HUDtargetCam = new target_camera();
+	HUDtargetCam->set_Posistion(vec3(0, 0, 5.0f));
+	HUDtargetCam->set_Target(vec3(0, 0, 0));
+	HUDtargetCam->set_projection(quarter_pi<float>(), (float)width / (float)height, 0.414f, 1000.0f);
+	// Target camera for pause
 
+	// Free camera for in game
+	freeCam = new free_camera();
+	freeCam->set_Posistion(vec3(0, 10, -10));
+	freeCam->rotate(-10.0, 0.0);
+	freeCam->set_Target(vec3(0, 0, 0));
+	freeCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	// Chase camera for in game
+	chaseCam = new chase_camera();
+	chaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
+	chaseCam->set_springiness(0.2f);
+	chaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
+	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
 	for (int i = 0; i < 10; ++i)
-
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -75,7 +96,8 @@ GLFWwindow* windowMgr::Init()
 	// Player meshes
 	player1Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
 	arrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
-	// Initialise all textures, then add to the textures map
+
+	// ############################ TEXTURES ############################
 	// START SCENE TEXTURES 
 	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));

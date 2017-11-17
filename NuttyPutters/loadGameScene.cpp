@@ -10,14 +10,6 @@ loadGameScene::~loadGameScene() { }
 // Setup scene; display choice saved games
 void loadGameScene::Init(GLFWwindow* win)
 {
-
-	// Setup target camera
-	tarCam = new target_camera();
-	tarCam->set_Posistion(vec3(0, 0, 5.0f));
-	tarCam->set_Target(vec3(0, 0, 0));
-	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
-
-
 	// Set background mesh properties
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
@@ -151,14 +143,14 @@ void loadGameScene::Input(GLFWwindow* win)
 void loadGameScene::Update(GLFWwindow* win)
 {
 	// Update target camera
-	tarCam->update(0.00001);
+	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 }
 
 // Draw stuff
 void loadGameScene::Render(GLFWwindow* win)
 {
-	// If camera type is target camera - used for HUD elements - then
-	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
+	// Calculate hud view*projection
+	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 	// Set depth range, for HUD style rendering effect
 	glDepthRange(0, 0.01);
 	// Render all meshes & their textures

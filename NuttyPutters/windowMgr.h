@@ -49,9 +49,13 @@ class windowMgr
 		Mesh* player2Mesh;
 		Mesh* arrowMesh;
 
-
+		// Cameras
+		target_camera* HUDtargetCam;
+		free_camera* freeCam;
+		chase_camera* chaseCam;
 		// Shaders
 		Shader* textureShader;
+		Shader* skyboxShader;
 		Transform texShaderTransform;
 
 		// Perform initial window setup

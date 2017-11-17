@@ -32,25 +32,18 @@ public:
 	vector<string> seeds;
 	// Seed navigation
 	int currentSeed = 0; // Index of seeds
+
+	// Input - prevent input code from reocurring every frame button is held
 	bool leftPressed, rightPressed, enterPressed = false;
-
-	// Create a target camera - used for HUD elements
-	AllCamera::target_camera* tarCam;
-
+	int button_manager = 1;
 	
-	// HUD elements
-	//Transform loadGameTransform;
 	// Meshes
 	// Background	0
 	
 
-	// Textures
-	Texture* backgroundTex;
 
 
-	int button_manager = 1;
 
-	float total_time = 2.0f;
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);
