@@ -62,7 +62,7 @@ GLFWwindow* windowMgr::Init()
 	}
 
 	// Initialise max number of meshes any scene uses (game scene probably)
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < 20; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
