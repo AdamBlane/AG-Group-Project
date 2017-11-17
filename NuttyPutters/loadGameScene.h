@@ -37,9 +37,9 @@ public:
 	// Create a target camera - used for HUD elements
 	AllCamera::target_camera* tarCam;
 
-	Shader* textureShader;
+	
 	// HUD elements
-	Transform loadGameTransform;
+	//Transform loadGameTransform;
 	// Meshes
 	// Background	0
 	

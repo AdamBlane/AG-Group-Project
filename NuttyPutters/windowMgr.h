@@ -35,13 +35,21 @@ class windowMgr
 		
 		// Store pointers to all meshes and textures required by game
 		// These are initialised once on the heap, in the Init() function of winMgr
+		// General use HUD meshes
 		vector<Mesh*> meshes;
+		// All textures in the game stored here
 		map<std::string, Texture*> textures;
-		// Iterator to search through map
-		//map<std::string, Texture*>::iterator it;
-		
-		//Shader* textureShader;
+		// Iterator to search through map - apparently don't need this
+		//map<std::string, Texture*>::iterator it; // keep in case we do later
+		// GAME SCENE UNIQUE MESHES
 		Mesh* player1Mesh;
+		Mesh* player2Mesh;
+		Mesh* arrowMesh;
+
+
+		// Shaders
+		Shader* textureShader;
+		Transform texShaderTransform;
 
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();

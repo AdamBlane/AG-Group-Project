@@ -61,20 +61,20 @@ GLFWwindow* windowMgr::Init()
 	}
 
 	// Setup texture shader
-	//textureShader = new Shader("..\\NuttyPutters\\textureShader");
+	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
 
-	// Initialise max number of meshes any scene uses (game scene probably)
+	// Initialise general use HUD meshes
 	for (int i = 0; i < 10; ++i)
 
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
 	}
-	
+	// Initialise unique meshes
 	// Player meshes
 	player1Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
-
+	arrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	// Initialise all textures, then add to the textures map
 	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
@@ -173,6 +173,10 @@ GLFWwindow* windowMgr::Init()
 	// Player textures
 	Texture* playerRedTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
+
+	Texture* arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
+	textures.insert(std::pair<std::string, Texture*>("arrowTexture", arrowTexture));
+
 
 	// Setup start scene
 	sceneManager.startScene.Init(win);

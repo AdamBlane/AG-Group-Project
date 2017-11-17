@@ -41,13 +41,13 @@ public:
 	// General game variables
 	vector<BaseTile> algTiles; // Game tiles list; these tiles have position data (by M)
 	vector<Tile> tiles; // Tile meshes to be rendered, created by V
-	vector<Tile> sceneryTiles; // sceneryTiles to be renedered
+	vector<Tile> sceneryTiles; // sceneryTiles to be rendered
 	vector<int> levelSeed; // This course seed; each tile has an int id
 	int courseSize; // Total number of tiles this level
-	vector<int> obstacles;
+	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
 
-	Shader* textureShader;
-	Transform shaderTrans;		
+	
+	//Transform shaderTrans;		
 	int currentTile = 0; // Tracks tile player is on 
 	// Track fps to give dt
 	double lastFrame = 0;
@@ -75,8 +75,8 @@ public:
 	bool golfBallMoving = false; // Is golf ball moving
 	float speed; // Ball speed
 	// Arrow
-	Mesh* arrowMesh;
-	Texture* arrowTexture;
+	//Mesh* arrowMesh;
+	//Texture* arrowTexture;
 	Transform arrowTransform;
 
 	// HUD

@@ -38,7 +38,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	FillScenery();
 
 	// Setup texture shader
-	textureShader = new Shader("..\\NuttyPutters\\textureShader");
+	//textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
 	// Skybox stuff
 	vector<string> filenames;
@@ -52,17 +52,16 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	sky = new Mesh(filenames);
 	skyShader = new Shader("..\\NuttyPutters\\skyShader");
 
-	// Add the golf ball to scene
-	//golfBallMesh = new Mesh("..\\NuttyPutters\\sphere.obj");
-	//golfBallTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
+	
 	// Setup player position (must use transform as it's a loaded model - not drawn)
 	player1Transform.getScale() = vec3(0.5);
 	player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
 
 	// Arrow
 	//arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
-	//arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
-	//arrowTransform.getScale() = vec3(0.5);
+	arrowTransform.getScale() = vec3(0.5);
+	arrowTransform.getPos() = vec3(1.8 + player1Transform.getPos().x, 2.6 + player1Transform.getPos().y, player1Transform.getPos().z);
+	windowMgr::getInstance()->arrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]); //?
 
 	//auto height = win.
 	// Setup cameras
@@ -917,9 +916,7 @@ void gameScene::Update(GLFWwindow* window)
 
 	// Update positions of ball and arrow
 	player1Transform.getPos() += gbVelocity;
-	arrowTransform.getPos() += gbVelocity;
-
-	
+	arrowTransform.getPos() += gbVelocity;	
 }
 
 
@@ -1125,7 +1122,6 @@ vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, 
 	return dir;
 }
 
-
 // Draw stuff
 void gameScene::Render(GLFWwindow* window)
 {
@@ -1172,54 +1168,53 @@ void gameScene::Render(GLFWwindow* window)
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
-	skyShader->Bind();
 
+	// Skybox 
+	skyShader->Bind();
 	//sky->thisTexture->Bind(0);
 	skyShader->Update(skyTransform, mvp);
 	sky->Draw();
 	// Bind texture shader
-	textureShader->Bind();
+	windowMgr::getInstance()->textureShader->Bind();
 
 	// DRAW all level tiles
 	for (auto &t : tiles)
 	{
-		t.drawTile(textureShader, mvp);
+		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	}
 	// DRAW all scenery tiles
 	for (auto &t : sceneryTiles)
 	{
-		t.drawTile(textureShader, mvp);
+		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	}
-	// Draw all trees
-	//for (int i = 0; i < treeMeshes.size(); ++i)
-	//{
-	//	treeMeshes.at(i)->Draw();
-	//	textureShader->Update(treeTransforms.at(i), mvp);
-	//}
-	// Draw golf ball
-	//golfBallTexture->Bind(0);
-	//textureShader->Update(player1Transform, mvp);
-	//golfBallMesh->Draw();
 
+
+
+	// Render player 1
 	windowMgr::getInstance()->textures["playerRedTexture"]->Bind(0);
-	textureShader->Update(player1Transform, mvp);
+	windowMgr::getInstance()->textureShader->Update(player1Transform, mvp);
 	windowMgr::getInstance()->player1Mesh->Draw();
+	// Render player 1 arrow
+	windowMgr::getInstance()->arrowMesh->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(arrowTransform, mvp);
+	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
+	arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
 
 	// Arrow
 	//arrowTexture->Bind(0);
 	//textureShader->Update(arrowTransform, mvp);
-	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
 	//arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
+
 	// If ball is not moving draw arrow (ie dont draw arrow when ball moving as not needed)
 	if (!golfBallMoving)
 	{
 		// Draw the arrow
 		//arrowMesh->Draw();
+		windowMgr::getInstance()->arrowMesh->Draw();
 	}
 
-
-	// WHAT is shaderTrans - it's never set to anything
-	textureShader->Update(shaderTrans, (freeCam->get_Projection() * freeCam->get_View()));
+	// Update texture shader
+	windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, (freeCam->get_Projection() * freeCam->get_View()));
 
 	// Fully reset depth range for next frame - REQUIRED
 	glDepthRange(0, 1.0);
