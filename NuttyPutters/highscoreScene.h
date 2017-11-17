@@ -34,6 +34,7 @@ public:
 	Mesh* background;
 	Transform backgroundTrans;
 
+	Transform optionSceneTransform;
 	int button_manager = 1;
 
 	float total_time = 2.0f;
