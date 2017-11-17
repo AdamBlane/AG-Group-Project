@@ -40,7 +40,6 @@ public:
 	bool downPressed = false;
 	// SPIKE - save last button index visited; that's the button to make tex = unselected
 
-	// HUD Elements - additional pointers kept here for readability (not strictly necessary)
 	// Only need one transform (can be reused for each mesh)
 	Transform startSceneTransform;
 

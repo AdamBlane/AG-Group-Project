@@ -62,7 +62,7 @@ GLFWwindow* windowMgr::Init()
 	}
 
 	// Initialise max number of meshes any scene uses (game scene probably)
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -96,7 +96,50 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("exitBtnUnselected", exitBtnUnselected));
 	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\highscore\\optbackground.png");
 	textures.insert(std::pair<std::string, Texture*>("loadGameBackground", loadGameBackground));
+	// Textrures used exclusively in player select screen
+	Texture* playerSelectBackground = new Texture("..\\NuttyPutters\\grass.png");
+	textures.insert(std::pair<std::string, Texture*>("playerSelectBackground", playerSelectBackground));
 
+	Texture* playersLabel = new Texture("..\\NuttyPutters\\players.png");
+	textures.insert(std::pair<std::string, Texture*>("playersLabel", playersLabel));
+
+	Texture* oneBtnUnselected = new Texture("..\\NuttyPutters\\none.png");
+	textures.insert(std::pair<std::string, Texture*>("oneBtnUnselected", oneBtnUnselected));
+	Texture* oneBtnSelected = new Texture("..\\NuttyPutters\\noneUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("oneBtnSelected", oneBtnSelected));
+
+	Texture* twoBtnUnselected = new Texture("..\\NuttyPutters\\ntwo.png");
+	textures.insert(std::pair<std::string, Texture*>("twoBtnUnselected", twoBtnUnselected));
+	Texture* twoBtnSelected = new Texture("..\\NuttyPutters\\ntwoUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("twoBtnSelected", twoBtnSelected));
+
+	Texture* difficultyLabel = new Texture("..\\NuttyPutters\\difficulty.png");
+	textures.insert(std::pair<std::string, Texture*>("difficultyLabel", difficultyLabel));
+
+	Texture* easyBtnUnselected = new Texture("..\\NuttyPutters\\easy.png");
+	textures.insert(std::pair<std::string, Texture*>("easyBtnUnselected", easyBtnUnselected));
+	Texture* easyBtnSelected = new Texture("..\\NuttyPutters\\easyUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("easyBtnSelected", easyBtnSelected));
+
+	Texture* medBtnUnselected = new Texture("..\\NuttyPutters\\med.png");
+	textures.insert(std::pair<std::string, Texture*>("medBtnUnselected", medBtnUnselected));
+	Texture* medBtnSelected = new Texture("..\\NuttyPutters\\medUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("medBtnSelected", medBtnSelected));
+
+	Texture* hardBtnUnselected = new Texture("..\\NuttyPutters\\hard.png");
+	textures.insert(std::pair<std::string, Texture*>("hardBtnUnselected", hardBtnUnselected));
+	Texture* hardBtnSelected = new Texture("..\\NuttyPutters\\hardUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("hardBtnSelected", hardBtnSelected));
+
+	Texture* startGameBtnUnselectedPS = new Texture("..\\NuttyPutters\\startgame.png");
+	textures.insert(std::pair<std::string, Texture*>("startGameBtnUnselectedPS", startGameBtnUnselectedPS));
+	Texture* startGameBtnSelectedPS = new Texture("..\\NuttyPutters\\startgameUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("startGameBtnSelectedPS", startGameBtnSelectedPS));
+
+	Texture* mainMenuBtnUnselected = new Texture("..\\NuttyPutters\\mainmenu.png");
+	textures.insert(std::pair<std::string, Texture*>("mainMenuBtnUnselected", mainMenuBtnUnselected));
+	Texture* mainMenuBtnSelected = new Texture("..\\NuttyPutters\\mainmenuUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("mainMenuBtnSelected", mainMenuBtnSelected));
 
 	// Setup start scene
 	sceneManager.startScene.Init(win);
