@@ -39,7 +39,7 @@ class windowMgr
 		map<std::string, Texture*> textures;
 		// Iterator to search through map
 		//map<std::string, Texture*>::iterator it;
-
+		 
 
 
 		// Perform initial window setup
