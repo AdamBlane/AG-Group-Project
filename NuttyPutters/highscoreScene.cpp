@@ -20,9 +20,16 @@ void highscoreScene::Init(GLFWwindow * win)
 	tarCam->set_Target(vec3(0, 0, 0));
 	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
-	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
-	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-	//background = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\background.png", vec3(0.0, 0.0, -1.0), 9.5f, 5.5f);
+	cout << "Textures before all: " << windowMgr::getInstance()->textures.size() << endl;
+	// Background image will never change so setup here
+	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
+	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["loadGameBackground"]);
+
+	windowMgr::getInstance()->meshes.at(1)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(2.0f, -1.5f, 0.0f));
+
 }
 
 
@@ -49,7 +56,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	switch (button_manager)
 	{
 		case 1:
-		//	backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["backBtnSelected"]);
 			break;
 	}
 	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
@@ -100,14 +107,13 @@ void highscoreScene::Render(GLFWwindow* win)
 
 	
 	glDepthRange(0, 0.01);
-	//background->thisTexture->Bind(0);
-	textureShader->Update(backgroundTrans, hudVP);
-	background->Draw();
 
-	//backButton->thisTexture->Bind(0);
-	textureShader->Update(backButtonTrans, hudVP);
-	backButton->Draw();
-
+	for (int a = 0; a < 2; a++)
+	{
+		windowMgr::getInstance()->meshes.at(a)->thisTexture.Bind(0);
+		textureShader->Update(optionSceneTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(a)->Draw();
+	}
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
 

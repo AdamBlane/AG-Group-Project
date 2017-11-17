@@ -9,6 +9,8 @@ optionsScene::~optionsScene() { }
 
 void optionsScene::Init(GLFWwindow * win)
 {
+	//to reformat texutures
+	glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
@@ -18,9 +20,21 @@ void optionsScene::Init(GLFWwindow * win)
 	tarCam->set_Target(vec3(0, 0, 0));
 	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
-	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
-	// Stroke HUD Label setup - Object, Texture, position, X scale, Y scale
-//	background = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\optbackground.png", vec3(0.0, 0.0, -1.0), 9.5f, 5.5f);
+	cout << "Textures before all: " << windowMgr::getInstance()->textures.size() << endl;
+	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
+	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["optionsBackground"]);
+
+	// Perform setup of initial button configs - (un)selected textures
+	// Pick next item in meshes list (increment the number by 1 each time)
+	windowMgr::getInstance()->meshes.at(1)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(0.0f, 1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(2)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.0f, 0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(2.0f, -1.5f, 0.0f));
+	cout << "Textures after start: " << windowMgr::getInstance()->textures.size() << endl;
 }
 
 
@@ -47,43 +61,48 @@ void optionsScene::Input(GLFWwindow* win)
 	switch (button_manager)
 	{
 		case 1:
-		//	wiwButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\wiw(1).png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
-		//	fullButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\full.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
-		//	backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back.png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
 			break;
 		case 2:
-		//	wiwButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\wiw.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
-		//	fullButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\full(1).png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
-		//	backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back.png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
 			break;
 		case 3:
-		//	wiwButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\wiw.png", vec3(0.0, 0.3, 0.0), 1.8f, 0.6f);
-		//	fullButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\full.png", vec3(0.0, -0.3, 0.0), 1.8f, 0.6f);
-		//	backButton = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\highscore\\back(1).png", vec3(2.0, -1.5, 0.0), 1.8f, 0.6f);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnSelected"]);
 			break;
 	}
 	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 3.0f)
 	{
 		total_time = 0.0f;
+		//cases for changing size of screen
 		switch (button_manager)
 		{
-			case 1:
-				windowMgr::getInstance()->width = 1600;
-				windowMgr::getInstance()->height = 900;
-				glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
-				glfwSetWindowPos(win, 200, 200);
-				optionsScene::Init(win);
-				break;
-			case 2:
-				windowMgr::getInstance()->width = 2000;
-				windowMgr::getInstance()->height = 1000;
-				glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
-				glfwSetWindowPos(win, 0, 0);
-				optionsScene::Init(win);
-				break;
-			case 3:
-				windowMgr::getInstance()->sceneManager.changeScene(1);
-				break;
+		case 1:
+			windowMgr::getInstance()->width = 1600;
+			windowMgr::getInstance()->height = 900;
+			windowMgr::getInstance()->PosX = 100;
+			windowMgr::getInstance()->PosY = 100;
+			break;
+		case 2:
+			windowMgr::getInstance()->width = 1920;
+			windowMgr::getInstance()->height = 1080;
+			windowMgr::getInstance()->PosX = 0;
+			windowMgr::getInstance()->PosY = 0;
+			break;
+		case 3:
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+			break;
+		}
+		if (button_manager != 3)
+		{
+			glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+			glfwSetWindowPos(win, windowMgr::getInstance()->PosX, windowMgr::getInstance()->PosY);
+			optionsScene::Init(win);
 		}
 	}
 	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 5.0f)
@@ -123,24 +142,15 @@ void optionsScene::Render(GLFWwindow* win)
 {
 	// If camera type is target camera - used for HUD elements - then
 	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
-
-
 	glDepthRange(0, 0.01);
-//	background->thisTexture->Bind(0);
-	textureShader->Update(backgroundTrans, hudVP);
-	background->Draw();
 
-//	backButton->thisTexture->Bind(0);
-	textureShader->Update(backButtonTrans, hudVP);
-	backButton->Draw();
+	for (int a = 0; a < 4; a++)
+	{
+		windowMgr::getInstance()->meshes.at(a)->thisTexture.Bind(0);
+		textureShader->Update(optionSceneTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(a)->Draw();
+	}
 
-//	wiwButton->thisTexture->Bind(0);
-	textureShader->Update(wiwButtonTrans, hudVP);
-	wiwButton->Draw();
-
-//	fullButton->thisTexture->Bind(0);
-	textureShader->Update(fullButtonTrans, hudVP);
-	fullButton->Draw();
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);

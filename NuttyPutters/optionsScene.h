@@ -28,18 +28,7 @@ public:
 
 	Shader* textureShader;
 
-	Mesh* backButton;
-	Transform backButtonTrans;
-
-	Mesh* background;
-	Transform backgroundTrans;
-
-	Mesh* fullButton;
-	Transform fullButtonTrans;
-
-	Mesh* wiwButton;
-	Transform wiwButtonTrans;
-
+	Transform optionSceneTransform;
 	int button_manager = 1;
 
 	float total_time = 2.0f;
