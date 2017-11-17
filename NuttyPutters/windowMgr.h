@@ -41,7 +41,7 @@ class windowMgr
 		//map<std::string, Texture*>::iterator it;
 		
 		//Shader* textureShader;
-
+		Mesh* player1Mesh;
 
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();

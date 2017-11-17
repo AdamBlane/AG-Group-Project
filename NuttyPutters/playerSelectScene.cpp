@@ -247,12 +247,11 @@ void playerSelectScene::Input(GLFWwindow* win)
 	{
 		total_time = 0.0f;
 		// If button select is 3 then start the game
-		if (buttonSelect == 3)
-		{
+	
 			windowMgr::getInstance()->sceneManager.changeScene(6, courseLength);
-		}
+		
 		// If button select is 4 then return to main menu
-		else if (buttonSelect == 4)
+		 if (buttonSelect == 4)
 		{
 			windowMgr::getInstance()->sceneManager.changeScene(1);
 		}

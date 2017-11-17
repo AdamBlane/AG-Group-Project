@@ -40,6 +40,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
+	// Skybox stuff
 	vector<string> filenames;
 	//negx and posx are inverted (mistery)
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\left.png");	//negx
@@ -48,16 +49,15 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\bot.png");		//negy
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\back.png");	//posz
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\front.png");	//negz
-
 	sky = new Mesh(filenames);
 	skyShader = new Shader("..\\NuttyPutters\\skyShader");
 
 	// Add the golf ball to scene
-	golfBallMesh = new Mesh("..\\NuttyPutters\\sphere.obj");
-	//golfBallMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(0.0f, 2.0f, 0.0f), 2.0f, 2.0f, 2.0f);
-	golfBallTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
-	golfBallTransform.getScale() = vec3(0.5);
-	golfBallTransform.getPos() = vec3(0.0, 1.0, 0.0);
+	//golfBallMesh = new Mesh("..\\NuttyPutters\\sphere.obj");
+	//golfBallTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
+	// Setup player position (must use transform as it's a loaded model - not drawn)
+	player1Transform.getScale() = vec3(0.5);
+	player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
 
 	// Arrow
 	//arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
@@ -73,7 +73,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	freeCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
 	chaseCam = new chase_camera();
-	chaseCam->set_target_pos(vec3(golfBallTransform.getPos()));
+	chaseCam->set_target_pos(vec3(player1Transform.getPos()));
 	chaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	chaseCam->set_springiness(0.2f);
 	chaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
@@ -141,8 +141,6 @@ void gameScene::LoadGame(string seed)
 			levelSeed.push_back(seed[c] - 48);
 		}
 	}
-
-
 
 	// Start added first (this & next coords already set)
 	StartTile start;
@@ -369,7 +367,6 @@ void gameScene::LoadGame(string seed)
 		} // Switch end
 
 	} // for loop end
-
 }
 
 // Populates scenery tiles
@@ -748,11 +745,11 @@ void gameScene::Input(GLFWwindow* window)
 		}
 		if (glfwGetKey(window, GLFW_KEY_S))
 		{
-			chaseCam->neg_pitch_it(camSpeed * dt * 0.5, golfBallTransform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
+			chaseCam->neg_pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_W))
 		{
-			chaseCam->pitch_it(camSpeed * dt * 0.5, golfBallTransform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
+			chaseCam->pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_Q))
 		{
@@ -891,7 +888,7 @@ void gameScene::Update(GLFWwindow* window)
 
 	// The getRot of golf ball - will this be troublesome? Don't want the camera
 	// to rotate along with the ball! 
-	chaseCam->move(golfBallTransform.getPos(), golfBallTransform.getRot());
+	chaseCam->move(player1Transform.getPos(), player1Transform.getRot());
 	chaseCam->update(0.00001);
 
 	// Update target camera
@@ -907,7 +904,7 @@ void gameScene::Update(GLFWwindow* window)
 		 // Rotation is cross product of direction and up
 		vec3 rot = normalize(cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
 		rot *=  speed *  dt;
-		golfBallTransform.getRot() += -rot;
+		player1Transform.getRot() += -rot;
 	}
 	// Prevent it moving forever
 	else 
@@ -919,7 +916,7 @@ void gameScene::Update(GLFWwindow* window)
 	gbVelocity *= dt;
 
 	// Update positions of ball and arrow
-	golfBallTransform.getPos() += gbVelocity;
+	player1Transform.getPos() += gbVelocity;
 	arrowTransform.getPos() += gbVelocity;
 
 	
@@ -938,14 +935,14 @@ void gameScene::Collisions()
 		// if (t.isPlayerOnTile)
 		  // currentTile = tileTracker
 		// if not, tileTracker++
-		if (t.isPlayerOnTile(golfBallTransform.getPos()))
+		if (t.isPlayerOnTile(player1Transform.getPos()))
 		{
 			currentTile = tileTracker;
 		}
 		else
 			tileTracker++;
 	}
-	//cout << "Current tile: " << algTiles.at(currentTile).id << "at (" << algTiles.at(currentTile).thisCoords.x << ", " << algTiles.at(currentTile).thisCoords.x << ") " << " : " << currentTile << "pos: " << golfBallTransform.getPos().x << ", " << golfBallTransform.getPos().y << ", " << golfBallTransform.getPos().z  << endl;
+	//cout << "Current tile: " << algTiles.at(currentTile).id << "at (" << algTiles.at(currentTile).thisCoords.x << ", " << algTiles.at(currentTile).thisCoords.x << ") " << " : " << currentTile << "pos: " << player1Transform.getPos().x << ", " << player1Transform.getPos().y << ", " << player1Transform.getPos().z  << endl;
 
 	// Switch on the currentTile 
 	switch (algTiles.at(currentTile).id)
@@ -956,7 +953,7 @@ void gameScene::Collisions()
 			// Need to do this to access start only methods (which includes col check)
 			//onRamp = false;
 			StartTile start;
-			gbDirection = start.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			gbDirection = start.CheckCollisions(player1Transform.getPos(), gbDirection);
 			break;
 		}
 		// On straight V tile
@@ -966,8 +963,8 @@ void gameScene::Collisions()
 			StraightTile_V straightV;
 			straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			// Ensure don't go through floor
-			golfBallTransform.setPos(straightV.SetPlayerHeight(golfBallTransform.getPos()));
-			gbDirection = straightV.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
+			gbDirection = straightV.CheckCollisions(player1Transform.getPos(), gbDirection);
 
 			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
 			{
@@ -979,7 +976,7 @@ void gameScene::Collisions()
 
 						break;
 					case 2:
-						gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, golfBallTransform.getPos(),
+						gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, player1Transform.getPos(),
 							gbDirection, straightV.displace, straightV.radius);
 						break;
 					default:
@@ -995,7 +992,7 @@ void gameScene::Collisions()
 			//onRamp = false;
 			StraightTile_H straightH;
 			straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = straightH.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			gbDirection = straightH.CheckCollisions(player1Transform.getPos(), gbDirection);
 			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
 			{
 				if (currentTile == obstacles.at(i))
@@ -1006,7 +1003,7 @@ void gameScene::Collisions()
 
 						break;
 					case 2:
-						gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, golfBallTransform.getPos(),
+						gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, player1Transform.getPos(),
 							gbDirection, straightH.displace, straightH.radius);
 						break;
 					default:
@@ -1022,7 +1019,7 @@ void gameScene::Collisions()
 			//onRamp = false;
 			CornerTile_BL cornerBL;
 			cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerBL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			gbDirection = cornerBL.CheckCollisions(player1Transform.getPos(), gbDirection);
 			break;
 		}
 		// On corner_BR tile
@@ -1031,7 +1028,7 @@ void gameScene::Collisions()
 			//onRamp = false;
 			CornerTile_BR cornerBR;
 			cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerBR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			gbDirection = cornerBR.CheckCollisions(player1Transform.getPos(), gbDirection);
 			break;
 		}
 		// On corner_TL tile
@@ -1040,7 +1037,7 @@ void gameScene::Collisions()
 			//onRamp = false;
 			CornerTile_TL cornerTL;
 			cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerTL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			gbDirection = cornerTL.CheckCollisions(player1Transform.getPos(), gbDirection);
 			break;
 		}
 		// On corner_TR tile
@@ -1049,7 +1046,7 @@ void gameScene::Collisions()
 			//onRamp = false;
 			CornerTile_TR cornerTR;
 			cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerTR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+			gbDirection = cornerTR.CheckCollisions(player1Transform.getPos(), gbDirection);
 			break;
 		}
 		// Up ramp tile
@@ -1059,7 +1056,7 @@ void gameScene::Collisions()
 			ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			ramp.thisCoords.y += 1.8;
 			// Set player height
-			golfBallTransform.setPos(ramp.SetPlayerHeight(golfBallTransform.getPos()));
+			player1Transform.setPos(ramp.SetPlayerHeight(player1Transform.getPos()));
 			//onRamp = true;
 			break;
 		}
@@ -1070,7 +1067,7 @@ void gameScene::Collisions()
 			EndTile end;
 			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
 			end.outDir = algTiles.at(currentTile).outDir;
-			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed);
+			gbDirection = end.CheckCollisions(player1Transform.getPos(), gbDirection, speed);
 			
 			break;
 		}
@@ -1200,20 +1197,24 @@ void gameScene::Render(GLFWwindow* window)
 	//	textureShader->Update(treeTransforms.at(i), mvp);
 	//}
 	// Draw golf ball
-	golfBallTexture->Bind(0);
-	textureShader->Update(golfBallTransform, mvp);
-	golfBallMesh->Draw();
+	//golfBallTexture->Bind(0);
+	//textureShader->Update(player1Transform, mvp);
+	//golfBallMesh->Draw();
+
+	windowMgr::getInstance()->textures["playerRedTexture"]->Bind(0);
+	textureShader->Update(player1Transform, mvp);
+	windowMgr::getInstance()->player1Mesh->Draw();
 
 	// Arrow
-	arrowTexture->Bind(0);
-	textureShader->Update(arrowTransform, mvp);
+	//arrowTexture->Bind(0);
+	//textureShader->Update(arrowTransform, mvp);
 	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
-	arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
+	//arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
 	// If ball is not moving draw arrow (ie dont draw arrow when ball moving as not needed)
 	if (!golfBallMoving)
 	{
 		// Draw the arrow
-		arrowMesh->Draw();
+		//arrowMesh->Draw();
 	}
 
 
