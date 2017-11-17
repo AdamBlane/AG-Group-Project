@@ -2,22 +2,22 @@
 #include <time.h>
 #include <random>
 
-Tile::Tile(typeTile desiredType, vec3 newPosition, string floorTexture, string borderTexture, string bridgeSurroundingTexture)
+Tile::Tile(typeTile desiredType, vec3 newPosition, int obstacleID, string floorTexture, string borderTexture, string bridgeSurroundingTexture)
 {
 	//setting tile properties
 	//tilePos = newPosition;
 	srand(time(NULL));
 	transform.getPos() = newPosition;
-
+	thisObstacleID = obstacleID;
 	this_borderTexture = borderTexture;
 	this_floorTexture = floorTexture;
 	this_bridgeSurroundingTexture = bridgeSurroundingTexture;
 	thisTile = desiredType;
 
-	if (thisTile == STRAIGHT)
+	if (thisObstacleID != 0)
 	{
 		//Setting randomly the bool for the straight tile
-		hasObstacle = randomNumber(0, 1);
+		obstacle();
 	}
 
 	//create tile method to generate meshes composing the tile
@@ -131,10 +131,10 @@ void Tile::straightTile()
 
 
 	//if hasObstacle is true, it calls the obstacle method
-	if (hasObstacle)
-	{
-		obstacle();
-	}
+	//if (hasObstacle)
+	//{
+	//	obstacle();
+	//}
 }
 
 void Tile::sceneryTile()
@@ -338,7 +338,7 @@ void Tile::drawTile(Shader* shader, glm::mat4 camera, Shader* waterShader)
 		}
 	}
 
-	if (hasObstacle == true)
+	if (thisObstacleID != 0)
 	{
 		for (auto &o : tileObstacle)
 		{

@@ -34,7 +34,7 @@ public:
 	//Transform obstacleTransform;
 
 	//tile constructor, taking floor and border textures file paths and new position --> not perfectly working
-	Tile(typeTile desiredType, vec3 newPosition, string floorTexture, string borderTexture, string bridgeSurroundingTexture = "");
+	Tile(typeTile desiredType, vec3 newPosition, int obstacleID, string floorTexture, string borderTexture, string bridgeSurroundingTexture = "");
 	~Tile();
 
 	//returns position of the tile
@@ -55,8 +55,11 @@ public:
 	//Not used --> should bind textures from a starting index (usually 0)
 	void bindTextures(unsigned int startIndexs);
 
-	//boolean indicating wheather the tile has obstacle or not
-	bool hasObstacle;
+	////boolean indicating wheather the tile has obstacle or not
+	//bool hasObstacle;
+
+	//General random engine 
+	static int randomNumber(int min, int max);
 
 	//Vector of Mesh* used to store all objects the tile is composed by
 	vector<Mesh*> tileContent;
@@ -67,6 +70,9 @@ private:
 
 	//measures of the tile
 	vec3 measures = vec3(10.0f, 1.0f, 10.0f);
+
+	//Obstacle ID identifier
+	int thisObstacleID;
 
 	//size of the hole
 	GLfloat ballSizeMargin = 1.4f;
@@ -94,9 +100,6 @@ private:
 
 	void bridgeTile();
 	void cornerTile();
-
-	//General random engine 
-	int randomNumber(int min, int max);
 
 
 	//obstacle method calling obstacles of different types
