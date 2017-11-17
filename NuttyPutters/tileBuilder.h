@@ -25,7 +25,6 @@ public:
 		BRIDGE,
 		CORNER,
 		SCENERY
-
 	};
 
 	//Transform for the tile and for any moving obstacle that it might contain
@@ -101,11 +100,9 @@ private:
 	void bridgeTile();
 	void cornerTile();
 
-
 	//obstacle method calling obstacles of different types
 	void obstacle();
 
 	void obstacleCube();
 	void obstacleSlalom();
-
 };

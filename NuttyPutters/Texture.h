@@ -16,9 +16,6 @@ public:
 
 	virtual ~Texture();
 private:
-	// M - Commented this out, since it conflicts with SetTexture in Mesh.h
-	//Texture(const Texture& other) {}
-	//Texture& operator=(const Texture& other) {}
 	bool isCubeMap = false;
 	GLuint m_texture;
 };

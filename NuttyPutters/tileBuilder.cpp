@@ -68,17 +68,17 @@ void Tile::createTile()
 
 void Tile::startTile()
 {
-	/*Mesh *floor = new Mesh(Mesh::CUBOID, this_floorTexture, tilePos, measures.x, measures.y, measures.z, true);
-	tileContent.push_back(floor);
+	//Mesh *floor = new Mesh(Mesh::CUBOID, this_floorTexture, tilePos, measures.x, measures.y, measures.z, true);
+	//tileContent.push_back(floor);
 
-	Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
-	tileContent.push_back(border1);
+	//Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
+	//tileContent.push_back(border1);
 
-	Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
-	tileContent.push_back(border2);
+	//Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
+	//tileContent.push_back(border2);
 
-	Mesh *border3 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)), measures.x - (measures.y * 2), measures.y, measures.y);
-	tileContent.push_back(border3);*/
+	//Mesh *border3 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)), measures.x - (measures.y * 2), measures.y, measures.y);
+	//tileContent.push_back(border3);
 
 }
 
