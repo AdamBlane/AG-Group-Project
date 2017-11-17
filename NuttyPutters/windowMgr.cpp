@@ -71,6 +71,10 @@ GLFWwindow* windowMgr::Init()
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
 	}
+	
+	// Player meshes
+	player1Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
+
 	// Initialise all textures, then add to the textures map
 	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
@@ -166,6 +170,9 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnUnselected", fullscreenBtnUnselected));
 	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnSelected", fullscreenBtnSelected));
+	// Player textures
+	Texture* playerRedTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
+	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
 
 	// Setup start scene
 	sceneManager.startScene.Init(win);

@@ -67,9 +67,9 @@ public:
 	target_camera* tarCam;
 	
 	// Golf ball
-	Mesh* golfBallMesh;
-	Texture* golfBallTexture;
-	Transform golfBallTransform;
+	//Mesh* golfBallMesh;
+	//Texture* golfBallTexture;
+	Transform player1Transform;
 	vec3 gbDirection; // Normalised direction vector
 	vec3 gbVelocity; // Velocity is dir * speed	
 	bool golfBallMoving = false; // Is golf ball moving
