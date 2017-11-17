@@ -10,8 +10,8 @@ gameScene::gameScene() { }
 gameScene::~gameScene() { }
 
 // Setup scene; seed is an optional param passed in by loadGameScene
-void gameScene::Init(GLFWwindow* window, int courseLength, string seed) 
-{	
+void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
+{
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -24,12 +24,12 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
-	
+
 	// Record desired course size 
 	courseSize = courseLength;
 
 	// Load game
-	LoadGame(seed); 
+	LoadGame(seed);
 
 	// Take alg tiles, turn into render tiles
 	SetupTilesToBeDrawn();
@@ -104,7 +104,7 @@ void gameScene::LoadGame(string seed)
 {
 	// Only get seed from file if not given to us from load game screen
 	if (seed == "seed") // it's the default value
-	{ 
+	{
 		// Some magic numbers in the following section; for milestone 2, will replace after
 		// Insert start
 		levelSeed.push_back(0);
@@ -378,7 +378,7 @@ void gameScene::FillScenery()
 	// Get boundary positions of level tiles in x and z
 	float xMax = 0;
 	float xMin = 0;
-	float zMax = 0; 
+	float zMax = 0;
 	float zMin = 0;
 	for (auto &t : algTiles)
 	{
@@ -538,7 +538,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 9) // end
 		{
 			// Create start tile
-			Tile tile(Tile::END, t.thisCoords, obstacleID,"..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::END, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
 			// Consult direction to determine how much to rotate
 			if (t.outDir.going_up)
 			{
@@ -594,7 +594,7 @@ void gameScene::Input(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_B))
 	{
 		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(0);	
+		windowMgr::getInstance()->sceneManager.changeScene(0);
 		cout << "Pressed B" << endl;
 	}
 	// Pause
@@ -603,7 +603,7 @@ void gameScene::Input(GLFWwindow* window)
 		cout << "game paused" << endl;
 		bool paused = true;
 		while (paused)
-		{		
+		{
 			// Need this or we get stuck in loop
 			glfwPollEvents();
 			// Save this level (move this code later to end of game, so we can save score with it)
@@ -660,7 +660,7 @@ void gameScene::Input(GLFWwindow* window)
 			if (glfwGetKey(window, GLFW_KEY_U))
 			{
 				paused = false;
-				break;		
+				break;
 			}
 		} // end while paused
 		cout << "Unpaused" << endl;
@@ -787,8 +787,8 @@ void gameScene::Input(GLFWwindow* window)
 			Pcounter += 0.5f;
 			// Update the power bar based on the the Pcounter value 
 			//powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
-			powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
-			powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
+			powerBarTrans.getPos().x += Pcounter / 100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
+			powerBarTrans.getScale().x += Pcounter / 5.0f; // Update the scale based on the Pcounter value
 
 			// SET DIRECTION BASED ON CHASE CAM ANGLE
 			// If camera angle is between 0 and 90
@@ -842,10 +842,10 @@ void gameScene::Input(GLFWwindow* window)
 				//Decrease Pcounter until reaches 0
 				Pcounter -= 0.5;
 			}
-			
+
 			// Flip
 			pPressed = false;
-		} 	
+		}
 	} // End if (p is released)
 
 	  //This function resets the scene to an empty screen
@@ -906,11 +906,11 @@ void gameScene::Update(GLFWwindow* window)
 		speed -= speed * 0.03; // this magic number is friction
 		 // Rotation is cross product of direction and up
 		vec3 rot = normalize(cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
-		rot *=  speed *  dt;
+		rot *= speed *  dt;
 		golfBallTransform.getRot() += -rot;
 	}
 	// Prevent it moving forever
-	else 
+	else
 	{
 		speed = 0;
 		golfBallMoving = false;
@@ -922,7 +922,7 @@ void gameScene::Update(GLFWwindow* window)
 	golfBallTransform.getPos() += gbVelocity;
 	arrowTransform.getPos() += gbVelocity;
 
-	
+
 }
 
 
@@ -930,7 +930,7 @@ void gameScene::Update(GLFWwindow* window)
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-	
+
 	int tileTracker = 0;
 	// Check which tile player is on (do this every n frames, not each tick)
 	for (auto &t : algTiles)
@@ -950,130 +950,130 @@ void gameScene::Collisions()
 	// Switch on the currentTile 
 	switch (algTiles.at(currentTile).id)
 	{
-			// On start tile
-		case 0:
-		{
-			// Need to do this to access start only methods (which includes col check)
-			//onRamp = false;
-			StartTile start;
-			gbDirection = start.CheckCollisions(golfBallTransform.getPos(), gbDirection);
-			break;
-		}
-		// On straight V tile
-		case 1:
-		{
-			//onRamp = false;
-			StraightTile_V straightV;
-			straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			// Ensure don't go through floor
-			golfBallTransform.setPos(straightV.SetPlayerHeight(golfBallTransform.getPos()));
-			gbDirection = straightV.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+		// On start tile
+	case 0:
+	{
+		// Need to do this to access start only methods (which includes col check)
+		//onRamp = false;
+		StartTile start;
+		gbDirection = start.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+		break;
+	}
+	// On straight V tile
+	case 1:
+	{
+		//onRamp = false;
+		StraightTile_V straightV;
+		straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		// Ensure don't go through floor
+		golfBallTransform.setPos(straightV.SetPlayerHeight(golfBallTransform.getPos()));
+		gbDirection = straightV.CheckCollisions(golfBallTransform.getPos(), gbDirection);
 
-			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+		{
+			if (currentTile == obstacles.at(i))
 			{
-				if (currentTile == obstacles.at(i))
+				switch (obstacles.at(i + 1))
 				{
-					switch (obstacles.at(i + 1))
-					{
-					case 1:
+				case 1:
 
-						break;
-					case 2:
-						gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, golfBallTransform.getPos(),
-							gbDirection, straightV.displace, straightV.radius);
-						break;
-					default:
-						break;
-					}
+					break;
+				case 2:
+					gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, golfBallTransform.getPos(),
+						gbDirection, straightV.displace, straightV.radius);
+					break;
+				default:
+					break;
 				}
 			}
-			break;
 		}
-		// On straight H tile
-		case 2:
+		break;
+	}
+	// On straight H tile
+	case 2:
+	{
+		//onRamp = false;
+		StraightTile_H straightH;
+		straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = straightH.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
 		{
-			//onRamp = false;
-			StraightTile_H straightH;
-			straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = straightH.CheckCollisions(golfBallTransform.getPos(), gbDirection);
-			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+			if (currentTile == obstacles.at(i))
 			{
-				if (currentTile == obstacles.at(i))
+				switch (obstacles.at(i + 1))
 				{
-					switch (obstacles.at(i + 1))
-					{
-					case 1:
+				case 1:
 
-						break;
-					case 2:
-						gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, golfBallTransform.getPos(),
-							gbDirection, straightH.displace, straightH.radius);
-						break;
-					default:
-						break;
-					}
+					break;
+				case 2:
+					gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, golfBallTransform.getPos(),
+						gbDirection, straightH.displace, straightH.radius);
+					break;
+				default:
+					break;
 				}
 			}
-			break;
 		}
-		// On corner_BL tile
-		case 3:
-		{
-			//onRamp = false;
-			CornerTile_BL cornerBL;
-			cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerBL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
-			break;
-		}
-		// On corner_BR tile
-		case 4:
-		{
-			//onRamp = false;
-			CornerTile_BR cornerBR;
-			cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerBR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
-			break;
-		}
-		// On corner_TL tile
-		case 5:
-		{
-			//onRamp = false;
-			CornerTile_TL cornerTL;
-			cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerTL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
-			break;
-		}
-		// On corner_TR tile
-		case 6:
-		{
-			//onRamp = false;
-			CornerTile_TR cornerTR;
-			cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerTR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
-			break;
-		}
-		// Up ramp tile
-		case 7:
-		{
-			UpRampDown ramp;
-			ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			ramp.thisCoords.y += 1.8;
-			// Set player height
-			golfBallTransform.setPos(ramp.SetPlayerHeight(golfBallTransform.getPos()));
-			//onRamp = true;
-			break;
-		}
-		// End tile
-		case 9:
-		{
-			//onRamp = false;
-			EndTile end;
-			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			end.outDir = algTiles.at(currentTile).outDir;
-			gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed);
-			
-			break;
-		}
+		break;
+	}
+	// On corner_BL tile
+	case 3:
+	{
+		//onRamp = false;
+		CornerTile_BL cornerBL;
+		cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerBL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+		break;
+	}
+	// On corner_BR tile
+	case 4:
+	{
+		//onRamp = false;
+		CornerTile_BR cornerBR;
+		cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerBR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+		break;
+	}
+	// On corner_TL tile
+	case 5:
+	{
+		//onRamp = false;
+		CornerTile_TL cornerTL;
+		cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerTL.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+		break;
+	}
+	// On corner_TR tile
+	case 6:
+	{
+		//onRamp = false;
+		CornerTile_TR cornerTR;
+		cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerTR.CheckCollisions(golfBallTransform.getPos(), gbDirection);
+		break;
+	}
+	// Up ramp tile
+	case 7:
+	{
+		UpRampDown ramp;
+		ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		ramp.thisCoords.y += 1.8;
+		// Set player height
+		golfBallTransform.setPos(ramp.SetPlayerHeight(golfBallTransform.getPos()));
+		//onRamp = true;
+		break;
+	}
+	// End tile
+	case 9:
+	{
+		//onRamp = false;
+		EndTile end;
+		end.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		end.outDir = algTiles.at(currentTile).outDir;
+		gbDirection = end.CheckCollisions(golfBallTransform.getPos(), gbDirection, speed);
+
+		break;
+	}
 	}
 }
 
