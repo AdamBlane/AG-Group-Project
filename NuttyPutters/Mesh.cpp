@@ -157,10 +157,10 @@ void Mesh::quad()
 		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide1, position.z), glm::vec2(0.0, 0.0)), //index 0
 		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide1, position.z), glm::vec2(1.0, 0.0)), //index 1
 		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide1, position.z), glm::vec2(0.0, 1.0)), //index 2
-																											//TR2
-																											///get index 2
-																											///get index 1
-																											Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z), glm::vec2(1.0, 1.0)), //index 3
+		//TR2
+		///get index 2
+		///get index 1
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide1, position.z), glm::vec2(1.0, 1.0)), //index 3
 	};
 
 	unsigned int indices[] = {
@@ -175,13 +175,13 @@ void Mesh::rectangle()
 {
 	Vertex vertices[] = {
 		//TR1
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z), glm::vec2(0.0, 0.0)), //index 0
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z), glm::vec2(1.0, 0.0)), //index 1
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z), glm::vec2(0.0, 1.0)), //index 2
-																											//TR2
-																											///get index 2
-																											///get index 1
-																											Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z), glm::vec2(1.0, 1.0)), //index 3
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z), glm::vec2(1.0, 1.0)), //index 0
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z), glm::vec2(0.0, 1.0)), //index 1
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z), glm::vec2(1.0, 0.0)), //index 2
+		//TR2
+		///get index 2
+		///get index 1
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z), glm::vec2(0.0, 0.0)), //index 3
 	};
 
 	unsigned int indices[] = {
