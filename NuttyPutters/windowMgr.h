@@ -6,6 +6,8 @@
 // Internals
 #include "sceneMgr.h"
 
+
+
 class windowMgr
 {
 	private:
@@ -39,6 +41,7 @@ class windowMgr
 		vector<Mesh*> meshes;
 		// All textures in the game stored here
 		map<std::string, Texture*> textures;
+		vector<Texture*> savesImages;
 		// Iterator to search through map - apparently don't need this
 		//map<std::string, Texture*>::iterator it; // keep in case we do later
 		// GAME SCENE UNIQUE MESHES
@@ -53,6 +56,8 @@ class windowMgr
 
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
+		// Populate savesImages vector with image files read from saves folder
+		void UpdateSavesImages(string seed);
 		// Game update loop
 		void Update();
 		// On window close

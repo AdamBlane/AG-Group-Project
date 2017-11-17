@@ -44,16 +44,14 @@ void loadGameScene::Init(GLFWwindow* win)
 			yPos = (y*h);
 			windowMgr::getInstance()->meshes.at(imCount)->SetPos(vec3(xPos, yPos, 0));
 			windowMgr::getInstance()->meshes.at(imCount)->SetScale(w, h);
-			windowMgr::getInstance()->meshes.at(imCount)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
+			//windowMgr::getInstance()->meshes.at(imCount)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
 			imCount++;
 		}
 	}
 	
-	// Set image textures to meshes here?
-
-
-
-
+	// Test
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->savesImages.at(0));
+	cout << windowMgr::getInstance()->savesImages.size() << endl;
 	// Read all saved seeds
 	ifstream saves("saves.csv");
 
