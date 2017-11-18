@@ -64,7 +64,7 @@ GLFWwindow* windowMgr::Init()
 	//textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
 
-	// Initialise max number of meshes any scene uses (game scene probably)
+	// Initialise max number of meshes any scene uses
 	for (int i = 0; i < 10; ++i)
 
 	{
@@ -173,6 +173,48 @@ GLFWwindow* windowMgr::Init()
 	// Player textures
 	Texture* playerRedTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
+
+	//Tiles stuff initialized here
+	for (int i = 0; i < 15; ++i)
+
+	{
+		Mesh* mesh = new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+		tileMeshes.push_back(mesh);
+	}
+
+	for (int i = 0; i < 15; ++i)
+
+	{
+		Mesh* mesh = new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+		obstacleMeshes.push_back(mesh);
+	}
+
+	for (int i = 0; i < 2; ++i)
+
+	{
+		Mesh* mesh = new Mesh(Mesh::PLANE, vec3(0.0f, 0.0f, -1.0f), 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+		planeMeshes.push_back(mesh);
+	}
+
+	// Initialise tile textures, then add to map
+	Texture* floorGrass = new Texture("..\\NuttyPutters\\grass.png");
+	tileTextures.insert(std::pair<std::string, Texture*>("floorGrass", floorGrass));
+
+	Texture* grassHole = new Texture("..\\NuttyPutters\\grassHole.png");
+	tileTextures.insert(std::pair<std::string, Texture*>("grassHole", grassHole));
+
+	Texture* grassScenery = new Texture("..\\NuttyPutters\\lava.jpg");
+	tileTextures.insert(std::pair<std::string, Texture*>("grassScenery", grassScenery));
+
+	Texture* tileWood = new Texture("..\\NuttyPutters\\box.jpg");
+	tileTextures.insert(std::pair<std::string, Texture*>("tileWood", tileWood));
+
+	Texture* waterBridge = new Texture("..\\NuttyPutters\\water.png");
+	tileTextures.insert(std::pair<std::string, Texture*>("waterBridge", waterBridge));
+
+	Texture* bottomBridge = new Texture("..\\NuttyPutters\\bridgeBottom.jpg");
+	tileTextures.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
+
 
 	// Setup start scene
 	sceneManager.startScene.Init(win);

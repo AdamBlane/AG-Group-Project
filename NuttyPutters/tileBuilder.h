@@ -33,7 +33,7 @@ public:
 	//Transform obstacleTransform;
 
 	//tile constructor, taking floor and border textures file paths and new position --> not perfectly working
-	Tile(typeTile desiredType, vec3 newPosition, int obstacleID, string floorTexture, string borderTexture, string bridgeSurroundingTexture = "");
+	Tile(typeTile desiredType, vec3 newPosition, int obstacleID);
 	~Tile();
 
 	//returns position of the tile

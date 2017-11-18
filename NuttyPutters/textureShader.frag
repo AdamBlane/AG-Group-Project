@@ -12,11 +12,11 @@ void main()
 {
 	vec4 g = texture(tex, tex_coord);
 	
-	if (g.a >= 0.3f && g.a < 1.0f)
+	if (g.a >= 0.2f && g.a < 1.0f)
 	{
-		g.a = 0.8f;
+		g.a = 0.6f;
 	}
-	else if (g.a < 0.3f)
+	else if (g.a < 0.2f)
 	{
 		discard;
 	}

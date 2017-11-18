@@ -43,6 +43,12 @@ class windowMgr
 		//Shader* textureShader;
 		Mesh* player1Mesh;
 
+		//Stuff for tiles
+		vector<Mesh*> tileMeshes;
+		vector<Mesh*> obstacleMeshes;
+		vector<Mesh*> planeMeshes;
+		map<std::string, Texture*> tileTextures;
+
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
 		// Game update loop

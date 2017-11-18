@@ -420,7 +420,7 @@ void gameScene::FillScenery()
 			{
 				// Create straight tile
 				//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
-				Tile tile(Tile::SCENERY, thisPos, 0, "..\\NuttyPutters\\lava.jpg", "..\\NuttyPutters\\lava.jpg");
+				Tile tile(Tile::SCENERY, thisPos, 0);
 				//tile.transform.getRot().x = -0.785398;
 				// Add to list of tiles to be rendered
 				sceneryTiles.push_back(tile);
@@ -455,7 +455,7 @@ void gameScene::SetupTilesToBeDrawn()
 				obstacles.push_back(obstacleID);
 			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID);
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y += 1.8;
@@ -466,7 +466,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 8)
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID);
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y -= 1.8;
@@ -476,7 +476,7 @@ void gameScene::SetupTilesToBeDrawn()
 		if (t.id == 0) // Start
 		{
 			// Create start tile
-			Tile tile(Tile::START, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::START, t.thisCoords, obstacleID);
 			// Start tile needs rotating 180 (should always face down)
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -484,15 +484,31 @@ void gameScene::SetupTilesToBeDrawn()
 		}
 		else if (t.id == 1) // Straight V
 		{
+			hasObstacle = Tile::randomNumber(0, 1);
+			if (hasObstacle)
+			{
+				obstacleID = Tile::randomNumber(1, 2);
+				//save this tile position in algTiles
+				obstacles.push_back(index);
+				obstacles.push_back(obstacleID);
+			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, 0);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 2) // Straight H
 		{
+			hasObstacle = Tile::randomNumber(0, 1);
+			if (hasObstacle)
+			{
+				obstacleID = Tile::randomNumber(1, 2);
+				//save this tile position in algTiles
+				obstacles.push_back(index);
+				obstacles.push_back(obstacleID);
+			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::STRAIGHT, t.thisCoords, 0);
 			// Straight needs rotating by 90, since it's vertical by default
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -501,7 +517,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 3) // Corner BL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, obstacleID);
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -510,7 +526,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 4) // Corner BR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, obstacleID);
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
@@ -519,14 +535,14 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 5) // Corner TL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, obstacleID);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t.id == 6) // Corner TR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::CORNER, t.thisCoords, obstacleID);
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = -1.5708;
 			// Add to list of tiles to be rendered
@@ -535,7 +551,7 @@ void gameScene::SetupTilesToBeDrawn()
 		else if (t.id == 9) // end
 		{
 			// Create start tile
-			Tile tile(Tile::END, t.thisCoords, obstacleID, "..\\NuttyPutters\\grass.jpg", "..\\NuttyPutters\\box.jpg");
+			Tile tile(Tile::END, t.thisCoords, obstacleID);
 			// Consult direction to determine how much to rotate
 			if (t.outDir.going_up)
 			{
@@ -935,7 +951,7 @@ void gameScene::Collisions()
 	for (auto &t : algTiles)
 	{
 		// if (t.isPlayerOnTile)
-		  // currentTile = tileTracker
+		// currentTile = tileTracker
 		// if not, tileTracker++
 		if (t.isPlayerOnTile(player1Transform.getPos()))
 		{
