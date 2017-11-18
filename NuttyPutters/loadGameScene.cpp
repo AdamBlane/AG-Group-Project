@@ -252,22 +252,28 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		if (rightPressed)
 		{
-
+			// Show last page
+			NextPage();
+			// Resize this and last choice
+			ResizeCurLastSelected();
 		}
 		rightPressed = false;
 	}
 	// View last page
 	if (glfwGetKey(win, GLFW_KEY_LEFT))
 	{
-		rightPressed = true;
+		leftPressed = true;
 	}
 	if (!glfwGetKey(win, GLFW_KEY_LEFT))
 	{
-		if (rightPressed)
+		if (leftPressed)
 		{
-
+			// Show last page
+			LastPage();
+			// Resize this and last choice
+			ResizeCurLastSelected();
 		}
-		rightPressed = false;
+		leftPressed = false;
 	}
 	// Select this level to load
 	if (glfwGetKey(win, GLFW_KEY_ENTER) && enterCooldown > enterCooldownMax)
