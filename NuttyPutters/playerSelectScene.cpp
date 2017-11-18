@@ -18,7 +18,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 	tarCam->set_Target(vec3(0, 0, 0));
 	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
 
-	cout << "Textures before all: " << windowMgr::getInstance()->textures.size() << endl;
+	
 	// Background image will never change so setup here
 	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
@@ -70,7 +70,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0, -1.7, 0.0));
 	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 
-	cout << "Textures after start: " << windowMgr::getInstance()->textures.size() << endl;
+	
 }
 
 // Draw stuff for this scene
