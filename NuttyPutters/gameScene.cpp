@@ -37,9 +37,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Setup scenery tiles
 	FillScenery();
 
-	// Setup texture shader
-	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-
+	// TODO - find a way to not init this here
 	// Skybox stuff
 	vector<string> filenames;
 	//negx and posx are inverted (mistery)
@@ -50,38 +48,24 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\back.png");	//posz
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\front.png");	//negz
 	sky = new Mesh(filenames);
-	skyShader = new Shader("..\\NuttyPutters\\skyShader");
 
-	// Add the golf ball to scene
-	//golfBallMesh = new Mesh("..\\NuttyPutters\\sphere.obj");
-	//golfBallTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
+
 	// Setup player position (must use transform as it's a loaded model - not drawn)
 	player1Transform.getScale() = vec3(0.5);
 	player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
 
-	// Arrow
+	// Arrow - TODO - draw lower! 
 	//arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
-	//arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
-	//arrowTransform.getScale() = vec3(0.5);
+	arrowTransform.getScale() = vec3(0.5);
+	arrowTransform.getPos() = vec3(1.8 + player1Transform.getPos().x, 2.6 + player1Transform.getPos().y, player1Transform.getPos().z);
+	windowMgr::getInstance()->arrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]); //?
+    
+    // Set camera startup properties
+	cameraType = 1;// Want chase cam by default	
+	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
+	windowMgr::getInstance()->freeCam->set_Target(vec3(0, 0, 0));
+	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));
 
-	//auto height = win.
-	// Setup cameras
-	freeCam = new free_camera();
-	freeCam->set_Posistion(vec3(0, 10, -10));
-	freeCam->rotate(-10.0, 0.0);
-	freeCam->set_Target(vec3(0, 0, 0));
-	freeCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
-
-	chaseCam = new chase_camera();
-	chaseCam->set_target_pos(vec3(player1Transform.getPos()));
-	chaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
-	chaseCam->set_springiness(0.2f);
-	chaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
-
-	tarCam = new target_camera();
-	tarCam->set_Posistion(vec3(0, 0, 5.0f));
-	tarCam->set_Target(vec3(0, 0, 0));
-	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup
@@ -403,7 +387,6 @@ void gameScene::FillScenery()
 		for (int xPos = xMin; xPos < xMax; xPos += 10)
 		{
 			vec3 thisPos = vec3(xPos, 0.0f, zPos); // Not dealing with ramps for now
-			cout << thisPos.x << ", " << thisPos.z << endl;
 			// Check if this pos is already taken by a level tile
 			bool posTaken = false;
 			// Contains search; there will only be one match
@@ -686,7 +669,7 @@ void gameScene::Input(GLFWwindow* window)
 		cout << "Free Camera selected" << endl;
 		cameraType = 0;
 		// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
-		freeCam->set_Posistion(chaseCam->get_Posistion());
+		windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->chaseCam->get_Posistion());
 	}
 
 	// If button two is pressed change to chase camera
@@ -736,7 +719,7 @@ void gameScene::Input(GLFWwindow* window)
 			camSpeed = 2.0f;
 
 		// Move camera by new pos after input
-		freeCam->move(freeCamPos);
+		windowMgr::getInstance()->freeCam->move(freeCamPos);
 	}
 	// CHASE CAM controls
 	else if (cameraType == 1)
@@ -748,33 +731,33 @@ void gameScene::Input(GLFWwindow* window)
 			if (glfwGetKey(window, GLFW_KEY_D))
 			{
 				//function to rotate 
-				chaseCam->yaw_it(camSpeed * dt * 0.5);
+				windowMgr::getInstance()->chaseCam->yaw_it(camSpeed * dt * 0.5);
 				// Decrease chase camera angle (out of 360 degrees)
 				chaseCamAngle -= (camSpeed * dt * 0.5);
 			}
 			if (glfwGetKey(window, GLFW_KEY_A))
 			{
-				chaseCam->neg_yaw_it(camSpeed * dt * 0.5);
+				windowMgr::getInstance()->chaseCam->neg_yaw_it(camSpeed * dt * 0.5);
 				// Increase chase camera angle (out of 360 degrees)
 				chaseCamAngle += (camSpeed * dt * 0.5);
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_S))
 		{
-			chaseCam->neg_pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
+			windowMgr::getInstance()->chaseCam->neg_pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_W))
 		{
-			chaseCam->pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), chaseCam->get_Posistion(), chaseCam->get_pos_offset().y);
+			windowMgr::getInstance()->chaseCam->pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_Q))
 		{
 			//function to rotate 
-			chaseCam->zoom_out(camSpeed * dt * 0.5);
+			windowMgr::getInstance()->chaseCam->zoom_out(camSpeed * dt * 0.5);
 		}
 		if (glfwGetKey(window, GLFW_KEY_E))
 		{
-			chaseCam->zoom_in(camSpeed * dt * 0.5);
+			windowMgr::getInstance()->chaseCam->zoom_in(camSpeed * dt * 0.5);
 		}
 
 
@@ -800,8 +783,10 @@ void gameScene::Input(GLFWwindow* window)
 			Pcounter += 0.5f;
 			// Update the power bar based on the the Pcounter value 
 			//powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
-			powerBarTrans.getPos().x += Pcounter / 100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
-			powerBarTrans.getScale().x += Pcounter / 5.0f; // Update the scale based on the Pcounter value
+
+		//	powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
+			//powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
+
 
 			// SET DIRECTION BASED ON CHASE CAM ANGLE
 			// If camera angle is between 0 and 90
@@ -850,8 +835,8 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				//This just inverts the increasing in size and positions done before when P was pressed
 			//	powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
-				powerBarTrans.getPos().x -= Pcounter / 100.0f;
-				powerBarTrans.getScale().x -= Pcounter / 5.0f;
+				//powerBarTrans.getPos().x -= Pcounter / 100.0f;
+				//powerBarTrans.getScale().x -= Pcounter / 5.0f;
 				//Decrease Pcounter until reaches 0
 				Pcounter -= 0.5;
 			}
@@ -896,19 +881,19 @@ void gameScene::Update(GLFWwindow* window)
 	delta_x *= ratio_width;
 	delta_y *= ratio_height * -1; // -1 to invert on y axis
 								  // Rotate camera by delta
-	freeCam->rotate(delta_x, delta_y);
-	freeCam->update(0.001);
+	windowMgr::getInstance()->freeCam->rotate(delta_x, delta_y);
+	windowMgr::getInstance()->freeCam->update(0.001);
 	// Update cursor pos
 	cursor_x = current_x;
 	cursor_y = current_y;
 
 	// The getRot of golf ball - will this be troublesome? Don't want the camera
 	// to rotate along with the ball! 
-	chaseCam->move(player1Transform.getPos(), player1Transform.getRot());
-	chaseCam->update(0.00001);
+	windowMgr::getInstance()->chaseCam->move(player1Transform.getPos(), player1Transform.getRot());
+	windowMgr::getInstance()->chaseCam->update(0.00001);
 
 	// Update target camera
-	tarCam->update(0.00001);
+	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 
 	// PLAYER UPDATE
 	// Velocity is direction by speed by delta time
@@ -935,8 +920,7 @@ void gameScene::Update(GLFWwindow* window)
 
 	// Update positions of ball and arrow
 	player1Transform.getPos() += gbVelocity;
-	arrowTransform.getPos() += gbVelocity;
-
+	arrowTransform.getPos() += gbVelocity;	
 
 }
 
@@ -1155,7 +1139,6 @@ vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, 
 	return dir;
 }
 
-
 // Draw stuff
 void gameScene::Render(GLFWwindow* window)
 {
@@ -1164,16 +1147,16 @@ void gameScene::Render(GLFWwindow* window)
 	// If camera type is free camera then
 	if (cameraType == 0)
 	{
-		mvp = freeCam->get_Projection() * freeCam->get_View();
+		mvp = windowMgr::getInstance()->freeCam->get_Projection() * windowMgr::getInstance()->freeCam->get_View();
 	}
 	// Else camera type is chase camera
-	else
+	else if (cameraType == 1)
 	{
-		mvp = chaseCam->get_Projection() * chaseCam->get_View();
+		mvp = windowMgr::getInstance()->chaseCam->get_Projection() * windowMgr::getInstance()->chaseCam->get_View();
 	}
 	// If camera type is target camera - used for HUD elements - then
-	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
 
+	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
@@ -1202,54 +1185,53 @@ void gameScene::Render(GLFWwindow* window)
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
-	skyShader->Bind();
 
+	// Skybox 
+	windowMgr::getInstance()->skyboxShader->Bind();
 	//sky->thisTexture->Bind(0);
-	skyShader->Update(skyTransform, mvp);
+	windowMgr::getInstance()->skyboxShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
 	sky->Draw();
 	// Bind texture shader
-	textureShader->Bind();
+	windowMgr::getInstance()->textureShader->Bind();
 
 	// DRAW all level tiles
 	for (auto &t : tiles)
 	{
-		t.drawTile(textureShader, mvp);
+		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	}
 	// DRAW all scenery tiles
 	for (auto &t : sceneryTiles)
 	{
-		t.drawTile(textureShader, mvp);
+		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	}
-	// Draw all trees
-	//for (int i = 0; i < treeMeshes.size(); ++i)
-	//{
-	//	treeMeshes.at(i)->Draw();
-	//	textureShader->Update(treeTransforms.at(i), mvp);
-	//}
-	// Draw golf ball
-	//golfBallTexture->Bind(0);
-	//textureShader->Update(player1Transform, mvp);
-	//golfBallMesh->Draw();
 
+
+
+	// Render player 1
 	windowMgr::getInstance()->textures["playerRedTexture"]->Bind(0);
-	textureShader->Update(player1Transform, mvp);
+	windowMgr::getInstance()->textureShader->Update(player1Transform, mvp);
 	windowMgr::getInstance()->player1Mesh->Draw();
+	// Render player 1 arrow
+	windowMgr::getInstance()->arrowMesh->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(arrowTransform, mvp);
+	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
+	arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
 
 	// Arrow
 	//arrowTexture->Bind(0);
 	//textureShader->Update(arrowTransform, mvp);
-	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
 	//arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
+
 	// If ball is not moving draw arrow (ie dont draw arrow when ball moving as not needed)
 	if (!golfBallMoving)
 	{
 		// Draw the arrow
 		//arrowMesh->Draw();
+		windowMgr::getInstance()->arrowMesh->Draw();
 	}
 
-
-	// WHAT is shaderTrans - it's never set to anything
-	textureShader->Update(shaderTrans, (freeCam->get_Projection() * freeCam->get_View()));
+	// Update texture shader
+	windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, (windowMgr::getInstance()->freeCam->get_Projection() * windowMgr::getInstance()->freeCam->get_View()));
 
 	// Fully reset depth range for next frame - REQUIRED
 	glDepthRange(0, 1.0);
