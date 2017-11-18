@@ -18,9 +18,8 @@ void playerSelectScene::Init(GLFWwindow * win)
 	tarCam->set_Target(vec3(0, 0, 0));
 	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
 
-	
-	// Background image will never change so setup here
-	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
+	// Set the HUDs and labels - all have unique positions and scales so all lines below are required
+	// Set the background
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
 	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
@@ -68,9 +67,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 	// Set up difficulty label
 	windowMgr::getInstance()->meshes.at(9)->SetScale(2.8f, 0.7f);
 	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0, -1.7, 0.0));
-	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
-
-	
+	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);	
 }
 
 // Draw stuff for this scene
@@ -98,26 +95,30 @@ void playerSelectScene::Loop(GLFWwindow * win)
 // Act on user input 
 void playerSelectScene::Input(GLFWwindow* win)
 {
-	cout << "Button Select " << buttonSelect << endl;
-	cout << "Player Select " << playerSelect << endl;
-	cout << "Difficulty Select " << difficultySelect << endl;
+	// Print button selection - needed for test purposes
+	//cout << "Button Select " << buttonSelect << endl;
+	//cout << "Player Select " << playerSelect << endl;
+	//cout << "Difficulty Select " << difficultySelect << endl;
 
+	// Button select switch statement which switchs through 4 buttons on the vertical axis - Players, Difficulty, Start Game, Main Menu
 	switch (buttonSelect)
 	{
-		//cases for the buttons to switch to each screen
+	// Case 1 is player select
 	case 1:
+		// Switch player select between numbers one and two 
 		switch (playerSelect)
 		{
-		case 1:
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnSelected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
-			selectedPlayers = 1;
-			break;
-		case 2:
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnSelected"]);
-			selectedPlayers = 2;
-			break;
+			//Update textures based on what number is selected
+			case 1:
+				windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnSelected"]);
+				windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
+				selectedPlayers = 1; // Set selected player to 1, used in game scene
+				break;
+			case 2:
+				windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
+				windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnSelected"]);
+				selectedPlayers = 2; // Set selected player to 2, used in game scene
+				break;
 		}
 
 		// If right key is pressed set keyLeft to true
@@ -163,18 +164,21 @@ void playerSelectScene::Input(GLFWwindow* win)
 			// Reset keyRight to false
 			keyRight = false;
 		}
-		
+		// Reset the start game and main menu textures
 		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 		break;
+	// Case 2 is difficulty select 
 	case 2:
+		// Switch statements to select different difficulty - Easy, Medium, Hard
 		switch (difficultySelect)
 		{
+		// Update the necessary textures based on the users input
 		case 1:
 			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["easyBtnSelected"]);
 			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["medBtnUnselected"]);
 			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["hardBtnUnselected"]);
-			selectedDifficulty = 1;
+			selectedDifficulty = 1; // Selecteddifficulty is used in the game scene
 			break;
 		case 2:
 			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["easyBtnUnselected"]);
@@ -233,14 +237,19 @@ void playerSelectScene::Input(GLFWwindow* win)
 			// Reset keyRight
 			keyRight = false;
 		}
+		// Reset the start game and main menu textures
 		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 		break;
+	// Case three is sart game
 	case 3:
+		// Update textures as required
 		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelectedPS"]);
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 		break;
+	// Case 4 is main menu
 	case 4:
+		// Update textures as required
 		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
 		break;
@@ -327,45 +336,13 @@ void playerSelectScene::Render(GLFWwindow* win)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(0)->Draw();
-
-	windowMgr::getInstance()->meshes.at(1)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(1)->Draw();
-
-	windowMgr::getInstance()->meshes.at(2)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(2)->Draw();
-
-	windowMgr::getInstance()->meshes.at(3)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(3)->Draw();
-
-	windowMgr::getInstance()->meshes.at(4)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(4)->Draw();
-
-	windowMgr::getInstance()->meshes.at(5)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(5)->Draw();
-
-	windowMgr::getInstance()->meshes.at(6)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(6)->Draw();
-
-	windowMgr::getInstance()->meshes.at(7)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(7)->Draw();
-
-	windowMgr::getInstance()->meshes.at(8)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(8)->Draw();
-
-	windowMgr::getInstance()->meshes.at(9)->thisTexture.Bind(0);
-	textureShader->Update(playerSelectTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(9)->Draw();
+	// For loop which goes through all 10 HUD elements and binds, updates anbd draws the meshes.
+	for (int i = 0; i < 10; i++)
+	{
+		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+		textureShader->Update(playerSelectTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(i)->Draw();
+	}
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
