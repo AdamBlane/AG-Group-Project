@@ -43,6 +43,11 @@ public:
 	// Only need one transform (can be reused for each mesh)
 	Transform playerSelectTransform;
 
+	bool keyDown = false;
+	bool keyUp = false;
+	bool keyLeft = false;
+	bool keyRight = false;
+
 	// Background Mesh		 0
 	// PlayersLabel Mesh     1
 	// OnePlayerBtn Mesh	 2
@@ -53,36 +58,6 @@ public:
 	// HardBtn				 7
 	// StartGameBtn			 8
 	// MainMenuBtn			 9
-
-	// HUD geometry
-	// Numbers Labels
-	//Mesh* playersLabelMesh;
-	//Mesh* numberOneLabelMesh;
-	//Mesh* numberTwoLabelMesh;
-	//Mesh* numberThreeLabelMesh;
-	//Mesh* numberFourLabelMesh;
-	//Transform playersLabelTrans;
-	//Transform numberOneLabelTrans;
-	//Transform numberTwoLabelTrans;
-	//Transform numberThreeLabelTrans;
-	//Transform numberFourLabelTrans;
-	//// Difficulty Labels
-	//Mesh* difficultyLabelMesh;
-	//Mesh* easyLabelMesh;
-	//Mesh* mediumLabelMesh;
-	//Mesh* hardLabelMesh;
-	//Transform difficultyLabelTrans;
-	//Transform easyLabelTrans;
-	//Transform mediumLabelTrans;
-	//Transform hardLabelTrans;
-	//// Option Labels 
-	//Mesh* startGameLabelMesh;
-	//Transform startGameLabelTrans;
-	//Mesh* returnLabelMesh;
-	//Transform returnLabelTrans;
-	//// Background
-	//Mesh* playerSelectBackgroundMesh;
-	//Transform playerSelectBackgroundTrans;
 
 	// Used for selection of labels
 	int playerSelect = 1;

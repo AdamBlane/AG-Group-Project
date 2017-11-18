@@ -98,9 +98,9 @@ void playerSelectScene::Loop(GLFWwindow * win)
 // Act on user input 
 void playerSelectScene::Input(GLFWwindow* win)
 {
-	//cout << "Button Select " << buttonSelect << endl;
-	//cout << "Player Select " << playerSelect << endl;
-	//cout << "Difficulty Select " << difficultySelect << endl;
+	cout << "Button Select " << buttonSelect << endl;
+	cout << "Player Select " << playerSelect << endl;
+	cout << "Difficulty Select " << difficultySelect << endl;
 
 	switch (buttonSelect)
 	{
@@ -111,23 +111,23 @@ void playerSelectScene::Input(GLFWwindow* win)
 		case 1:
 			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnSelected"]);
 			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
-			//numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\noneU.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
-			//numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwo.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
 			selectedPlayers = 1;
 			break;
 		case 2:
 			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
 			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnSelected"]);
-			//numberOneLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\none.png", vec3(0.9, 1.4, 0.0), 0.6f, 0.6f);
-			//numberTwoLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ntwoU.png", vec3(1.3, 1.4, 0.0), 0.6f, 0.6f);
 			selectedPlayers = 2;
 			break;
 		}
-		// If the player presses down and 5 total_time has passed then
-		if (glfwGetKey(win, GLFW_KEY_LEFT) && total_time >= 5.0f)
+
+		// If right key is pressed set keyLeft to true
+		if (glfwGetKey(win, GLFW_KEY_LEFT))
 		{
-			// Reset total time
-			total_time = 0.0f;
+			keyLeft = true;
+		}
+		// If leftKey is true and left key is not pressed then
+		if (keyLeft && !glfwGetKey(win, GLFW_KEY_LEFT))
+		{
 			// If button selected is button 4 - main menu - then wrap around to button 1
 			if (playerSelect == 1)
 			{
@@ -138,12 +138,18 @@ void playerSelectScene::Input(GLFWwindow* win)
 			{
 				playerSelect--;
 			}
+			// Reset keyLeft to false
+			keyLeft = false;
 		}
-		// If the player presses down and 5 total_time has passed then
-		if (glfwGetKey(win, GLFW_KEY_RIGHT) && total_time >= 5.0f)
+
+		// If right key is pressed set keyRight to true
+		if (glfwGetKey(win, GLFW_KEY_RIGHT))
 		{
-			// Reset total time
-			total_time = 0.0f;
+			keyRight = true;
+		}
+		// If keyRight is true and right is not pressed then
+		if (keyRight && !glfwGetKey(win, GLFW_KEY_RIGHT))
+		{
 			// If button selected is button 4 - main menu - then wrap around to button 1
 			if (playerSelect == 2)
 			{
@@ -154,40 +160,44 @@ void playerSelectScene::Input(GLFWwindow* win)
 			{
 				playerSelect++;
 			}
+			// Reset keyRight to false
+			keyRight = false;
 		}
-
-		//startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
-		//returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
-
+		
+		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
+		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 		break;
 	case 2:
 		switch (difficultySelect)
 		{
 		case 1:
-			/*easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easyU.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
-			mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\med.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
-			hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);*/
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["easyBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["medBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["hardBtnUnselected"]);
 			selectedDifficulty = 1;
 			break;
 		case 2:
-			//easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easy.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
-			//mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\medU.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
-			//hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hard.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["easyBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["medBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["hardBtnUnselected"]);
 			selectedDifficulty = 2;
 			break;
 		case 3:
-			/*	easyLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\easy.png", vec3(-1.4, 0.0f, 0.0), 1.4f, 0.7f);
-			mediumLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\med.png", vec3(0, 0.0f, 0.0), 1.4f, 0.7f);
-			hardLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\hardU.png", vec3(1.4, 0.0f, 0.0), 1.4f, 0.7f);*/
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["easyBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["medBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["hardBtnSelected"]);
 			selectedDifficulty = 3;
 			break;
 		}
 
-		// If the player presses down and 5 total_time has passed then
-		if (glfwGetKey(win, GLFW_KEY_LEFT) && total_time >= 5.0f)
+		// If right key is pressed set keyLeft to true
+		if (glfwGetKey(win, GLFW_KEY_LEFT))
 		{
-			// Reset total time
-			total_time = 0.0f;
+			keyLeft = true;
+		}
+		// If key left is and left is not pressed then
+		if (keyLeft && !glfwGetKey(win, GLFW_KEY_LEFT))
+		{
 			// If button selected is button 4 - main menu - then wrap around to button 1
 			if (difficultySelect == 1)
 			{
@@ -198,13 +208,19 @@ void playerSelectScene::Input(GLFWwindow* win)
 			{
 				difficultySelect--;
 			}
+			// Reset keyLeft
+			keyLeft = false;
 		}
-		// If the player presses down and 5 total_time has passed then
-		if (glfwGetKey(win, GLFW_KEY_RIGHT) && total_time >= 5.0f)
+
+		// If right key is pressed set keyRight to true
+		if (glfwGetKey(win, GLFW_KEY_RIGHT))
 		{
-			// Reset total time
-			total_time = 0.0f;
-			// If button selected is button 4 - main menu - then wrap around to button 1
+			keyRight = true;
+		}
+		// If keyRight is true and right is not pressed then
+		if (keyRight && !glfwGetKey(win, GLFW_KEY_RIGHT))
+		{
+			// If button selected is button 3 - main menu - then wrap around to button 1
 			if (difficultySelect == 3)
 			{
 				difficultySelect = 1;
@@ -214,43 +230,50 @@ void playerSelectScene::Input(GLFWwindow* win)
 			{
 				difficultySelect++;
 			}
+			// Reset keyRight
+			keyRight = false;
 		}
-
-		//	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
-		//	returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
-
+		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
+		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 		break;
 	case 3:
-		//	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgameU.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
-		//	returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenu.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
+		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelectedPS"]);
+		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 		break;
 	case 4:
-		//	startGameLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\startgame.png", vec3(0, -1.0, 0.0), 2.8f, 0.7f);
-		//	returnLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\mainmenuU.png", vec3(0, -1.7, 0.0), 2.8f, 0.7f);
+		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
+		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
 		break;
 	}
 
 	// If enter is pressed and certain amount of time has passed
-	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
+	if (glfwGetKey(win, GLFW_KEY_ENTER))
 	{
-		total_time = 0.0f;
-		// If button select is 3 then start the game
-		if (buttonSelect == 3)
+		if (!glfwGetKey(win, GLFW_KEY_ENTER))
 		{
-			windowMgr::getInstance()->sceneManager.changeScene(6, courseLength);
-		}
-		// If button select is 4 then return to main menu
-		if (buttonSelect == 4)
-		{
-			windowMgr::getInstance()->sceneManager.changeScene(1);
+			total_time = 0.0f;
+			// If button select is 3 then start the game
+			if (buttonSelect == 3)
+			{
+				windowMgr::getInstance()->sceneManager.changeScene(6, courseLength);
+			}
+			// If button select is 4 then return to main menu
+			if (buttonSelect == 4)
+			{
+				windowMgr::getInstance()->sceneManager.changeScene(1);
+			}
 		}
 	}
 
-	// Conditions which wrap when going from the bottom of the list back to the top
-	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 5.0f)
+	// If player selects the up key then set keyUp to true
+	if (glfwGetKey(win, GLFW_KEY_UP))
 	{
-		// Reset total time
-		total_time = 0.0f;
+		keyUp = true;
+	}
+
+	// If keyUp boolean is true and up is not pressed then
+	if (keyUp && !glfwGetKey(win, GLFW_KEY_UP))
+	{
 		// If button selected is buttons 1 - player amount selection - then wrap around to button 4
 		if (buttonSelect == 1)
 		{
@@ -261,12 +284,19 @@ void playerSelectScene::Input(GLFWwindow* win)
 		{
 			buttonSelect--;
 		}
+		// Reset keyUp to false
+		keyUp = false;
 	}
-	// If the player presses down and 5 total_time has passed then
-	if (glfwGetKey(win, GLFW_KEY_DOWN) && total_time >= 5.0f)
+
+	// If player selects the down key then set keyDown to true
+	if (glfwGetKey(win, GLFW_KEY_DOWN))
 	{
-		// Reset total time
-		total_time = 0.0f;
+		keyDown = true;
+	}
+
+	// If the keyDown bool is true and down is not pressed then
+	if (keyDown && !glfwGetKey(win, GLFW_KEY_DOWN))
+	{
 		// If button selected is button 4 - main menu - then wrap around to button 1
 		if (buttonSelect == 4)
 		{
@@ -277,10 +307,9 @@ void playerSelectScene::Input(GLFWwindow* win)
 		{
 			buttonSelect++;
 		}
+		// Reset keyDown to false
+		keyDown = false;
 	}
-
-	// Increase the total time - used to make sure user doesnt go through options too fast
-	total_time += 1.0f;
 }
 
 void playerSelectScene::Update(GLFWwindow* win)
