@@ -11,6 +11,8 @@
 #include <atlimage.h>
 #include <gdiplusimaging.h>
 
+
+
 // Internals
 #include "courseGenV2.h"
 #include "Shader.h"

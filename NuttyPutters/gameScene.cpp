@@ -387,7 +387,6 @@ void gameScene::FillScenery()
 		for (int xPos = xMin; xPos < xMax; xPos += 10)
 		{
 			vec3 thisPos = vec3(xPos, 0.0f, zPos); // Not dealing with ramps for now
-			cout << thisPos.x << ", " << thisPos.z << endl;
 			// Check if this pos is already taken by a level tile
 			bool posTaken = false;
 			// Contains search; there will only be one match

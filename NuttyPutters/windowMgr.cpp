@@ -59,6 +59,14 @@ GLFWwindow* windowMgr::Init()
 	{
 		std::cout << "Glew failed to initialise!" << std::endl;
 	}
+	// ############################ AUDIO ############################
+	// Init fmod system
+	FMOD::System_Create(&system);
+	system->init(32, FMOD_INIT_NORMAL, 0);
+	// Load sounds
+	system->createSound("..\\NuttyPutters\\audio\\powerup.wav", FMOD_DEFAULT, 0, &menuSelect);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("menuSelect", menuSelect));
+
 
 	// ############################ SHADERS ############################
 	// Setup texture shader
@@ -214,12 +222,31 @@ void windowMgr::UpdateSavesImages(string seed)
 	savesImages.push_back(new Texture(texturePath));
 }
 
+// Called from other scenes, given the key for sound map
+void windowMgr::PlayThisSound(string sound)
+{
+	// Get a thread to play the sound, pass in fmod system and given sound
+	std::thread t(&windowMgr::ThreadPlaySound, this, system, soundEffects[sound]);
+
+	t.join();
+}
+
+void windowMgr::ThreadPlaySound(FMOD::System* system, FMOD::Sound* sound)
+{
+	// Play the sound! 
+	system->playSound(sound, NULL, false, NULL);
+}
+
+
 // Switches on current scene, calls on appropriate file to render/read input
 void windowMgr::Update()
 {	
 	// While window is open...
 	while (!glfwWindowShouldClose(win))
 	{
+		// Update FMOD audio engine
+		system->update();
+
 		// Scene manager (property of winMgr) tracks game state
 		switch (sceneManager.curScene)
 		{
