@@ -23,21 +23,16 @@ public:
 	// Deconstructor
 	~highscoreScene();
 
-	// Create a target camera - used for HUD elements
-	AllCamera::target_camera* tarCam;
-
-	Shader* textureShader;
-
-	Mesh* backButton;
-	Transform backButtonTrans;
-
-	Mesh* background;
-	Transform backgroundTrans;
+	// Used to lock framerate
+	double lastFrame = 0;
+	double thisFrame = glfwGetTime();
+	float dt = 0.016; // Lock to 60fps
 
 	Transform optionSceneTransform;
-	int button_manager = 1;
 
-	float total_time = 2.0f;
+	// Buttons 
+	bool aButtonPressed = false;
+
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);

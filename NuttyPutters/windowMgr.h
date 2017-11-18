@@ -49,6 +49,10 @@ class windowMgr
 		Mesh* player2Mesh;
 		Mesh* arrowMesh;
 
+		// All controller information for remappable controls is stored here
+		// First int is button on the controller - Second int is mesh value
+		map<int, int> buttonValues;
+
 		// Cameras
 		target_camera* HUDtargetCam;
 		free_camera* freeCam;

@@ -126,8 +126,39 @@ GLFWwindow* windowMgr::Init()
 	Texture* exitBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\exitUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("exitBtnUnselected", exitBtnUnselected));
 	// LOAD GAME SCENE TEXTURES
-	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\highscore\\optbackground.png");
+	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\grass.png");
 	textures.insert(std::pair<std::string, Texture*>("loadGameBackground", loadGameBackground));
+	Texture* actionLbl = new Texture("..\\NuttyPutters\\action.png");
+	textures.insert(std::pair<std::string, Texture*>("actionLbl", actionLbl));
+	Texture* buttonLbl = new Texture("..\\NuttyPutters\\buttonLbl.png");
+	textures.insert(std::pair<std::string, Texture*>("buttonLbl", buttonLbl));
+	Texture* selectfireLbl = new Texture("..\\NuttyPutters\\selectfire.png");
+	textures.insert(std::pair<std::string, Texture*>("selectfireLbl", selectfireLbl));
+	Texture* backresetLbl = new Texture("..\\NuttyPutters\\backreset.png");
+	textures.insert(std::pair<std::string, Texture*>("backresetLbl", backresetLbl));
+	Texture* pauseLbl = new Texture("..\\NuttyPutters\\pause.png");
+	textures.insert(std::pair<std::string, Texture*>("pauseLbl", pauseLbl));
+	Texture* questionMarkLbl = new Texture("..\\NuttyPutters\\questionmarks.png");
+	textures.insert(std::pair<std::string, Texture*>("questionMarkLbl", questionMarkLbl));
+	// LOAD GAME XBOX BUTTON TEXTURES
+	Texture* aButtonLbl = new Texture("..\\NuttyPutters\\aButton.png");
+	textures.insert(std::pair<std::string, Texture*>("aButtonLbl", aButtonLbl));
+	Texture* bButtonLbl = new Texture("..\\NuttyPutters\\bButton.png");
+	textures.insert(std::pair<std::string, Texture*>("bButtonLbl", bButtonLbl));
+	Texture* xButtonLbl = new Texture("..\\NuttyPutters\\xButton.png");
+	textures.insert(std::pair<std::string, Texture*>("xButtonLbl", xButtonLbl));
+	Texture* yButtonLbl = new Texture("..\\NuttyPutters\\yButton.png");
+	textures.insert(std::pair<std::string, Texture*>("yButtonLbl", yButtonLbl));
+	Texture* menuButtonLbl = new Texture("..\\NuttyPutters\\menuButton.png");
+	textures.insert(std::pair<std::string, Texture*>("menuButtonLbl", menuButtonLbl));
+	Texture* rtLbl = new Texture("..\\NuttyPutters\\rt.png");
+	textures.insert(std::pair<std::string, Texture*>("rtLbl", rtLbl));
+	Texture* ltLbl = new Texture("..\\NuttyPutters\\lt.png");
+	textures.insert(std::pair<std::string, Texture*>("ltLbl", ltLbl));
+	Texture* rbLbl = new Texture("..\\NuttyPutters\\rb.png");
+	textures.insert(std::pair<std::string, Texture*>("rbLbl", rbLbl));
+	Texture* lbLbl = new Texture("..\\NuttyPutters\\lb.png");
+	textures.insert(std::pair<std::string, Texture*>("lbLbl", lbLbl));
 	// Read saves file for file names of saves images
 	ifstream saves("saves.csv");
 	while (!saves.eof())
