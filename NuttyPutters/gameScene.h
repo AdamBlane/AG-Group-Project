@@ -11,8 +11,6 @@
 #include <atlimage.h>
 #include <gdiplusimaging.h>
 
-
-
 // Internals
 #include "courseGenV2.h"
 #include "Shader.h"
@@ -22,7 +20,6 @@
 #include "chase_camera.h"
 #include "tileBuilder.h"
 #include "target_camera.h"
-
 
 using namespace AllCamera;
 using namespace std::chrono;
@@ -38,7 +35,6 @@ public:
 	//Trying Skybox
 	Mesh* sky;
 	
-
 	// General game variables
 	vector<BaseTile> algTiles; // Game tiles list; these tiles have position data (by M)
 	vector<Tile> tiles; // Tile meshes to be rendered, created by V
@@ -65,7 +61,6 @@ public:
     // For finding cursor pos on screen (used for free cam)
 	double cursor_x, cursor_y = 0.0; 
 
-	
 	// Player variables
 	Transform player1Transform, arrowTransform;
 	// TODO - will need to rename dir & vel to p1Vel, p2vel etc
@@ -73,8 +68,6 @@ public:
 	vec3 gbVelocity; // Velocity is dir * speed	
 	bool golfBallMoving = false; // Is golf ball moving
 	float speed; // Ball speed
-
-
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)

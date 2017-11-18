@@ -66,18 +66,36 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	windowMgr::getInstance()->freeCam->set_Target(vec3(0, 0, 0));
 	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));
 
-
-	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
-	// Stroke HUD Label setup
-//	strokeLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\one.jpg", vec3(-3.0, -1.5, 0.0), 0.5f, 0.5f);
+	// Setup the various HUD elements
 	// Player HUD Labelsetup
-//	playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.jpg", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
+	//playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.jpg", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
 	// Power HUD Label setup
-//	powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.jpg", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
+	//powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.jpg", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
 	// Power Bar Outline HUD setup
-//	powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
+	//powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
 	// Power Bar HUD setup
-//	powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
+	//powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
+	
+	// Stroke HUD Label setup
+	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["strokeLbl"]);
+	// Player HUD Labelsetup
+	windowMgr::getInstance()->meshes.at(1)->SetScale(1.0f, 0.25f);
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.75f, 1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["playerLbl"]);
+	// Power HUD Label setup
+	windowMgr::getInstance()->meshes.at(2)->SetScale(1.0f, 0.25f);
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(3.0f, -1.375f, 0.0f));
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
+	// Power Bar Outline HUD setup
+	windowMgr::getInstance()->meshes.at(3)->SetScale(2.0f, 0.25f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(2.5f, -1.625f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerOutlineLbl"]);
+	// Power Bar HUD setup
+	windowMgr::getInstance()->meshes.at(4)->SetScale(0.1f, 0.15f);
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(1.6f, -1.625f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1181,6 +1199,14 @@ void gameScene::Render(GLFWwindow* window)
 	////powerBarOutlineDisplayMesh->thisTexture->Bind(0);
 	//textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
 	//powerBarOutlineDisplayMesh->Draw();
+
+	// For loop which goes through all 10 HUD elements and binds, updates anbd draws the meshes.
+	for (int i = 0; i < 5; i++)
+	{
+		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(i)->Draw();
+	}
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);

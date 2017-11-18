@@ -210,6 +210,14 @@ GLFWwindow* windowMgr::Init()
 	Texture* arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	textures.insert(std::pair<std::string, Texture*>("arrowTexture", arrowTexture));
 
+	Texture* strokeLbl = new Texture("..\\NuttyPutters\\one.png");
+	textures.insert(std::pair<std::string, Texture*>("strokeLbl", strokeLbl));
+	Texture* playerLbl = new Texture("..\\NuttyPutters\\playerone.png");
+	textures.insert(std::pair<std::string, Texture*>("playerLbl", playerLbl));
+	Texture* powerLbl = new Texture("..\\NuttyPutters\\power.png");
+	textures.insert(std::pair<std::string, Texture*>("powerLbl", powerLbl));
+	Texture* powerOutlineLbl = new Texture("..\\NuttyPutters\\powerbar.jpg");
+	textures.insert(std::pair<std::string, Texture*>("powerOutlineLbl", powerOutlineLbl));
 
 	//Tiles stuff initialized here
 	for (int i = 0; i < 15; ++i)
