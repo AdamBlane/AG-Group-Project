@@ -9,15 +9,6 @@ playerSelectScene::~playerSelectScene() { }
 // Setup scene; does nothing atm
 void playerSelectScene::Init(GLFWwindow * win)
 {
-	// Setup texture shader
-	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-
-	// Setup target camera
-	tarCam = new target_camera();
-	tarCam->set_Posistion(vec3(0, 0, 5.0f));
-	tarCam->set_Target(vec3(0, 0, 0));
-	tarCam->set_projection(quarter_pi<float>(), (float)1600 / (float)900, 0.414f, 1000.0f);
-
 	// Set the HUDs and labels - all have unique positions and scales so all lines below are required
 	// Set the background
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
@@ -255,23 +246,26 @@ void playerSelectScene::Input(GLFWwindow* win)
 		break;
 	}
 
-	// If enter is pressed and certain amount of time has passed
+	// If enter key is pressed set boolean to true
 	if (glfwGetKey(win, GLFW_KEY_ENTER))
 	{
-		if (!glfwGetKey(win, GLFW_KEY_ENTER))
+		keyEnter = true;
+	}
+	// If key enter equals true and enter is not pressed then
+	if (keyEnter && !glfwGetKey(win, GLFW_KEY_ENTER))
+	{
+		// If button select is 3 then start the game
+		if (buttonSelect == 3)
 		{
-			total_time = 0.0f;
-			// If button select is 3 then start the game
-			if (buttonSelect == 3)
-			{
-				windowMgr::getInstance()->sceneManager.changeScene(6, courseLength);
-			}
-			// If button select is 4 then return to main menu
-			if (buttonSelect == 4)
-			{
-				windowMgr::getInstance()->sceneManager.changeScene(1);
-			}
+			windowMgr::getInstance()->sceneManager.changeScene(6, courseLength);
 		}
+		// If button select is 4 then return to main menu
+		if (buttonSelect == 4)
+		{
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+		}
+		// Reset keyEnter
+		keyEnter = false;
 	}
 
 	// If player selects the up key then set keyUp to true
@@ -324,13 +318,13 @@ void playerSelectScene::Input(GLFWwindow* win)
 void playerSelectScene::Update(GLFWwindow* win)
 {
 	// Update target camera
-	tarCam->update(0.00001);
+	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 }
 
 void playerSelectScene::Render(GLFWwindow* win)
 {
-	// If camera type is target camera - used for HUD elements - then
-	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
+	// Calculate hud view*projection
+	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 
 	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
@@ -340,7 +334,7 @@ void playerSelectScene::Render(GLFWwindow* win)
 	for (int i = 0; i < 10; i++)
 	{
 		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-		textureShader->Update(playerSelectTransform, hudVP);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(i)->Draw();
 	}
 
@@ -354,7 +348,7 @@ void playerSelectScene::Render(GLFWwindow* win)
 	glDepthRange(0, 1.0);
 
 	// Bind texture shader
-	textureShader->Bind();
+	windowMgr::getInstance()->textureShader->Bind();
 
 	glfwSwapBuffers(win);
 	glfwPollEvents();

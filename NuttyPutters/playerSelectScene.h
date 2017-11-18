@@ -29,12 +29,6 @@ public:
 	inline bool selectedAmountOfPlayers() { return selectedPlayers; }
 	inline bool selectedChosenDifficulty() { return selectedDifficulty; }
 
-	// Create a target camera - used for HUD elements
-	AllCamera::target_camera* tarCam;
-
-	// Create a texture shader which is used to bind textures to geometry
-	Shader* textureShader;
-
 	// Used to lock framerate
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
@@ -43,10 +37,12 @@ public:
 	// Only need one transform (can be reused for each mesh)
 	Transform playerSelectTransform;
 
+	// Booleans for key pressing - used to make sure players cant change options rapidly
 	bool keyDown = false;
 	bool keyUp = false;
 	bool keyLeft = false;
 	bool keyRight = false;
+	bool keyEnter = false;
 
 	// Background Mesh		 0
 	// PlayersLabel Mesh     1
@@ -65,7 +61,6 @@ public:
 	int buttonSelect = 1;
 	int playerChoice = 0;
 	int difficultyChoice = 0;
-	float total_time = 5.0f;
 
 	// Difficulty; number of tiles in level - NOT SURE WHAT THIS IS
 	int courseLength = 12;
