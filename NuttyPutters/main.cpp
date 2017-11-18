@@ -8,10 +8,9 @@
 windowMgr* winMgr; // Pointer to winMgr since it's a singleton
 
 
-
-
 int main(int argc, char **argv)
 {
+
 	// Get singleton instance of windowMgr
 	winMgr = windowMgr::getInstance();
 	

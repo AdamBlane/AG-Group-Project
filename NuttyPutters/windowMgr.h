@@ -2,6 +2,8 @@
 
 // Externals
 #include "glew_glfw.h"
+#include "include\inc\fmod.hpp"
+#include <thread>
 
 // Internals
 #include "sceneMgr.h"
@@ -58,12 +60,26 @@ class windowMgr
 		Shader* skyboxShader;
 		Transform texShaderTransform;
 
+
+		// AUDIO
+		FMOD::System *system;
+		FMOD::Sound *menuSelect;
+
+		map<std::string, FMOD::Sound*> soundEffects;
+
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
 		// Populate savesImages vector with image files read from saves folder
 		void UpdateSavesImages(string seed);
+		// Ask winMgr to get thread to play given sound
+		void PlayThisSound(string sound); // string is key for sfx map
+		// Actual thread function that plays the sound
+		void ThreadPlaySound(FMOD::System* system, FMOD::Sound* sound);
+
+
 		// Game update loop
 		void Update();
 		// On window close
 		void CleanUp();
 };
+

@@ -10,6 +10,13 @@ loadGameScene::~loadGameScene() { }
 // Setup scene; display choice saved games
 void loadGameScene::Init(GLFWwindow* win)
 {
+
+
+
+
+
+
+
 	// Set background mesh properties
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
@@ -78,6 +85,12 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(1);
+	}
+
+	// TESTING SOUND
+	if (glfwGetKey(win, GLFW_KEY_S))
+	{
+		windowMgr::getInstance()->PlayThisSound("menuSelect");
 	}
 
 	// MENU NAVIGATION
