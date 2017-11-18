@@ -67,6 +67,12 @@ class windowMgr
 
 		map<std::string, FMOD::Sound*> soundEffects;
 
+		//Stuff for tiles
+		vector<Mesh*> tileMeshes;
+		vector<Mesh*> obstacleMeshes;
+		vector<Mesh*> planeMeshes;
+		map<std::string, Texture*> tileTextures;
+
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
 		// Populate savesImages vector with image files read from saves folder

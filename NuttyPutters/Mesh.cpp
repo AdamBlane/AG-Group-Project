@@ -69,6 +69,18 @@ void Mesh::SetPos(glm::vec3 pos)
 	chooseGeometry();
 }
 
+void Mesh::SetAsFloor(bool isFloor)
+{
+	isThisFloor = isFloor;
+	chooseGeometry();
+}
+
+void Mesh::SetAsFluid(bool isFluid)
+{
+	isThisFluid = isFluid;
+	chooseGeometry();
+}
+
 // Deconstructor
 Mesh::~Mesh()
 {

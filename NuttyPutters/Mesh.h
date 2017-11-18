@@ -78,6 +78,9 @@ public:
 	// Setter for mesh position
 	void SetPos(glm::vec3 pos);
 
+	void SetAsFloor(bool isFloor);
+	void SetAsFluid(bool isFluid);
+
 	bool isThisFloor = false;
 	bool isThisFluid = false;
 
