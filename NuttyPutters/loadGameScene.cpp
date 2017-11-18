@@ -252,10 +252,14 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		if (rightPressed)
 		{
-			// Show last page
-			NextPage();
-			// Resize this and last choice
-			ResizeCurLastSelected();
+			if (currentPage < (int)pageCount)
+			{
+				// Show last page
+				NextPage();
+				// Resize this and last choice
+				ResizeCurLastSelected();
+			}
+
 		}
 		rightPressed = false;
 	}
@@ -268,10 +272,14 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		if (leftPressed)
 		{
-			// Show last page
-			LastPage();
-			// Resize this and last choice
-			ResizeCurLastSelected();
+			if (currentPage > 1)
+			{
+				// Show last page
+				LastPage();
+				// Resize this and last choice
+				ResizeCurLastSelected();
+			}
+
 		}
 		leftPressed = false;
 	}
