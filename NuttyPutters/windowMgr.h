@@ -53,6 +53,7 @@ class windowMgr
 
 		// Cameras
 		target_camera* HUDtargetCam;
+		target_camera* PAUSEtargetCam;
 		free_camera* freeCam;
 		chase_camera* chaseCam;
 		// Shaders
@@ -64,7 +65,7 @@ class windowMgr
 		// AUDIO
 		FMOD::System *system;
 		FMOD::Sound *menuSelect;
-
+		// Store all above declared sound effects here
 		map<std::string, FMOD::Sound*> soundEffects;
 
 		//Stuff for tiles
@@ -76,7 +77,7 @@ class windowMgr
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
 		// Populate savesImages vector with image files read from saves folder
-		void UpdateSavesImages(string seed);
+		void UpdateSavesImages(string savedImagePath);
 		// Ask winMgr to get thread to play given sound
 		void PlayThisSound(string sound); // string is key for sfx map
 		// Actual thread function that plays the sound
