@@ -28,24 +28,18 @@ class windowMgr
 		// Track gamestate
 		sceneMgr sceneManager;
 
-		// TODO - what is this? Set pos actually sets height & width?!
-		void set_PosX(int &value) { height = value; }
-		void set_PosY(int &value) { width = value; }
-
 		// Window width and height values
-		int width = 1600, height = 900;
-		// TODO - position of what? 
+		int width, height;
+		// Window offset from top left point of monitor
 		int PosX, PosY;
 		
-		// Store pointers to all meshes and textures required by game
-		// These are initialised once on the heap, in the Init() function of winMgr
-		// General use HUD meshes
-		vector<Mesh*> meshes;
 		// All textures in the game stored here
 		map<std::string, Texture*> textures;
+		// This stores images of saved levels
 		vector<Texture*> savesImages;
-		// Iterator to search through map - apparently don't need this
-		//map<std::string, Texture*>::iterator it; // keep in case we do later
+		// General use HUD meshes
+		vector<Mesh*> meshes;
+
 		// GAME SCENE UNIQUE MESHES
 		Mesh* player1Mesh;
 		Mesh* player2Mesh;
@@ -56,16 +50,15 @@ class windowMgr
 		target_camera* PAUSEtargetCam;
 		free_camera* freeCam;
 		chase_camera* chaseCam;
+
 		// Shaders
 		Shader* textureShader;
 		Shader* skyboxShader;
 		Transform texShaderTransform;
 
-
 		// AUDIO
 		FMOD::System *system;
-		FMOD::Sound *menuSelect;
-	
+		FMOD::Sound *menuSelect;	
 		// Store all above declared sound effects here
 		map<std::string, FMOD::Sound*> soundEffects;
 
@@ -83,8 +76,6 @@ class windowMgr
 		void PlayThisSound(string sound); // string is key for sfx map
 		// Actual thread function that plays the sound
 		void ThreadPlaySound(FMOD::System* system, FMOD::Sound* sound);
-
-
 		// Game update loop
 		void Update();
 		// On window close

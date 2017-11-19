@@ -36,11 +36,14 @@ GLFWwindow* windowMgr::Init()
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
-	// This is already set in header - unnecessary @ADAM?
+	// Set default values for window res
 	width = 1600, height = 900;
+	// This is x and y offset for window creation on monitor (from top left corner)
+	// TODO - determine center of screen
 	PosX = 100, PosY = 100;
 	// Create window
 	win = glfwCreateWindow(width, height, "Nutty Putters", NULL, NULL);
+	// Center it
 	glfwSetWindowPos(win, PosX, PosY);
 
 	// Check window was created successfully
@@ -101,12 +104,12 @@ GLFWwindow* windowMgr::Init()
 
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
-
 	for (int i = 0; i < 20; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
 	}
+
 	// Initialise unique meshes
 	// Player meshes
 	player1Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
@@ -159,7 +162,6 @@ GLFWwindow* windowMgr::Init()
 			savesImages.push_back(texture);
 			cout << "Tex added to list: " << texturePath << endl;
 		}
-
 	}
 	// PLAYER SELECT SCENE TEXTURES
 	Texture* playerSelectBackground = new Texture("..\\NuttyPutters\\grass.png");
@@ -292,7 +294,6 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("outOfStrokesLbl", outOfStrokesLbl));
 	Texture* saveGameLbl = new Texture("..\\NuttyPutters\\savegame.png");
 	textures.insert(std::pair<std::string, Texture*>("saveGameLbl", saveGameLbl));
-
 	Texture* holeLbl = new Texture("..\\NuttyPutters\\hole.png");
 	textures.insert(std::pair<std::string, Texture*>("holeLbl", holeLbl));
 	Texture* completeLbl = new Texture("..\\NuttyPutters\\complete.png");
@@ -339,6 +340,8 @@ GLFWwindow* windowMgr::Init()
 
 	Texture* bottomBridge = new Texture("..\\NuttyPutters\\bridgeBottom.jpg");
 	tileTextures.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
+
+
 
 	// Setup start scene
 	sceneManager.startScene.Init(win);
