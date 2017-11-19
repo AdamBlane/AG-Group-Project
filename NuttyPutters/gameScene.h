@@ -56,6 +56,9 @@ public:
 	bool isUserOutOfTime = false; // Boolean which tells the game if they are out of time
 	bool isUserOutOfStrokes = false; // Boolean which tells the game if they are out of strokes
 	int timeToThisMethod = 0; // Time to this method - used for countdown HUD
+	int tempInt = 0;
+	string temp;
+	string minutesAsString, tenthsAsString, secondsAsString, timeCombined;
 
 	// Player information
 	int selectedDifficulty = 1; // The selected difficulty on the player select screen

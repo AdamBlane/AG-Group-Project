@@ -1069,133 +1069,58 @@ void gameScene::Update(GLFWwindow* window)
 			timeRemainingInMinutes = timeRemainingInSeconds / 60;
 			timeRemainingInTenths = (timeRemainingInSeconds - (timeRemainingInMinutes * 60)) / 10;
 			timeRemainingInSeconds = timeRemainingInSeconds - (timeRemainingInMinutes * 60) - (timeRemainingInTenths * 10);
-
-			// Cast each above timer variable into a string  eg 1, 3, 0
+			// Cast each above timer variable into a string eg 1, 3, 0
+			minutesAsString = std::to_string(timeRemainingInMinutes);
+			tenthsAsString = std::to_string(timeRemainingInTenths);
+			secondsAsString = std::to_string(timeRemainingInSeconds);
 		    // Create a new empty string time - append each above var to it eg time = 130
+			timeCombined = minutesAsString + tenthsAsString + secondsAsString;
+
 			// for loop that runs 3 times
-				// switch(time[(int)i])
-				   // do the switch below only once
-		}
-
-		
-		
-
-
-
-
-
-		//cout << "Mins and secs: " << timeRemainingInMinutes << " " << timeRemainingInTenths << " " << timeRemainingInSeconds << endl;
-
-		// Switch statements which update the minutes, tenths and seconds meshes
-		switch (timeRemainingInMinutes)
-		{
-		case 0:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-			break;
-		case 1:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
-			break;
-		case 2:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
-			break;
-		case 3:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
-			break;
-		case 4:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
-			break;
-		case 5:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
-			break;
-		case 6:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
-			break;
-		case 7:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
-			break;
-		case 8:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
-			break;
-		case 9:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
-			break;
-		default:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-			break;
-		}
-
-		switch (timeRemainingInTenths)
-		{
-		case 0:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-			break;
-		case 1:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
-			break;
-		case 2:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
-			break;
-		case 3:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
-			break;
-		case 4:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
-			break;
-		case 5:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
-			break;
-		case 6:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
-			break;
-		case 7:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
-			break;
-		case 8:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
-			break;
-		case 9:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
-			break;
-		default:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-			break;
-		}
-
-		switch (timeRemainingInSeconds)
-		{
-		case 0:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-			break;
-		case 1:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
-			break;
-		case 2:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
-			break;
-		case 3:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
-			break;
-		case 4:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
-			break;
-		case 5:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
-			break;
-		case 6:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
-			break;
-		case 7:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
-			break;
-		case 8:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
-			break;
-		case 9:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
-			break;
-		default:
-			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-			break;
+			for (int i = 0; i < 3; i++)
+			{
+				// Get the timecombined at index i and make it equal to temp
+				temp = timeCombined[i];
+				// Convert temp to int
+				tempInt = atoi(temp.c_str()); 
+				// Switch using tempInt value
+				switch (tempInt)
+				{
+					case 0:
+						windowMgr::getInstance()->meshes.at(i+6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+						break;
+					case 1:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
+						break;
+					case 2:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
+						break;
+					case 3:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
+						break;
+					case 4:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
+						break;
+					case 5:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
+						break;
+					case 6:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
+						break;
+					case 7:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
+						break;
+					case 8:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
+						break;
+					case 9:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
+						break;
+					default:
+						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+						break;
+				}
+			}
 		}
 		// If user has no time remaining then
 		if (timeRemainingInSeconds < 0)
@@ -1495,8 +1420,6 @@ void gameScene::Render(GLFWwindow* window)
 			windowMgr::getInstance()->meshes.at(i)->Draw();
 		}
 	}
-
-	
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
