@@ -1056,14 +1056,34 @@ void gameScene::Update(GLFWwindow* window)
 			// Get the time to this method
 			timeToThisMethod = glfwGetTime();
 		}
-		// Get the time since continue was pressed by taking away the time to this method 
-		timeSinceContinueWasPressed = glfwGetTime() - timeToThisMethod;
-		// Get the time remaining in seconds by taking away the time the user has to complete the hole 
-		timeRemainingInSeconds = holeTimer - timeSinceContinueWasPressed;
-		// Get the time in minutes, tenths and seconds - 0M:TS
-		timeRemainingInMinutes = timeRemainingInSeconds / 60;
-		timeRemainingInTenths = (timeRemainingInSeconds - (timeRemainingInMinutes * 60)) / 10;
-		timeRemainingInSeconds = timeRemainingInSeconds - (timeRemainingInMinutes * 60) - (timeRemainingInTenths * 10);
+		
+		// If at least a second has passed
+		if (timeSinceContinueWasPressed < glfwGetTime() - timeToThisMethod)
+		{
+			// Get the time since continue was pressed by taking away the time to this method 
+			timeSinceContinueWasPressed = glfwGetTime() - timeToThisMethod;
+
+			// Get the time remaining in seconds by taking away the time the user has to complete the hole 
+			timeRemainingInSeconds = holeTimer - timeSinceContinueWasPressed;
+			// Get the time in minutes, tenths and seconds - 0M:TS
+			timeRemainingInMinutes = timeRemainingInSeconds / 60;
+			timeRemainingInTenths = (timeRemainingInSeconds - (timeRemainingInMinutes * 60)) / 10;
+			timeRemainingInSeconds = timeRemainingInSeconds - (timeRemainingInMinutes * 60) - (timeRemainingInTenths * 10);
+
+			// Cast each above timer variable into a string  eg 1, 3, 0
+		    // Create a new empty string time - append each above var to it eg time = 130
+			// for loop that runs 3 times
+				// switch(time[(int)i])
+				   // do the switch below only once
+		}
+
+		
+		
+
+
+
+
+
 		//cout << "Mins and secs: " << timeRemainingInMinutes << " " << timeRemainingInTenths << " " << timeRemainingInSeconds << endl;
 
 		// Switch statements which update the minutes, tenths and seconds meshes
