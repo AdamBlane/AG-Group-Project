@@ -22,11 +22,7 @@ public:
 	// Deconstructor
 	~startScene();
 
-	// Create a target camera - used for HUD elements
-	AllCamera::target_camera* tarCam;
 
-	// Create a texture shader which is used to bind textures to geometry
-	Shader* textureShader;
 
 	// Used to lock framerate
 	double lastFrame = 0;

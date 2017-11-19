@@ -1,10 +1,8 @@
-// Externals
-
 // Internals
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
 
-/// Start scene contains all render and input data for this scene
+
 
 // Default constructor
 startScene::startScene() { }
@@ -15,18 +13,6 @@ startScene::~startScene() { }
 // Setup; does nothing atm
 void startScene::Init(GLFWwindow* win)
 {
-	// Setup texture shader
-	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-
-	// Setup target camera
-	tarCam = new target_camera();
-	tarCam->set_Posistion(vec3(0, 0, 5.0f));
-	//tarCam->set_Target(vec3(0, 0, 0));
-	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
-	
-
-
-	cout << "Textures before all: " << windowMgr::getInstance()->textures.size() << endl;
 	// Background image will never change so setup here
 	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
@@ -196,13 +182,13 @@ void startScene::Input(GLFWwindow * win)
 void startScene::Update(GLFWwindow* win)
 {
 	// Update target camera
-	tarCam->update(0.00001);
+	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 }
 
 void startScene::Render(GLFWwindow* win)
 {
 	// If camera type is target camera - used for HUD elements - then
-	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
+	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 
 	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
@@ -213,7 +199,7 @@ void startScene::Render(GLFWwindow* win)
 	for (int a = 0; a < 7; a++)
 	{
 		windowMgr::getInstance()->meshes.at(a)->thisTexture.Bind(0);
-		textureShader->Update(startSceneTransform, hudVP);
+		windowMgr::getInstance()->textureShader->Update(startSceneTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(a)->Draw();
 	}
 	
@@ -229,7 +215,7 @@ void startScene::Render(GLFWwindow* win)
 	glDepthRange(0, 1.0);
 
 	// Bind texture shader
-	textureShader->Bind();
+	windowMgr::getInstance()->textureShader->Bind();
 
 	glfwSwapBuffers(win);
 	glfwPollEvents();

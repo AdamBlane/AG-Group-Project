@@ -37,15 +37,15 @@ class windowMgr
 		// TODO - position of what? 
 		int PosX, PosY;
 		
-		// Store pointers to all meshes and textures required by game
-		// These are initialised once on the heap, in the Init() function of winMgr
-		// General use HUD meshes
-		vector<Mesh*> meshes;
+
 		// All textures in the game stored here
 		map<std::string, Texture*> textures;
+		// This stores images of saved levels
 		vector<Texture*> savesImages;
-		// Iterator to search through map - apparently don't need this
-		//map<std::string, Texture*>::iterator it; // keep in case we do later
+		// General use HUD meshes
+		vector<Mesh*> meshes;
+
+
 		// GAME SCENE UNIQUE MESHES
 		Mesh* player1Mesh;
 		Mesh* player2Mesh;
@@ -56,16 +56,15 @@ class windowMgr
 		target_camera* PAUSEtargetCam;
 		free_camera* freeCam;
 		chase_camera* chaseCam;
+
 		// Shaders
 		Shader* textureShader;
 		Shader* skyboxShader;
 		Transform texShaderTransform;
 
-
 		// AUDIO
 		FMOD::System *system;
-		FMOD::Sound *menuSelect;
-	
+		FMOD::Sound *menuSelect;	
 		// Store all above declared sound effects here
 		map<std::string, FMOD::Sound*> soundEffects;
 
