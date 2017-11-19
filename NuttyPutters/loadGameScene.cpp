@@ -220,7 +220,7 @@ void loadGameScene::Input(GLFWwindow* win)
 		if (downPressed)
 		{
 			// Have we reached last image mesh?
-			if (currentImageSelected == maxImagetoSelect)
+			if (currentImageSelected == 8)
 			{
 				// Is there another page to show? 
 				if (currentPage < (int)pageCount)
