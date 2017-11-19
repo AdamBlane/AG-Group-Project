@@ -59,6 +59,8 @@ GLFWwindow* windowMgr::Init()
 	{
 		std::cout << "Glew failed to initialise!" << std::endl;
 	}
+
+
 	// ############################ AUDIO ############################
 	// Init fmod system
 	FMOD::System_Create(&system);
@@ -68,14 +70,12 @@ GLFWwindow* windowMgr::Init()
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("menuSelect", menuSelect));
 
 
-
-	// Initialise max number of meshes any scene uses
-
 	// ############################ SHADERS ############################
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 	// Setup skybox shader
 	skyboxShader = new Shader("..\\NuttyPutters\\skyShader");
+
 	// ############################ CAMERAS ############################
 	// Target camera for hud
 	HUDtargetCam = new target_camera();
@@ -83,7 +83,10 @@ GLFWwindow* windowMgr::Init()
 	HUDtargetCam->set_Target(vec3(0, 0, 0));
 	HUDtargetCam->set_projection(quarter_pi<float>(), (float)width / (float)height, 0.414f, 1000.0f);
 	// Target camera for pause
-
+	PAUSEtargetCam = new target_camera();
+	//PAUSEtargetCam->set_Posistion(vec3(0.0f, 15.0f, 0.0f));
+	//PAUSEtargetCam->set_Target(vec3(0, 0, 0));
+	PAUSEtargetCam->set_projection(quarter_pi<float>(), (float)width / (float)height, 0.414f, 1000.0f);
 	// Free camera for in game
 	freeCam = new free_camera();
 	freeCam->set_Posistion(vec3(0, 10, -10));
@@ -144,15 +147,19 @@ GLFWwindow* windowMgr::Init()
 	ifstream saves("saves.csv");
 	while (!saves.eof())
 	{
-		string texturePath = "..\\NuttyPutters\\savesImages\\0";
+		string texturePath = "..\\NuttyPutters\\savesImages\\";
 		string seed;
 		getline(saves, seed); // TODO prevent this from picking up whitespace/empty cells
 		texturePath += seed + ".bmp";
-		// Create a texture for that image
-		Texture* texture = new Texture(texturePath);
-		// Add to saves images list
-		savesImages.push_back(texture);
-		cout << "Tex added to list: " << texturePath << endl;
+		if (seed != "") // In case it reads cells with only whitespace
+		{
+			// Create a texture for that image
+			Texture* texture = new Texture(texturePath);
+			// Add to saves images list
+			savesImages.push_back(texture);
+			cout << "Tex added to list: " << texturePath << endl;
+		}
+
 	}
 	// PLAYER SELECT SCENE TEXTURES
 	Texture* playerSelectBackground = new Texture("..\\NuttyPutters\\grass.png");
@@ -341,10 +348,9 @@ GLFWwindow* windowMgr::Init()
 
 // Called by gameScene.cpp whenever the user saves that level
 // Take the saved level seed and ask winMgr to grab the newly made image and add to list
-void windowMgr::UpdateSavesImages(string seed)
+void windowMgr::UpdateSavesImages(string savedImagePath)
 {
-	string texturePath = seed + ".bmp";
-	savesImages.push_back(new Texture(texturePath));
+	savesImages.push_back(new Texture(savedImagePath));
 }
 
 // Called from other scenes, given the key for sound map
@@ -356,6 +362,7 @@ void windowMgr::PlayThisSound(string sound)
 	t.join();
 }
 
+// The function which threads execute; plays a given sound effect
 void windowMgr::ThreadPlaySound(FMOD::System* system, FMOD::Sound* sound)
 {
 	// Play the sound! 

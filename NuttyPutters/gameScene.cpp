@@ -54,18 +54,19 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	player1Transform.getScale() = vec3(0.5);
 	player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
 
-	// Arrow - TODO - draw lower! 
-	//arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
+	// Arrow
 	arrowTransform.getScale() = vec3(0.5);
-	arrowTransform.getPos() = vec3(1.8 + player1Transform.getPos().x, 2.6 + player1Transform.getPos().y, player1Transform.getPos().z);
+	arrowTransform.getPos() = vec3(player1Transform.getPos().x, player1Transform.getPos().y - 1.6, player1Transform.getPos().z);
 	windowMgr::getInstance()->arrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]); //?
-    
-    // Set camera startup properties
-	cameraType = 1;// Want chase cam by default	
+
+	// Set camera startup properties
+	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
 	windowMgr::getInstance()->freeCam->set_Target(vec3(0, 0, 0));
-	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));
-	
+	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));	
+	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamPos);
+	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamTarget);
+
 	// Stroke HUD Label setup
 	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
@@ -164,7 +165,7 @@ void gameScene::LoadGame(string seed)
 		for (int c = 0; c < line.length(); ++c)
 		{
 			// Convert each character in string to int
-			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 0, or - 48
+			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
 		}
 
 
@@ -389,7 +390,6 @@ void gameScene::LoadGame(string seed)
 			algTiles.push_back(downRamp);
 			break;
 		}
-
 		// End tile
 		case 9:
 		{
@@ -401,10 +401,10 @@ void gameScene::LoadGame(string seed)
 			break;
 		}
 
-
+		default: break;
 		} // Switch end
 
-	} // for loop end
+	} // for loop create games tiles from alg tiles end
 }
 
 // Populates scenery tiles
@@ -432,6 +432,10 @@ void gameScene::FillScenery()
 	zMin -= 20;
 	xMax += 20;
 	zMax += 10;
+	// Set the pause target cam pos and target, now that we know level dimensions
+	pauseCamPos.x = xMin, pauseCamPos.y = 30.0f, pauseCamPos.z = zMin;
+	pauseCamTarget.x = (xMax + xMin) / 2.0f, pauseCamTarget.y = 1.0f, pauseCamTarget.z = (zMax + zMin) / 2.0f;
+
 
 	// Starting in corner, fill with scenery tile if not already filled by level tile
 	// Z
@@ -636,27 +640,37 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
-
-	// Exit
-	if (glfwGetKey(window, GLFW_KEY_B))
-	{
-		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(0);
-		cout << "Pressed B" << endl;
-	}
 	// Pause
 	if (glfwGetKey(window, GLFW_KEY_P))
 	{
+		// Change to pause target cam
+		cameraType = 2;
+		Render(window); // Render it
+		// Quick screenshot - need to do this twice
+		// Alt press below ensures only game window is captured
+		keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+		keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+		keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+		keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+
 		cout << "game paused" << endl;
 		bool paused = true;
 		while (paused)
 		{
-			// Need this or we get stuck in loop
+			// Need this to listen for further key presses
 			glfwPollEvents();
-			// Save this level (move this code later to end of game, so we can save score with it)
+			// Exit game 
+			if (glfwGetKey(window, GLFW_KEY_B))
+			{
+				// Scene 0 is no scene - it runs winMgr.CleanUp() and closes app
+				windowMgr::getInstance()->sceneManager.changeScene(0);
+				break;
+			}
+
+			// Save this level 
 			if (glfwGetKey(window, GLFW_KEY_S))
 			{
-				// Only save this level once
+				// Only save if not previously saved/loaded a saved level
 				if (!levelSaved)
 				{
 					// Open file to append level seed 
@@ -672,40 +686,44 @@ void gameScene::Input(GLFWwindow* window)
 
 					// Also save image of level
 					// Alt press below ensures only game window is captured
-					//keybd_event(VK_MENU, 0, 0, 0); //Alt Press
-					//keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
-					//keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
-					//keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+					keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+					keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+					keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+					keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 
 
 					//// The above saves the game window capture to clipboard
 					//// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
-					//HWND hwnd = GetDesktopWindow(); 
-					//if (!OpenClipboard(hwnd))
-					//	cout << "Error with HWND" << endl;
-					//OpenClipboard(NULL);
-					//HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
-					//if (hBitmap == NULL)
-					//	cout << "Error with clipboard bmp data" << endl;
-					//CloseClipboard();
-					//CImage image;
-					//image.Attach(hBitmap);
-					//// Build string to save with level seed name
-					//string fileName;
-					//for (auto &i : levelSeed)
-					//{
-					//	fileName += to_string(i);
-					//}
-					//fileName += ".bmp";
-					//image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
-					//cout << "course image saved as " << fileName << endl;	
-				}
+					HWND hwnd = GetDesktopWindow();
+					if (!OpenClipboard(hwnd))
+						cout << "Error with HWND" << endl;
+					OpenClipboard(NULL);
+					HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
+					if (hBitmap == NULL)
+						cout << "Error with clipboard bmp data" << endl;
+					CloseClipboard();
+					CImage image;
+					image.Attach(hBitmap);
+					// Build string to save with level seed name
+					string fileName = "..\\NuttyPutters\\savesImages\\";
+					for (auto &i : levelSeed)
+					{
+						fileName += to_string(i);
+					}
+					fileName += ".bmp";
+					image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
+					cout << "course image saved as " << fileName << endl;
+
+					// Tell winMgr to update its saved images list
+					windowMgr::getInstance()->UpdateSavesImages(fileName.c_str());
+				} // end level saving code
 
 			}
 
 			// Unpause
 			if (glfwGetKey(window, GLFW_KEY_U))
 			{
+				cameraType = 1;
 				paused = false;
 				break;
 			}
@@ -964,11 +982,7 @@ void gameScene::Input(GLFWwindow* window)
 	  //This function resets the scene to an empty screen
 	if (glfwGetKey(window, GLFW_KEY_C))
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clean the screen and the depth buffer
-		glLoadIdentity();
-		glfwSwapBuffers(window);
-
+		// glLoadIdentity(); might need this later
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 
@@ -1007,9 +1021,11 @@ void gameScene::Update(GLFWwindow* window)
 	windowMgr::getInstance()->chaseCam->move(player1Transform.getPos(), player1Transform.getRot());
 	windowMgr::getInstance()->chaseCam->update(0.00001);
 
-	// Update target camera
+	// Update hud target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 
+	// Update pause target camera
+	windowMgr::getInstance()->PAUSEtargetCam->update(0.00001);
 	// PLAYER UPDATE
 	// Velocity is direction by speed by delta time
 	gbVelocity = (gbDirection * speed);
@@ -1020,7 +1036,7 @@ void gameScene::Update(GLFWwindow* window)
 		 // Rotation is cross product of direction and up
 		vec3 rot = normalize(cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
 
-		rot *=  speed *  dt;
+		rot *= speed *  dt;
 		player1Transform.getRot() += -rot;
 
 	}
@@ -1035,7 +1051,7 @@ void gameScene::Update(GLFWwindow* window)
 
 	// Update positions of ball and arrow
 	player1Transform.getPos() += gbVelocity;
-	arrowTransform.getPos() += gbVelocity;	
+	arrowTransform.getPos() += gbVelocity;
 
 	// TIMER RELATED INFORMATION
 	// If the time been in scene is equal to zero then
@@ -1161,140 +1177,125 @@ void gameScene::Collisions()
 	switch (algTiles.at(currentTile).id)
 	{
 
-			// On start tile
-		case 0:
-		{
-			// Need to do this to access start only methods (which includes col check)
-			//onRamp = false;
-			StartTile start;
-			gbDirection = start.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// On straight V tile
-		case 1:
-		{
-			//onRamp = false;
-			StraightTile_V straightV;
-			straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			// Ensure don't go through floor
-			player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
-			gbDirection = straightV.CheckCollisions(player1Transform.getPos(), gbDirection);
+		// On start tile
+	case 0:
+	{
+		// Need to do this to access start only methods (which includes col check)
+		//onRamp = false;
+		StartTile start;
+		gbDirection = start.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// On straight V tile
+	case 1:
+	{
+		//onRamp = false;
+		StraightTile_V straightV;
+		straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		// Ensure don't go through floor
+		player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
+		gbDirection = straightV.CheckCollisions(player1Transform.getPos(), gbDirection);
 
-			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
 
+		{
+			switch (obstacles.at(i + 1))
 			{
-				switch (obstacles.at(i + 1))
-				{
-					switch (obstacles.at(i + 1))
-					{
-					case 1:
+			case 1:
 
-						break;
-					case 2:
-						gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, player1Transform.getPos(),
-							gbDirection, straightV.displace, straightV.radius);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			break;
-		}
-		
-		// On straight H tile
-		case 2:
+				break;
+			case 2:
+				gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, player1Transform.getPos(),
+					gbDirection, straightV.displace, straightV.radius);
+				break;
+			default:
+				break;
+			} // end switch
+		} // end for loop
+		break; // this tile break
+	} // end case 1 
+
+	// On straight H tile
+	case 2:
+	{
+		//onRamp = false;
+		StraightTile_H straightH;
+		straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = straightH.CheckCollisions(player1Transform.getPos(), gbDirection);
+		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
 		{
-			//onRamp = false;
-			StraightTile_H straightH;
-			straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = straightH.CheckCollisions(player1Transform.getPos(), gbDirection);
-			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+			switch (obstacles.at(i + 1))
 			{
-
-				//onRamp = false;
-				StraightTile_H straightH;
-				straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
-				gbDirection = straightH.CheckCollisions(player1Transform.getPos(), gbDirection);
-				for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
-
-				{
-					switch (obstacles.at(i + 1))
-					{
-						switch (obstacles.at(i + 1))
-						{
-						case 1:
-
-							break;
-						case 2:
-							gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, player1Transform.getPos(),
-								gbDirection, straightH.displace, straightH.radius);
-							break;
-						default:
-							break;
-						}
-					}
-				}
-			}
-			break; 
-		}
-			// On corner_BL tile
-		case 3:
-		{
-			//onRamp = false;
-			CornerTile_BL cornerBL;
-			cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerBL.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// On corner_BR tile
-		case 4:
-		{
-			//onRamp = false;
-			CornerTile_BR cornerBR;
-			cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerBR.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// On corner_TL tile
-		case 5:
-		{
-			//onRamp = false;
-			CornerTile_TL cornerTL;
-			cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerTL.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// On corner_TR tile
-		case 6:
-		{
-			//onRamp = false;
-			CornerTile_TR cornerTR;
-			cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerTR.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// Up ramp tile
-		case 7:
-		{
-			UpRampDown ramp;
-			ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			ramp.thisCoords.y += 1.8;
-			// Set player height
-			player1Transform.setPos(ramp.SetPlayerHeight(player1Transform.getPos()));
-			//onRamp = true;
-			break;
-		}
-		// End tile
-		case 9:
-		{
-			//onRamp = false;
-			EndTile end;
-			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			end.outDir = algTiles.at(currentTile).outDir;
-			gbDirection = end.CheckCollisions(player1Transform.getPos(), gbDirection, speed);
-
-			// If user hasnt completed hole then - get
+			case 1:
+          
+				break;
+			case 2:
+				gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, player1Transform.getPos(),
+					gbDirection, straightH.displace, straightH.radius);
+				break;
+			default:
+				break;
+			} // switch end
+		} // for loop end
+		break;
+	} // this tile case end
+	// On corner_BL tile
+	case 3:
+	{
+		//onRamp = false;
+		CornerTile_BL cornerBL;
+		cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerBL.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// On corner_BR tile
+	case 4:
+	{
+		//onRamp = false;
+		CornerTile_BR cornerBR;
+		cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerBR.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// On corner_TL tile
+	case 5:
+	{
+		//onRamp = false;
+		CornerTile_TL cornerTL;
+		cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerTL.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// On corner_TR tile
+	case 6:
+	{
+		//onRamp = false;
+		CornerTile_TR cornerTR;
+		cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerTR.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// Up ramp tile
+	case 7:
+	{
+		UpRampDown ramp;
+		ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		ramp.thisCoords.y += 1.8;
+		// Set player height
+		player1Transform.setPos(ramp.SetPlayerHeight(player1Transform.getPos()));
+		//onRamp = true;
+		break;
+	}
+	// End tile
+	case 9:
+	{
+		//onRamp = false;
+		EndTile end;
+		end.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		end.outDir = algTiles.at(currentTile).outDir;
+		gbDirection = end.CheckCollisions(player1Transform.getPos(), gbDirection, speed);
+    
+      // If user hasnt completed hole then - get
 			if (!hasUserCompletedHole)
 			{
 				// If ball in hole is equal to true - function to courseGenTiles
@@ -1309,9 +1310,9 @@ void gameScene::Collisions()
 					windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 				}
 			}
-
-			break;
-		}
+    
+		break;
+	}
 	}
 }
 
@@ -1381,8 +1382,13 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		mvp = windowMgr::getInstance()->chaseCam->get_Projection() * windowMgr::getInstance()->chaseCam->get_View();
 	}
-	// If camera type is target camera - used for HUD elements - then
+	// Else if camera type is pause camera
+	else if (cameraType == 2)
+	{
+		mvp = windowMgr::getInstance()->PAUSEtargetCam->get_Projection() * windowMgr::getInstance()->PAUSEtargetCam->get_View();
+	}
 
+	// Generat vp of HUD target camera
 	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 
 	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
