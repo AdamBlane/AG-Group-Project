@@ -54,18 +54,20 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	player1Transform.getScale() = vec3(0.5);
 	player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
 
-	// Arrow - TODO - draw lower! 
-	//arrowMesh = new Mesh(Mesh::CUBOID, "..\\NuttyPutters\\box.jpg", vec3(golfBallMesh->getGeomPos().x + 1.8, golfBallMesh->getGeomPos().y + 2.6, golfBallMesh->getGeomPos().z), 3.0f, 0.5f, 0.5f);
+	// Arrow
 	arrowTransform.getScale() = vec3(0.5);
-	arrowTransform.getPos() = vec3(1.8 + player1Transform.getPos().x, 2.6 + player1Transform.getPos().y, player1Transform.getPos().z);
+	arrowTransform.getPos() = vec3(player1Transform.getPos().x, player1Transform.getPos().y - 1.6, player1Transform.getPos().z);
 	windowMgr::getInstance()->arrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]); //?
     
     // Set camera startup properties
-	cameraType = 1;// Want chase cam by default	
+	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
 	windowMgr::getInstance()->freeCam->set_Target(vec3(0, 0, 0));
 	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));
+	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamPos);
+	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamTarget);
 
+	
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup
@@ -110,7 +112,7 @@ void gameScene::LoadGame(string seed)
 		for (int c = 0; c < line.length(); ++c)
 		{
 			// Convert each character in string to int
-			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 0, or - 48
+			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
 		}
 
 
@@ -335,7 +337,6 @@ void gameScene::LoadGame(string seed)
 			algTiles.push_back(downRamp);
 			break;
 		}
-
 		// End tile
 		case 9:
 		{
@@ -347,10 +348,10 @@ void gameScene::LoadGame(string seed)
 			break;
 		}
 
-
+		default: break;
 		} // Switch end
 
-	} // for loop end
+	} // for loop create games tiles from alg tiles end
 }
 
 // Populates scenery tiles
@@ -378,6 +379,10 @@ void gameScene::FillScenery()
 	zMin -= 20;
 	xMax += 20;
 	zMax += 10;
+	// Set the pause target cam pos and target, now that we know level dimensions
+	pauseCamPos.x = xMin, pauseCamPos.y = 30.0f, pauseCamPos.z = zMin;
+	pauseCamTarget.x = (xMax + xMin) / 2.0f, pauseCamTarget.y = 1.0f, pauseCamTarget.z = (zMax + zMin) / 2.0f;
+
 
 	// Starting in corner, fill with scenery tile if not already filled by level tile
 	// Z
@@ -562,8 +567,6 @@ void gameScene::SetupTilesToBeDrawn()
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
-
-
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -586,7 +589,8 @@ void gameScene::Loop(GLFWwindow* window)
 void gameScene::Input(GLFWwindow* window)
 {
 
-	// Exit
+	// Exit game 
+	// TODO - move this into pause screen code
 	if (glfwGetKey(window, GLFW_KEY_B))
 	{
 		// Access singleton instance to update it's sceneManager's state
@@ -596,16 +600,26 @@ void gameScene::Input(GLFWwindow* window)
 	// Pause
 	if (glfwGetKey(window, GLFW_KEY_P))
 	{
+		// Change to pause target cam
+		cameraType = 2;
+		Render(window); // Render it
+		// Quick screenshot - need to do this twice
+		// Alt press below ensures only game window is captured
+		keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+		keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+		keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+		keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+
 		cout << "game paused" << endl;
 		bool paused = true;
 		while (paused)
 		{
-			// Need this or we get stuck in loop
+			// Need this to listen for further key presses
 			glfwPollEvents();
-			// Save this level (move this code later to end of game, so we can save score with it)
+			// Save this level 
 			if (glfwGetKey(window, GLFW_KEY_S))
 			{
-				// Only save this level once
+				// Only save if not previously saved/loaded a saved level
 				if (!levelSaved)
 				{
 					// Open file to append level seed 
@@ -621,40 +635,44 @@ void gameScene::Input(GLFWwindow* window)
 
 					// Also save image of level
 					// Alt press below ensures only game window is captured
-					//keybd_event(VK_MENU, 0, 0, 0); //Alt Press
-					//keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
-					//keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
-					//keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+					keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+					keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+					keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+					keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 
 
 					//// The above saves the game window capture to clipboard
 					//// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
-					//HWND hwnd = GetDesktopWindow(); 
-					//if (!OpenClipboard(hwnd))
-					//	cout << "Error with HWND" << endl;
-					//OpenClipboard(NULL);
-					//HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
-					//if (hBitmap == NULL)
-					//	cout << "Error with clipboard bmp data" << endl;
-					//CloseClipboard();
-					//CImage image;
-					//image.Attach(hBitmap);
-					//// Build string to save with level seed name
-					//string fileName;
-					//for (auto &i : levelSeed)
-					//{
-					//	fileName += to_string(i);
-					//}
-					//fileName += ".bmp";
-					//image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
-					//cout << "course image saved as " << fileName << endl;	
-				}
+					HWND hwnd = GetDesktopWindow(); 
+					if (!OpenClipboard(hwnd))
+						cout << "Error with HWND" << endl;
+					OpenClipboard(NULL);
+					HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
+					if (hBitmap == NULL)
+						cout << "Error with clipboard bmp data" << endl;
+					CloseClipboard();
+					CImage image;
+					image.Attach(hBitmap);
+					// Build string to save with level seed name
+					string fileName = "..\\NuttyPutters\\savesImages\\";
+					for (auto &i : levelSeed)
+					{
+						fileName += to_string(i);
+					}
+					fileName += ".bmp";
+					image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
+					cout << "course image saved as " << fileName << endl;
+					
+					// Tell winMgr to update its saved images list
+					windowMgr::getInstance()->UpdateSavesImages(fileName.c_str());
+				} // end level saving code
 
 			}
 
 			// Unpause
 			if (glfwGetKey(window, GLFW_KEY_U))
 			{
+				cameraType = 1;
 				paused = false;
 				break;
 			}
@@ -892,9 +910,11 @@ void gameScene::Update(GLFWwindow* window)
 	windowMgr::getInstance()->chaseCam->move(player1Transform.getPos(), player1Transform.getRot());
 	windowMgr::getInstance()->chaseCam->update(0.00001);
 
-	// Update target camera
+	// Update hud target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 
+	// Update pause target camera
+	windowMgr::getInstance()->PAUSEtargetCam->update(0.00001);
 	// PLAYER UPDATE
 	// Velocity is direction by speed by delta time
 	gbVelocity = (gbDirection * speed);
@@ -1154,8 +1174,13 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		mvp = windowMgr::getInstance()->chaseCam->get_Projection() * windowMgr::getInstance()->chaseCam->get_View();
 	}
-	// If camera type is target camera - used for HUD elements - then
+	// Else if camera type is pause camera
+	else if (cameraType == 2)
+	{
+		mvp = windowMgr::getInstance()->PAUSEtargetCam->get_Projection() * windowMgr::getInstance()->PAUSEtargetCam->get_View();
+	}
 
+	// Generat vp of HUD target camera
 	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
 	// Set depth range to near to allow for HUD elements to be rendered and drawn

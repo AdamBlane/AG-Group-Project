@@ -64,8 +64,10 @@ public:
 	float chaseCamAngle, cameraType; // for switching between free/chase cam
     // For finding cursor pos on screen (used for free cam)
 	double cursor_x, cursor_y = 0.0; 
+	vec3 pauseCamPos, pauseCamTarget;
 
-	
+
+
 	// Player variables
 	Transform player1Transform, arrowTransform;
 	// TODO - will need to rename dir & vel to p1Vel, p2vel etc
