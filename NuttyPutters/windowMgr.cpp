@@ -14,6 +14,85 @@ windowMgr::windowMgr() { }
 // Private Deconstructor
 windowMgr::~windowMgr() { }
 
+// Function which gets mouse position
+static void getMousePosition(GLFWwindow *window, double xpos, double ypos)
+{
+	//shows where the cursor is in pixels
+	cout << xpos << " : " << ypos << " " << windowMgr::getInstance()->getWindowScale() << endl;
+	//mapping for Startscene
+	if (windowMgr::getInstance()->sceneManager.curScene == 1)
+	{
+		//this mess plots out where the buttons are for start scene
+		if ((xpos >= 604 * windowMgr::getInstance()->getWindowScale()) && (xpos <= 995 * windowMgr::getInstance()->getWindowScale())
+			&& (ypos >= 59 * windowMgr::getInstance()->getWindowScale()) && (ypos <= 840 * windowMgr::getInstance()->getWindowScale()))
+		{
+			if (ypos <= 200 * windowMgr::getInstance()->getWindowScale())
+			{
+				//highlights start game button
+				windowMgr::getInstance()->button_manager = 1;
+			}
+			else if (ypos <= 332 * windowMgr::getInstance()->getWindowScale())
+			{
+				//highlights load game button
+				windowMgr::getInstance()->button_manager = 2;
+			}
+			else if (ypos <= 456 * windowMgr::getInstance()->getWindowScale())
+			{
+				//highlights highscore button
+				windowMgr::getInstance()->button_manager = 3;
+			}
+			else if (ypos <= 580 * windowMgr::getInstance()->getWindowScale())
+			{
+				//highlights highscore button
+				windowMgr::getInstance()->button_manager = 4;
+			}
+			else if (ypos <= 710 * windowMgr::getInstance()->getWindowScale())
+			{
+				//highlights options button
+				windowMgr::getInstance()->button_manager = 5;
+			}
+			else if (ypos <= 840 * windowMgr::getInstance()->getWindowScale())
+			{
+				//ghighlights exit button
+				windowMgr::getInstance()->button_manager = 6;
+			}
+		}
+		else
+		{
+			//highlights nothing
+			windowMgr::getInstance()->button_manager = 0;
+		}
+	}
+	//this mess plots out where the buttons are for options scene
+	if (windowMgr::getInstance()->sceneManager.curScene == 5)
+	{
+		if ((xpos >= 604 * windowMgr::getInstance()->getWindowScale()) && (xpos <= 995 * windowMgr::getInstance()->getWindowScale())
+			&& (ypos >= 59 * windowMgr::getInstance()->getWindowScale()) && (ypos <= 332 * windowMgr::getInstance()->getWindowScale()))
+		{
+			if (ypos <= 200 * windowMgr::getInstance()->getWindowScale())
+			{
+				//highlights 1600x900 button
+				windowMgr::getInstance()->button_manager = 1;
+			}
+			else if (ypos <= 332 * windowMgr::getInstance()->getWindowScale())
+			{
+				//highlights 1600x900 button
+				windowMgr::getInstance()->button_manager = 2;
+			}
+		}
+		else if ((xpos >= 1039 * windowMgr::getInstance()->getWindowScale()) && (xpos <= 1429 * windowMgr::getInstance()->getWindowScale())
+			&& (ypos >= 711 * windowMgr::getInstance()->getWindowScale()) && (ypos <= 839 * windowMgr::getInstance()->getWindowScale()))
+		{
+			//highlights the back button
+			windowMgr::getInstance()->button_manager = 3;
+		}
+		else
+		{
+			//highlights nothing
+			windowMgr::getInstance()->button_manager = 0;
+		}
+	}
+}
 
 // Set instance to NULL initially, since it'll be created on demand in main
 windowMgr* windowMgr::instance = NULL;
@@ -32,6 +111,7 @@ windowMgr* windowMgr::getInstance()
 // Setup; GLFW stuff, creates window
 GLFWwindow* windowMgr::Init()
 {
+
 	// Initialise GLFW libraries
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
@@ -48,10 +128,14 @@ GLFWwindow* windowMgr::Init()
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
-
 	// Make window the current context
 	glfwMakeContextCurrent(win);
 
+	glfwSetCursorPosCallback(win, getMousePosition);
+
+	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+	glfwSetInputMode(win, GLFW_STICKY_MOUSE_BUTTONS, 1);
 	// Initialise GLEW 
 	GLenum res = glewInit();
 	if (res != GLEW_OK)
@@ -230,3 +314,5 @@ void windowMgr::CleanUp()
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }
+
+

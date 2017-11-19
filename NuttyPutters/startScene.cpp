@@ -11,55 +11,35 @@ startScene::startScene() { }
 // Deconstructor
 startScene::~startScene() { }
 
-bool cursor_inside;
-
-static void cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
+// Function which gets mouse clicks
+void getMouseClick(GLFWwindow *window, int button, int action, int mods)
 {
-	cout << xpos << " : " << ypos << endl;
-	//to check if its around buttons
-	if (xpos >= ((windowMgr::getInstance()->width / 4) + (windowMgr::getInstance()->width / 8) + (windowMgr::getInstance()->width / 400))
-		&& (xpos <= (windowMgr::getInstance()->width / 2) + (windowMgr::getInstance()->width / 16) + (windowMgr::getInstance()->width / 160)
-			+ (windowMgr::getInstance()->width / 20) + (windowMgr::getInstance()->width / 400) + (windowMgr::getInstance()->width / 800))
-		&&(ypos >= (windowMgr::getInstance()->height / 15)))
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
-		cout << "now" << endl;
+		if (windowMgr::getInstance()->sceneManager.curScene == 1)
+		{
+			if (windowMgr::getInstance()->button_manager == 6)
+			{
+				windowMgr::getInstance()->sceneManager.changeScene(0);
+
+			}
+			else if (windowMgr::getInstance()->button_manager == 5)
+			{
+				ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
+			}
+			else if (!windowMgr::getInstance()->button_manager == 0)
+			{
+				windowMgr::getInstance()->sceneManager.changeScene(windowMgr::getInstance()->button_manager + 1);
+			}
+		}
 	}
 }
 
-void CursorEnterCallback(GLFWwindow *win, int entered)
-{
-	if (entered)
-	{
-		cursor_inside = true;
-		cout << "Entered Window" << endl;
-	}
-	else
-	{
-		cursor_inside = false;
-		cout << "Left window" << endl;
-	}
-}
-
-void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
-{
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
-	{
-		cout << "Right button pressed" << endl;
-	}
-}
 // Setup; does nothing atm
 void startScene::Init(GLFWwindow* win)
 {
-	glfwSetCursorPosCallback(win, cursorPositionCallback);
-
-	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
-	glfwSetCursorEnterCallback(win, CursorEnterCallback);
-
-	glfwSetMouseButtonCallback(win, mouseButtonCallback);
-
-	glfwSetInputMode(win, GLFW_STICKY_MOUSE_BUTTONS, 1);
-
+	glfwSetMouseButtonCallback(win, getMouseClick);
+	windowMgr::getInstance()->button_manager = 0;
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
@@ -123,8 +103,17 @@ void startScene::Loop(GLFWwindow* win)
 // Act on input
 void startScene::Input(GLFWwindow * win)
 {
-	switch (button_manager)
+	switch (windowMgr::getInstance()->button_manager)
 	{
+			//cases for the buttons to switch to each screen
+		case 0:
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
+			break;
 		//cases for the buttons to switch to each screen
 		case 1:
 			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
@@ -184,16 +173,16 @@ void startScene::Input(GLFWwindow * win)
 	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
 	{
 		total_time = 0.0f;
-		if (button_manager == 6)
+		if (windowMgr::getInstance()->button_manager == 6)
 		{
 			windowMgr::getInstance()->sceneManager.changeScene(0);
 
 		}
-		else if (button_manager == 5)
+		else if (windowMgr::getInstance()->button_manager == 5)
 		{
 			ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
 		}
-		else
+		else if (!windowMgr::getInstance()->button_manager == 0)
 		{
 			windowMgr::getInstance()->sceneManager.changeScene(button_manager + 1);
 		}
@@ -204,13 +193,13 @@ void startScene::Input(GLFWwindow * win)
 	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 3.0f)
 	{
 		total_time = 0.0f;
-		if (button_manager == 1)
+		if (windowMgr::getInstance()->button_manager == 1)
 		{
-			button_manager = 6;
+			windowMgr::getInstance()->button_manager = 6;
 		}
 		else
 		{
-			button_manager--;
+			windowMgr::getInstance()->button_manager--;
 		}
 	}
 	if (glfwGetKey(win, GLFW_KEY_DOWN))
@@ -222,13 +211,13 @@ void startScene::Input(GLFWwindow * win)
 	{
 		if (downPressed)
 		{
-			if (button_manager == 6)
+			if (windowMgr::getInstance()->button_manager == 6)
 			{
-				button_manager = 1;
+				windowMgr::getInstance()->button_manager = 1;
 			}
 			else
 			{
-				button_manager++;
+				windowMgr::getInstance()->button_manager++;
 			}
 
 			downPressed = false;
