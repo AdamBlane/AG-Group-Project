@@ -16,7 +16,7 @@ void loadGameScene::Init(GLFWwindow* win)
 	lastImageSelected = currentImageSelected = savesImagesIndex = enterCooldown =  0;
 	// Set initial current page value
 	currentPage = 1;
-
+	
 	// Set background mesh properties
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
@@ -24,7 +24,6 @@ void loadGameScene::Init(GLFWwindow* win)
 
 	// Set image viewer properties
 	// Create image meshes
-	int images = windowMgr::getInstance()->savesImages.size(); // Total number of saves images to show
 	int imCount = 1;
 	// Setup meshes
 	for (int x = -1; x < 2; ++x)
@@ -39,14 +38,20 @@ void loadGameScene::Init(GLFWwindow* win)
 			imCount++;
 		}
 	}
-	
-	// Set image meshes with saved image textures - up to limit of 9 per 'page'
-	int limit;
-	if (windowMgr::getInstance()->savesImages.size() > 9)
-		limit = 9;
-	else
-		limit = windowMgr::getInstance()->savesImages.size();
 
+	// Calculate total number images, and number of pages required
+	totalImages = (float)windowMgr::getInstance()->savesImages.size();
+	pageCount = ceil(totalImages / 9);
+	// Set image meshes with saved image textures - up to limit of 9 per 'page'
+	int limit = (int)totalImages;
+	maxImagetoSelect = limit - 1; // Limit is count, maxImage... is index
+	if (totalImages > 9)
+	{
+		limit = 9; // Limit is for the next loop which draws textures
+		maxImagetoSelect = 8; // This prevents users from selecting image meshes without save image
+	}
+		
+	// Draw the saved image textures onto image meshes
 	for (int i = 0; i < limit; i++)
 	{
 		windowMgr::getInstance()->meshes.at(diff + i)->SetTexture(windowMgr::getInstance()->savesImages.at(i));
@@ -54,10 +59,6 @@ void loadGameScene::Init(GLFWwindow* win)
 	
 	// Show first image as selected
 	windowMgr::getInstance()->meshes.at(diff)->SetScale(selectedW, selectedH);
-
-	// Calculate total number images, and number of pages required
-	totalImages = (float)windowMgr::getInstance()->savesImages.size();
-	pageCount = ceil(totalImages / 9);
 
 
 	// Read all saved seeds
@@ -102,9 +103,14 @@ void loadGameScene::NextPage()
 
 	// Find limit for this page - difference between savesImagesIndex and total images
 	int limit = totalImages - savesImagesIndex;
+	maxImagetoSelect = limit - 1;
 	// Imposed limit of 9 image meshes
 	if (limit > 9)
+	{
 		limit = 9;
+		maxImagetoSelect = 8;
+	}
+		
 
 	// Draw the next set of saves image textures
 	for (int i = 0; i < limit; ++i)
@@ -214,7 +220,7 @@ void loadGameScene::Input(GLFWwindow* win)
 		if (downPressed)
 		{
 			// Have we reached last image mesh?
-			if (currentImageSelected == 8)
+			if (currentImageSelected == maxImagetoSelect)
 			{
 				// Is there another page to show? 
 				if (currentPage < (int)pageCount)

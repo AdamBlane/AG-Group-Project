@@ -65,6 +65,7 @@ class windowMgr
 		// AUDIO
 		FMOD::System *system;
 		FMOD::Sound *menuSelect;
+	
 		// Store all above declared sound effects here
 		map<std::string, FMOD::Sound*> soundEffects;
 

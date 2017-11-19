@@ -34,7 +34,7 @@ public:
 	// Hold all seeds
 	vector<string> seeds;
 	// Image viewer navigation
-	int lastImageSelected, currentImageSelected; // Index of image mesh
+	int lastImageSelected, currentImageSelected, maxImagetoSelect; // Index of image mesh
 	int savesImagesIndex; // Index to look up textures and seeds
 	int currentPage; // Track which page we're on
 	float pageCount, totalImages; // Number of pages, total images
