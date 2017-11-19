@@ -28,21 +28,29 @@ class windowMgr
 		// Track gamestate
 		sceneMgr sceneManager;
 
-		// TODO - what is this? Set pos actually sets height & width?!
-		void set_PosX(int &value) { height = value; }
-		void set_PosY(int &value) { width = value; }
-
 		// Window width and height values
-		int width = 1600, height = 900;
-		// TODO - position of what? 
+		int width, height;
+		// position of window 
 		int PosX, PosY;
-		
+		//for mouse movement when the resoloution changes
+		double windowScale = 1.0;
+		// For button navigation across all menu scenes
+		int button_manager = 0;
 		// Store pointers to all meshes and textures required by game
 		// These are initialised once on the heap, in the Init() function of winMgr
 		// General use HUD meshes
 		vector<Mesh*> meshes;
 		// All textures in the game stored here
 		map<std::string, Texture*> textures;
+
+		// Iterator to search through map
+		//map<std::string, Texture*>::iterator it;
+		 
+		//gets the window scale on the x axis
+		double getWindowScale() const { return windowScale; };
+		//sets the window scalon the x axise by dividing by the orignal value
+		void setWindowScale(int value) { windowScale = value / 1600.0; }
+
 		vector<Texture*> savesImages;
 		// Iterator to search through map - apparently don't need this
 		//map<std::string, Texture*>::iterator it; // keep in case we do later
@@ -74,6 +82,7 @@ class windowMgr
 		vector<Mesh*> obstacleMeshes;
 		vector<Mesh*> planeMeshes;
 		map<std::string, Texture*> tileTextures;
+
 
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();

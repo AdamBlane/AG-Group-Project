@@ -54,7 +54,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	player1Transform.getScale() = vec3(0.5);
 	player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
 
-	// Arrow
+
 	arrowTransform.getScale() = vec3(0.5);
 	arrowTransform.getPos() = vec3(player1Transform.getPos().x, player1Transform.getPos().y - 1.6, player1Transform.getPos().z);
 	windowMgr::getInstance()->arrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]); //?
@@ -66,6 +66,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));	
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamPos);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamTarget);
+
 
 	// Stroke HUD Label setup
 	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);

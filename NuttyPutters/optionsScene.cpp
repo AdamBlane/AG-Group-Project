@@ -7,10 +7,51 @@ optionsScene::optionsScene() { }
 // Deconstructor
 optionsScene::~optionsScene() { }
 
+void getMouseClickforOptions(GLFWwindow *win, int button, int action, int mods)
+{
+	//cases for changing size of screen
+	switch (windowMgr::getInstance()->button_manager)
+	{
+		// Case 1 - windowed at 1600x900
+	case 1:
+		windowMgr::getInstance()->width = 1600;
+		windowMgr::getInstance()->height = 900;
+		windowMgr::getInstance()->PosX = 100;
+		windowMgr::getInstance()->PosY = 100;
+		break;
+		// Case 2 - fullscreen at 1280 x 720
+	case 2:
+		windowMgr::getInstance()->width = 1280;
+		windowMgr::getInstance()->height = 720;
+		windowMgr::getInstance()->PosX = 100;
+		windowMgr::getInstance()->PosY = 100;
+		break;
+		// Case 3 - Back button
+	case 3:
+		windowMgr::getInstance()->sceneManager.changeScene(1);
+		break;
+	}
+	// If window has been re-scaled
+	if (windowMgr::getInstance()->button_manager != 3)
+	{
+		//Sets window size by calling open gl function
+		glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+		//sets window postion by calling opengl function - posiotn needs updating as first funtion is just scale
+		glfwSetWindowPos(win, windowMgr::getInstance()->PosX, windowMgr::getInstance()->PosY);
+		//calls the initalise function again mainly for viewport 
+		glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+		windowMgr::getInstance()->setWindowScale(windowMgr::getInstance()->width);
+	}
+}
+
 void optionsScene::Init(GLFWwindow * win)
 {
 	//to reformat texutures
 	glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+	//defines the function when a click occurs
+	glfwSetMouseButtonCallback(win, getMouseClickforOptions);
+	//resets the button manager
+	windowMgr::getInstance()->button_manager = 0;
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
@@ -58,8 +99,13 @@ void optionsScene::Loop(GLFWwindow * win)
 
 void optionsScene::Input(GLFWwindow* win)
 {
-	switch (button_manager)
+	switch (windowMgr::getInstance()->button_manager)
 	{
+		case 0:
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+			break;
 		case 1:
 			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
 			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnSelected"]);
@@ -82,51 +128,59 @@ void optionsScene::Input(GLFWwindow* win)
 		//cases for changing size of screen
 		switch (button_manager)
 		{
-		case 1:
-			windowMgr::getInstance()->width = 1600;
-			windowMgr::getInstance()->height = 900;
-			windowMgr::getInstance()->PosX = 100;
-			windowMgr::getInstance()->PosY = 100;
-			break;
-		case 2:
-			windowMgr::getInstance()->width = 1920;
-			windowMgr::getInstance()->height = 1080;
-			windowMgr::getInstance()->PosX = 0;
-			windowMgr::getInstance()->PosY = 0;
-			break;
-		case 3:
-			windowMgr::getInstance()->sceneManager.changeScene(1);
-			break;
+			// Case 1 - windowed at 1600x900
+			case 1:
+				windowMgr::getInstance()->width = 1600;
+				windowMgr::getInstance()->height = 900;
+				windowMgr::getInstance()->PosX = 100;
+				windowMgr::getInstance()->PosY = 100;
+				break;
+			// Case 2 - fullscreen at 1280 x 720
+			case 2:
+				windowMgr::getInstance()->width = 1280;
+				windowMgr::getInstance()->height = 720;
+				windowMgr::getInstance()->PosX = 100;
+				windowMgr::getInstance()->PosY = 100;
+				break;
+			// Case 3 - Back button
+			case 3:
+				windowMgr::getInstance()->sceneManager.changeScene(1);
+				break;
 		}
+		// If window has been re-scaled
 		if (button_manager != 3)
 		{
+			//Sets window size by calling open gl function
 			glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+			//sets window postion by calling opengl function - posiotn needs updating as first funtion is just scale
 			glfwSetWindowPos(win, windowMgr::getInstance()->PosX, windowMgr::getInstance()->PosY);
+			//calls the initalise function again mainly for viewport 
 			optionsScene::Init(win);
+			windowMgr::getInstance()->setWindowScale(windowMgr::getInstance()->width);
 		}
 	}
 	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 5.0f)
 	{
 		total_time = 0.0f;
-		if (button_manager == 1)
+		if (windowMgr::getInstance()->button_manager == 1)
 		{
-			button_manager = 3;
+			windowMgr::getInstance()->button_manager = 3;
 		}
 		else
 		{
-			button_manager--;
+			windowMgr::getInstance()->button_manager--;
 		}
 	}
 	if (glfwGetKey(win, GLFW_KEY_DOWN) && total_time >= 5.0f)
 	{
 		total_time = 0.0f;
-		if (button_manager == 3)
+		if (windowMgr::getInstance()->button_manager == 3)
 		{
-			button_manager = 1;
+			windowMgr::getInstance()->button_manager = 1;
 		}
 		else
 		{
-			button_manager++;
+			windowMgr::getInstance()->button_manager++;
 		}
 	}
 	total_time += 0.5f;

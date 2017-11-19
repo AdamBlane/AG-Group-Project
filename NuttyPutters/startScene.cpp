@@ -8,13 +8,45 @@
 
 // Default constructor
 startScene::startScene() { }
-
 // Deconstructor
 startScene::~startScene() { }
+
+// Function which gets mouse clicks
+void getMouseClick(GLFWwindow *window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+		// If clicked on exit button
+		if (windowMgr::getInstance()->button_manager == 6)
+		{
+			// Then exit the app
+			windowMgr::getInstance()->sceneManager.changeScene(0);
+		}
+		// If clicked on internet button
+		else if (windowMgr::getInstance()->button_manager == 5)
+		{
+			// Launch IE 
+			ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
+		}
+		// If clicked on any other button, init that scene 
+		else if (windowMgr::getInstance()->button_manager != 0)
+		{
+			// Init the scene based on button manager value (+ 1 since 0 is nothing selected)
+			windowMgr::getInstance()->sceneManager.changeScene(windowMgr::getInstance()->button_manager + 1);
+		}
+	}
+}
 
 // Setup; does nothing atm
 void startScene::Init(GLFWwindow* win)
 {
+	// Assign what happens when user clicks
+	glfwSetMouseButtonCallback(win, getMouseClick);
+	// Reset button manager var for this scene
+	windowMgr::getInstance()->button_manager = 0;
+
+
+	
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
@@ -35,7 +67,7 @@ void startScene::Init(GLFWwindow* win)
 
 	// Perform setup of initial button configs - (un)selected textures
 	// Pick next item in meshes list (increment the number by 1 each time)
-	windowMgr::getInstance()->meshes.at(1)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(1)->SetScale(1.0f, 1.0f);
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(0.0f, 1.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(2)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.0f, 0.9f, 0.0f));
@@ -78,8 +110,19 @@ void startScene::Loop(GLFWwindow* win)
 // Act on input
 void startScene::Input(GLFWwindow * win)
 {
-	switch (button_manager)
+	// Put all texture reassignments in the input code when that button is pressed
+	// Just need to track last 
+	switch (windowMgr::getInstance()->button_manager)
 	{
+			//cases for the buttons to switch to each screen
+		case 0:
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
+			break;
 		//cases for the buttons to switch to each screen
 		case 1:
 			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
@@ -136,61 +179,84 @@ void startScene::Input(GLFWwindow * win)
 			break;
 
 	}
-	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
+	// Keep timer here
+	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time > 4.8f)
 	{
 		total_time = 0.0f;
-		if (button_manager == 6)
+		// If selected exit button
+		if (windowMgr::getInstance()->button_manager == 6)
 		{
+			// Then exit the app
 			windowMgr::getInstance()->sceneManager.changeScene(0);
-
 		}
-		else if (button_manager == 5)
+		// If selected internet button
+		else if (windowMgr::getInstance()->button_manager == 5)
 		{
+			// Launch IE 
 			ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
 		}
-		else
+		// If selected any other button, init that scene 
+		else if (windowMgr::getInstance()->button_manager != 0)
 		{
-			windowMgr::getInstance()->sceneManager.changeScene(button_manager + 1);
+			// Init the scene based on button manager value (+ 1 since 0 is nothing selected)
+			windowMgr::getInstance()->sceneManager.changeScene(windowMgr::getInstance()->button_manager + 1);
 		}
-
 	}
 
-
+	// Need to do this in (!glfw...UP) if (upPressed) { code below }
+	// Here just put upPressed = true;
 	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 3.0f)
 	{
 		total_time = 0.0f;
-		if (button_manager == 1)
+		if (windowMgr::getInstance()->button_manager == 1)
 		{
-			button_manager = 6;
+			windowMgr::getInstance()->button_manager = 6;
 		}
 		else
 		{
-			button_manager--;
+			windowMgr::getInstance()->button_manager--;
 		}
 	}
+	if (glfwGetKey(win, GLFW_KEY_M)) 
+	{
+		windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(0.0f + nasty, 1.5f, 0.0f));
+		nasty += 0.1f;
+	}
+	if (glfwGetKey(win, GLFW_KEY_N))
+	{
+		windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(0.0f + nasty, 1.5f, 0.0f));
+		nasty -= 0.1f;
+	}
+	if (glfwGetKey(win, GLFW_KEY_O))
+	{
+		cout << windowMgr::getInstance()->meshes.at(1)->GetGeomPos().x << endl;
+	}
+
+	// Remove timer on up/down nav
 	if (glfwGetKey(win, GLFW_KEY_DOWN))
 	{
 		downPressed = true;
 	}
-
 	if (!glfwGetKey(win, GLFW_KEY_DOWN) && total_time >= 3.0f)
 	{
 		if (downPressed)
 		{
-			if (button_manager == 6)
+			if (windowMgr::getInstance()->button_manager == 6)
 			{
-				button_manager = 1;
+				windowMgr::getInstance()->button_manager = 1;
 			}
 			else
 			{
-				button_manager++;
+				windowMgr::getInstance()->button_manager++;
 			}
 
 			downPressed = false;
 		}
 	}
 
-	total_time += 1.0f;
+	
+	if (total_time < 5.0f)
+		total_time += 1.0f;
 }
 
 void startScene::Update(GLFWwindow* win)
