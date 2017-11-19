@@ -82,6 +82,10 @@ public:
 	}
 	~StartTile() {};
 
+
+	
+
+
 	// Checks whether player has hit boundaries of this tile
 	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
 	{
@@ -94,7 +98,7 @@ public:
 			// Move away from boundary so as not to retrigger this
 			playerPos.x -= displace;
 		}
-		if (playerPos.x < thisCoords.x - (4 - radius))
+		else if (playerPos.x < thisCoords.x - (4 - radius))
 		{
 			// Hit boundary, reflect on x
 			dir.x = -dir.x;
@@ -145,7 +149,7 @@ public:
 			// Move away from boundary so as not to retrigger this
 			playerPos.x -= displace;
 		}
-		if (playerPos.x < thisCoords.x - (4 - radius))
+		else if (playerPos.x < thisCoords.x - (4 - radius))
 		{
 			// Hit boundary, revert x axis
 			dir.x = -dir.x;
@@ -175,7 +179,7 @@ public:
 			// Move away from boundary so as not to retrigger this
 			playerPos.z -= displace;
 		}
-		if (playerPos.z < thisCoords.z - (4 - radius))
+		else if (playerPos.z < thisCoords.z - (4 - radius))
 		{
 			// Hit boundary, revert x axis
 			dir.z = -dir.z;
@@ -208,7 +212,7 @@ public:
 		}
 
 		// Check x axis - left side of cube corner boundary
-		if (playerPos.x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
+		else if (playerPos.x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
 			playerPos.z > thisCoords.z - 5 && // Between upper limit of tile/square
 			playerPos.z < thisCoords.z - 4) // and lower limit of square
 		{
@@ -228,7 +232,7 @@ public:
 		}
 		
 		// Check z axis - lower side of cube corner boundary
-		if (playerPos.z < thisCoords.z - (4 - radius) && 
+		else if (playerPos.z < thisCoords.z - (4 - radius) && 
 			playerPos.x > thisCoords.x + 4 &&
 			playerPos.x < thisCoords.x + 5)
 		{
@@ -263,7 +267,7 @@ public:
 		}
 
 		// Check x axis - left side of cube corner boundary
-		if (playerPos.x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
+		else if (playerPos.x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
 			playerPos.z > thisCoords.z - 5 && // Between upper limit of tile/square
 			playerPos.z < thisCoords.z - 4) // and lower limit of square
 		{
@@ -283,7 +287,7 @@ public:
 		}
 
 		// Check z axis - lower side of cube corner boundary
-		if (playerPos.z < thisCoords.z - (4 - radius) &&
+		else if (playerPos.z < thisCoords.z - (4 - radius) &&
 			playerPos.x > thisCoords.x - 5 &&
 			playerPos.x < thisCoords.x - 4)
 		{
@@ -319,7 +323,7 @@ public:
 		}
 
 		// Check x axis - left side of cube corner boundary
-		if (playerPos.x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
+		else if (playerPos.x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
 			playerPos.z > thisCoords.z + 4 && // Between upper limit of tile/square
 			playerPos.z < thisCoords.z + 5) // and lower limit of square
 		{
@@ -339,7 +343,7 @@ public:
 		}
 
 		// Check z axis - lower side of cube corner boundary
-		if (playerPos.z > thisCoords.z + (4 - radius) &&
+		else if (playerPos.z > thisCoords.z + (4 - radius) &&
 			playerPos.x > thisCoords.x + 4 &&
 			playerPos.x < thisCoords.x + 5)
 		{
@@ -374,7 +378,7 @@ public:
 		}
 
 		// Check x axis - left side of cube corner boundary
-		if (playerPos.x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
+		else if (playerPos.x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
 			playerPos.z > thisCoords.z + 4 && // Between upper limit of tile/square
 			playerPos.z < thisCoords.z + 5) // and lower limit of square
 		{
@@ -394,7 +398,7 @@ public:
 		}
 
 		// Check z axis - lower side of cube corner boundary
-		if (playerPos.z > thisCoords.z + (4 - radius) &&
+		else if (playerPos.z > thisCoords.z + (4 - radius) &&
 			playerPos.x > thisCoords.x - 5 &&
 			playerPos.x < thisCoords.x - 4)
 		{
@@ -471,7 +475,7 @@ public:
 				// Move away from boundary so as not to retrigger this
 				playerPos.x -= displace;
 			}
-			if (playerPos.x < thisCoords.x - (4 - radius))
+			else if (playerPos.x < thisCoords.x - (4 - radius))
 			{
 				// Hit boundary, revert x axis
 				dir.x = -dir.x;
@@ -541,8 +545,6 @@ public:
 				playerPos.x -= displace;
 			}
 		}
-
-
 		// Check if over end hole
 		if(speed < 2)
 			if (playerPos.x > thisCoords.x - 0.75 && playerPos.x < thisCoords.x + 0.75 &&
