@@ -27,7 +27,7 @@ public:
 
 	// Create a texture shader which is used to bind textures to geometry
 	Shader* textureShader;
-
+	float nasty = 0.1f;
 	// Used to lock framerate
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();

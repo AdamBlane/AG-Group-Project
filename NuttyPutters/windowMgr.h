@@ -25,12 +25,12 @@ class windowMgr
 		sceneMgr sceneManager;
 
 		// Window width and height values
-		int width = 1600, height = 900;
+		int width, height;
 		// position of window 
 		int PosX, PosY;
 		//for mouse movement when the resoloution changes
 		double windowScale = 1.0;
-
+		// For button navigation across all menu scenes
 		int button_manager = 0;
 		// Store pointers to all meshes and textures required by game
 		// These are initialised once on the heap, in the Init() function of winMgr

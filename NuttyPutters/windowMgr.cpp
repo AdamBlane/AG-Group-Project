@@ -14,7 +14,8 @@ windowMgr::windowMgr() { }
 // Private Deconstructor
 windowMgr::~windowMgr() { }
 
-// Function which gets mouse position
+// Function which gets mouse position, sets button manager value based on which 
+// button is hovered over
 static void getMousePosition(GLFWwindow *window, double xpos, double ypos)
 {
 	//shows where the cursor is in pixels
@@ -64,7 +65,7 @@ static void getMousePosition(GLFWwindow *window, double xpos, double ypos)
 		}
 	}
 	//this mess plots out where the buttons are for options scene
-	if (windowMgr::getInstance()->sceneManager.curScene == 5)
+	else if (windowMgr::getInstance()->sceneManager.curScene == 5)
 	{
 		if ((xpos >= 604 * windowMgr::getInstance()->getWindowScale()) && (xpos <= 995 * windowMgr::getInstance()->getWindowScale())
 			&& (ypos >= 59 * windowMgr::getInstance()->getWindowScale()) && (ypos <= 332 * windowMgr::getInstance()->getWindowScale()))
@@ -116,10 +117,13 @@ GLFWwindow* windowMgr::Init()
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
 
+	// Set default resolution values
 	width = 1600, height = 900;
-	PosX = 100, PosY = 100;
 	// Create window
 	win = glfwCreateWindow(width, height, "Nutty Putters", NULL, NULL);
+	// Set default window position on screen
+	// TODO - Ensure this sets it to center of monitor
+	PosX = 100, PosY = 100;
 	glfwSetWindowPos(win, PosX, PosY);
 
 	// Check window was created successfully
@@ -130,11 +134,11 @@ GLFWwindow* windowMgr::Init()
 	}
 	// Make window the current context
 	glfwMakeContextCurrent(win);
-
+	// Gets mouse position within window
 	glfwSetCursorPosCallback(win, getMousePosition);
-
+	// 
 	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
+	// Clicking is toggled not held for effect
 	glfwSetInputMode(win, GLFW_STICKY_MOUSE_BUTTONS, 1);
 	// Initialise GLEW 
 	GLenum res = glewInit();
@@ -144,9 +148,7 @@ GLFWwindow* windowMgr::Init()
 	}
 
 	// Initialise max number of meshes any scene uses (game scene probably)
-
 	for (int i = 0; i < 10; ++i)
-
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
