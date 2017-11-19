@@ -58,8 +58,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	arrowTransform.getScale() = vec3(0.5);
 	arrowTransform.getPos() = vec3(player1Transform.getPos().x, player1Transform.getPos().y - 1.6, player1Transform.getPos().z);
 	windowMgr::getInstance()->arrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]); //?
-    
-    // Set camera startup properties
+
+	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
 	windowMgr::getInstance()->freeCam->set_Target(vec3(0, 0, 0));
@@ -67,7 +67,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamPos);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamTarget);
 
-	
+
 
 	// Load HUD information - NOTE TO KEEP ASPECT RATIO, 2.0f = 250 pixels - calulate based on image size
 	// Stroke HUD Label setup
@@ -588,15 +588,6 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
-
-	// Exit game 
-	// TODO - move this into pause screen code
-	if (glfwGetKey(window, GLFW_KEY_B))
-	{
-		// Access singleton instance to update it's sceneManager's state
-		windowMgr::getInstance()->sceneManager.changeScene(0);
-		cout << "Pressed B" << endl;
-	}
 	// Pause
 	if (glfwGetKey(window, GLFW_KEY_P))
 	{
@@ -616,6 +607,14 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			// Need this to listen for further key presses
 			glfwPollEvents();
+			// Exit game 
+			if (glfwGetKey(window, GLFW_KEY_B))
+			{
+				// Scene 0 is no scene - it runs winMgr.CleanUp() and closes app
+				windowMgr::getInstance()->sceneManager.changeScene(0);
+				break;
+			}
+
 			// Save this level 
 			if (glfwGetKey(window, GLFW_KEY_S))
 			{
@@ -643,7 +642,7 @@ void gameScene::Input(GLFWwindow* window)
 
 					//// The above saves the game window capture to clipboard
 					//// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
-					HWND hwnd = GetDesktopWindow(); 
+					HWND hwnd = GetDesktopWindow();
 					if (!OpenClipboard(hwnd))
 						cout << "Error with HWND" << endl;
 					OpenClipboard(NULL);
@@ -662,7 +661,7 @@ void gameScene::Input(GLFWwindow* window)
 					fileName += ".bmp";
 					image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
 					cout << "course image saved as " << fileName << endl;
-					
+
 					// Tell winMgr to update its saved images list
 					windowMgr::getInstance()->UpdateSavesImages(fileName.c_str());
 				} // end level saving code
@@ -867,11 +866,7 @@ void gameScene::Input(GLFWwindow* window)
 	  //This function resets the scene to an empty screen
 	if (glfwGetKey(window, GLFW_KEY_C))
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clean the screen and the depth buffer
-		glLoadIdentity();
-		glfwSwapBuffers(window);
-
+		// glLoadIdentity(); might need this later
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 
@@ -925,7 +920,7 @@ void gameScene::Update(GLFWwindow* window)
 		 // Rotation is cross product of direction and up
 		vec3 rot = normalize(cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
 
-		rot *=  speed *  dt;
+		rot *= speed *  dt;
 		player1Transform.getRot() += -rot;
 
 	}
@@ -940,7 +935,7 @@ void gameScene::Update(GLFWwindow* window)
 
 	// Update positions of ball and arrow
 	player1Transform.getPos() += gbVelocity;
-	arrowTransform.getPos() += gbVelocity;	
+	arrowTransform.getPos() += gbVelocity;
 
 }
 
@@ -970,141 +965,126 @@ void gameScene::Collisions()
 	switch (algTiles.at(currentTile).id)
 	{
 
-			// On start tile
-		case 0:
-		{
-			// Need to do this to access start only methods (which includes col check)
-			//onRamp = false;
-			StartTile start;
-			gbDirection = start.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// On straight V tile
-		case 1:
-		{
-			//onRamp = false;
-			StraightTile_V straightV;
-			straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			// Ensure don't go through floor
-			player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
-			gbDirection = straightV.CheckCollisions(player1Transform.getPos(), gbDirection);
+		// On start tile
+	case 0:
+	{
+		// Need to do this to access start only methods (which includes col check)
+		//onRamp = false;
+		StartTile start;
+		gbDirection = start.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// On straight V tile
+	case 1:
+	{
+		//onRamp = false;
+		StraightTile_V straightV;
+		straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		// Ensure don't go through floor
+		player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
+		gbDirection = straightV.CheckCollisions(player1Transform.getPos(), gbDirection);
 
-			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
 
+		{
+			switch (obstacles.at(i + 1))
 			{
-				switch (obstacles.at(i + 1))
-				{
-					switch (obstacles.at(i + 1))
-					{
-					case 1:
+			case 1:
 
-						break;
-					case 2:
-						gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, player1Transform.getPos(),
-							gbDirection, straightV.displace, straightV.radius);
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			break;
-		}
-		
-		// On straight H tile
-		case 2:
+				break;
+			case 2:
+				gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, player1Transform.getPos(),
+					gbDirection, straightV.displace, straightV.radius);
+				break;
+			default:
+				break;
+			} // end switch
+		} // end for loop
+		break; // this tile break
+	} // end case 1 
+
+	// On straight H tile
+	case 2:
+	{
+		//onRamp = false;
+		StraightTile_H straightH;
+		straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = straightH.CheckCollisions(player1Transform.getPos(), gbDirection);
+		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
 		{
-			//onRamp = false;
-			StraightTile_H straightH;
-			straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = straightH.CheckCollisions(player1Transform.getPos(), gbDirection);
-			for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+			switch (obstacles.at(i + 1))
 			{
+			case 1:
 
-				//onRamp = false;
-				StraightTile_H straightH;
-				straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
-				gbDirection = straightH.CheckCollisions(player1Transform.getPos(), gbDirection);
-				for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+				break;
+			case 2:
+				gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, player1Transform.getPos(),
+					gbDirection, straightH.displace, straightH.radius);
+				break;
+			default:
+				break;
+			} // switch end
+		} // for loop end
+		break;
+	} // this tile case end
+	// On corner_BL tile
+	case 3:
+	{
+		//onRamp = false;
+		CornerTile_BL cornerBL;
+		cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerBL.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// On corner_BR tile
+	case 4:
+	{
+		//onRamp = false;
+		CornerTile_BR cornerBR;
+		cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerBR.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// On corner_TL tile
+	case 5:
+	{
+		//onRamp = false;
+		CornerTile_TL cornerTL;
+		cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerTL.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// On corner_TR tile
+	case 6:
+	{
+		//onRamp = false;
+		CornerTile_TR cornerTR;
+		cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		gbDirection = cornerTR.CheckCollisions(player1Transform.getPos(), gbDirection);
+		break;
+	}
+	// Up ramp tile
+	case 7:
+	{
+		UpRampDown ramp;
+		ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		ramp.thisCoords.y += 1.8;
+		// Set player height
+		player1Transform.setPos(ramp.SetPlayerHeight(player1Transform.getPos()));
+		//onRamp = true;
+		break;
+	}
+	// End tile
+	case 9:
+	{
+		//onRamp = false;
+		EndTile end;
+		end.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		end.outDir = algTiles.at(currentTile).outDir;
+		gbDirection = end.CheckCollisions(player1Transform.getPos(), gbDirection, speed);
 
-				{
-					switch (obstacles.at(i + 1))
-					{
-						switch (obstacles.at(i + 1))
-						{
-						case 1:
-
-							break;
-						case 2:
-							gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, player1Transform.getPos(),
-								gbDirection, straightH.displace, straightH.radius);
-							break;
-						default:
-							break;
-						}
-					}
-				}
-			}
-			break; 
-		}
-			// On corner_BL tile
-		case 3:
-		{
-			//onRamp = false;
-			CornerTile_BL cornerBL;
-			cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerBL.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// On corner_BR tile
-		case 4:
-		{
-			//onRamp = false;
-			CornerTile_BR cornerBR;
-			cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerBR.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// On corner_TL tile
-		case 5:
-		{
-			//onRamp = false;
-			CornerTile_TL cornerTL;
-			cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerTL.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// On corner_TR tile
-		case 6:
-		{
-			//onRamp = false;
-			CornerTile_TR cornerTR;
-			cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			gbDirection = cornerTR.CheckCollisions(player1Transform.getPos(), gbDirection);
-			break;
-		}
-		// Up ramp tile
-		case 7:
-		{
-			UpRampDown ramp;
-			ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			ramp.thisCoords.y += 1.8;
-			// Set player height
-			player1Transform.setPos(ramp.SetPlayerHeight(player1Transform.getPos()));
-			//onRamp = true;
-			break;
-		}
-		// End tile
-		case 9:
-		{
-			//onRamp = false;
-			EndTile end;
-			end.SetCoords(algTiles.at(currentTile).GetThisCoords());
-			end.outDir = algTiles.at(currentTile).outDir;
-			gbDirection = end.CheckCollisions(player1Transform.getPos(), gbDirection, speed);
-
-			break;
-		}
+		break;
+	}
 	}
 }
 
