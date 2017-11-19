@@ -10,16 +10,13 @@ loadGameScene::~loadGameScene() { }
 // Setup scene; display choice saved games
 void loadGameScene::Init(GLFWwindow* win)
 {
-	// Setup texture shader
-	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-
-	// Setup target camera
-	tarCam = new target_camera();
-	tarCam->set_Posistion(vec3(0, 0, 5.0f));
-	tarCam->set_Target(vec3(0, 0, 0));
-	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
-
-
+	// Set initial button press bools to false
+	upPressed = downPressed = leftPressed = rightPressed = enterPressed = false;
+	// Set initial values for navigation variables
+	lastImageSelected = currentImageSelected = savesImagesIndex = enterCooldown =  0;
+	// Set initial current page value
+	currentPage = 1;
+	
 	// Set background mesh properties
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
@@ -27,33 +24,41 @@ void loadGameScene::Init(GLFWwindow* win)
 
 	// Set image viewer properties
 	// Create image meshes
-	// 1600 / 3 = 533.33rec     900 / 3 = 300
-	// 533.33 / 168 = 3.175	    300 / 168 = 1.786
-	// Width and height of image meshes
-	float w = 2.0f;
-	float h = 1.2f;
-	int images = seeds.size(); // Total number of saves images to show
 	int imCount = 1;
-
-	// Create meshes
+	// Setup meshes
 	for (int x = -1; x < 2; ++x)
-		// This will be -1, 0, 1
 	{
-		for (int y = -1; y < 2; ++y)
+		for (int y = 1; y > -2; --y)
 		{
 			float xPos, yPos;
 			xPos = (x*w);
 			yPos = (y*h);
 			windowMgr::getInstance()->meshes.at(imCount)->SetPos(vec3(xPos, yPos, 0));
 			windowMgr::getInstance()->meshes.at(imCount)->SetScale(w, h);
-			windowMgr::getInstance()->meshes.at(imCount)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
 			imCount++;
 		}
 	}
+
+	// Calculate total number images, and number of pages required
+	totalImages = (float)windowMgr::getInstance()->savesImages.size();
+	pageCount = ceil(totalImages / 9);
+	// Set image meshes with saved image textures - up to limit of 9 per 'page'
+	int limit = (int)totalImages;
+	maxImagetoSelect = limit - 1; // Limit is count, maxImage... is index
+	if (totalImages > 9)
+	{
+		limit = 9; // Limit is for the next loop which draws textures
+		maxImagetoSelect = 8; // This prevents users from selecting image meshes without save image
+	}
+		
+	// Draw the saved image textures onto image meshes
+	for (int i = 0; i < limit; i++)
+	{
+		windowMgr::getInstance()->meshes.at(diff + i)->SetTexture(windowMgr::getInstance()->savesImages.at(i));
+	}
 	
-	// Set image textures to meshes here?
-
-
+	// Show first image as selected
+	windowMgr::getInstance()->meshes.at(diff)->SetScale(selectedW, selectedH);
 
 
 	// Read all saved seeds
@@ -64,7 +69,8 @@ void loadGameScene::Init(GLFWwindow* win)
 	{
 		string line;
 		getline(saves, line);
-		seeds.push_back(line); // store in seeds list
+		if(line != "") // if not whitespace cell read
+			seeds.push_back(line); // store in seeds list
 	}
 
 }
@@ -72,6 +78,10 @@ void loadGameScene::Init(GLFWwindow* win)
 // Main loop
 void loadGameScene::Loop(GLFWwindow* win)
 {
+	// Scene background
+	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// Input
 	Input(win);
 	//upadate
@@ -80,6 +90,73 @@ void loadGameScene::Loop(GLFWwindow* win)
 	Render(win);
 
 
+}
+
+// Redraws next/last page of images onto image viewer meshes
+void loadGameScene::NextPage()
+{
+	// Set last image mesh selected
+	lastImageSelected = currentImageSelected;
+	// Reset currentImageSelected to start
+	currentImageSelected = 0;
+	// We're on next page
+	currentPage++;
+	// Set saves image index
+	savesImagesIndex = (currentPage - 1) * 9;
+
+
+	// Find limit for this page - difference between savesImagesIndex and total images
+	int limit = totalImages - savesImagesIndex;
+	maxImagetoSelect = limit - 1;
+	// Imposed limit of 9 image meshes
+	if (limit > 9)
+	{
+		limit = 9;
+		maxImagetoSelect = 8;
+	}
+		
+
+	// Draw the next set of saves image textures
+	for (int i = 0; i < limit; ++i)
+	{
+		// 1 + since background is taken, at 0
+		windowMgr::getInstance()->meshes.at(diff + i)->SetTexture(windowMgr::getInstance()->savesImages.at(savesImagesIndex + i));
+	}
+
+	// Clear the rest from previous page
+	for (int i = limit; i < 9; ++i)
+	{
+		windowMgr::getInstance()->meshes.at(diff + i)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
+	}
+}
+
+// Load previous page of images
+void loadGameScene::LastPage()
+{
+	// Set last image mesh selected
+	lastImageSelected = currentImageSelected;
+	// Reset current image mesh value to end
+	currentImageSelected = 8;
+	// Were on the previous page
+	currentPage--;
+	// Set the images index
+	savesImagesIndex = ((currentPage - 1) * 9) + 8;
+
+
+	// We know there is a full page of images to show, from curIndex - 8 to curIndex
+	for (int i = savesImagesIndex - 8; i < savesImagesIndex + 1; ++i)
+	{
+		windowMgr::getInstance()->meshes.at(diff + i)->SetTexture(windowMgr::getInstance()->savesImages.at(i));
+	}
+}
+
+
+// Resizes the current and last selected image mesh
+void loadGameScene::ResizeCurLastSelected()
+{
+	// Resize this and last choice
+	windowMgr::getInstance()->meshes.at(diff + currentImageSelected)->SetScale(selectedW, selectedH);
+	windowMgr::getInstance()->meshes.at(diff + lastImageSelected)->SetScale(w, h);
 }
 
 // Act on input
@@ -92,28 +169,91 @@ void loadGameScene::Input(GLFWwindow* win)
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 
-	// MENU NAVIGATION
-	// Go back/down an item
-	if (glfwGetKey(win, GLFW_KEY_LEFT))
+	// TESTING SOUND
+	if (glfwGetKey(win, GLFW_KEY_S))
 	{
-		leftPressed = true;
+		windowMgr::getInstance()->PlayThisSound("menuSelect");
 	}
-	if (!glfwGetKey(win, GLFW_KEY_LEFT))
+
+	// IMAGE MESH NAVIGATION
+	// Go back/up an image mesh
+	if (glfwGetKey(win, GLFW_KEY_UP))
+	{
+		upPressed = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_UP))
 	{
 		// Only if left was just released...
-		if (leftPressed)
-		{
-			// Reduce current seed count if not at min
-			if (currentSeed > 0)
+		if (upPressed)
+		{	
+			// Have we reached first image mesh? 
+			if (currentImageSelected == 0)
 			{
-				currentSeed--;
-				cout << "Choice " << currentSeed << ": " << seeds.at(currentSeed) << endl;
+				// Is there a page before to show?
+				if (currentPage > 1)
+				{
+					// Show last page
+					LastPage();
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
 			}
-			leftPressed = false;
+			// Reduce current seed count if not at min
+			else if (currentImageSelected > 0)
+			{
+				lastImageSelected = currentImageSelected;
+				currentImageSelected--;
+				savesImagesIndex--;
+				cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+				// Resize this and last choice
+				ResizeCurLastSelected();
+			}
+
+
+			upPressed = false;
 		}
 	}
 
-	// Go up/forward an item
+	// Go along/down an image mesh
+	if (glfwGetKey(win, GLFW_KEY_DOWN))
+	{
+		downPressed = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_DOWN))
+	{
+		if (downPressed)
+		{
+			// Have we reached last image mesh?
+			if (currentImageSelected == 8)
+			{
+				// Is there another page to show? 
+				if (currentPage < (int)pageCount)
+				{
+					// Show next page
+					NextPage();
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+			}
+			// Increment current seed count if not at last image mesh
+			else if (currentImageSelected < 8)
+			{
+				lastImageSelected = currentImageSelected;
+				currentImageSelected++;
+				savesImagesIndex++;
+				cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+				// Resize this and last choice
+				ResizeCurLastSelected();
+			}
+
+
+
+			downPressed = false;
+		}
+
+	}
+	
+	// View next page
 	if (glfwGetKey(win, GLFW_KEY_RIGHT))
 	{
 		rightPressed = true;
@@ -122,50 +262,82 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		if (rightPressed)
 		{
-			// Increment current seed count if not at max
-			if (currentSeed < seeds.size() - 1)
+			if (currentPage < (int)pageCount)
 			{
-				currentSeed++;
-				cout << "Choice " << currentSeed << ": " << seeds.at(currentSeed) << endl;
+				// Show last page
+				NextPage();
+				// Resize this and last choice
+				ResizeCurLastSelected();
 			}
-			rightPressed = false;
-		}
 
+		}
+		rightPressed = false;
+	}
+	// View last page
+	if (glfwGetKey(win, GLFW_KEY_LEFT))
+	{
+		leftPressed = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_LEFT))
+	{
+		if (leftPressed)
+		{
+			if (currentPage > 1)
+			{
+				// Show last page
+				LastPage();
+				// Resize this and last choice
+				ResizeCurLastSelected();
+			}
+
+		}
+		leftPressed = false;
 	}
 	// Select this level to load
-	if (glfwGetKey(win, GLFW_KEY_ENTER))
+	if (glfwGetKey(win, GLFW_KEY_ENTER) && enterCooldown > enterCooldownMax)
 	{
-		// Current seed is index of seeds list, send as optional param
-		windowMgr::getInstance()->sceneManager.changeScene(6, 12,seeds.at(currentSeed)); // 12 is mandatory course lenght (to be disregarded dw)
+		enterPressed = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_ENTER))
+	{
+		if (enterPressed)
+		{
+			enterPressed = false; // Suspect this is unnecessary
+			// Current seed is index of seeds list, send as optional param
+			windowMgr::getInstance()->sceneManager.changeScene(6, 12, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)		
+		}
 	}
 	
 }
 
+// Update 
 void loadGameScene::Update(GLFWwindow* win)
 {
 	// Update target camera
-	tarCam->update(0.00001);
+	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
+	
+	// To ensure enter doesn't trigger just after loading this scene
+	if (enterCooldown < enterCooldownMax + 5) // 5 is epsilon
+	{
+		enterCooldown++;
+	}
 }
+
 // Draw stuff
 void loadGameScene::Render(GLFWwindow* win)
 {
-	// If camera type is target camera - used for HUD elements - then
-	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
-
-
+	// Calculate hud view*projection
+	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
+	// Set depth range, for HUD style rendering effect
 	glDepthRange(0, 0.01);
-
-	//windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
-	//textureShader->Update(loadGameTransform, hudVP);
-	//windowMgr::getInstance()->meshes.at(0)->Draw();
-
+	// Render all meshes & their textures
+	// iter limit is slightly magic - number of meshes this scene requires
 	for (int i = 0; i < 10; i++)
 	{
 		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-		textureShader->Update(loadGameTransform, hudVP);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(i)->Draw();
 	}
-
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
@@ -174,7 +346,7 @@ void loadGameScene::Render(GLFWwindow* win)
 	glDepthRange(0, 1.0);
 
 	// Bind texture shader
-	textureShader->Bind();
+	windowMgr::getInstance()->textureShader->Bind();
 
 	glfwSwapBuffers(win);
 	glfwPollEvents();

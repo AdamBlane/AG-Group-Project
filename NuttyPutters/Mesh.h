@@ -37,13 +37,9 @@ public:
 		PLANE,
 		BOX,
 		CUBOID,
-		SKYBOX,
-		GOLF_HOLE_GROUND
+		SKYBOX
 	};
-	
-	//General constructor -> not used at the moment
-	// TODO - delete if never used
-	Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
+
 
 	//Constructor to load an OBJ file from its file path
 	Mesh(const std::string& fileName);
@@ -69,6 +65,10 @@ public:
 
 	//Texture for this Mesh
 	Texture thisTexture;
+
+	// Skybox texture
+	Texture* skyTex;
+
 	// Setter for mesh texture takes in a pointer to texture
 	void SetTexture(Texture* tex) { thisTexture = *tex; }
 
@@ -77,6 +77,9 @@ public:
 	
 	// Setter for mesh position
 	void SetPos(glm::vec3 pos);
+
+	void SetAsFloor(bool isFloor);
+	void SetAsFluid(bool isFluid);
 
 	bool isThisFloor = false;
 	bool isThisFluid = false;
@@ -89,13 +92,8 @@ public:
 
 
 private:
-	// M - Commented out since it is unimplemented/uneccessary
-	//Mesh(const Mesh& other);
-	//void operator=(const Mesh& other);
 
 	typeShape thisShape = CUBOID;
-
-
 
 	void chooseGeometry();
 
@@ -106,10 +104,6 @@ private:
 	void box();
 	void cuboid();
 	void skyBox();
-
-	//this is broken. DON'T USE IT!!!!
-	void golfHole();
-
 
 	void generateMesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
 
@@ -133,9 +127,6 @@ private:
 						  halfSide2 = side2 / 2.0f;
 						  halfSide3 = side3 / 2.0f;
 						}
-
-	// TODO - What's this for?
-	GLfloat thisHole = 1.4;
 
 	enum
 	{
