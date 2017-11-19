@@ -1,17 +1,19 @@
 #include "tileBuilder.h"
+#include "windowMgr.h"
 #include <time.h>
 #include <random>
 
-Tile::Tile(typeTile desiredType, vec3 newPosition, int obstacleID, string floorTexture, string borderTexture, string bridgeSurroundingTexture)
+Tile::Tile(typeTile desiredType, vec3 newPosition, int obstacleID)
 {
 	//setting tile properties
 	//tilePos = newPosition;
 	srand(time(NULL));
 	transform.getPos() = newPosition;
 	thisObstacleID = obstacleID;
-	this_borderTexture = borderTexture;
-	this_floorTexture = floorTexture;
-	this_bridgeSurroundingTexture = bridgeSurroundingTexture;
+
+	//this_borderTexture = borderTexture;
+	//this_floorTexture = floorTexture;
+	//this_bridgeSurroundingTexture = bridgeSurroundingTexture;
 	thisTile = desiredType;
 
 	if (thisObstacleID != 0)
@@ -68,88 +70,101 @@ void Tile::createTile()
 
 void Tile::startTile()
 {
-	/*Mesh *floor = new Mesh(Mesh::CUBOID, this_floorTexture, tilePos, measures.x, measures.y, measures.z, true);
-	tileContent.push_back(floor);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetScale(measures.x, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetPos(tilePos);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetAsFloor(true);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetTexture(windowMgr::getInstance()->tileTextures["floorGrass"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(0));
 
-	Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
-	tileContent.push_back(border1);
+	//Side border on left
+	windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
 
-	Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
-	tileContent.push_back(border2);
+	//Side border on right
+	windowMgr::getInstance()->tileMeshes.at(2)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(2)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(2));
 
-	Mesh *border3 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)), measures.x - (measures.y * 2), measures.y, measures.y);
-	tileContent.push_back(border3);*/
-
+	//border closing the start tile
+	windowMgr::getInstance()->tileMeshes.at(3)->SetScale(measures.x - (measures.y * 2), measures.y, measures.y);
+	windowMgr::getInstance()->tileMeshes.at(3)->SetPos(vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
+	windowMgr::getInstance()->tileMeshes.at(3)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(3));
 }
 
 void Tile::endTile()
 {
-	//Mesh *floor1 = new Mesh(Mesh::CUBOID, this_floorTexture, vec3(tilePos.x, tilePos.y, tilePos.z + (ballSizeMargin * 2.0)), measures.x, measures.y, ((measures.z - ballSizeMargin) / 2.0), true);
-	//tileContent.push_back(floor1);
+	//Getting mesh 6 and not 0 for end tile as texture applies to all tiles
+	windowMgr::getInstance()->tileMeshes.at(6)->SetScale(measures.x, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(6)->SetPos(tilePos);
+	windowMgr::getInstance()->tileMeshes.at(6)->SetAsFloor(true);
+	windowMgr::getInstance()->tileMeshes.at(6)->SetTexture(windowMgr::getInstance()->tileTextures["grassHole"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(6));
 
-	//Mesh *floor2 = new Mesh(Mesh::CUBOID, this_floorTexture, vec3(tilePos.x, tilePos.y, tilePos.z - (ballSizeMargin * 2.0)), measures.x, measures.y, ((measures.z - ballSizeMargin) / 1.95), true);
-	//tileContent.push_back(floor2);
+	//Side border on left
+	windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
 
-	//Mesh *floor3 = new Mesh(Mesh::CUBOID, this_floorTexture, vec3(tilePos.x - (ballSizeMargin * 2.0), tilePos.y, tilePos.z), ((measures.x - ballSizeMargin) / 1.95), measures.y, ballSizeMargin - 0.1, true);
-	//tileContent.push_back(floor3);
+	//Side border on right
+	windowMgr::getInstance()->tileMeshes.at(2)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(2)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(2));
 
-	//Mesh *floor4 = new Mesh(Mesh::CUBOID, this_floorTexture, vec3(tilePos.x + (ballSizeMargin * 2.0), tilePos.y, tilePos.z), ((measures.x - ballSizeMargin) / 1.95), measures.y, ballSizeMargin - 0.1, true);
-	//tileContent.push_back(floor4);
-
-	///////Trying to set a plane on top of hole to set a texture and pretend it is a circle hole
-
-	//Mesh *holePlane = new Mesh(Mesh::PLANE, this_floorTexture, vec3(tilePos.x, tilePos.y + ((measures.y / 2) + 0.1), tilePos.z), measures.x, true);
-	//tileContent.push_back(holePlane);
-
-	//Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
-	//tileContent.push_back(border1);
-
-	//Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
-	//tileContent.push_back(border2);
-
-	//Mesh *border3 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)), measures.x - (measures.y * 2), measures.y, measures.y);
-	//tileContent.push_back(border3);
-
-	//////Tring to rotate a piece of border to have the texture stretched on same direction as others
-
-	//Mesh *border3 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)), measures.y, measures.y, measures.z - (measures.y * 2));
-	//border3->thisTransform.setRot(glm::vec3(0, Mesh::toRads(90), 0));
-	//tileContent.push_back(border3);
+	//Border on the end tile and corner
+	windowMgr::getInstance()->tileMeshes.at(3)->SetScale(measures.x - (measures.y * 2), measures.y, measures.y);
+	windowMgr::getInstance()->tileMeshes.at(3)->SetPos(vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
+	windowMgr::getInstance()->tileMeshes.at(3)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(3));
 }
 
 void Tile::straightTile()
 {
 	//Create a mesh forming the tile, then add it to a vector of Meshes
-	//Mesh *floor = new Mesh(Mesh::CUBOID, this_floorTexture, tilePos, measures.x, measures.y, measures.z, true);
-	//tileContent.push_back(floor);
 
-	//Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
-	//tileContent.push_back(border1);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetScale(measures.x, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetPos(tilePos);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetAsFloor(true);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetTexture(windowMgr::getInstance()->tileTextures["floorGrass"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(0));
 
-	//Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
-	//tileContent.push_back(border2);
+	//Side border on left
+	windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
 
-
-	//if hasObstacle is true, it calls the obstacle method
-	//if (hasObstacle)
-	//{
-	//	obstacle();
-	//}
+	//Side border on right
+	windowMgr::getInstance()->tileMeshes.at(2)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(2)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(2));
 }
 
 void Tile::sceneryTile()
 {
-	//Create a mesh forming the tile, then add it to a vector of Meshes
-	//Mesh *floor = new Mesh(Mesh::CUBOID, this_floorTexture, tilePos, measures.x, measures.y, measures.z, true);
-	//tileContent.push_back(floor);
+	//Not using mesh 0 but mesh 7 as different texture is used for scenery tile
+	windowMgr::getInstance()->tileMeshes.at(7)->SetScale(measures.x, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(7)->SetPos(tilePos);
+	windowMgr::getInstance()->tileMeshes.at(7)->SetAsFloor(true);
+	windowMgr::getInstance()->tileMeshes.at(7)->SetTexture(windowMgr::getInstance()->tileTextures["grassScenery"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(7));
 }
 
 void Tile::thickerStraightTile()
 {
 	int randomTunnel = randomNumber(0, 2);
 
-	//Mesh *floor = new Mesh(Mesh::CUBOID, this_floorTexture, tilePos, measures.x, measures.y, measures.z, true);
-	//tileContent.push_back(floor);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetScale(measures.x, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetPos(tilePos);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetAsFloor(true);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetTexture(windowMgr::getInstance()->tileTextures["floorGrass"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(0));
 
 	switch (randomTunnel)
 	{
@@ -170,47 +185,86 @@ void Tile::thickerStraightTile()
 
 void Tile::leftTunnel()
 {
-	//Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 3)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 1, measures.y, measures.z);
-	//tileContent.push_back(border1);
+	windowMgr::getInstance()->obstacleMeshes.at(3)->SetScale(((measures.x - ballSizeMargin) / 4) * 1, measures.y, measures.z);
+	windowMgr::getInstance()->obstacleMeshes.at(3)->SetPos(vec3(tilePos.x + ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 3)), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->obstacleMeshes.at(3)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(3));
 
-	//Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 1)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 3, measures.y, measures.z);
-	//tileContent.push_back(border2);
-
+	windowMgr::getInstance()->obstacleMeshes.at(4)->SetScale(((measures.x - ballSizeMargin) / 4) * 3, measures.y, measures.z);
+	windowMgr::getInstance()->obstacleMeshes.at(4)->SetPos(vec3(tilePos.x - ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 1)), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->obstacleMeshes.at(4)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(4));
 }
 
 void Tile::rightTunnel()
 {
-	/*Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 1)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 3, measures.y, measures.z);
-	tileContent.push_back(border1);
+	windowMgr::getInstance()->obstacleMeshes.at(5)->SetScale(((measures.x - ballSizeMargin) / 4) * 3, measures.y, measures.z);
+	windowMgr::getInstance()->obstacleMeshes.at(5)->SetPos(vec3(tilePos.x + ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 1)), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->obstacleMeshes.at(5)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(5));
 
-	Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 3)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 1, measures.y, measures.z);
-	tileContent.push_back(border2);*/
-
+	windowMgr::getInstance()->obstacleMeshes.at(6)->SetScale(((measures.x - ballSizeMargin) / 4) * 1, measures.y, measures.z);
+	windowMgr::getInstance()->obstacleMeshes.at(6)->SetPos(vec3(tilePos.x - ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 3)), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->obstacleMeshes.at(6)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(6));
 }
 
 void Tile::middleTunnel()
 {
-	//Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 2)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 2, measures.y, measures.z);
-	//tileContent.push_back(border1);
+	windowMgr::getInstance()->obstacleMeshes.at(7)->SetScale(((measures.x - ballSizeMargin) / 4) * 2, measures.y, measures.z);
+	windowMgr::getInstance()->obstacleMeshes.at(7)->SetPos(vec3(tilePos.x + ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 2)), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->obstacleMeshes.at(7)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(7));
 
-	//Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 2)), tilePos.y + measures.y, tilePos.z), ((measures.x - ballSizeMargin) / 4) * 2, measures.y, measures.z);
-	//tileContent.push_back(border2);
-
+	windowMgr::getInstance()->obstacleMeshes.at(8)->SetScale(((measures.x - ballSizeMargin) / 4) * 2, measures.y, measures.z);
+	windowMgr::getInstance()->obstacleMeshes.at(8)->SetPos(vec3(tilePos.x - ((ballSizeMargin / 2) + ((((measures.x - ballSizeMargin) / 4) / 2) * 2)), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->obstacleMeshes.at(8)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(8));
 }
 
 void Tile::bridgeTile()
 {
+
+	windowMgr::getInstance()->planeMeshes.at(0)->SetScale(measures.x);
+	windowMgr::getInstance()->planeMeshes.at(0)->SetPos(vec3(tilePos.x, tilePos.y - (measures.y / 3), tilePos.z));
+	windowMgr::getInstance()->planeMeshes.at(0)->SetAsFloor(true);
+	windowMgr::getInstance()->planeMeshes.at(0)->SetTexture(windowMgr::getInstance()->tileTextures["bottomBridge"]);
+	tileContent.push_back(windowMgr::getInstance()->planeMeshes.at(0));
+
 	//Mesh *floor = new Mesh(Mesh::PLANE, this_floorTexture, vec3(tilePos.x, tilePos.y - (measures.y / 3), tilePos.z), measures.x, true);
 	//tileContent.push_back(floor);
+
+
+	windowMgr::getInstance()->planeMeshes.at(1)->SetScale(measures.x);
+	windowMgr::getInstance()->planeMeshes.at(1)->SetPos(tilePos);
+	//windowMgr::getInstance()->planeMeshes.at(1)->SetAsFloor(true);
+	windowMgr::getInstance()->planeMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["waterBridge"]);
+	tileContent.push_back(windowMgr::getInstance()->planeMeshes.at(1));
+
 
 	//Mesh *surrounding = new Mesh(Mesh::PLANE, this_bridgeSurroundingTexture, tilePos, measures.x, false, true);
 	//tileContent.push_back(surrounding);
 
+	windowMgr::getInstance()->obstacleMeshes.at(8)->SetScale(ballSizeMargin, measures.y, measures.z);
+	windowMgr::getInstance()->obstacleMeshes.at(8)->SetPos(tilePos);
+	windowMgr::getInstance()->obstacleMeshes.at(8)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(8));
+
 	//Mesh *bridge = new Mesh(Mesh::CUBOID, this_borderTexture, tilePos, ballSizeMargin, measures.y, measures.z);
 	//tileContent.push_back(bridge);
 
+	windowMgr::getInstance()->tileMeshes.at(9)->SetScale(measures.y, measures.y * 2, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(9)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + (measures.y / 2), tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(9)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(9));
+
 	//Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + (measures.y / 2), tilePos.z), measures.y, measures.y * 2, measures.z);
 	//tileContent.push_back(border1);
+
+	windowMgr::getInstance()->tileMeshes.at(10)->SetScale(measures.y, measures.y * 2, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(10)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + (measures.y / 2), tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(10)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(10));
 
 	//Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + (measures.y / 2), tilePos.z), measures.y, measures.y * 2, measures.z);
 	//tileContent.push_back(border2);
@@ -218,18 +272,30 @@ void Tile::bridgeTile()
 
 void Tile::cornerTile()
 {
-	//Mesh *floor = new Mesh(Mesh::CUBOID, this_floorTexture, tilePos, measures.x, measures.y, measures.z, true);
-	//tileContent.push_back(floor);
 
-	//Mesh *border1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z), measures.y, measures.y, measures.z);
-	//tileContent.push_back(border1);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetScale(measures.x, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetPos(tilePos);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetAsFloor(true);
+	windowMgr::getInstance()->tileMeshes.at(0)->SetTexture(windowMgr::getInstance()->tileTextures["floorGrass"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(0));
 
-	//Mesh *border2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + (measures.y / 2), tilePos.y + measures.y, tilePos.z - ((measures.x - measures.y) / 2)), measures.x - measures.y, measures.y, measures.y);
-	//tileContent.push_back(border2);
+	//Side border on left
+	windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
 
-	//Mesh *border3 = new Mesh(Mesh::BOX, this_borderTexture, vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)), measures.y);
-	//tileContent.push_back(border3);
+	//Border on the end tile and corner
+	windowMgr::getInstance()->tileMeshes.at(4)->SetScale(measures.x - measures.y, measures.y, measures.y);
+	windowMgr::getInstance()->tileMeshes.at(4)->SetPos(vec3(tilePos.x + (measures.y / 2), tilePos.y + measures.y, tilePos.z - ((measures.x - measures.y) / 2)));
+	windowMgr::getInstance()->tileMeshes.at(4)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(4));
 
+	//tiny box for corner
+	windowMgr::getInstance()->tileMeshes.at(5)->SetScale(measures.y, measures.y, measures.y);
+	windowMgr::getInstance()->tileMeshes.at(5)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
+	windowMgr::getInstance()->tileMeshes.at(5)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(5));
 }
 
 int Tile::randomNumber(int min, int max)
@@ -266,21 +332,24 @@ void Tile::obstacle()
 
 void Tile::obstacleCube()
 {
-//	Mesh *cube = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x, tilePos.y + measures.y, tilePos.z), measures.y*2, measures.y, measures.y*2);
-//	tileObstacle.push_back(cube);
+	windowMgr::getInstance()->obstacleMeshes.at(0)->SetScale(measures.y * 2, measures.y, measures.y * 2);
+	windowMgr::getInstance()->obstacleMeshes.at(0)->SetPos(vec3(tilePos.x, tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->obstacleMeshes.at(0)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileObstacle.push_back(windowMgr::getInstance()->obstacleMeshes.at(0));
 
 }
 
 void Tile::obstacleSlalom()
 {
-	//Mesh *bar1 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x - (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z + ballSizeMargin * 2), measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
-	//tileObstacle.push_back(bar1);
+	windowMgr::getInstance()->obstacleMeshes.at(1)->SetScale(measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
+	windowMgr::getInstance()->obstacleMeshes.at(1)->SetPos(vec3(tilePos.x - (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z + ballSizeMargin * 2));
+	windowMgr::getInstance()->obstacleMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileObstacle.push_back(windowMgr::getInstance()->obstacleMeshes.at(1));
 
-	//Mesh *bar2 = new Mesh(Mesh::CUBOID, this_borderTexture, vec3(tilePos.x + (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z - ballSizeMargin * 2), measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
-	//tileObstacle.push_back(bar2);
-
-	////Doesn't work :(
-	//obstacleTransform.getRot().y = Mesh::toRads(90);
+	windowMgr::getInstance()->obstacleMeshes.at(2)->SetScale(measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
+	windowMgr::getInstance()->obstacleMeshes.at(2)->SetPos(vec3(tilePos.x + (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z - ballSizeMargin * 2));
+	windowMgr::getInstance()->obstacleMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileObstacle.push_back(windowMgr::getInstance()->obstacleMeshes.at(2));
 }
 
 //calculation for the scale of a ramp tile, that needs to be a bit longer after rotation
@@ -297,7 +366,7 @@ double Tile::scaleRampTile(double rotationDegrees, double translationY)
 
 double Tile::getYAfterRotation(double degreesOfRotation)
 {
-	//double translationY = (Tile::getDimension().x / 2.0) * tan(Mesh::toRads(degreesOfRotation));
+	//double translationY = (Tile::getDimension().x / 2.0) * tan(Mesh::DegtoRads(degreesOfRotation));
 	double translationY = 0.1;
 	return translationY;
 }
@@ -311,30 +380,30 @@ void Tile::drawTile(Shader* shader, glm::mat4 camera, Shader* waterShader)
 	{
 		if (t->isThisFloor == true)
 		{
-			//t->thisTexture->Bind(0);
+			t->thisTexture.Bind(0);
 
 			//updates the shader with first texture and draws the tile
-			//shader->Update(transform, camera);
-			//t->Draw();
+			shader->Update(transform, camera);
+			t->Draw();
 
 		}
-		else if (t->isThisFluid == true)
-		{
-			/*t->thisTexture->Bind(1);
+		//else if (t->isThisFluid == true)
+		//{
+		//	/*t->thisTexture->Bind(1);
 
 
-			waterShader->Update(transform, camera);
-			t->Draw();*/
-		}
+		//	waterShader->Update(transform, camera);
+		//	t->Draw();*/
+		//}
 		else
 		{
-			//t->thisTexture->Bind(0);
+			t->thisTexture.Bind(0);
 
-			////Update the shader again with new textures
-			//shader->Update(transform, camera);
+			//Update the shader again with new textures
+			shader->Update(transform, camera);
 
-			////Draw borders of tile
-			//t->Draw();
+			//Draw borders of tile
+			t->Draw();
 		}
 	}
 
@@ -342,11 +411,11 @@ void Tile::drawTile(Shader* shader, glm::mat4 camera, Shader* waterShader)
 	{
 		for (auto &o : tileObstacle)
 		{
-			//o->thisTexture->Bind(0);
+			o->thisTexture.Bind(0);
 
-			////updates the shader with texture and draws the obstacle
-			//shader->Update(transform, camera);
-			//o->Draw();
+			//updates the shader with texture and draws the obstacle
+			shader->Update(transform, camera);
+			o->Draw();
 		}
 	}
 
