@@ -38,7 +38,7 @@ public:
 	int savesImagesIndex; // Index to look up textures and seeds
 	int currentPage; // Track which page we're on
 	float pageCount, totalImages; // Number of pages, total images
-
+	 
 	// Input - prevent input code from reocurring every frame button is held
 	bool upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 	int enterCooldown, enterCooldownMax = 300;
