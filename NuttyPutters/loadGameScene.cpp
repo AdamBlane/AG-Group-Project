@@ -11,7 +11,7 @@ loadGameScene::~loadGameScene() { }
 void loadGameScene::Init(GLFWwindow* win)
 {
 	// Set initial button press bools to false
-	upPressed = downPressed = leftPressed = rightPressed = enterPressed = false;
+	upPressed = downPressed = leftPressed = rightPressed = enterPressed = mouseLpressed = false;
 	// Set initial values for navigation variables
 	lastImageSelected = currentImageSelected = savesImagesIndex = enterCooldown =  0;
 	// Set initial current page value
@@ -32,7 +32,7 @@ void loadGameScene::Init(GLFWwindow* win)
 		{
 			float xPos, yPos;
 			xPos = (x*w);
-			yPos = (y*h);
+			yPos = (y*h) + 0.3f;
 			windowMgr::getInstance()->meshes.at(imCount)->SetPos(vec3(xPos, yPos, 0));
 			windowMgr::getInstance()->meshes.at(imCount)->SetScale(w, h);
 			imCount++;
@@ -150,7 +150,6 @@ void loadGameScene::LastPage()
 	}
 }
 
-
 // Resizes the current and last selected image mesh
 void loadGameScene::ResizeCurLastSelected()
 {
@@ -162,6 +161,11 @@ void loadGameScene::ResizeCurLastSelected()
 // Act on input
 void loadGameScene::Input(GLFWwindow* win)
 {
+	// Where is the mouse? 
+	double xPos, yPos;
+	glfwGetCursorPos(win, &xPos, &yPos);
+	//cout << xPos << " : " << yPos << endl;
+
 	// B goes back to main menu screen
 	if (glfwGetKey(win, GLFW_KEY_B))
 	{
@@ -169,10 +173,133 @@ void loadGameScene::Input(GLFWwindow* win)
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 
+	// TESTING MOUSE
+	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+	{
+		mouseLpressed = true;
+	}
+	if (!glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+	{
+		if (mouseLpressed)
+		{
+			// Where is the mouse? 
+			double xPos, yPos;
+			glfwGetCursorPos(win, &xPos, &yPos);
+
+			// If mouse pos falls within button area...
+			// Using hardcoded values since we can't match up coord systems (meshes origin is window centre measured in floats, cursor pos origin it top left measured in pixels)
+			// Left column
+			if (xPos > 214 * windowMgr::getInstance()->width / 1600.0 && xPos < 604)
+			{
+				// Top image mesh
+				if (yPos > 59 && yPos < 276)
+				{
+					lastImageSelected = currentImageSelected;
+					currentImageSelected = 0;
+					savesImagesIndex = (currentPage - 1) * 9;
+					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+				// Middle 
+				else if (yPos > 275 * windowMgr::getInstance()->width / 1600.0 && yPos < 492)
+				{
+					lastImageSelected = currentImageSelected;
+					currentImageSelected = 1;
+					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
+					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+				// Bottom
+				else if (yPos > 491 * windowMgr::getInstance()->width / 1600.0  && yPos < 709)
+				{
+					lastImageSelected = currentImageSelected;
+					currentImageSelected = 2;
+					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
+					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+			} // end for loop first column
+			// Middle column
+			else if (xPos > 604 * windowMgr::getInstance()->width / 1600.0 && xPos < 996)
+			{
+				// Top image mesh
+				if (yPos > 59 && yPos < 276)
+				{
+					lastImageSelected = currentImageSelected;
+					currentImageSelected = 3;
+					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
+					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+				// Middle 
+				else if (yPos > 275 * windowMgr::getInstance()->width / 1600.0 && yPos < 492)
+				{
+					lastImageSelected = currentImageSelected;
+					currentImageSelected = 4;
+					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
+					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+				// Bottom
+				else if (yPos > 491 * windowMgr::getInstance()->width / 1600.0  && yPos < 709)
+				{
+					lastImageSelected = currentImageSelected;
+					currentImageSelected = 5;
+					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
+					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+			} // end for loop middle column
+			  // Right column
+			else if (xPos > 995 * windowMgr::getInstance()->width / 1600.0 && xPos < 1385)
+			{
+				// Top image mesh
+				if (yPos > 59 && yPos < 276)
+				{
+					lastImageSelected = currentImageSelected;
+					currentImageSelected = 6;
+					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
+					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+				// Middle 
+				else if (yPos > 275 * windowMgr::getInstance()->width / 1600.0 && yPos < 492)
+				{
+					lastImageSelected = currentImageSelected;
+					currentImageSelected = 7;
+					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
+					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+				// Bottom
+				else if (yPos > 491 * windowMgr::getInstance()->width / 1600.0  && yPos < 709)
+				{
+					lastImageSelected = currentImageSelected;
+					currentImageSelected = 8;
+					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
+					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					// Resize this and last choice
+					ResizeCurLastSelected();
+				}
+			} // end for loop right column
+			mouseLpressed = false;
+		}
+
+	}
+
+
 	// TESTING SOUND
 	if (glfwGetKey(win, GLFW_KEY_S))
 	{
-		windowMgr::getInstance()->PlayThisSound("menuSelect");
+		//windowMgr::getInstance()->PlayThisSound("menuSelect");
 	}
 
 	// IMAGE MESH NAVIGATION

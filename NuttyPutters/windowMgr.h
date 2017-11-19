@@ -28,23 +28,17 @@ class windowMgr
 		// Track gamestate
 		sceneMgr sceneManager;
 
-		// TODO - what is this? Set pos actually sets height & width?!
-		void set_PosX(int &value) { height = value; }
-		void set_PosY(int &value) { width = value; }
-
 		// Window width and height values
-		int width = 1600, height = 900;
-		// TODO - position of what? 
+		int width, height;
+		// Window offset from top left point of monitor
 		int PosX, PosY;
 		
-
 		// All textures in the game stored here
 		map<std::string, Texture*> textures;
 		// This stores images of saved levels
 		vector<Texture*> savesImages;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
-
 
 		// GAME SCENE UNIQUE MESHES
 		Mesh* player1Mesh;
@@ -82,8 +76,6 @@ class windowMgr
 		void PlayThisSound(string sound); // string is key for sfx map
 		// Actual thread function that plays the sound
 		void ThreadPlaySound(FMOD::System* system, FMOD::Sound* sound);
-
-
 		// Game update loop
 		void Update();
 		// On window close
