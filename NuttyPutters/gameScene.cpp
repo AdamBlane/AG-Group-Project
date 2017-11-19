@@ -86,6 +86,49 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	windowMgr::getInstance()->meshes.at(4)->SetScale(2.0f, 0.25f);
 	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(2.5f, -1.625f, 0.0f));
 	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["powerOutlineLbl"]);
+	// Setup timer values 
+	// Timer first unit
+	windowMgr::getInstance()->meshes.at(5)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(2.8f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+	// Timer second unit
+	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(2.95f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+	// Timer third unit
+	windowMgr::getInstance()->meshes.at(7)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.15f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+	// Timer forth unit
+	windowMgr::getInstance()->meshes.at(8)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(3.3f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
+	// Timer semi colon
+	windowMgr::getInstance()->meshes.at(9)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(3.05f, 1.725f, 0.0f));
+	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["semiColonLbl"]);
+	// End Game HUDs
+	// Centre Header one 
+	windowMgr::getInstance()->meshes.at(10)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, 0.75f, 0.0f));
+	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["parFourLbl"]);
+	// Centre Header two 
+	windowMgr::getInstance()->meshes.at(11)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(0.0f, 0.25f, 0.0f));
+	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["timeTwoLbl"]);
+	// Centre Footer one 
+	windowMgr::getInstance()->meshes.at(12)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(0.0f, -0.25f, 0.0f));
+	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["semiColonLbl"]);
+	// Centre Footer two 
+	windowMgr::getInstance()->meshes.at(13)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(0.0f, -0.75f, 0.0f));
+	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["xContinueLbl"]);
+
+	// Splash Screen
+	windowMgr::getInstance()->meshes.at(19)->SetScale(8.0f, 5.0f);
+	windowMgr::getInstance()->meshes.at(19)->SetPos(vec3(0.0f, 0.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(19)->SetTexture(windowMgr::getInstance()->textures["gameSplashScreen"]);
 
 	// Set the amount of time the user has to complete the hole
 	holeTimer = 80;
@@ -573,8 +616,6 @@ void gameScene::SetupTilesToBeDrawn()
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
-
-
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -590,7 +631,6 @@ void gameScene::Loop(GLFWwindow* window)
 
 	// Render
 	Render(window);
-
 }
 
 // Act on input
@@ -691,6 +731,12 @@ void gameScene::Input(GLFWwindow* window)
 		cameraType = 1;
 	}
 
+	// If the X button is pressed then continue on with game -used for HUD elements
+	if (glfwGetKey(window, GLFW_KEY_X))
+	{
+		continuePressed = true;
+	}
+
 	// FREE CAM controls
 	if (cameraType == 0)
 	{
@@ -785,51 +831,55 @@ void gameScene::Input(GLFWwindow* window)
 	}
 
 	// PLAYER
-	// If P is pressed 
-	if (glfwGetKey(window, GLFW_KEY_SPACE))
+	// Only allow ball movement if continue has been pressed
+	if (continuePressed)
 	{
-		if (!golfBallMoving)
+		// If P is pressed 
+		if (glfwGetKey(window, GLFW_KEY_SPACE))
 		{
-			// Start counter
-			Pcounter += 0.5f;
-			// Update the power bar based on the the Pcounter value 
-			//powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
+			if (!golfBallMoving)
+			{
+				// Start counter
+				Pcounter += 0.5f;
+				// Update the power bar based on the the Pcounter value 
+				//powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
 
-		//	powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
-			//powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
+			//	powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
+				//powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
 
+				//############################### CODE FOR POWER BAR WILL GO HERE ########################
 
-			// SET DIRECTION BASED ON CHASE CAM ANGLE
-			// If camera angle is between 0 and 90
-			if (chaseCamAngle > 0 && chaseCamAngle < 1.5708)
-			{
-				// Update the golf ball position and the arrow position
-				// x = -sin(theta), z = cos(theta)
-				// Separate below statement into direction = vec3(-sin, 0, cos) (normalise)		
-				gbDirection = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
+				// SET DIRECTION BASED ON CHASE CAM ANGLE
+				// If camera angle is between 0 and 90
+				if (chaseCamAngle >= 0 && chaseCamAngle < 1.5708)
+				{
+					// Update the golf ball position and the arrow position
+					// x = -sin(theta), z = cos(theta)
+					// Separate below statement into direction = vec3(-sin, 0, cos) (normalise)		
+					gbDirection = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
+				}
+				// If camera angle is between 90 and 180
+				else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
+				{
+					// x = -cos(theta - 90), z = -sin(theta - 90)
+					gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
+				}
+				// If camera angle is between 180 and 270
+				else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
+				{
+					// x = sin(theta - 180), z = -cos(theta - 180)
+					gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
+				}
+				// If camera angle is anything else
+				else if (chaseCamAngle > 4.724 && chaseCamAngle <= 6.28319)
+				{
+					// x = cos(theta - 270), z = sin(theta- 270)
+					gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
+				}
+				pPressed = true;
 			}
-			// If camera angle is between 90 and 180
-			else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
-			{
-				// x = -cos(theta - 90), z = -sin(theta - 90)
-				gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
-			}
-			// If camera angle is between 180 and 270
-			else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
-			{
-				// x = sin(theta - 180), z = -cos(theta - 180)
-				gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
-			}
-			// If camera angle is anything else
-			else if (chaseCamAngle > 4.724 && chaseCamAngle < 6.28319)
-			{
-				// x = cos(theta - 270), z = sin(theta- 270)
-				gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
-			}
-			pPressed = true;
 		}
 	}
-
 	// When P is realesed
 	if ((glfwGetKey(window, GLFW_KEY_SPACE)) == false)
 	{
@@ -848,9 +898,6 @@ void gameScene::Input(GLFWwindow* window)
 			//	powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
 				//powerBarTrans.getPos().x -= Pcounter / 100.0f;
 				//powerBarTrans.getScale().x -= Pcounter / 5.0f;
-				//windowMgr::getInstance()->meshes.at(3)->SetPos += (Pcounter / 5.0f) * windowMgr::getInstance()->meshes.at(3)->GetGeomPos().x;
-				//windowMgr::getInstance()->meshes.at(3)->SetPos -= Pcounter / 100.0f;
-				//windowMgr::getInstance()->meshes.at(3)->SetScale -= Pcounter / 5.0f;
 				//Decrease Pcounter until reaches 0
 				Pcounter -= 0.5;
 			}
@@ -860,8 +907,7 @@ void gameScene::Input(GLFWwindow* window)
 			// Switch statement which changes the stroke counter based on how many strokes the player has taken
 			switch (strokeCounter)
 			{
-			case 0:
-				
+			case 0:	
 				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["zeroStrokeLbl"]);
 				break;
 			case 1:
@@ -901,7 +947,12 @@ void gameScene::Input(GLFWwindow* window)
 				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["twelveStrokeLbl"]);
 				break;
 			case 13:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["xStrokeLbl"]);
+				// If more than 13 strokes have been taken then update necessary textures and set boolean to true
+				windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["outOfLbl"]);
+				windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["outOfStrokesLbl"]);
+				windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["saveGameLbl"]);
+				windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
+				isUserOutOfStrokes = true;
 				break;
 			}
 
@@ -986,8 +1037,159 @@ void gameScene::Update(GLFWwindow* window)
 	player1Transform.getPos() += gbVelocity;
 	arrowTransform.getPos() += gbVelocity;	
 
-}
+	// TIMER RELATED INFORMATION
+	// If the time been in scene is equal to zero then
+	if (timeBeenInScene == 0)
+	{
+		// Get the amount of time been in scene
+		timeBeenInScene = glfwGetTime();
+	}
+	// Increment time Counter - used for splash screen
+	timeCounter++;
 
+	// If the continue button is pressed 
+	if (continuePressed)
+	{
+		// If the time taken to reach this method is zero then
+		if (timeToThisMethod == 0)
+		{
+			// Get the time to this method
+			timeToThisMethod = glfwGetTime();
+		}
+		// Get the time since continue was pressed by taking away the time to this method 
+		timeSinceContinueWasPressed = glfwGetTime() - timeToThisMethod;
+		// Get the time remaining in seconds by taking away the time the user has to complete the hole 
+		timeRemainingInSeconds = holeTimer - timeSinceContinueWasPressed;
+		// Get the time in minutes, tenths and seconds - 0M:TS
+		timeRemainingInMinutes = timeRemainingInSeconds / 60;
+		timeRemainingInTenths = (timeRemainingInSeconds - (timeRemainingInMinutes * 60)) / 10;
+		timeRemainingInSeconds = timeRemainingInSeconds - (timeRemainingInMinutes * 60) - (timeRemainingInTenths * 10);
+		//cout << "Mins and secs: " << timeRemainingInMinutes << " " << timeRemainingInTenths << " " << timeRemainingInSeconds << endl;
+
+		// Switch statements which update the minutes, tenths and seconds meshes
+		switch (timeRemainingInMinutes)
+		{
+		case 0:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+			break;
+		case 1:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
+			break;
+		case 5:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
+			break;
+		case 6:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
+			break;
+		case 7:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
+			break;
+		case 8:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
+			break;
+		case 9:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
+			break;
+		default:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+			break;
+		}
+
+		switch (timeRemainingInTenths)
+		{
+		case 0:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+			break;
+		case 1:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
+			break;
+		case 5:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
+			break;
+		case 6:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
+			break;
+		case 7:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
+			break;
+		case 8:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
+			break;
+		case 9:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
+			break;
+		default:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+			break;
+		}
+
+		switch (timeRemainingInSeconds)
+		{
+		case 0:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+			break;
+		case 1:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
+			break;
+		case 5:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
+			break;
+		case 6:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
+			break;
+		case 7:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
+			break;
+		case 8:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
+			break;
+		case 9:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
+			break;
+		default:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+			break;
+		}
+		// If user has no time remaining then
+		if (timeRemainingInSeconds < 0)
+		{
+			// Update necessary textures
+			windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["outOfLbl"]);
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["outOfTimeLbl"]);
+			windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["saveGameLbl"]);
+			windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
+			// Update boolean - used for rendering
+			isUserOutOfTime = true;
+		}
+	}
+}
 
 // Tracks current tile player is on (TODO improve performance)
 // Calls collision checking code of tile player is on
@@ -1147,6 +1349,22 @@ void gameScene::Collisions()
 			end.outDir = algTiles.at(currentTile).outDir;
 			gbDirection = end.CheckCollisions(player1Transform.getPos(), gbDirection, speed);
 
+			// If user hasnt completed hole then - get
+			if (!hasUserCompletedHole)
+			{
+				// If ball in hole is equal to true - function to courseGenTiles
+				if(end.getBallInHole());
+				{
+					// Update boolean to user having completed the hole
+					hasUserCompletedHole = true;
+					// Update necessary textures
+					windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["holeLbl"]);
+					windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["completeLbl"]);
+					windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["saveGameLbl"]);
+					windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
+				}
+			}
+
 			break;
 		}
 	}
@@ -1221,38 +1439,44 @@ void gameScene::Render(GLFWwindow* window)
 	// If camera type is target camera - used for HUD elements - then
 
 	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
+
 	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	// Bind, update and draw the stroke label HUD
-	//strokeLabelMesh->thisTexture->Bind(0);
-	//textureShader->Update(strokeLabelTrans, hudVP);
-	//strokeLabelMesh->Draw();
-	// Bind, update and draw the player label HUD
-	//playerLabelMesh->thisTexture->Bind(0);
-	//textureShader->Update(playerLabelTrans, hudVP);
-	//playerLabelMesh->Draw();
-	//// Bind, update and draw the power label HUD
-	////powerLabelMesh->thisTexture->Bind(0);
-	//textureShader->Update(powerLabelTrans, hudVP);
-	//powerLabelMesh->Draw();
-	//// Bind, update and draw the power bar HUD
-	////powerBarMesh->thisTexture->Bind(0);
-	//textureShader->Update(powerBarTrans, hudVP);
-	//powerBarMesh->Draw();
-	//// Bind, update and draw the power bar outline HUD
-	////powerBarOutlineDisplayMesh->thisTexture->Bind(0);
-	//textureShader->Update(powerBarOutlineDisplayTrans, hudVP);
-	//powerBarOutlineDisplayMesh->Draw();
-
-	// For loop which goes through all 10 HUD elements and binds, updates anbd draws the meshes.
-	for (int i = 0; i < 5; i++)
+	// If timeCounter - which is a variable that increases as of when the scene has loaded is less than the time been in scene + a value that can be changed then
+	if (timeCounter < timeBeenInScene + 300)
 	{
-		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+		// Display splash screen
+		windowMgr::getInstance()->meshes.at(19)->thisTexture.Bind(0);
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(i)->Draw();
+		windowMgr::getInstance()->meshes.at(19)->Draw();
 	}
+
+	// If user has completed the hole or if the continue button hasnt been pressed of if the user has run out of time or if the user has run out of strokes
+	if (hasUserCompletedHole || !continuePressed || isUserOutOfTime || isUserOutOfStrokes)
+	{
+		// For loop which goes through all the information elements and binds, updates and draws them.
+		for (int i = 10; i < 14; i++)
+		{
+			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->meshes.at(i)->Draw();
+		}
+	}
+	// Else then display remaining gameplay HUDs
+	else
+	{
+		// For loop which goes through all 10 HUD elements and binds, updates anbd draws the meshes.
+		for (int i = 0; i < 10; i++)
+		{
+			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->meshes.at(i)->Draw();
+		}
+	}
+
+	
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
@@ -1277,8 +1501,6 @@ void gameScene::Render(GLFWwindow* window)
 		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	}
 
-
-
 	// Render player 1
 	windowMgr::getInstance()->textures["playerRedTexture"]->Bind(0);
 	windowMgr::getInstance()->textureShader->Update(player1Transform, mvp);
@@ -1298,7 +1520,6 @@ void gameScene::Render(GLFWwindow* window)
 	if (!golfBallMoving)
 	{
 		// Draw the arrow
-		//arrowMesh->Draw();
 		windowMgr::getInstance()->arrowMesh->Draw();
 	}
 
