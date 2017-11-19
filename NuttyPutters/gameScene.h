@@ -43,7 +43,26 @@ public:
 	int courseSize; // Total number of tiles this level
 	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
 
-	
+	// Gameplay variables
+	int timeBeenInScene = 0; // Time from when the scene is fully loaded
+	int timeCounter = 0;
+	int strokeCounter = 0; // Counts the amount of strokes the player takes
+	bool continuePressed = false; // Variable used to see if the user has pressed a key - used for HUDs
+	int holeTimer = 0; // The amount time the user to get the ball in the hole
+	int timeRemainingInSeconds = 0, timeRemainingInTenths = 0, timeRemainingInMinutes = 0;
+	int timeSinceContinueWasPressed;  // The time since the user has pressed the continue button
+	bool hasUserCompletedHole = false; // Boolean which tells the game if the user has completed the hole
+	bool hasUserCompletedHoleTextures = false; // Boolean which tells the game to update the textures based on if the user has completed the hole
+	bool isUserOutOfTime = false; // Boolean which tells the game if they are out of time
+	bool isUserOutOfStrokes = false; // Boolean which tells the game if they are out of strokes
+	int timeToThisMethod = 0; // Time to this method - used for countdown HUD
+
+	// Player information
+	int selectedDifficulty = 1; // The selected difficulty on the player select screen
+	int selectedPlayers = 1; // The amount of players selected on the player select screen
+	int playerOneShots = 0; // The amount of shots users one has taken
+	int playerTwoShots = 0; // The amount of shots uer two has taken
+
 	// Spatial (tile!) partitioning - tracks which tile player is currently on		
 	int currentTile = 0; 
 	// Track fps to give dt
@@ -57,7 +76,7 @@ public:
 
 	// Camera variables
 	float camSpeed = 2.0f; 
-	float chaseCamAngle, cameraType; // for switching between free/chase cam
+	float chaseCamAngle, cameraType = 1; // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)
 	double cursor_x, cursor_y = 0.0; 
 

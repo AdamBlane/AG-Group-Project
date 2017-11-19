@@ -65,37 +65,30 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
 	windowMgr::getInstance()->freeCam->set_Target(vec3(0, 0, 0));
 	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));
-
-	// Setup the various HUD elements
-	// Player HUD Labelsetup
-	//playerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\playerone.jpg", vec3(-2.75, 1.5, 0.0), 1.0f, 0.25f);
-	// Power HUD Label setup
-	//powerLabelMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\power.jpg", vec3(3.0, -1.375, 0.0), 1.0f, 0.25f);
-	// Power Bar Outline HUD setup
-	//powerBarOutlineDisplayMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\powerbar.jpg", vec3(2.5, -1.625, 0.0), 2.0f, 0.25f);
-	// Power Bar HUD setup
-	//powerBarMesh = new Mesh(Mesh::RECTANGLE, "..\\NuttyPutters\\ballBlue.jpg", vec3(1.6, -1.625, 0.0), 0.1f, 0.15f);
 	
 	// Stroke HUD Label setup
 	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["strokeLbl"]);
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["zeroStrokeLbl"]);
 	// Player HUD Labelsetup
 	windowMgr::getInstance()->meshes.at(1)->SetScale(1.0f, 0.25f);
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.75f, 1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["playerLbl"]);
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["playerOneLbl"]);
 	// Power HUD Label setup
 	windowMgr::getInstance()->meshes.at(2)->SetScale(1.0f, 0.25f);
 	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(3.0f, -1.375f, 0.0f));
 	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
-	// Power Bar Outline HUD setup
-	windowMgr::getInstance()->meshes.at(3)->SetScale(2.0f, 0.25f);
-	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(2.5f, -1.625f, 0.0f));
-	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerOutlineLbl"]);
 	// Power Bar HUD setup
-	windowMgr::getInstance()->meshes.at(4)->SetScale(0.1f, 0.15f);
-	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(1.6f, -1.625f, 0.0f));
-	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]);
+	windowMgr::getInstance()->meshes.at(3)->SetScale(0.1f, 0.15f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(1.6f, -1.625f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]);
+	// Power Bar Outline HUD setup
+	windowMgr::getInstance()->meshes.at(4)->SetScale(2.0f, 0.25f);
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(2.5f, -1.625f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["powerOutlineLbl"]);
+
+	// Set the amount of time the user has to complete the hole
+	holeTimer = 80;
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -855,8 +848,61 @@ void gameScene::Input(GLFWwindow* window)
 			//	powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
 				//powerBarTrans.getPos().x -= Pcounter / 100.0f;
 				//powerBarTrans.getScale().x -= Pcounter / 5.0f;
+				//windowMgr::getInstance()->meshes.at(3)->SetPos += (Pcounter / 5.0f) * windowMgr::getInstance()->meshes.at(3)->GetGeomPos().x;
+				//windowMgr::getInstance()->meshes.at(3)->SetPos -= Pcounter / 100.0f;
+				//windowMgr::getInstance()->meshes.at(3)->SetScale -= Pcounter / 5.0f;
 				//Decrease Pcounter until reaches 0
 				Pcounter -= 0.5;
+			}
+			// Increment stroke counter by one
+			strokeCounter += 1;
+
+			// Switch statement which changes the stroke counter based on how many strokes the player has taken
+			switch (strokeCounter)
+			{
+			case 0:
+				
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["zeroStrokeLbl"]);
+				break;
+			case 1:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["oneStrokeLbl"]);
+				break;
+			case 2:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["twoStrokeLbl"]);
+				break;
+			case 3:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["threeStrokeLbl"]);
+				break;
+			case 4:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["fourStrokeLbl"]);
+				break;
+			case 5:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["fiveStrokeLbl"]);
+				break;
+			case 6:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["sixStrokeLbl"]);
+				break;
+			case 7:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["sevenStrokeLbl"]);
+				break;
+			case 8:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["eightStrokeLbl"]);
+				break;
+			case 9:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["nineStrokeLbl"]);
+				break;
+			case 10:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["tenStrokeLbl"]);
+				break;
+			case 11:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["elevenStrokeLbl"]);
+				break;
+			case 12:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["twelveStrokeLbl"]);
+				break;
+			case 13:
+				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["xStrokeLbl"]);
+				break;
 			}
 
 			// Flip
