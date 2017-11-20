@@ -31,10 +31,11 @@ public:
 	Transform optionSceneTransform;
 
 	// Buttons 
-	bool aButtonPressed = false;
-	bool xButtonPressed = false;
-	bool bButtonPressed = false;
-	bool yButtonPressed = false;
+	//bool aButtonPressed = false;
+	bool buttonPressed[17] = { false };
+	//bool xButtonPressed = false;
+	//bool bButtonPressed = false;
+	//bool yButtonPressed = false;
 	bool isFunctionEmpty = false;
 	int temp = 0;
 

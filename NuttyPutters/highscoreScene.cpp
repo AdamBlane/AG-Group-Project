@@ -185,105 +185,101 @@ void highscoreScene::Input(GLFWwindow* win)
 		const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
 
 		// Print map - for testing
-		//for (int functions = 0; functions < windowMgr::getInstance()->buttonValues.size(); functions++)
-		//{
-		//	cout << "Function: " << functions << " at: " << windowMgr::getInstance()->buttonValues.at(functions) << endl;
-		//}
+		for (int functions = 0; functions < windowMgr::getInstance()->buttonValues.size(); functions++)
+		{
+			cout << "Function: " << functions << " at: " << windowMgr::getInstance()->buttonValues.at(functions) << endl;
+		}
 
 		// Remappign controls
-		// If A/Square is pressed
-		if (GLFW_PRESS == buttons[0])
+		// For loop which checks to see if buttons are pressed
+		for (int i = 0; i < 17; i++)
 		{
-			aButtonPressed = true;
-		}
-		// If A Button bool is true and A button is not being pressed then 
-		if (aButtonPressed && !GLFW_PRESS == buttons[0])
-		{
-			// Loop through all the entries in the buttonVlaues map
-			for (const auto& keyval : windowMgr::getInstance()->buttonValues) // Look at each key-value pair
+			// If button i is pressed then set corresponding boolean to true
+			if (GLFW_PRESS == buttons[i])
 			{
-				// If A/Square is assigned to a function then
-				if (keyval.second == 0) // If the value is 0...
+				buttonPressed[i] = true;
+			}
+		}
+
+		// For all buttons 
+		for (int i = 0; i < 17; i++)
+		{
+			// If i Button bool is true and i button is not being pressed then 
+			if (buttonPressed[i] && !GLFW_PRESS == buttons[i])
+			{
+				// Loop through all the entries in the buttonVlaues map
+				for (const auto& keyval : windowMgr::getInstance()->buttonValues) // Look at each key-value pair
 				{
-					// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-					windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-					windowMgr::getInstance()->buttonValues.at(keyval.first) = 99;
-					// Set is Function Empty to true
-					isFunctionEmpty = true;
-					// Break out of for loop
-					break;
-				}
-				// If A/Square is not assigned to a function then 
-				else
-				{
-					// If there is an empty function then
-					if (isFunctionEmpty)
+					// If i is assigned to a function then ie second value then
+					if (keyval.second == i) 
 					{
-						// Find the empty function - equal to 99 means no button is assigned to the button
-						if (keyval.second == 99)
+						// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+						windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+						windowMgr::getInstance()->buttonValues.at(keyval.first) = 99;
+						// Set is Function Empty to true
+						isFunctionEmpty = true;
+						// Break out of for loop
+						break;
+					}
+					// If i is not assigned to a function then 
+					else
+					{
+						// If there is an empty function then
+						if (isFunctionEmpty)
 						{
-							// Set the second value to A/Square
-							windowMgr::getInstance()->buttonValues.at(keyval.first) = 0;
-							windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["aButtonLbl"]);
-							// Reset the is Function Empty to false
-							isFunctionEmpty = false;
+							// Find the empty function - equal to 99 means no button is assigned to the button
+							if (keyval.second == 99)
+							{
+								// Set the second value to i
+								windowMgr::getInstance()->buttonValues.at(keyval.first) = i;
+								windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["aButtonLbl"]);
+								// Reset the is Function Empty to false
+								isFunctionEmpty = false;
+							}
 						}
 					}
 				}
+				// Reset button pressed
+				buttonPressed[i] = false;
 			}
-			aButtonPressed = false;
-		}
 
-		// If B/X(PS) is pressed
-		if (GLFW_PRESS == buttons[1])
-		{
-			bButtonPressed = true;
-		}
-
-		if(bButtonPressed && !GLFW_PRESS == buttons[1])
-		{
-			// Loop through all the entries in the buttonVlaues map
-			for (const auto& keyval : windowMgr::getInstance()->buttonValues) // Look at each key-value pair
-			{
-				// If B/X(PS) is assigned to a function then
-				if (keyval.second == 1) // If the value is 0...
-				{
-					// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-					windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-					windowMgr::getInstance()->buttonValues.at(keyval.first) = 99;
-					// Set is Function Empty to true
-					isFunctionEmpty = true;
-					// Break out of for loop
-					break;
-				}
-				// If B/X(PS) is not assigned to a function then 
-				else
-				{
-					// If there is an empty function then
-					if (isFunctionEmpty)
-					{
-						// Find the empty function - equal to 99 means no button is assigned to the button
-						if (keyval.second == 99)
-						{
-							// Set the second value to B/X(PS)
-							windowMgr::getInstance()->buttonValues.at(keyval.first) = 1;
-							windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["bButtonLbl"]);
-							// Reset the is Function Empty to false
-							isFunctionEmpty = false;
-						}
-					}
-				}
-			}
-			bButtonPressed = false;
-		}
-
-		if (GLFW_PRESS == buttons[2])
-		{
-			cout << "X(Xbox)/Circle button pressed" << endl;
-		}
-		if (GLFW_PRESS == buttons[3])
-		{
-			cout << "Y/Triangle button pressed" << endl;
+			// If B Button bool is true and A button is not being pressed then 
+			//if (bButtonPressed && !GLFW_PRESS == buttons[1])
+			//{
+			//	// Loop through all the entries in the buttonVlaues map
+			//	for (const auto& keyval : windowMgr::getInstance()->buttonValues) // Look at each key-value pair
+			//	{
+			//		// If B/X(PS) is assigned to a function then
+			//		if (keyval.second == 1) // If the value is 0...
+			//		{
+			//			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+			//			windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+			//			windowMgr::getInstance()->buttonValues.at(keyval.first) = 99;
+			//			// Set is Function Empty to true
+			//			isFunctionEmpty = true;
+			//			// Break out of for loop
+			//			break;
+			//		}
+			//		// If B/X(PS) is not assigned to a function then 
+			//		else
+			//		{
+			//			// If there is an empty function then
+			//			if (isFunctionEmpty)
+			//			{
+			//				// Find the empty function - equal to 99 means no button is assigned to the button
+			//				if (keyval.second == 99)
+			//				{
+			//					// Set the second value to B/X(PS)
+			//					windowMgr::getInstance()->buttonValues.at(keyval.first) = 1;
+			//					windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["bButtonLbl"]);
+			//					// Reset the is Function Empty to false
+			//					isFunctionEmpty = false;
+			//				}
+			//			}
+			//		}
+			//	}
+			//	bButtonPressed = false;
+			//}
 		}
 	}
 }
