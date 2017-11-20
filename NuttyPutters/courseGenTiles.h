@@ -18,6 +18,7 @@ public:
 	~Direction() {};
 };
 
+
 // Tiles have a number id
 // Start - 0
 // Straight_V - 1
@@ -33,7 +34,8 @@ class BaseTile
 {
 public:
 	// This tile's position, the next tile's position
-	vec3 thisCoords, nextCoords;
+	vec3 thisCoords;
+	vec3 nextCoords;
 	// Each tile is identified by a number
 	int id;
 	// Tiles have a size (10x10 currently)
@@ -45,10 +47,13 @@ public:
 	// Direction of travel once this tile is placed
 	Direction outDir;
 	// Accessor/Mutator of positions
-	void SetCoords(vec3 coords) { thisCoords = coords; }
-	void SetNextCoords(vec3 coords) { nextCoords = coords; }
-	vec3 GetNextCoords() { return nextCoords; }
-	vec3 GetThisCoords() { return thisCoords; }
+	void SetCoords(vec3 coords);
+	void SetNextCoords(vec3 coords); 
+	vec3 GetNextCoords();
+	vec3 GetThisCoords();
+
+	// Forward declare player struct
+	struct player;
 
 	// Returns true if player is within tile bounds
 	bool isPlayerOnTile(vec3 playerPos)
@@ -82,41 +87,38 @@ public:
 	}
 	~StartTile() {};
 
-
 	
-
-
 	// Checks whether player has hit boundaries of this tile
-	vec3 CheckCollisions(vec3 playerPos, vec3 dir)
+	player CheckCollisions(player player)
 	{
-	
 		// Check on X axis - boundaries either side
-		if (playerPos.x > thisCoords.x + (4 - radius)) 
+		if (player.transform.getPos().x > thisCoords.x + (4 - radius))
 		{
+			// Move away from boundary so as not to retrigger this
+			player.transform.getPos().x = thisCoords.x;
 			// Hit boundary, revert x axis
-			dir.x = -dir.x;
-			// Move away from boundary so as not to retrigger this
-			playerPos.x -= displace;
+			player.direction.x = -player.direction.x;
 		}
-		else if (playerPos.x < thisCoords.x - (4 - radius))
+		else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 		{
-			// Hit boundary, reflect on x
-			dir.x = -dir.x;
 			// Move away from boundary so as not to retrigger this
-			playerPos.x += displace;
+			player.transform.getPos().x = thisCoords.x;
+			// Hit boundary, reflect on x
+			player.direction.x = -player.direction.x;
 		}
 		// Check on z axis - just one boundary
-		if (playerPos.z < thisCoords.z - (4 - radius))
+		if (player.transform.getPos().z < thisCoords.z - (4 - radius))
 		{
-			// hit, revert z axis
-			dir.z = -dir.z;
 			// Move away from boundary so as not to retrigger this
-			playerPos.z += displace;
+			player.transform.getPos().z = thisCoords.z;
+			// hit, revert z axis
+			player.direction.z = -player.direction.z;
+
 		}
 
-		return dir;
+		return player;
 	}
-
+	
 };
 
 // Straight vertical tile

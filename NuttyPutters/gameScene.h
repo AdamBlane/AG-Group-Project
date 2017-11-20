@@ -12,7 +12,7 @@
 #include <gdiplusimaging.h>
 
 // Internals
-#include "courseGenV2.h"
+
 #include "Shader.h"
 #include "Mesh.h"
 #include "Texture.h"
@@ -44,6 +44,7 @@ public:
 	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
 
 	// Gameplay variables
+	// TODO - set these in init to be safe (sometimes not reset in other scenes)
 	int timeBeenInScene = 0; // Time from when the scene is fully loaded
 	int timeCounter = 0;
 	int strokeCounter = 0; // Counts the amount of strokes the player takes
@@ -85,14 +86,22 @@ public:
 	vec3 pauseCamPos, pauseCamTarget;
 
 
-
+	struct player
+	{
+		Transform transform;
+		Transform arrowTransform;
+		vec3 direction;
+		vec3 velocity;
+		float speed;
+		bool isMoving = false;
+	} player1, player2;
 	// Player variables
-	Transform player1Transform, arrowTransform;
-	// TODO - will need to rename dir & vel to p1Vel, p2vel etc
-	vec3 gbDirection; // Normalised direction vector
-	vec3 gbVelocity; // Velocity is dir * speed	
-	bool golfBallMoving = false; // Is golf ball moving
-	float speed; // Ball speed
+	//Transform player1Transform, arrowTransform;
+	//// TODO - will need to rename dir & vel to p1Vel, p2vel etc
+	//vec3 gbDirection; // Normalised direction vector
+	//vec3 gbVelocity; // Velocity is dir * speed	
+	//bool golfBallMoving = false; // Is golf ball moving
+	//float speed; // Ball speed
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)

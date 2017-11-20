@@ -1,8 +1,9 @@
-// Externals
-
 // Internals
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
+#include "courseGenV2.h"
+
+
 
 // Default constructor
 gameScene::gameScene() { }
@@ -49,21 +50,26 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\front.png");	//negz
 	sky = new Mesh(filenames);
 
-
+	
 	// Setup player position (must use transform as it's a loaded model - not drawn)
-	player1Transform.getScale() = vec3(0.5);
-	player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
+	//player1Transform.getScale() = vec3(0.5);
+	//player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
+	player1.transform.getScale() = vec3(0.5);
+	player1.transform.getPos() = vec3(0.0, 1.0, 0.0);
 
 	// Arrow
-	arrowTransform.getScale() = vec3(0.5);
-	arrowTransform.getPos() = vec3(player1Transform.getPos().x, player1Transform.getPos().y - 1.6, player1Transform.getPos().z);
+	//arrowTransform.getScale() = vec3(0.5);
+	//arrowTransform.getPos() = vec3(player1Transform.getPos().x, player1Transform.getPos().y - 1.6, player1Transform.getPos().z);
 	windowMgr::getInstance()->arrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]); //?
+	player1.arrowTransform.getScale() = vec3(0.5);
+	player1.arrowTransform.getPos() = vec3(player1.transform.getPos().x, player1.transform.getPos().y - 1.6, player1.transform.getPos().z);
 
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
 	windowMgr::getInstance()->freeCam->set_Target(vec3(0, 0, 0));
-	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));	
+	//windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));	
+	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1.transform.getPos()));
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamPos);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamTarget);
 
@@ -800,7 +806,7 @@ void gameScene::Input(GLFWwindow* window)
 	else if (cameraType == 1)
 	{
 		// If ball is not moving then allow for angle on chase camera to be changed
-		if (!golfBallMoving)
+		if (!player1.isMoving) // was previously !golfBallMoving
 		{
 			// controls in the chase camera 
 			if (glfwGetKey(window, GLFW_KEY_D))
@@ -819,11 +825,13 @@ void gameScene::Input(GLFWwindow* window)
 		}
 		if (glfwGetKey(window, GLFW_KEY_S))
 		{
-			windowMgr::getInstance()->chaseCam->neg_pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
+			windowMgr::getInstance()->chaseCam->neg_pitch_it(camSpeed * dt * 0.5, player1.transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
+			//windowMgr::getInstance()->chaseCam->neg_pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_W))
 		{
-			windowMgr::getInstance()->chaseCam->pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
+			windowMgr::getInstance()->chaseCam->pitch_it(camSpeed * dt * 0.5, player1.transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
+			//windowMgr::getInstance()->chaseCam->pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_Q))
 		{
@@ -855,7 +863,7 @@ void gameScene::Input(GLFWwindow* window)
 		// If P is pressed 
 		if (glfwGetKey(window, GLFW_KEY_SPACE))
 		{
-			if (!golfBallMoving)
+			if (!player1.isMoving) // was !golfBallMoving
 			{
 				// Start counter
 				Pcounter += 0.5f;
@@ -874,25 +882,29 @@ void gameScene::Input(GLFWwindow* window)
 					// Update the golf ball position and the arrow position
 					// x = -sin(theta), z = cos(theta)
 					// Separate below statement into direction = vec3(-sin, 0, cos) (normalise)		
-					gbDirection = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
+					//gbDirection = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
+					player1.direction = normalize(vec3(-sin(chaseCamAngle), 0.0, cos(chaseCamAngle)));
 				}
 				// If camera angle is between 90 and 180
 				else if (chaseCamAngle > 1.5709 && chaseCamAngle < 3.14159)
 				{
 					// x = -cos(theta - 90), z = -sin(theta - 90)
-					gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
+					//gbDirection = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
+					player1.direction = normalize(vec3(-cos(chaseCamAngle - 1.5708), 0.0, -sin(chaseCamAngle - 1.5708)));
 				}
 				// If camera angle is between 180 and 270
 				else if (chaseCamAngle > 3.1416 && chaseCamAngle < 4.71239)
 				{
 					// x = sin(theta - 180), z = -cos(theta - 180)
-					gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
+				//	gbDirection = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
+					player1.direction = normalize(vec3(sin(chaseCamAngle - 3.1416), 0.0, -cos(chaseCamAngle - 3.1416)));
 				}
 				// If camera angle is anything else
 				else if (chaseCamAngle > 4.724 && chaseCamAngle <= 6.28319)
 				{
 					// x = cos(theta - 270), z = sin(theta- 270)
-					gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
+				//	gbDirection = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
+					player1.direction = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
 				}
 				pPressed = true;
 			}
@@ -904,16 +916,18 @@ void gameScene::Input(GLFWwindow* window)
 		// Only work if p was just released
 		if (pPressed)
 		{
-			golfBallMoving = true;
+			//golfBallMoving = true;
+			player1.isMoving = true;
 			// Force to apply is held in counter
 			//Pcounter *= 3; // slightly magic number (Pc isn't enough on its own)
 			// Apply to speed
-			speed += Pcounter;
+			//speed += Pcounter;
+			player1.speed += Pcounter;
 			//repeat until Pcounter is reset to 0
 			while (Pcounter > 0.0)
 			{
 				//This just inverts the increasing in size and positions done before when P was pressed
-			//	powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
+			    //powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
 				//powerBarTrans.getPos().x -= Pcounter / 100.0f;
 				//powerBarTrans.getScale().x -= Pcounter / 5.0f;
 				//Decrease Pcounter until reaches 0
@@ -1016,9 +1030,9 @@ void gameScene::Update(GLFWwindow* window)
 	cursor_x = current_x;
 	cursor_y = current_y;
 
-	// The getRot of golf ball - will this be troublesome? Don't want the camera
-	// to rotate along with the ball! 
-	windowMgr::getInstance()->chaseCam->move(player1Transform.getPos(), player1Transform.getRot());
+	// Update chase cam
+	//windowMgr::getInstance()->chaseCam->move(player1Transform.getPos(), player1Transform.getRot());
+	windowMgr::getInstance()->chaseCam->move(player1.transform.getPos(), player1.transform.getRot());
 	windowMgr::getInstance()->chaseCam->update(0.00001);
 
 	// Update hud target camera
@@ -1026,32 +1040,44 @@ void gameScene::Update(GLFWwindow* window)
 
 	// Update pause target camera
 	windowMgr::getInstance()->PAUSEtargetCam->update(0.00001);
+
+
 	// PLAYER UPDATE
 	// Velocity is direction by speed by delta time
-	gbVelocity = (gbDirection * speed);
+	// In this case, speed is akin to force. Mass is 1 so ignored in this equation
+	//gbVelocity = (gbDirection * speed);
+	player1.velocity = (player1.direction * player1.speed);
 	// Apply friction when moving
-	if (speed > 0 + 0.5) // this magic number is epsilon
+	if (player1.speed > 0 + 0.5) // was speed without player// this magic number is epsilon
 	{
-		speed -= speed * 0.03; // this magic number is friction
+		player1.speed -= player1.speed * 0.03; // was speed without player // this magic number is friction
 		 // Rotation is cross product of direction and up
-		vec3 rot = normalize(cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
+		//vec3 rot = normalize(cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
+		vec3 rot = normalize(cross(normalize(player1.direction), vec3(0.0f, 1.0f, 0.0f)));
 
-		rot *= speed *  dt;
-		player1Transform.getRot() += -rot;
+		//rot *= speed *  dt;
+		//player1Transform.getRot() += -rot;
+
+		rot *= player1.speed *  dt;
+		player1.transform.getRot() += -rot;
 
 	}
 	// Prevent it moving forever
 	else
 	{
-		speed = 0;
-		golfBallMoving = false;
+		//speed = 0;
+		//golfballmoving = false;
+		player1.speed = 0;
+		player1.isMoving = false;
 	}
 	// Lock to frame rate
-	gbVelocity *= dt;
-
+	//gbVelocity *= dt;
+	player1.velocity *= dt;
 	// Update positions of ball and arrow
-	player1Transform.getPos() += gbVelocity;
-	arrowTransform.getPos() += gbVelocity;
+	//player1Transform.getPos() += gbVelocity;
+	//arrowTransform.getPos() += gbVelocity;
+	player1.transform.getPos() += player1.velocity;
+	player1.arrowTransform.getPos() += player1.velocity;
 
 	// TIMER RELATED INFORMATION
 	// If the time been in scene is equal to zero then
@@ -1164,7 +1190,7 @@ void gameScene::Collisions()
 		// if (t.isPlayerOnTile)
 		// currentTile = tileTracker
 		// if not, tileTracker++
-		if (t.isPlayerOnTile(player1Transform.getPos()))
+		if (t.isPlayerOnTile(player1.transform.getPos())) // was player1Transform
 		{
 			currentTile = tileTracker;
 		}
@@ -1183,10 +1209,11 @@ void gameScene::Collisions()
 		// Need to do this to access start only methods (which includes col check)
 		//onRamp = false;
 		StartTile start;
-		gbDirection = start.CheckCollisions(player1Transform.getPos(), gbDirection);
+		/*gbDirection = start.CheckCollisions(player1Transform.getPos(), gbDirection);*/
+		player1.direction = start.CheckCollisions(player1);
 		break;
 	}
-	// On straight V tile
+/*	// On straight V tile
 	case 1:
 	{
 		//onRamp = false;
@@ -1313,7 +1340,9 @@ void gameScene::Collisions()
     
 		break;
 	}
-	}
+	
+*/
+}
 }
 
 vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, float displace, float radius)
@@ -1452,13 +1481,16 @@ void gameScene::Render(GLFWwindow* window)
 
 	// Render player 1
 	windowMgr::getInstance()->textures["playerRedTexture"]->Bind(0);
-	windowMgr::getInstance()->textureShader->Update(player1Transform, mvp);
+	/*windowMgr::getInstance()->textureShader->Update(player1Transform, mvp);*/
+	windowMgr::getInstance()->textureShader->Update(player1.transform, mvp);
 	windowMgr::getInstance()->player1Mesh->Draw();
 	// Render player 1 arrow
 	windowMgr::getInstance()->arrowMesh->thisTexture.Bind(0);
-	windowMgr::getInstance()->textureShader->Update(arrowTransform, mvp);
+	//windowMgr::getInstance()->textureShader->Update(arrowTransform, mvp);
+	windowMgr::getInstance()->textureShader->Update(player1.arrowTransform, mvp);
 	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
-	arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
+	//arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
+	player1.arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
 
 	// Arrow
 	//arrowTexture->Bind(0);
@@ -1466,7 +1498,7 @@ void gameScene::Render(GLFWwindow* window)
 	//arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
 
 	// If ball is not moving draw arrow (ie dont draw arrow when ball moving as not needed)
-	if (!golfBallMoving)
+	if (!player1.isMoving) // was !golfBallMoving
 	{
 		// Draw the arrow
 		windowMgr::getInstance()->arrowMesh->Draw();

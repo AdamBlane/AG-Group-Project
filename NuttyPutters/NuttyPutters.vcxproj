@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="chase_camera.cpp" />
     <ClCompile Include="courseGenerator.cpp" />
+    <ClCompile Include="courseGenTiles.cpp" />
     <ClCompile Include="courseGenV2.cpp" />
     <ClCompile Include="free_camera.cpp" />
     <ClCompile Include="gameScene.cpp" />
