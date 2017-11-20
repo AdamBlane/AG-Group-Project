@@ -167,6 +167,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	{
 		// Dected how many axis the controller has
 		int axesCount;
+// M - Will axes be used again? Get rid of it if not! 
 		const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
 		// 6 axis, both anaolgues left/right, up/down =4 then L2 = 5 AND R2 =6 
 		//cout << "Number of axis available: " << axesCount << endl;
@@ -190,8 +191,11 @@ void highscoreScene::Input(GLFWwindow* win)
 			cout << "Function: " << functions << " at: " << windowMgr::getInstance()->buttonValues.at(functions) << endl;
 		}
 
+
 		// Remappign controls
 		// For loop which checks to see if buttons are pressed
+// M - Just to check, is there no way of listening for input rather than checking each button every frame? 
+// This would be similar to the input callbacks we were first using for keyboard commands
 		for (int i = 0; i < 17; i++)
 		{
 			// If button i is pressed then set corresponding boolean to true
@@ -200,6 +204,17 @@ void highscoreScene::Input(GLFWwindow* win)
 				buttonPressed[i] = true;
 			}
 		}
+
+// M - My immediate concern for the button code is the number of loops you're doing - 119 iterations every frame (including above loop), with at least one if statement
+// ...for each loop. If it runs smoothly I suppose it's all good, but I have a suggestion for the way you're storing the buttons (which would require a lot of changes so up to you)
+// I suggest just using an array to store the button values. The reason you're using a map is to explicity show the relationship between functions and buttons, but you could
+// ...achieve the same thing with an implicit representation using an array; the index is the function value. Eg our first function 'select/fire' is given the value 0,
+// ...so the corresponding button value is the first thing (0 index) in the array. You can use an array since it'll always be a fixed size of 6. The advantages of this are that
+// ...arrays take less memory to store than maps and are easier to search. I might have missed a key reason of using the map to actually store the function value, but it should
+// ...still be possible with index alone - let me know your thoughts!
+
+// Finally, all of the logic you've written here needs to be ported over to windowMgr so that we can call these exact same functions from gameScene!
+
 
 		// For all buttons 
 		for (int i = 0; i < 17; i++)
