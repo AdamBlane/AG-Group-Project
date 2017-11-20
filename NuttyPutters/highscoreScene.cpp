@@ -82,9 +82,56 @@ void highscoreScene::Init(GLFWwindow * win)
 	// DPAD RIGHT = 6
 
 	// FUNCTION/BUTTONS
-	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(0, 1)); 
+	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(0, 2)); 
 	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(1, 3)); 
 	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(2, 0));
+
+	// For all the functions in the game 
+	for (int functions = 0; functions < windowMgr::getInstance()->buttonValues.size(); functions++)
+	{
+		// If function is assigned to 0 then 
+		if (windowMgr::getInstance()->buttonValues.find(functions)->second == 0)
+		{
+			// 4+function*2 is done below because the meshes we want to update go 4, 6, 8, 10 and that formula fits
+			// Update texture at mesh position 4+function*2 - to A button
+			windowMgr::getInstance()->meshes.at(4+(functions*2))->SetTexture(windowMgr::getInstance()->textures["aButtonLbl"]);
+		}
+		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 1)
+		{
+			// Update texture at mesh position 4+function*2 - to B button
+			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["bButtonLbl"]);
+		}
+		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 2)
+		{
+			// Update texture at mesh position 4+function*2 - to X button
+			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["xButtonLbl"]);
+		}
+		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 3)
+		{
+			// Update texture at mesh position 4+function*2 - to Y button
+			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["yButtonLbl"]);
+		}
+		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 4)
+		{
+			// Update texture at mesh position 4+function*2 - to Left Bumber button
+			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["lbLbl"]);
+		}
+		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 5)
+		{
+			// Update texture at mesh position 4+function*2 - to Right Bumber button
+			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["rbLbl"]);
+		}
+		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 6)
+		{
+			// Update texture at mesh position 4+function*2 - to Left Trigger button
+			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["ltLbl"]);
+		}
+		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 7)
+		{
+			// Update texture at mesh position 4+function*2 - to Right Trigger button
+			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["rtLbl"]);
+		}
+	}
 }
 
 // Draw stuff
@@ -137,56 +184,20 @@ void highscoreScene::Input(GLFWwindow* win)
 		int buttonCount;
 		const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
 
-		// For all the functions in the game 
-		for (int functions = 0; functions < windowMgr::getInstance()->buttonValues.size(); functions++)
-		{
-			// If function is assigned to 0 then 
-			if (windowMgr::getInstance()->buttonValues.find(functions)->second == 0)
-			{
-				// 4+function*2 is done below because the meshes we want to update go 4, 6, 8, 10 and that formula fits
-				// Update texture at mesh position 4+function*2 - to A button
-				windowMgr::getInstance()->meshes.at(4+(functions*2))->SetTexture(windowMgr::getInstance()->textures["aButtonLbl"]);
-			}
-			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 1)
-			{
-				// Update texture at mesh position 4+function*2 - to B button
-				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["bButtonLbl"]);
-			}
-			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 2)
-			{
-				// Update texture at mesh position 4+function*2 - to X button
-				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["xButtonLbl"]);
-			}
-			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 3)
-			{
-				// Update texture at mesh position 4+function*2 - to Y button
-				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["yButtonLbl"]);
-			}
-			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 4)
-			{
-				// Update texture at mesh position 4+function*2 - to Left Bumber button
-				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["lbLbl"]);
-			}
-			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 5)
-			{
-				// Update texture at mesh position 4+function*2 - to Right Bumber button
-				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["rbLbl"]);
-			}
-			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 6)
-			{
-				// Update texture at mesh position 4+function*2 - to Left Trigger button
-				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["ltLbl"]);
-			}
-			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 7)
-			{
-				// Update texture at mesh position 4+function*2 - to Right Trigger button
-				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["rtLbl"]);
-			}
-		}
+		// Print map - for testing
+		//for (int functions = 0; functions < windowMgr::getInstance()->buttonValues.size(); functions++)
+		//{
+		//	cout << "Function: " << functions << " at: " << windowMgr::getInstance()->buttonValues.at(functions) << endl;
+		//}
 
 		// Remappign controls
 		// If A/Square is pressed
 		if (GLFW_PRESS == buttons[0])
+		{
+			aButtonPressed = true;
+		}
+		// If A Button bool is true and A button is not being pressed then 
+		if (aButtonPressed && !GLFW_PRESS == buttons[0])
 		{
 			// Loop through all the entries in the buttonVlaues map
 			for (const auto& keyval : windowMgr::getInstance()->buttonValues) // Look at each key-value pair
@@ -194,10 +205,76 @@ void highscoreScene::Input(GLFWwindow* win)
 				// If A/Square is assigned to a function then
 				if (keyval.second == 0) // If the value is 0...
 				{
-					// Get function
-					cout << keyval.first << endl; // ...return the first element in the pair
+					// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+					windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+					windowMgr::getInstance()->buttonValues.at(keyval.first) = 99;
+					// Set is Function Empty to true
+					isFunctionEmpty = true;
+					// Break out of for loop
+					break;
+				}
+				// If A/Square is not assigned to a function then 
+				else
+				{
+					// If there is an empty function then
+					if (isFunctionEmpty)
+					{
+						// Find the empty function - equal to 99 means no button is assigned to the button
+						if (keyval.second == 99)
+						{
+							// Set the second value to A/Square
+							windowMgr::getInstance()->buttonValues.at(keyval.first) = 0;
+							windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["aButtonLbl"]);
+							// Reset the is Function Empty to false
+							isFunctionEmpty = false;
+						}
+					}
 				}
 			}
+			aButtonPressed = false;
+		}
+
+		// If B/X(PS) is pressed
+		if (GLFW_PRESS == buttons[1])
+		{
+			bButtonPressed = true;
+		}
+
+		if(bButtonPressed && !GLFW_PRESS == buttons[1])
+		{
+			// Loop through all the entries in the buttonVlaues map
+			for (const auto& keyval : windowMgr::getInstance()->buttonValues) // Look at each key-value pair
+			{
+				// If B/X(PS) is assigned to a function then
+				if (keyval.second == 1) // If the value is 0...
+				{
+					// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+					windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+					windowMgr::getInstance()->buttonValues.at(keyval.first) = 99;
+					// Set is Function Empty to true
+					isFunctionEmpty = true;
+					// Break out of for loop
+					break;
+				}
+				// If B/X(PS) is not assigned to a function then 
+				else
+				{
+					// If there is an empty function then
+					if (isFunctionEmpty)
+					{
+						// Find the empty function - equal to 99 means no button is assigned to the button
+						if (keyval.second == 99)
+						{
+							// Set the second value to B/X(PS)
+							windowMgr::getInstance()->buttonValues.at(keyval.first) = 1;
+							windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["bButtonLbl"]);
+							// Reset the is Function Empty to false
+							isFunctionEmpty = false;
+						}
+					}
+				}
+			}
+			bButtonPressed = false;
 		}
 
 		if (GLFW_PRESS == buttons[2])

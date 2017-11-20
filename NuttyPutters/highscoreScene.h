@@ -35,7 +35,7 @@ public:
 	bool xButtonPressed = false;
 	bool bButtonPressed = false;
 	bool yButtonPressed = false;
-	bool isButtonEmpty = false;
+	bool isFunctionEmpty = false;
 	int temp = 0;
 
 	// Draw stuff
