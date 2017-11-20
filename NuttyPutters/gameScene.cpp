@@ -851,8 +851,8 @@ void gameScene::Update(GLFWwindow* window)
 	lastFrame = thisFrame;
 	thisFrame = glfwGetTime();
 	dt = (float)(thisFrame - lastFrame);
-	if (dt > 0.03)
-		dt = 0.016;
+	//if (dt > 0.03)
+		//dt = 0.016;
 
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;

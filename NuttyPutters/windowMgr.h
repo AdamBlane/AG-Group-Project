@@ -50,7 +50,7 @@ class windowMgr
 		Mesh* arrowMesh;
 
 		// All controller information for remappable controls is stored here
-		// First int is button on the controller - Second int is mesh value
+		// FUNCTION/BUTTONS
 		map<int, int> buttonValues;
 
 		// Cameras

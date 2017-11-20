@@ -52,9 +52,39 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["menuButtonLbl"]);
 
 	// Setup the default controls for the xbox controller
-	// First int is button on the controller - Second int is mesh value
-	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(0, 4));
-	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(1, 6));
+	// BUTTONS
+	// A/Sqaure = 0
+	// B/X(PS) = 1
+	// X(XB)/Circle = 2
+	// Y/Triangle = 3
+	// /L1 = 4
+	// /R1 = 5
+	// /L2 = 6
+	// /R2 = 7
+	// /Select = 8
+	// /Start = 9
+	// /Left Stick Push = 10
+	// /Right Stick Push = 11
+	// /PS Button =12
+	// /Pad = 13
+	// /DPAD UP = 14
+	// /DPAD LEFT = 15 
+	// /DPAD DOWN = 16
+	// /DPAD RIGHT = 17
+
+	// FUCTIONS
+	// Select/fire = 0
+	// Back/Reset = 1
+	// Pause = 2
+	// DPAD UP = 3
+	// DPAD LEFT = 4
+	// DPAD DOWN = 5
+	// DPAD RIGHT = 6
+
+	// FUNCTION/BUTTONS
+	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(0, 1)); 
+	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(1, 3)); 
+	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(2, 0));
 }
 
 // Draw stuff
@@ -79,7 +109,6 @@ void highscoreScene::Loop(GLFWwindow * win)
 	Render(win);
 }
 
-
 void highscoreScene::Input(GLFWwindow* win)
 {
 	// Create a variable to check if the joy stick is present - 1 means true
@@ -93,11 +122,9 @@ void highscoreScene::Input(GLFWwindow* win)
 		int axesCount;
 		const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
 		// 6 axis, both anaolgues left/right, up/down =4 then L2 = 5 AND R2 =6 
-		std::cout << "Number of axis available: " << axesCount << endl;
+		//cout << "Number of axis available: " << axesCount << endl;
 		//Print a few blank lines to see results movement
-		cout << endl;
-		cout << endl;
-		cout << endl;
+		//cout << endl;
 		// Print positions of analoges and triggers
 		//cout << "Left Stick X Axis: " << axes[0] << endl;
 		//cout << "Left Stick Y Axis: " << axes[1] << endl;
@@ -110,23 +137,69 @@ void highscoreScene::Input(GLFWwindow* win)
 		int buttonCount;
 		const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
 
-		// If button is pressed - list Xbox/Playstation button
-		// If A/Square is pressed then 
-		if (GLFW_PRESS == buttons[0])
+		// For all the functions in the game 
+		for (int functions = 0; functions < windowMgr::getInstance()->buttonValues.size(); functions++)
 		{
-			cout << "A/Square button pressed" << endl;
-			// Get the current action that is set to that button
-			cout << windowMgr::getInstance()->buttonValues.find(0)->second << endl;
-			// Update the necessary texture of the button pressed to querstion marks
-			windowMgr::getInstance()->meshes.at(windowMgr::getInstance()->buttonValues.find(0)->second)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-			// Set a button boolean to true
-			aButtonPressed = true;
+			// If function is assigned to 0 then 
+			if (windowMgr::getInstance()->buttonValues.find(functions)->second == 0)
+			{
+				// 4+function*2 is done below because the meshes we want to update go 4, 6, 8, 10 and that formula fits
+				// Update texture at mesh position 4+function*2 - to A button
+				windowMgr::getInstance()->meshes.at(4+(functions*2))->SetTexture(windowMgr::getInstance()->textures["aButtonLbl"]);
+			}
+			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 1)
+			{
+				// Update texture at mesh position 4+function*2 - to B button
+				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["bButtonLbl"]);
+			}
+			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 2)
+			{
+				// Update texture at mesh position 4+function*2 - to X button
+				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["xButtonLbl"]);
+			}
+			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 3)
+			{
+				// Update texture at mesh position 4+function*2 - to Y button
+				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["yButtonLbl"]);
+			}
+			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 4)
+			{
+				// Update texture at mesh position 4+function*2 - to Left Bumber button
+				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["lbLbl"]);
+			}
+			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 5)
+			{
+				// Update texture at mesh position 4+function*2 - to Right Bumber button
+				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["rbLbl"]);
+			}
+			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 6)
+			{
+				// Update texture at mesh position 4+function*2 - to Left Trigger button
+				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["ltLbl"]);
+			}
+			else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 7)
+			{
+				// Update texture at mesh position 4+function*2 - to Right Trigger button
+				windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["rtLbl"]);
+			}
 		}
 
-		if (GLFW_PRESS == buttons[1])
+		// Remappign controls
+		// If A/Square is pressed
+		if (GLFW_PRESS == buttons[0])
 		{
-			cout << "B/X(Playstation) button pressed" << endl;
+			// Loop through all the entries in the buttonVlaues map
+			for (const auto& keyval : windowMgr::getInstance()->buttonValues) // Look at each key-value pair
+			{
+				// If A/Square is assigned to a function then
+				if (keyval.second == 0) // If the value is 0...
+				{
+					// Get function
+					cout << keyval.first << endl; // ...return the first element in the pair
+				}
+			}
 		}
+
 		if (GLFW_PRESS == buttons[2])
 		{
 			cout << "X(Xbox)/Circle button pressed" << endl;
@@ -136,7 +209,6 @@ void highscoreScene::Input(GLFWwindow* win)
 			cout << "Y/Triangle button pressed" << endl;
 		}
 	}
-
 }
 
 void highscoreScene::Update(GLFWwindow* win)

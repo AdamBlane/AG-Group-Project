@@ -32,7 +32,11 @@ public:
 
 	// Buttons 
 	bool aButtonPressed = false;
-
+	bool xButtonPressed = false;
+	bool bButtonPressed = false;
+	bool yButtonPressed = false;
+	bool isButtonEmpty = false;
+	int temp = 0;
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);
