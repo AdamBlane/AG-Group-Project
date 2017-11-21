@@ -41,7 +41,7 @@ public:
 	Player RampResistance(Player player, float magnitude);
 	Player Jump(Player player, float magnitude);
 	// Work out whether or not to apply gravity
-	void ApplyGravity(Player player, float tilePosY, float floorGap);
+	void ApplyGravity(Player player, float floorLevel);
 	// Semi-implicit Euler method
 	Player Integrate(Player player, float dt, float floorLevel);
 };

@@ -56,12 +56,12 @@ Player Physics::Jump(Player player, float magnitude)
 
 // Either be 1 or 0 - 1 if in air, 0 if on floor
 // This is always multiplied by gravity
-void Physics::ApplyGravity(Player player, float tilePosY, float floorGap)
+void Physics::ApplyGravity(Player player, float floorLevel)
 {
 	// Vars used for grav formula
 	float Py = player.transform.getPos().y; 
-	float Ty = tilePosY;
-	float f = floorGap;
+	float Ty = floorLevel - 1; // Player position on floor subtract floor gap
+	float f = 1; // Floor gap
 	// This will equate to either 0 or 1, thus applying gravity when required 
 	gravFlag = ceil((Py - (Ty + f)) / Py);
 	if (gravFlag == 1)
@@ -107,7 +107,7 @@ Player Physics::Integrate(Player player, float dt, float floorLevel)
 		player.isMoving = false;
 	
 
-
+	std::cout << "V " << player.velocity.x << ", " << player.velocity.y << ", " << player.velocity.z << std::endl;
 	// When on a ramp
 	// return difference between where player SHOULD be on Y and where they actually are on Z
 	// times this difference by delta time

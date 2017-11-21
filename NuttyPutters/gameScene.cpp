@@ -1024,19 +1024,31 @@ void gameScene::Update(GLFWwindow* window)
 	if (player1.isMoving)
 	{
 
-	// Work out whether to apply gravity or not (is player on the floor/in air)
-	physicsSystem.ApplyGravity(player1, algTiles.at(currentTile).thisCoords.y, 1.0f);
+		
 
-	// Must pass in floor position to update - might be on ramp
-	if (algTiles.at(currentTile).id == 7)
-	{
-
-	}
-	else
-	{
-		// Update position
-		player1 = physicsSystem.Integrate(player1, dt, algTiles.at(currentTile).thisCoords.y);
-	}
+		// Must pass in floor position to update - might be on ramp
+		if (algTiles.at(currentTile).id == 7)
+		{
+			// Instantiate in order to call member functions
+			UpRampDown ramp;
+			// Set deets
+			ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			// Raise it a bit
+			ramp.thisCoords.y += 1.8;
+			// So long as player isn't in the air...	
+			// Find floor level at this point on ramp
+			float floorPos = ramp.SetPlayerHeight(player1);
+			// Work out whether to apply gravity or not (is player on the floor/in air)
+			physicsSystem.ApplyGravity(player1, floorPos);
+			player1 = physicsSystem.Integrate(player1, dt, floorPos);
+		}
+		else
+		{
+			// Work out whether to apply gravity or not (is player on the floor/in air)
+			physicsSystem.ApplyGravity(player1, algTiles.at(currentTile).thisCoords.y + 1.0f); // 1 is floor gap
+			// Update position
+			player1 = physicsSystem.Integrate(player1, dt, algTiles.at(currentTile).thisCoords.y + 1);
+		}
 
 
 	}
@@ -1294,20 +1306,20 @@ void gameScene::Collisions()
 	case 7:
 	{
 
-		// Instantiate in order to call member functions
-		UpRampDown ramp;
-		// Set deets
-		ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
-		// Raise it a bit
-		ramp.thisCoords.y += 1.8;
-		// So long as player isn't in the air...	
-		// Find floor level at this point on ramp
-		float floorPos = ramp.SetPlayerHeight(player1);
+		//// Instantiate in order to call member functions
+		//UpRampDown ramp;
+		//// Set deets
+		//ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		//// Raise it a bit
+		//ramp.thisCoords.y += 1.8;
+		//// So long as player isn't in the air...	
+		//// Find floor level at this point on ramp
+		//float floorPos = ramp.SetPlayerHeight(player1);
 	
-		// Set player height
-		player1.transform.getPos().y = floorPos;
+		//// Set player height
+		//player1.transform.getPos().y = floorPos;
 		
-		//player1 = physicsSystem.Integrate(player1, dt, algTiles.at(currentTile).thisCoords.y);
+		
 
 		break;
 	}
