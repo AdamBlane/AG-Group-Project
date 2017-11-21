@@ -114,16 +114,13 @@ void gameScene::LoadGame(string seed)
 		//}
 
 		levelSeed.push_back(0);
-		levelSeed.push_back(1);
-		levelSeed.push_back(7);
-		levelSeed.push_back(1);
-		levelSeed.push_back(7);
+		levelSeed.push_back(4);
 		levelSeed.push_back(3);
-		levelSeed.push_back(2);
-		levelSeed.push_back(6);
-		levelSeed.push_back(7);
+		levelSeed.push_back(8);
+		levelSeed.push_back(1);
 		levelSeed.push_back(1);
 		levelSeed.push_back(9);
+
 	} // end if seed is default
 	else // this has been given a seed value
 	{
@@ -334,13 +331,13 @@ void gameScene::LoadGame(string seed)
 		case 8:
 		{
 			// Create tile
-			//DownRampDown downRamp;
-			//downRamp.SetCoords(curCoords);
-			//// Find next pos (always know dir is up with tile 8)
-			//vec3 nextPos = vec3(curCoords.x, curCoords.y - 3.8, curCoords.z - size);
-			//downRamp.SetNextCoords(nextPos);
-			//downRamp.outDir.going_up = true;
-			//algTiles.push_back(downRamp);
+			DownRampDown downRamp;
+			downRamp.SetCoords(curCoords);
+			// Find next pos (always know dir is up with tile 8)
+			vec3 nextPos = vec3(curCoords.x, curCoords.y - 3.8, curCoords.z - size);
+			downRamp.SetNextCoords(nextPos);
+			downRamp.outDir.going_up = true;
+			algTiles.push_back(downRamp);
 			break;
 		}
 		// End tile
@@ -1024,10 +1021,18 @@ void gameScene::Update(GLFWwindow* window)
 	if (player1.isMoving)
 	{
 
-		
+		if (algTiles.at(currentTile).id == 8)
+		{
+			DownRampDown ramp;
+			ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			ramp.thisCoords.y += 1.8;
+			float floorPos = ramp.SetPlayerHeight(player1);
+			physicsSystem.ApplyGravity(player1, floorPos);
+			player1 = physicsSystem.Integrate(player1, dt, floorPos);
+		}
 
 		// Must pass in floor position to update - might be on ramp
-		if (algTiles.at(currentTile).id == 7)
+		else if (algTiles.at(currentTile).id == 7)
 		{
 			// Instantiate in order to call member functions
 			UpRampDown ramp;
@@ -1321,6 +1326,11 @@ void gameScene::Collisions()
 		
 		
 
+		break;
+	}
+	
+	case 8:
+	{
 		break;
 	}
 	// End tile

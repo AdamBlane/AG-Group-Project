@@ -174,6 +174,9 @@ public:
 	DownRampDown() { id = 8; }
 	~DownRampDown() {};
 
+	// Sets player height based on where it is on ramp
+	float SetPlayerHeight(Player player);
+
 	Player CheckCollisions(Player player) { return player; }
 };
 

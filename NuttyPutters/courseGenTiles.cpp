@@ -302,6 +302,22 @@ float UpRampDown::SetPlayerHeight(Player player)
 	return y + 1; // was return player
 }
 
+float DownRampDown::SetPlayerHeight(Player player)
+{
+	// First find how much to increment y for every 1 in z
+	float yInc = thisCoords.y / (size / 2);
+	// Then find distance travelled along tile
+	float difference = player.transform.getPos().z - thisCoords.z;
+	// Make relative to tile coords by adding half size
+	float y = yInc * (difference - (size / 2));
+	// We now have the exact y position to match in z, so player is level on floor
+	// Updating player position manually places him there
+	//player.transform.getPos().y = y + 1;
+
+	// This is also dy, which needs to be scaled by dt to add an impulse in y direction
+	// this is the alternate; forcibly pushing the player upwards to appear level
+	return y + 1; // was return player
+}
 // Collisions check for end tile
 Player EndTile::CheckCollisions(Player player)
 {
