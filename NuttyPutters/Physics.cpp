@@ -19,6 +19,18 @@ Player Physics::AddImpulse(Player player, float magnitude)
 	return player;
 }
 
+Player Physics::Jump(Player player, float mag)
+{
+	player.impulse = player.direction;
+	player.impulse.y += mag;
+	player.velocity += player.impulse;
+	player.impulse.x = 0.0f;
+	player.impulse.y = 0.0f;
+	player.impulse.z = 0.0f;
+
+	return player;
+}
+
 // Either be 1 or 0 - 1 if in air, 0 if on floor
 // This is always multiplied by gravity
 void Physics::ApplyGravity(Player player, float tilePosY, float floorGap)
@@ -29,7 +41,8 @@ void Physics::ApplyGravity(Player player, float tilePosY, float floorGap)
 	float f = floorGap;
 	// This will equate to either 0 or 1, thus applying gravity when required 
 	gravFlag = ceil((Py - (Ty + f)) / Py);
-	
+	if (gravFlag == 1)
+		gravity.y = -9.8f;
 }
 
 
@@ -41,25 +54,35 @@ Player Physics::Integrate(Player player, float dt)
 	// Don't apply to y
 	friction.y = 0.0f;
 	
-	// If gravity to be applied should equal 0, player is on the ground
-	// In which case, clear player.velocity y component of accrued gravity force
-	player.velocity.y *= gravFlag;
+	// If gravFlag is 0, then there shouldn't be gravity applied. 
+	// Clear any accrued gravity in player velocity
+	//player.velocity.y *= gravFlag;
+	// TODO when the player hits the floor, reset their vel.y to 0 ONCE
+	if (player.transform.getPos().y < 1.0f)
+	{
+		player.velocity.y = 0.0f;
+		player.transform.getPos().y = 1.0f;
+	}
+
+	// Multiply gravity by flag to determine whether or not it should affect vel
+	gravity *= gravFlag;
+	
 
 	// Add all forces together, divide by mass and find value for this timestep (by * dt)
-	player.velocity += ((friction + (gravity * gravFlag) + resistance) / player.mass) * dt; 
-	std::cout << "V: " << player.velocity.x << ", " << player.velocity.y << ", " << player.velocity.z << std::endl;
+	player.velocity += ((friction + gravity + rampUpResistance) / player.mass) * dt; 
+	//std::cout << "V: " << player.velocity.x << ", " << player.velocity.y << ", " << player.velocity.z << std::endl;
 	
 	// Player velocity will never reach zero, since friction is a percentage of vel
 	// Check for when speed (magnitude of velocity) is below epsilon and just stop it
-	float magnitude = sqrt((player.velocity.x * player.velocity.x) + (player.velocity.z * player.velocity.z));
-	if (magnitude < epsilon)
+	float magnitude = (player.velocity.x * player.velocity.x) + (player.velocity.z * player.velocity.z);
+	if (magnitude < epsilon * epsilon)
 		player.velocity.x = player.velocity.z = 0.0f;
-	
-	
-	
+		
 	// Flip switch if stationary
-	if (player.velocity == vec3(0,0,0))
+	if (player.velocity == vec3(0, 0, 0))
 		player.isMoving = false;
+	else
+		player.isMoving = true;
 
 
 	// When on a ramp
@@ -69,6 +92,9 @@ Player Physics::Integrate(Player player, float dt)
 
 	// Update position with velocity
 	player.transform.getPos() += player.velocity * dt; // WHY * dt twice? 
+
+
+
 
 	return player;
 }

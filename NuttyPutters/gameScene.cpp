@@ -592,6 +592,11 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
+	if (glfwGetKey(window, GLFW_KEY_J))
+	{
+		player1 = physicsSystem.Jump(player1, 1.0f);
+		player1.isMoving = true;
+	}
 	// Pause
 	if (glfwGetKey(window, GLFW_KEY_P))
 	{
@@ -857,7 +862,7 @@ void gameScene::Input(GLFWwindow* window)
 		// Only work if p was just released
 		if (pPressed)
 		{
-			cout << "Power: " << Pcounter << endl;
+			
 			// Power measure accumulated by holding space is impulse magnitude
 			// Normal of impulse is direction
 			//player1.impulse = player1.direction * Pcounter;
@@ -1009,10 +1014,23 @@ void gameScene::Update(GLFWwindow* window)
 
 
 	// PLAYER UPDATE
+	// Consider adding || 'have impulses been added'
 	if (player1.isMoving)
 	{
-		// Work out whether to apply gravity or not (is player on the floor/in air)
-		physicsSystem.ApplyGravity(player1, algTiles.at(currentTile).thisCoords.y, 1.0f);
+		// If player is currently on an up ramp
+		if (algTiles.at(currentTile).id == 7)
+		{
+			// Apply downwards resistance 
+
+		}
+		else
+		{
+			// Player is not currently on an up ramp - don't apply downwards resistance
+
+			// Work out whether to apply gravity or not (is player on the floor/in air)
+			physicsSystem.ApplyGravity(player1, algTiles.at(currentTile).thisCoords.y, 1.0f);
+		}
+
 		// Update position
 		player1 = physicsSystem.Integrate(player1, dt);
 
@@ -1269,11 +1287,13 @@ void gameScene::Collisions()
 	// Up ramp tile
 	case 7:
 	{
+		// Player is on an up ramp 
+		player1.onUpRamp = true;
 		UpRampDown ramp;
 		ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
 		ramp.thisCoords.y += 1.8;
 		// Set player height
-		player1 = ramp.SetPlayerHeight(player1);
+		//float upForce = ramp.findUpwardsForce(player1);
 		//player1.transform.setPos(ramp.SetPlayerHeight(player1.transform.getPos()));
 		//onRamp = true;
 		break;

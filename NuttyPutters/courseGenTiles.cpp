@@ -285,7 +285,7 @@ Player CornerTile_TR::CheckCollisions(Player player)
 }
 
 // Ramp - set y position of player on ramp accordingly
-Player UpRampDown::SetPlayerHeight(Player player)
+float UpRampDown::findUpwardsForce(Player player)
 {
 	// First find how much to increment y for every 1 in z
 	float yInc = thisCoords.y / (size / 2);
@@ -294,9 +294,9 @@ Player UpRampDown::SetPlayerHeight(Player player)
 	// Make relative to tile coords by adding half size
 	float y = yInc * (difference + (size / 2));
 	// Update player pos
-	player.transform.getPos().y = y + 1;
+	//player.transform.getPos().y = y + 1;
 
-	return player;
+	return y; // was return player
 }
 
 // Collisions check for end tile

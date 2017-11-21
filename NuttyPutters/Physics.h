@@ -11,16 +11,17 @@ public:
 	glm::vec3 gravity = vec3(0.0f, -9.8f, 0.0f);
 	// Always multiplied by gravity; either 1/0 & et in ApplyGravity()
 	float gravFlag;
-	// Accounts for errors with floating point arithmetic
+	// Margin of error, determines when to stop player
 	float epsilon = 0.5f;
-	// friction 
+	// friction
 	glm::vec3 friction;
 	float frictionScalar = -10.9f;
 	// account for aerodynamic drag
 	//float drag = 0.9f;
 
 	// Resitance vector
-	glm::vec3 resistance;
+	glm::vec3 rampUpResistance;
+	float rampRes = -10.9f;
 	// R = -gravity * sine(theta) (add theta property to each tile)
 	// Apply this to the z axis only
 
@@ -30,8 +31,11 @@ public:
 	// Cosine(20) = 0.93969256961
 
 
-	// Generates impulse vector for player
+	// Generates impulse vector for player 
+	// (normal usage, uses player members for dir & vel
 	Player AddImpulse(Player player, float magnitude);
+
+	Player Jump(Player player, float mag);
 	// Work out whether or not to apply gravity
 	void ApplyGravity(Player player, float tilePosY, float floorGap);
 	// Semi-implicit Euler method
