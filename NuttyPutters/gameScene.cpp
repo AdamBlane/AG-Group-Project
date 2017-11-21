@@ -30,8 +30,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Record desired course size 
 	courseSize = courseLength;
 
-	// Load game
-	LoadGame(seed);
+	// Load game, takes a seed (either given or default)
+	LoadGame(seed); // Results in filled algTiles and levelSeed lists
 
 	// Take alg tiles, turn into render tiles
 	SetupTilesToBeDrawn();
@@ -256,7 +256,6 @@ void gameScene::LoadGame(string seed)
 				// Set dir
 				straightH.outDir.going_left = true;
 			}
-
 			// Add to list
 			algTiles.push_back(straightH);
 			break;
