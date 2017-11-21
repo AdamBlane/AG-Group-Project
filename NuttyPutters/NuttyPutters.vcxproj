@@ -40,6 +40,7 @@
     <ClCompile Include="target_camera.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="tileBuilder.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="windowMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +59,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="obj_loader.h" />
     <ClInclude Include="optionsScene.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="playerSelectScene.h" />
     <ClInclude Include="sceneMgr.h" />
     <ClInclude Include="Shader.h" />
@@ -67,6 +69,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="tileBuilder.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="window.h" />
     <ClInclude Include="windowMgr.h" />
   </ItemGroup>

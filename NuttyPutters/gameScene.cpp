@@ -2,6 +2,7 @@
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
 #include "courseGenV2.h"
+#include "UI.h"
 
 
 
@@ -73,6 +74,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamPos);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamTarget);
 
+	// MOVED TO UI CLASS - REMOVE HERE AND TEST
 	// Stroke HUD Label setup
 	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
@@ -1182,7 +1184,6 @@ void gameScene::Update(GLFWwindow* window)
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-
 	int tileTracker = 0;
 	// Check which tile player is on (do this every n frames, not each tick)
 	for (auto &t : algTiles)
@@ -1209,22 +1210,20 @@ void gameScene::Collisions()
 		// Need to do this to access start only methods (which includes col check)
 		//onRamp = false;
 		StartTile start;
-		/*gbDirection = start.CheckCollisions(player1Transform.getPos(), gbDirection);*/
-		player1.direction = start.CheckCollisions(player1);
+		player1 = start.CheckCollisions(player1);
 		break;
 	}
-/*	// On straight V tile
+	// On straight V tile
 	case 1:
 	{
 		//onRamp = false;
 		StraightTile_V straightV;
 		straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
 		// Ensure don't go through floor
-		player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
-		gbDirection = straightV.CheckCollisions(player1Transform.getPos(), gbDirection);
-
+		//player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
+		player1 = straightV.CheckCollisions(player1);
+		// Check if this has obstacles to collide with
 		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
-
 		{
 			switch (obstacles.at(i + 1))
 			{
@@ -1232,8 +1231,8 @@ void gameScene::Collisions()
 
 				break;
 			case 2:
-				gbDirection = CheckCollisionsObstacle1(straightV.thisCoords, player1Transform.getPos(),
-					gbDirection, straightV.displace, straightV.radius);
+				player1.direction = CheckCollisionsObstacle1(straightV.thisCoords, player1.transform.getPos(),
+					player1.direction, straightV.displace, straightV.radius);
 				break;
 			default:
 				break;
@@ -1248,7 +1247,8 @@ void gameScene::Collisions()
 		//onRamp = false;
 		StraightTile_H straightH;
 		straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
-		gbDirection = straightH.CheckCollisions(player1Transform.getPos(), gbDirection);
+		player1 = straightH.CheckCollisions(player1);
+		// Are there obstacles on this tile to collide with?
 		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
 		{
 			switch (obstacles.at(i + 1))
@@ -1257,8 +1257,8 @@ void gameScene::Collisions()
           
 				break;
 			case 2:
-				gbDirection = CheckCollisionsObstacle1(straightH.thisCoords, player1Transform.getPos(),
-					gbDirection, straightH.displace, straightH.radius);
+				player1.direction = CheckCollisionsObstacle1(straightH.thisCoords, player1.transform.getPos(),
+					player1.direction, straightH.displace, straightH.radius);
 				break;
 			default:
 				break;
@@ -1272,7 +1272,7 @@ void gameScene::Collisions()
 		//onRamp = false;
 		CornerTile_BL cornerBL;
 		cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-		gbDirection = cornerBL.CheckCollisions(player1Transform.getPos(), gbDirection);
+		player1 = cornerBL.CheckCollisions(player1);
 		break;
 	}
 	// On corner_BR tile
@@ -1281,7 +1281,7 @@ void gameScene::Collisions()
 		//onRamp = false;
 		CornerTile_BR cornerBR;
 		cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-		gbDirection = cornerBR.CheckCollisions(player1Transform.getPos(), gbDirection);
+		player1 = cornerBR.CheckCollisions(player1);
 		break;
 	}
 	// On corner_TL tile
@@ -1290,7 +1290,7 @@ void gameScene::Collisions()
 		//onRamp = false;
 		CornerTile_TL cornerTL;
 		cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
-		gbDirection = cornerTL.CheckCollisions(player1Transform.getPos(), gbDirection);
+		player1 = cornerTL.CheckCollisions(player1);
 		break;
 	}
 	// On corner_TR tile
@@ -1299,7 +1299,7 @@ void gameScene::Collisions()
 		//onRamp = false;
 		CornerTile_TR cornerTR;
 		cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
-		gbDirection = cornerTR.CheckCollisions(player1Transform.getPos(), gbDirection);
+		player1 = cornerTR.CheckCollisions(player1);
 		break;
 	}
 	// Up ramp tile
@@ -1309,7 +1309,7 @@ void gameScene::Collisions()
 		ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
 		ramp.thisCoords.y += 1.8;
 		// Set player height
-		player1Transform.setPos(ramp.SetPlayerHeight(player1Transform.getPos()));
+		//player1.transform.setPos(ramp.SetPlayerHeight(player1.transform.getPos()));
 		//onRamp = true;
 		break;
 	}
@@ -1320,30 +1320,27 @@ void gameScene::Collisions()
 		EndTile end;
 		end.SetCoords(algTiles.at(currentTile).GetThisCoords());
 		end.outDir = algTiles.at(currentTile).outDir;
-		gbDirection = end.CheckCollisions(player1Transform.getPos(), gbDirection, speed);
+		player1 = end.CheckCollisions(player1);
     
-      // If user hasnt completed hole then - get
-			if (!hasUserCompletedHole)
+		 // If user hasnt completed hole then - get
+		if (!hasUserCompletedHole)
+		{
+			// If ball in hole is equal to true - function to courseGenTiles
+			if(end.getBallInHole());
 			{
-				// If ball in hole is equal to true - function to courseGenTiles
-				if(end.getBallInHole());
-				{
-					// Update boolean to user having completed the hole
-					hasUserCompletedHole = true;
-					// Update necessary textures
-					windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["holeLbl"]);
-					windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["completeLbl"]);
-					windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["saveGameLbl"]);
-					windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
-				}
+				// Update boolean to user having completed the hole
+				hasUserCompletedHole = true;
+				// Update necessary textures
+				windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["holeLbl"]);
+				windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["completeLbl"]);
+				windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["saveGameLbl"]);
+				windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 			}
-    
+		}
 		break;
-	}
-	
-*/
-}
-}
+	} // end case 9
+	} // end collisions switch
+} // end collisions function
 
 vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, float displace, float radius)
 {

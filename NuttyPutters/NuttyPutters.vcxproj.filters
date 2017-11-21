@@ -99,6 +99,9 @@
     <ClCompile Include="courseGenTiles.cpp">
       <Filter>Source Files\Game Logic</Filter>
     </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="windowMgr.h">
@@ -178,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="window.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Game Logic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

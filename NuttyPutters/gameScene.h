@@ -20,6 +20,11 @@
 #include "chase_camera.h"
 #include "tileBuilder.h"
 #include "target_camera.h"
+#include "Player.h"
+#include "courseGenTiles.h"
+
+
+
 
 using namespace AllCamera;
 using namespace std::chrono;
@@ -31,6 +36,9 @@ public:
 	gameScene();
 	// Deconstructor
 	~gameScene();
+
+
+	Player player1, player2;
 
 	//Trying Skybox
 	Mesh* sky;
@@ -86,15 +94,15 @@ public:
 	vec3 pauseCamPos, pauseCamTarget;
 
 
-	struct player
-	{
-		Transform transform;
-		Transform arrowTransform;
-		vec3 direction;
-		vec3 velocity;
-		float speed;
-		bool isMoving = false;
-	} player1, player2;
+	//struct player
+	//{
+	//	Transform transform;
+	//	Transform arrowTransform;
+	//	vec3 direction;
+	//	vec3 velocity;
+	//	float speed;
+	//	bool isMoving = false;
+	//} player1, player2;
 	// Player variables
 	//Transform player1Transform, arrowTransform;
 	//// TODO - will need to rename dir & vel to p1Vel, p2vel etc
