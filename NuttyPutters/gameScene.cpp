@@ -5,7 +5,6 @@
 #include "UI.h"
 
 
-
 // Default constructor
 gameScene::gameScene() { }
 // Deconstructor
@@ -51,7 +50,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\front.png");	//negz
 	sky = new Mesh(filenames);
 
-	
+
 	// Setup player position (must use transform as it's a loaded model - not drawn)
 	//player1Transform.getScale() = vec3(0.5);
 	//player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
@@ -116,11 +115,15 @@ void gameScene::LoadGame(string seed)
 
 		levelSeed.push_back(0);
 		levelSeed.push_back(1);
+		levelSeed.push_back(7);
 		levelSeed.push_back(1);
+		levelSeed.push_back(7);
+		levelSeed.push_back(3);
+		levelSeed.push_back(2);
+		levelSeed.push_back(6);
 		levelSeed.push_back(7);
 		levelSeed.push_back(1);
 		levelSeed.push_back(9);
-
 	} // end if seed is default
 	else // this has been given a seed value
 	{
@@ -592,6 +595,7 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
+	// For funsies
 	if (glfwGetKey(window, GLFW_KEY_J))
 	{
 		player1 = physicsSystem.Jump(player1, 1.0f);
@@ -603,7 +607,7 @@ void gameScene::Input(GLFWwindow* window)
 		// Change to pause target cam
 		cameraType = 2;
 		Render(window); // Render it
-		// Quick screenshot - need to do this twice
+		// Quick screenshot - need to do this twice; once here, again on Save
 		// Alt press below ensures only game window is captured
 		keybd_event(VK_MENU, 0, 0, 0); //Alt Press
 		keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
@@ -684,6 +688,15 @@ void gameScene::Input(GLFWwindow* window)
 				paused = false;
 				break;
 			}
+
+			// Exit to main menu
+			//This function resets the scene to an empty screen
+			if (glfwGetKey(window, GLFW_KEY_C))
+			{
+				// glLoadIdentity(); might need this later
+				windowMgr::getInstance()->sceneManager.changeScene(1);
+			}
+
 		} // end while paused
 		cout << "Unpaused" << endl;
 	} // end pause
@@ -757,7 +770,7 @@ void gameScene::Input(GLFWwindow* window)
 	else if (cameraType == 1)
 	{
 		// If ball is not moving then allow for angle on chase camera to be changed
-		if (!player1.isMoving) // was previously !golfBallMoving
+		if (!player1.isMoving)
 		{
 			// controls in the chase camera 
 			if (glfwGetKey(window, GLFW_KEY_D))
@@ -812,18 +825,20 @@ void gameScene::Input(GLFWwindow* window)
 	// TODO - think about how to run the following for both players depending on whose turn it is
 	if (continuePressed)
 	{
-		// If P is pressed 
+		// If Fire is pressed 
 		if (glfwGetKey(window, GLFW_KEY_SPACE))
 		{
-			if (!player1.isMoving) 
+			if (!player1.isMoving)
 			{
-				// Start counter
-				Pcounter += 0.2f;
-				// Update the power bar based on the the Pcounter value 
-				//powerBarTrans.getPos().x -= (Pcounter/5.0f) * powerBarMesh->getGeomPos().x;
+				// Increment power counter as long as fire is held
+				fireCounter += 0.2f;
 
-			//	powerBarTrans.getPos().x += Pcounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
-				//powerBarTrans.getScale().x += Pcounter/5.0f; // Update the scale based on the Pcounter value
+
+				// Update the power bar based on the the fireCounter value 
+				//powerBarTrans.getPos().x -= (fireCounter/5.0f) * powerBarMesh->getGeomPos().x;
+
+				//powerBarTrans.getPos().x += fireCounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
+				//powerBarTrans.getScale().x += fireCounter/5.0f; // Update the scale based on the fireCounter value
 
 				//############################### CODE FOR POWER BAR WILL GO HERE ########################
 
@@ -852,40 +867,37 @@ void gameScene::Input(GLFWwindow* window)
 					// x = cos(theta - 270), z = sin(theta- 270)
 					player1.direction = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
 				}
-				pPressed = true;
+				firePressed = true;
 			}
 		}
 	}
-	// When P is realesed
+	// When Fire is realesed
 	if ((glfwGetKey(window, GLFW_KEY_SPACE)) == false)
 	{
-		// Only work if p was just released
-		if (pPressed)
+		// Only work if fire button was just released
+		if (firePressed)
 		{
-			
 			// Power measure accumulated by holding space is impulse magnitude
 			// Normal of impulse is direction
-			//player1.impulse = player1.direction * Pcounter;
-			player1 = physicsSystem.AddImpulse(player1, Pcounter);
-			// Reset power counter
-			Pcounter = 0;
+			player1 = physicsSystem.Fire(player1, fireCounter);
+			// Reset fire power counter
+			fireCounter = 0;
 			// And we're off! 
 			player1.isMoving = true;
 
 
 
-			// Force to apply is held in power counter
-			//player1.power += Pcounter;
-			//repeat until Pcounter is reset to 0
+			// M - update power bar hud stuff here (invoke UI class method)
+			//repeat until fireCounter is reset to 0
 // M - This essentially blocks all other code!
-	/*		while (Pcounter > 0.0)
+	/*		while (fireCounter > 0.0)
 			{
 				//This just inverts the increasing in size and positions done before when P was pressed
-			    //powerBarTrans.getPos().x += (Pcounter / 5.0f) * powerBarMesh->getGeomPos().x;
-				//powerBarTrans.getPos().x -= Pcounter / 100.0f;
-				//powerBarTrans.getScale().x -= Pcounter / 5.0f;
-				//Decrease Pcounter until reaches 0
-				Pcounter -= 0.5;
+				//powerBarTrans.getPos().x += (fireCounter / 5.0f) * powerBarMesh->getGeomPos().x;
+				//powerBarTrans.getPos().x -= fireCounter / 100.0f;
+				//powerBarTrans.getScale().x -= fireCounter / 5.0f;
+				//Decrease fireCounter until reaches 0
+				fireCounter -= 0.5;
 			} */
 			// Increment stroke counter by one
 			strokeCounter += 1;
@@ -893,7 +905,7 @@ void gameScene::Input(GLFWwindow* window)
 			// Switch statement which changes the stroke counter based on how many strokes the player has taken
 			switch (strokeCounter)
 			{
-			case 0:	
+			case 0:
 				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["zeroStrokeLbl"]);
 				break;
 			case 1:
@@ -943,16 +955,11 @@ void gameScene::Input(GLFWwindow* window)
 			}
 
 			// Flip
-			pPressed = false;
+			firePressed = false;
 		}
 	} // End if (p is released)
 
-	  //This function resets the scene to an empty screen
-	if (glfwGetKey(window, GLFW_KEY_C))
-	{
-		// glLoadIdentity(); might need this later
-		windowMgr::getInstance()->sceneManager.changeScene(1);
-	}
+
 
 }
 
@@ -974,8 +981,8 @@ void gameScene::Update(GLFWwindow* window)
 		else
 			tileTracker++;
 	}
-	
-	
+
+
 
 	// Calculate dt
 	lastFrame = thisFrame;
@@ -1014,28 +1021,26 @@ void gameScene::Update(GLFWwindow* window)
 
 
 	// PLAYER UPDATE
-	// Consider adding || 'have impulses been added'
 	if (player1.isMoving)
 	{
-		// If player is currently on an up ramp
-		if (algTiles.at(currentTile).id == 7)
-		{
-			// Apply downwards resistance 
 
-		}
-		else
-		{
-			// Player is not currently on an up ramp - don't apply downwards resistance
+	// Work out whether to apply gravity or not (is player on the floor/in air)
+	physicsSystem.ApplyGravity(player1, algTiles.at(currentTile).thisCoords.y, 1.0f);
 
-			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(player1, algTiles.at(currentTile).thisCoords.y, 1.0f);
-		}
-
-		// Update position
-		player1 = physicsSystem.Integrate(player1, dt);
+	// Must pass in floor position to update - might be on ramp
+	if (algTiles.at(currentTile).id == 7)
+	{
 
 	}
-	
+	else
+	{
+		// Update position
+		player1 = physicsSystem.Integrate(player1, dt, algTiles.at(currentTile).thisCoords.y);
+	}
+
+
+	}
+
 
 
 	// Velocity is direction by power by delta time
@@ -1056,7 +1061,7 @@ void gameScene::Update(GLFWwindow* window)
 		rot *= player1.power *  dt;
 		player1.transform.getRot() += -rot;
 
-	} 
+	}
 	// Prevent it moving forever
 	else
 	{
@@ -1091,7 +1096,7 @@ void gameScene::Update(GLFWwindow* window)
 			// Get the time to this method
 			timeToThisMethod = glfwGetTime();
 		}
-		
+
 		// If at least a second has passed
 		if (timeSinceContinueWasPressed < glfwGetTime() - timeToThisMethod)
 		{
@@ -1108,7 +1113,7 @@ void gameScene::Update(GLFWwindow* window)
 			minutesAsString = std::to_string(timeRemainingInMinutes);
 			tenthsAsString = std::to_string(timeRemainingInTenths);
 			secondsAsString = std::to_string(timeRemainingInSeconds);
-		    // Create a new empty string time - append each above var to it eg time = 130
+			// Create a new empty string time - append each above var to it eg time = 130
 			timeCombined = minutesAsString + tenthsAsString + secondsAsString;
 
 			// for loop that runs 3 times
@@ -1117,43 +1122,43 @@ void gameScene::Update(GLFWwindow* window)
 				// Get the timecombined at index i and make it equal to temp
 				temp = timeCombined[i];
 				// Convert temp to int
-				tempInt = atoi(temp.c_str()); 
+				tempInt = atoi(temp.c_str());
 				// Switch using tempInt value
 				switch (tempInt)
 				{
-					case 0:
-						windowMgr::getInstance()->meshes.at(i+6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-						break;
-					case 1:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
-						break;
-					case 2:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
-						break;
-					case 3:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
-						break;
-					case 4:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
-						break;
-					case 5:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
-						break;
-					case 6:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
-						break;
-					case 7:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
-						break;
-					case 8:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
-						break;
-					case 9:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
-						break;
-					default:
-						windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-						break;
+				case 0:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+					break;
+				case 1:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
+					break;
+				case 2:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
+					break;
+				case 3:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
+					break;
+				case 4:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
+					break;
+				case 5:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
+					break;
+				case 6:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
+					break;
+				case 7:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
+					break;
+				case 8:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
+					break;
+				case 9:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
+					break;
+				default:
+					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+					break;
 				}
 			}
 		}
@@ -1176,10 +1181,11 @@ void gameScene::Update(GLFWwindow* window)
 void gameScene::Collisions()
 {
 
-	
+
 	// Check collisions for the tile player is on only
+	// TODO - Sort out virtual instantiation issue
 	//algTiles.at(currentTile).CheckCollisions(player1);
-	
+
 	// Switch on the currentTile 
 	switch (algTiles.at(currentTile).id)
 	{
@@ -1213,8 +1219,8 @@ void gameScene::Collisions()
 
 				break;
 			case 2:
-			//	player1.direction = CheckCollisionsObstacle1(straightV.thisCoords, player1.transform.getPos(),
-			//		player1.direction, straightV.displace, straightV.radius);
+				//	player1.direction = CheckCollisionsObstacle1(straightV.thisCoords, player1.transform.getPos(),
+				//		player1.direction, straightV.displace, straightV.radius);
 				break;
 			default:
 				break;
@@ -1236,11 +1242,11 @@ void gameScene::Collisions()
 			switch (obstacles.at(i + 1))
 			{
 			case 1:
-          
+
 				break;
 			case 2:
-			//	player1.direction = CheckCollisionsObstacle1(straightH.thisCoords, player1.transform.getPos(),
-			//		player1.direction, straightH.displace, straightH.radius);
+				//	player1.direction = CheckCollisionsObstacle1(straightH.thisCoords, player1.transform.getPos(),
+				//		player1.direction, straightH.displace, straightH.radius);
 				break;
 			default:
 				break;
@@ -1287,15 +1293,22 @@ void gameScene::Collisions()
 	// Up ramp tile
 	case 7:
 	{
-		// Player is on an up ramp 
-		player1.onUpRamp = true;
+
+		// Instantiate in order to call member functions
 		UpRampDown ramp;
+		// Set deets
 		ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		// Raise it a bit
 		ramp.thisCoords.y += 1.8;
+		// So long as player isn't in the air...	
+		// Find floor level at this point on ramp
+		float floorPos = ramp.SetPlayerHeight(player1);
+	
 		// Set player height
-		//float upForce = ramp.findUpwardsForce(player1);
-		//player1.transform.setPos(ramp.SetPlayerHeight(player1.transform.getPos()));
-		//onRamp = true;
+		player1.transform.getPos().y = floorPos;
+		
+		//player1 = physicsSystem.Integrate(player1, dt, algTiles.at(currentTile).thisCoords.y);
+
 		break;
 	}
 	// End tile
@@ -1306,12 +1319,12 @@ void gameScene::Collisions()
 		end.SetCoords(algTiles.at(currentTile).GetThisCoords());
 		end.outDir = algTiles.at(currentTile).outDir;
 		player1 = end.CheckCollisions(player1);
-    
-		 // If user hasnt completed hole then - get
+
+		// If user hasnt completed hole then - get
 		if (!hasUserCompletedHole)
 		{
 			// If ball in hole is equal to true - function to courseGenTiles
-			if(end.getBallInHole());
+			if (end.getBallInHole());
 			{
 				// Update boolean to user having completed the hole
 				hasUserCompletedHole = true;
@@ -1325,7 +1338,7 @@ void gameScene::Collisions()
 		break;
 	} // end case 9
 	} // end collisions switch
-	
+
 } // end collisions function
 
 vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, float displace, float radius)

@@ -12,6 +12,5 @@ public:
 	float power; // accumulated counter from holding fire
 	float mass = 1;
 	bool isMoving = false;
-	bool onUpRamp = false;
 	bool ballInHole = false;
 };

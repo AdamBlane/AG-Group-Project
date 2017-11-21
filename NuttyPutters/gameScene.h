@@ -83,9 +83,10 @@ public:
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
 	float dt = 0.016; // First frame; is reset thereafter
-	// Rename
-	bool pPressed = false; // Prevent shooting ball again whilst already moving
-	float Pcounter; // This is a force counter (TODO: rename)
+	// Fire action variables
+	bool firePressed = false; // Prevent shooting ball again whilst already moving
+	float fireCounter; // This is a force counter (TODO: rename)
+	
 	bool levelSaved = false; // Prevent saving same level more than once
 
 	// Camera variables

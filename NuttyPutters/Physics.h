@@ -21,7 +21,11 @@ public:
 
 	// Resitance vector
 	glm::vec3 rampUpResistance;
+
+
 	float rampRes = -10.9f;
+
+
 	// R = -gravity * sine(theta) (add theta property to each tile)
 	// Apply this to the z axis only
 
@@ -33,11 +37,11 @@ public:
 
 	// Generates impulse vector for player 
 	// (normal usage, uses player members for dir & vel
-	Player AddImpulse(Player player, float magnitude);
-
-	Player Jump(Player player, float mag);
+	Player Fire(Player player, float magnitude);
+	Player RampResistance(Player player, float magnitude);
+	Player Jump(Player player, float magnitude);
 	// Work out whether or not to apply gravity
 	void ApplyGravity(Player player, float tilePosY, float floorGap);
 	// Semi-implicit Euler method
-	Player Integrate(Player player, float dt);
+	Player Integrate(Player player, float dt, float floorLevel);
 };

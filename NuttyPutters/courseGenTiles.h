@@ -161,7 +161,7 @@ public:
 	~UpRampDown() {};
 
 	// Sets player height based on where it is on ramp
-	float findUpwardsForce(Player player);
+	float SetPlayerHeight(Player player);
 
 	virtual Player CheckCollisions(Player player) { return player; }
 
