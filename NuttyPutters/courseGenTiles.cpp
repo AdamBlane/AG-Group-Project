@@ -44,14 +44,14 @@ Player StartTile::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// Hit boundary, revert x axis
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 	{
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// Hit boundary, reflect on x
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	// Check on z axis - just one boundary
 	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
@@ -59,7 +59,7 @@ Player StartTile::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// hit, revert z axis
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 
 	}
 
@@ -75,14 +75,14 @@ Player StraightTile_V::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// Hit boundary, revert x axis
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 	{
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// Hit boundary, revert x axis
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 
 	}
 	return player;
@@ -98,7 +98,7 @@ Player StraightTile_H::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// Hit boundary, revert x axis
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 	else if (player.transform.getPos().z < thisCoords.z - (4 - radius))
 	{
@@ -106,7 +106,7 @@ Player StraightTile_H::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// Hit boundary, revert x axis
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 
 	return player;
@@ -121,7 +121,7 @@ Player CornerTile_BL::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// hit left boundary
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	// Check x axis - left side of cube corner boundary
 	else if (player.transform.getPos().x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
@@ -131,7 +131,7 @@ Player CornerTile_BL::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// Hit going right, reflect on x
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	// Check z axis - lower boundary
 	if (player.transform.getPos().z > thisCoords.z + (4 - radius))
@@ -139,7 +139,7 @@ Player CornerTile_BL::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// hit middle
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 	// Check z axis - lower side of cube corner boundary
 	else if (player.transform.getPos().z < thisCoords.z - (4 - radius) &&
@@ -149,7 +149,7 @@ Player CornerTile_BL::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// Hit going up, reflect on z
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 
 	return player;
@@ -165,7 +165,7 @@ Player CornerTile_BR::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// hit left boundary
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	// Check x axis - left side of cube corner boundary
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
@@ -175,7 +175,7 @@ Player CornerTile_BR::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// Hit going right, reflect on x
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	// Check z axis - lower boundary
 	if (player.transform.getPos().z  > thisCoords.z + (4 - radius))
@@ -183,7 +183,7 @@ Player CornerTile_BR::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// hit middle
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 	// Check z axis - lower side of cube corner boundary
 	else if (player.transform.getPos().z < thisCoords.z - (4 - radius) &&
@@ -193,7 +193,7 @@ Player CornerTile_BR::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// Hit going up, reflect on z
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 	return player;
 }
@@ -208,7 +208,7 @@ Player CornerTile_TL::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// hit left boundary
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	// Check x axis - left side of cube corner boundary
 	else if (player.transform.getPos().x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
@@ -218,7 +218,7 @@ Player CornerTile_TL::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// Hit going right, reflect on x
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	// Check z axis - lower boundary
 	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
@@ -226,7 +226,7 @@ Player CornerTile_TL::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// hit middle
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 	// Check z axis - lower side of cube corner boundary
 	else if (player.transform.getPos().z > thisCoords.z + (4 - radius) &&
@@ -236,7 +236,7 @@ Player CornerTile_TL::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// Hit going up, reflect on z
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 	return player;
 }
@@ -251,7 +251,7 @@ Player CornerTile_TR::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// hit left boundary
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	// Check x axis - left side of cube corner boundary
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
@@ -261,7 +261,7 @@ Player CornerTile_TR::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// Hit going right, reflect on x
-		player.direction.x = -player.direction.x;
+		player.velocity.x = -player.velocity.x;
 	}
 	// Check z axis - lower boundary
 	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
@@ -269,7 +269,7 @@ Player CornerTile_TR::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// hit middle
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 	// Check z axis - lower side of cube corner boundary
 	else if (player.transform.getPos().z > thisCoords.z + (4 - radius) &&
@@ -279,7 +279,7 @@ Player CornerTile_TR::CheckCollisions(Player player)
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// Hit going up, reflect on z
-		player.direction.z = -player.direction.z;
+		player.velocity.z = -player.velocity.z;
 	}
 	return player;
 }
@@ -302,7 +302,7 @@ Player UpRampDown::SetPlayerHeight(Player player)
 // Collisions check for end tile
 Player EndTile::CheckCollisions(Player player)
 {
-	// Based on direction
+	// Based on velocity
 	if (outDir.going_up)
 	{
 		// Check on X axis - boundaries either side
@@ -311,14 +311,14 @@ Player EndTile::CheckCollisions(Player player)
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().x = thisCoords.x + (4 - radius);
 			// Hit boundary, revert x axis
-			player.direction.x = -player.direction.x;
+			player.velocity.x = -player.velocity.x;
 		}
 		else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 		{
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().x = thisCoords.x - (4 - radius);
 			// Hit boundary, revert x axis
-			player.direction.x = -player.direction.x;
+			player.velocity.x = -player.velocity.x;
 		}
 		// Check on z axis - just one boundary
 		if (player.transform.getPos().z < thisCoords.z - (4 - radius))
@@ -326,7 +326,7 @@ Player EndTile::CheckCollisions(Player player)
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().z = thisCoords.z - (4 - radius);
 			// hit, revert z axis
-			player.direction.z = -player.direction.z;
+			player.velocity.z = -player.velocity.z;
 		}
 	}
 	else if (outDir.going_down)
@@ -337,14 +337,14 @@ Player EndTile::CheckCollisions(Player player)
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().x = thisCoords.x + (4 - radius);
 			// Hit boundary, revert x axis
-			player.direction.x = -player.direction.x;
+			player.velocity.x = -player.velocity.x;
 		}
 		else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 		{
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().x = thisCoords.x - (4 - radius);
 			// Hit boundary, revert x axis
-			player.direction.x = -player.direction.x;
+			player.velocity.x = -player.velocity.x;
 		}
 		// Check on z axis - just one boundary
 		if (player.transform.getPos().z > thisCoords.z + (4 - radius))
@@ -352,7 +352,7 @@ Player EndTile::CheckCollisions(Player player)
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().z = thisCoords.z + (4 - radius);
 			// hit, revert z axis
-			player.direction.z = -player.direction.z;
+			player.velocity.z = -player.velocity.z;
 		}
 	}
 	else if (outDir.going_left)
@@ -363,14 +363,14 @@ Player EndTile::CheckCollisions(Player player)
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().z = thisCoords.z - (4 - radius);
 			// hit, revert z axis
-			player.direction.z = -player.direction.z;
+			player.velocity.z = -player.velocity.z;
 		}
 		else if (player.transform.getPos().z > thisCoords.z + (4 - radius))
 		{
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().z = thisCoords.z + (4 - radius);
 			// hit, revert z axis
-			player.direction.z = -player.direction.z;
+			player.velocity.z = -player.velocity.z;
 		}
 		// Check on x - boundary to left
 		if (player.transform.getPos().x < thisCoords.x - (4 - radius))
@@ -378,7 +378,7 @@ Player EndTile::CheckCollisions(Player player)
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().x = thisCoords.x - (4 - radius);
 			// hit, revert on x
-			player.direction.x = -player.direction.x;
+			player.velocity.x = -player.velocity.x;
 		}
 	}
 	else if (outDir.going_right)
@@ -389,14 +389,14 @@ Player EndTile::CheckCollisions(Player player)
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().z = thisCoords.z - (4 - radius);
 			// hit, revert on z
-			player.direction.z = -player.direction.z;
+			player.velocity.z = -player.velocity.z;
 		}
 		else if (player.transform.getPos().z > thisCoords.z + (4 - radius))
 		{
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().z = thisCoords.z + (4 - radius);
 			// hit, revert on z
-			player.direction.z = -player.direction.z;
+			player.velocity.z = -player.velocity.z;
 		}
 		// Check on x - boundary to right
 		if (player.transform.getPos().x > thisCoords.x + (4 - radius))
@@ -404,17 +404,17 @@ Player EndTile::CheckCollisions(Player player)
 			// Move away from boundary so as not to retrigger this
 			player.transform.getPos().x = thisCoords.x + (4 - radius);
 			// hit, reflect on x
-			player.direction.x = -player.direction.x;
+			player.velocity.x = -player.velocity.x;
 		}
 	}
 	// Check if over end hole
 	if (player.transform.getPos().x > thisCoords.x - 0.75 && player.transform.getPos().x < thisCoords.x + 0.75 &&
 		player.transform.getPos().z > thisCoords.z - 0.75 && player.transform.getPos().z < thisCoords.z + 0.75)
 	{
-		if(player.speed < 2.0f)
+		if(player.power < 2.0f)
 		{
 			// Apply gravity
-			player.direction.y -= 0.2f;
+			player.velocity.y -= 0.2f;
 			ballInHole = true;
 		}
 	}

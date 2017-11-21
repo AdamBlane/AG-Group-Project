@@ -22,7 +22,8 @@
 #include "target_camera.h"
 #include "Player.h"
 #include "courseGenTiles.h"
-
+#include "UI.h"
+#include "Physics.h"
 
 
 
@@ -39,7 +40,8 @@ public:
 
 
 	Player player1, player2;
-
+	UI uiMgr;
+	Physics physicsSystem;
 	//Trying Skybox
 	Mesh* sky;
 	

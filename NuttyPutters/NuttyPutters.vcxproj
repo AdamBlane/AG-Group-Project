@@ -32,6 +32,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="obj_loader.cpp" />
     <ClCompile Include="optionsScene.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="playerSelectScene.cpp" />
     <ClCompile Include="sceneMgr.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="obj_loader.h" />
     <ClInclude Include="optionsScene.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="playerSelectScene.h" />
     <ClInclude Include="sceneMgr.h" />

@@ -1,0 +1,39 @@
+#pragma once
+#include "Player.h"
+
+class Physics
+{
+public:
+	Physics() {}
+	~Physics() {}
+
+	// gravity
+	glm::vec3 gravity = vec3(0.0f, -9.8f, 0.0f);
+	// Always multiplied by gravity; either 1/0 & et in ApplyGravity()
+	float gravFlag;
+	// Accounts for errors with floating point arithmetic
+	float epsilon = 0.5f;
+	// friction 
+	glm::vec3 friction;
+	float frictionScalar = -10.9f;
+	// account for aerodynamic drag
+	//float drag = 0.9f;
+
+	// Resitance vector
+	glm::vec3 resistance;
+	// R = -gravity * sine(theta) (add theta property to each tile)
+	// Apply this to the z axis only
+
+
+
+	// All ramps have same angle of 20 degrees 
+	// Cosine(20) = 0.93969256961
+
+
+	// Generates impulse vector for player
+	Player AddImpulse(Player player, float magnitude);
+	// Work out whether or not to apply gravity
+	void ApplyGravity(Player player, float tilePosY, float floorGap);
+	// Semi-implicit Euler method
+	Player Integrate(Player player, float dt);
+};

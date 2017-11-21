@@ -34,6 +34,7 @@ public:
 class BaseTile
 {
 public:
+
 	// This tile's position, the next tile's position
 	vec3 thisCoords;
 	vec3 nextCoords;
@@ -53,8 +54,12 @@ public:
 	vec3 GetNextCoords();
 	vec3 GetThisCoords();
 
+	
 	// Returns true if player is within tile bounds
 	bool isPlayerOnTile(vec3 playerPos);
+
+	// Perform collisions checks
+	//virtual Player CheckCollisions(Player player) = 0;
 };
 
 // Start Tile type, inherits from Tileb
@@ -71,7 +76,7 @@ public:
 	}
 	~StartTile() {};
 
-	
+
 	// Checks whether player has hit boundaries of this tile
 	Player CheckCollisions(Player player);
 	
@@ -120,7 +125,7 @@ public:
 	~CornerTile_BR() {};
 
 	// Checks whether player has hit boundaries of this tile
-	Player CheckCollisions(Player player);
+	virtual Player CheckCollisions(Player player);
 	
 };
 
@@ -158,6 +163,8 @@ public:
 	// Sets player height based on where it is on ramp
 	Player SetPlayerHeight(Player player);
 
+	virtual Player CheckCollisions(Player player) { return player; }
+
 };
 
 // RAMP - Goes down, placed when course dir is going_up
@@ -166,6 +173,8 @@ class DownRampDown : public BaseTile
 public:
 	DownRampDown() { id = 8; }
 	~DownRampDown() {};
+
+	Player CheckCollisions(Player player) { return player; }
 };
 
 // Bridge tile
@@ -175,6 +184,7 @@ public:
 	Bridge_V() { id = 10; }
 	~Bridge_V() {};
 
+	Player CheckCollisions(Player player) { return player; }
 };
 
 // End tile
