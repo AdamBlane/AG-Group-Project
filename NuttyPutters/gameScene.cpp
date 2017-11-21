@@ -33,6 +33,15 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	// Load game, takes a seed (either given or default)
 	LoadGame(seed); // Results in filled algTiles and levelSeed lists
 
+
+	for (auto &t : algTiles)
+	{
+		cout << t.id << "(" << t.thisCoords.x << ", " << t.thisCoords.z << ")" << endl;
+	}
+
+
+
+
 	// Take alg tiles, turn into render tiles
 	SetupTilesToBeDrawn();
 
@@ -175,8 +184,6 @@ void gameScene::LoadGame(string seed)
 			// Convert each character in string to int
 			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
 		}
-
-
 	} // end if seed is default
 	else // this has been given a seed value
 	{
@@ -201,7 +208,6 @@ void gameScene::LoadGame(string seed)
 	{
 		// Update current coordinates (next coords of last thing in list) 
 		curCoords = algTiles.back().GetNextCoords();
-
 		switch (i)
 		{
 			// Straight_V
@@ -1230,8 +1236,8 @@ void gameScene::Collisions()
 
 				break;
 			case 2:
-				player1.direction = CheckCollisionsObstacle1(straightV.thisCoords, player1.transform.getPos(),
-					player1.direction, straightV.displace, straightV.radius);
+			//	player1.direction = CheckCollisionsObstacle1(straightV.thisCoords, player1.transform.getPos(),
+			//		player1.direction, straightV.displace, straightV.radius);
 				break;
 			default:
 				break;
@@ -1256,8 +1262,8 @@ void gameScene::Collisions()
           
 				break;
 			case 2:
-				player1.direction = CheckCollisionsObstacle1(straightH.thisCoords, player1.transform.getPos(),
-					player1.direction, straightH.displace, straightH.radius);
+			//	player1.direction = CheckCollisionsObstacle1(straightH.thisCoords, player1.transform.getPos(),
+			//		player1.direction, straightH.displace, straightH.radius);
 				break;
 			default:
 				break;

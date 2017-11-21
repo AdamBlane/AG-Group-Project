@@ -9,7 +9,7 @@
 void BaseTile::SetCoords(vec3 coords) {	thisCoords = coords; }
 
 // Set next coords of this tile
-void BaseTile::SetNextCoords(vec3 coords) {	thisCoords = coords; }
+void BaseTile::SetNextCoords(vec3 coords) {	nextCoords = coords; }
 
 // Getter of next coords
 vec3 BaseTile::GetNextCoords() { return nextCoords; }
@@ -36,21 +36,20 @@ bool BaseTile::isPlayerOnTile(vec3 playerPos)
 
 
 // Collision check for start tile
-// TODO - edit displace value
 Player StartTile::CheckCollisions(Player player)
 {
 	// Check on X axis - boundaries either side
 	if (player.transform.getPos().x > thisCoords.x + (4 - radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x;
+		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// Hit boundary, revert x axis
 		player.direction.x = -player.direction.x;
 	}
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x;
+		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// Hit boundary, reflect on x
 		player.direction.x = -player.direction.x;
 	}
@@ -58,7 +57,7 @@ Player StartTile::CheckCollisions(Player player)
 	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z;
+		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// hit, revert z axis
 		player.direction.z = -player.direction.z;
 
@@ -171,7 +170,7 @@ Player CornerTile_BR::CheckCollisions(Player player)
 	// Check x axis - left side of cube corner boundary
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
 		player.transform.getPos().z > thisCoords.z - 5 && // Between upper limit of tile/square
-		player.transform.getPos().z - 4) // and lower limit of square
+		player.transform.getPos().z < thisCoords.z - 4) // and lower limit of square
 	{
 		// Move away from boundary so as not to retrigger this
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
@@ -195,7 +194,6 @@ Player CornerTile_BR::CheckCollisions(Player player)
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// Hit going up, reflect on z
 		player.direction.z = -player.direction.z;
-
 	}
 	return player;
 }
