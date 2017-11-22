@@ -12,7 +12,7 @@
 #include <gdiplusimaging.h>
 
 // Internals
-#include "courseGenV2.h"
+
 #include "Shader.h"
 #include "Mesh.h"
 #include "Texture.h"
@@ -20,6 +20,12 @@
 #include "chase_camera.h"
 #include "tileBuilder.h"
 #include "target_camera.h"
+#include "Player.h"
+#include "courseGenTiles.h"
+#include "UI.h"
+#include "Physics.h"
+
+
 
 using namespace AllCamera;
 using namespace std::chrono;
@@ -32,6 +38,10 @@ public:
 	// Deconstructor
 	~gameScene();
 
+
+	Player player1, player2;
+	UI uiMgr;
+	Physics physicsSystem;
 	//Trying Skybox
 	Mesh* sky;
 	
@@ -44,6 +54,7 @@ public:
 	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
 
 	// Gameplay variables
+	// TODO - set these in init to be safe (sometimes not reset in other scenes)
 	int timeBeenInScene = 0; // Time from when the scene is fully loaded
 	int timeCounter = 0;
 	int strokeCounter = 0; // Counts the amount of strokes the player takes
@@ -69,12 +80,16 @@ public:
 	// Spatial (tile!) partitioning - tracks which tile player is currently on		
 	int currentTile = 0; 
 	// Track fps to give dt
+	double currentTime = glfwGetTime();
+	double accumulator = 0.0;
+
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
 	float dt = 0.016; // First frame; is reset thereafter
-	// Rename
-	bool pPressed = false; // Prevent shooting ball again whilst already moving
-	float Pcounter; // This is a force counter (TODO: rename)
+	// Fire action variables
+	bool firePressed = false; // Prevent shooting ball again whilst already moving
+	float fireCounter; // This is a force counter (TODO: rename)
+	
 	bool levelSaved = false; // Prevent saving same level more than once
 
 	// Camera variables
@@ -85,14 +100,22 @@ public:
 	vec3 pauseCamPos, pauseCamTarget;
 
 
-
+	//struct player
+	//{
+	//	Transform transform;
+	//	Transform arrowTransform;
+	//	vec3 direction;
+	//	vec3 velocity;
+	//	float speed;
+	//	bool isMoving = false;
+	//} player1, player2;
 	// Player variables
-	Transform player1Transform, arrowTransform;
-	// TODO - will need to rename dir & vel to p1Vel, p2vel etc
-	vec3 gbDirection; // Normalised direction vector
-	vec3 gbVelocity; // Velocity is dir * speed	
-	bool golfBallMoving = false; // Is golf ball moving
-	float speed; // Ball speed
+	//Transform player1Transform, arrowTransform;
+	//// TODO - will need to rename dir & vel to p1Vel, p2vel etc
+	//vec3 gbDirection; // Normalised direction vector
+	//vec3 gbVelocity; // Velocity is dir * speed	
+	//bool golfBallMoving = false; // Is golf ball moving
+	//float speed; // Ball speed
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)
