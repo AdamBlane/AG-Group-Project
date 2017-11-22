@@ -22,10 +22,10 @@ vec3 BaseTile::GetThisCoords() { return thisCoords; }
 bool BaseTile::isPlayerOnTile(vec3 playerPos)
 {
 	// Match on x first
-	if (playerPos.x > thisCoords.x - 4 && playerPos.x < thisCoords.x + 4)
+	if (playerPos.x > thisCoords.x - 5 && playerPos.x < thisCoords.x + 5)
 	{
 		// Then on z
-		if (playerPos.z > thisCoords.z - 4 && playerPos.z < thisCoords.z + 4)
+		if (playerPos.z > thisCoords.z - 5 && playerPos.z < thisCoords.z + 5)
 		{
 			// Player is on this tile
 			return true;

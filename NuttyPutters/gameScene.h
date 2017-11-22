@@ -80,6 +80,9 @@ public:
 	// Spatial (tile!) partitioning - tracks which tile player is currently on		
 	int currentTile = 0; 
 	// Track fps to give dt
+	double currentTime = glfwGetTime();
+	double accumulator = 0.0;
+
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
 	float dt = 0.016; // First frame; is reset thereafter

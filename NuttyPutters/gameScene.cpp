@@ -114,10 +114,11 @@ void gameScene::LoadGame(string seed)
 		//}
 
 		levelSeed.push_back(0);
-		levelSeed.push_back(4);
-		levelSeed.push_back(3);
-		levelSeed.push_back(8);
 		levelSeed.push_back(1);
+		levelSeed.push_back(7);
+		levelSeed.push_back(3);
+		levelSeed.push_back(4);
+		levelSeed.push_back(8);
 		levelSeed.push_back(1);
 		levelSeed.push_back(9);
 
@@ -321,7 +322,7 @@ void gameScene::LoadGame(string seed)
 			UpRampDown upRamp;
 			upRamp.SetCoords(curCoords);
 			// Find next pos (always know dir is down when 7 is placed)
-			vec3 nextPos = vec3(curCoords.x, curCoords.y + 3.8, curCoords.z + size);
+			vec3 nextPos = vec3(curCoords.x, curCoords.y + 3.8, curCoords.z + size); //usually + 3.8
 			upRamp.SetNextCoords(nextPos);
 			upRamp.outDir.going_down = true;
 			algTiles.push_back(upRamp);
@@ -365,6 +366,7 @@ void gameScene::FillScenery()
 	float xMin = 0;
 	float zMax = 0;
 	float zMin = 0;
+	float yMin = 0;
 	for (auto &t : algTiles)
 	{
 		if (t.thisCoords.x > xMax)
@@ -376,6 +378,9 @@ void gameScene::FillScenery()
 			zMax = t.thisCoords.z;
 		if (t.thisCoords.z < zMin)
 			zMin = t.thisCoords.z;
+
+		if (t.thisCoords.y < yMin)
+			yMin = t.thisCoords.y;
 	}
 	// Add another tile's width to boundaries
 	xMin -= 10; // To add another layer to the boundary, add 10 to each value
@@ -437,16 +442,16 @@ void gameScene::SetupTilesToBeDrawn()
 		// Ramp up when dir is down
 		if (t.id == 7)
 		{
-			hasObstacle = Tile::randomNumber(0, 1);
-			if (hasObstacle)
-			{
-				obstacleID = Tile::randomNumber(1, 2);
-				//save this tile position in algTiles
-				obstacles.push_back(index);
-				obstacles.push_back(obstacleID);
-			}
+			//hasObstacle = Tile::randomNumber(0, 1);
+			//if (hasObstacle)
+			//{
+			//	obstacleID = Tile::randomNumber(1, 2);
+			//	//save this tile position in algTiles
+			//	obstacles.push_back(index);
+			//	obstacles.push_back(obstacleID);
+			//}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, 0);
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y += 1.8;
@@ -981,12 +986,15 @@ void gameScene::Update(GLFWwindow* window)
 
 
 
-	// Calculate dt
-	lastFrame = thisFrame;
-	thisFrame = glfwGetTime();
-	dt = (float)(thisFrame - lastFrame);
-	if (dt > 0.03)
-		dt = 0.016;
+
+
+
+	//lastFrame = thisFrame;
+	//thisFrame = glfwGetTime();
+	//dt = (float)(thisFrame - lastFrame);
+	//if (dt > 0.03)
+	//	dt = 0.016;
+
 
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
@@ -1017,6 +1025,16 @@ void gameScene::Update(GLFWwindow* window)
 	windowMgr::getInstance()->PAUSEtargetCam->update(0.00001);
 
 
+	// Calculate dt
+	double newTime = glfwGetTime();
+	double frameTime = newTime - currentTime;
+	currentTime = newTime;
+
+	double fps = 1 / frameTime;
+	cout << "FPS:" << fps << endl;
+
+	accumulator += frameTime;
+	
 	// PLAYER UPDATE
 	if (player1.isMoving)
 	{
@@ -1028,7 +1046,18 @@ void gameScene::Update(GLFWwindow* window)
 			ramp.thisCoords.y += 1.8;
 			float floorPos = ramp.SetPlayerHeight(player1);
 			physicsSystem.ApplyGravity(player1, floorPos);
-			player1 = physicsSystem.Integrate(player1, dt, floorPos);
+			if (physicsSystem.gravFlag == 0)
+			{
+				physicsSystem.epsilon = 0.0001f;
+				player1 = physicsSystem.RampResistance(player1, -1.0f);
+			}
+
+			if (accumulator >= dt)
+			{
+				player1 = physicsSystem.Integrate(player1, dt, floorPos);
+				accumulator -= dt;
+			}
+			
 		}
 
 		// Must pass in floor position to update - might be on ramp
@@ -1045,17 +1074,37 @@ void gameScene::Update(GLFWwindow* window)
 			float floorPos = ramp.SetPlayerHeight(player1);
 			// Work out whether to apply gravity or not (is player on the floor/in air)
 			physicsSystem.ApplyGravity(player1, floorPos);
-			player1 = physicsSystem.Integrate(player1, dt, floorPos);
+			// Add impulse which is ramp resistance; only applied if on ground
+			if (physicsSystem.gravFlag == 0)
+			{
+				// These numbers need tweaking
+				physicsSystem.epsilon = 0.0001f;
+				player1 = physicsSystem.RampResistance(player1, -1.0f);
+			}
+
+			if (accumulator >= dt)
+			{
+				player1 = physicsSystem.Integrate(player1, dt, floorPos);
+				accumulator -= dt;
+			}
+
 		}
 		else
 		{
+			physicsSystem.epsilon = 0.5f;
 			// Work out whether to apply gravity or not (is player on the floor/in air)
 			physicsSystem.ApplyGravity(player1, algTiles.at(currentTile).thisCoords.y + 1.0f); // 1 is floor gap
-			// Update position
-			player1 = physicsSystem.Integrate(player1, dt, algTiles.at(currentTile).thisCoords.y + 1);
+			// Update position			
+			if (accumulator >= dt)
+			{
+				player1 = physicsSystem.Integrate(player1, dt, algTiles.at(currentTile).thisCoords.y + 1);
+				accumulator -= dt;
+			}
+
 		}
 
-
+		//vec3 rot = cross(normalize(player1.velocity), vec3(0.0f, 1.0f, 0.0f));
+		//player1.transform.getRot() += rot * dt;
 	}
 
 

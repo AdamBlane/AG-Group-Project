@@ -91,7 +91,7 @@ Player Physics::Integrate(Player player, float dt, float floorLevel)
 
 	// Multiply gravity by flag to determine whether or not it should affect vel
 	gravity *= gravFlag;
-	
+
 	// Add all forces together, divide by mass and find value for this timestep (by * dt)
 	player.velocity += ((friction + gravity) / player.mass) * dt; 
 	// REMOVED rampUpResistance as a force (applied as impulse now)
@@ -107,7 +107,7 @@ Player Physics::Integrate(Player player, float dt, float floorLevel)
 		player.isMoving = false;
 	
 
-	std::cout << "V " << player.velocity.x << ", " << player.velocity.y << ", " << player.velocity.z << std::endl;
+	//std::cout << "V " << player.velocity.x << ", " << player.velocity.y << ", " << player.velocity.z << std::endl;
 	// When on a ramp
 	// return difference between where player SHOULD be on Y and where they actually are on Z
 	// times this difference by delta time
