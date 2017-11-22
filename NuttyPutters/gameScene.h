@@ -82,10 +82,8 @@ public:
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
 	double accumulator = 0.0;
+	float dt = 0.016;  // This is 60fps
 
-	double lastFrame = 0;
-	double thisFrame = glfwGetTime();
-	float dt = 0.016; // First frame; is reset thereafter
 	// Fire action variables
 	bool firePressed = false; // Prevent shooting ball again whilst already moving
 	float fireCounter; // This is a force counter (TODO: rename)
@@ -100,22 +98,7 @@ public:
 	vec3 pauseCamPos, pauseCamTarget;
 
 
-	//struct player
-	//{
-	//	Transform transform;
-	//	Transform arrowTransform;
-	//	vec3 direction;
-	//	vec3 velocity;
-	//	float speed;
-	//	bool isMoving = false;
-	//} player1, player2;
-	// Player variables
-	//Transform player1Transform, arrowTransform;
-	//// TODO - will need to rename dir & vel to p1Vel, p2vel etc
-	//vec3 gbDirection; // Normalised direction vector
-	//vec3 gbVelocity; // Velocity is dir * speed	
-	//bool golfBallMoving = false; // Is golf ball moving
-	//float speed; // Ball speed
+
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)

@@ -18,7 +18,7 @@ void UI::Init()
 	// Power Bar HUD setup
 	windowMgr::getInstance()->meshes.at(3)->SetScale(0.1f, 0.15f);
 	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(1.6f, -1.625f, 0.0f));
-	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]);
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]);
 	// Power Bar Outline HUD setup
 	windowMgr::getInstance()->meshes.at(4)->SetScale(2.0f, 0.25f);
 	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(2.5f, -1.625f, 0.0f));
