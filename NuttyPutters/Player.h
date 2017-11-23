@@ -11,6 +11,7 @@ public:
 	glm::vec3 direction; // dir camera is facing
 	float power; // accumulated counter from holding fire
 	float mass = 1;
+	float radius = 0.5;
 	bool isMoving = false; // Physics is only applied when moving
 	bool ballInHole = false;
 	// Action variables
