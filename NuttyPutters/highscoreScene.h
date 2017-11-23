@@ -30,14 +30,37 @@ public:
 
 	Transform optionSceneTransform;
 
-	// Buttons 
-	//bool aButtonPressed = false;
-	bool buttonPressed[17] = { false };
-	//bool xButtonPressed = false;
-	//bool bButtonPressed = false;
-	//bool yButtonPressed = false;
+	bool buttonPressed[18] = { false };
 	bool isFunctionEmpty = false;
-	int temp = 0;
+
+	// BUTTONS
+	// A/Sqaure = 0
+	// B/X(PS) = 1
+	// X(XB)/Circle = 2
+	// Y/Triangle = 3
+	// /L1 = 4
+	// /R1 = 5
+	// /L2 = 6
+	// /R2 = 7
+	// /Select = 8
+	// /Start = 9
+	// /Left Stick Push = 10
+	// /Right Stick Push = 11
+	// /PS Button =12
+	// /Pad = 13
+	// /DPAD UP = 14
+	// /DPAD LEFT = 15 
+	// /DPAD DOWN = 16
+	// /DPAD RIGHT = 17
+
+	// FUCTIONS
+	// Select/fire = 0
+	// Back/Reset = 1
+	// Pause = 2
+	// DPAD UP = 3
+	// DPAD LEFT = 4
+	// DPAD DOWN = 5
+	// DPAD RIGHT = 6
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);

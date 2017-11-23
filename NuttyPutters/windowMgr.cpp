@@ -87,7 +87,7 @@ GLFWwindow* windowMgr::Init()
 
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 20; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -140,25 +140,40 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("pauseLbl", pauseLbl));
 	Texture* questionMarkLbl = new Texture("..\\NuttyPutters\\questionmarks.png");
 	textures.insert(std::pair<std::string, Texture*>("questionMarkLbl", questionMarkLbl));
-	// LOAD GAME XBOX BUTTON TEXTURES
-	Texture* aButtonLbl = new Texture("..\\NuttyPutters\\aButton.png");
-	textures.insert(std::pair<std::string, Texture*>("aButtonLbl", aButtonLbl));
-	Texture* bButtonLbl = new Texture("..\\NuttyPutters\\bButton.png");
-	textures.insert(std::pair<std::string, Texture*>("bButtonLbl", bButtonLbl));
-	Texture* xButtonLbl = new Texture("..\\NuttyPutters\\xButton.png");
-	textures.insert(std::pair<std::string, Texture*>("xButtonLbl", xButtonLbl));
-	Texture* yButtonLbl = new Texture("..\\NuttyPutters\\yButton.png");
-	textures.insert(std::pair<std::string, Texture*>("yButtonLbl", yButtonLbl));
-	Texture* menuButtonLbl = new Texture("..\\NuttyPutters\\menuButton.png");
-	textures.insert(std::pair<std::string, Texture*>("menuButtonLbl", menuButtonLbl));
-	Texture* rtLbl = new Texture("..\\NuttyPutters\\rt.png");
-	textures.insert(std::pair<std::string, Texture*>("rtLbl", rtLbl));
-	Texture* ltLbl = new Texture("..\\NuttyPutters\\lt.png");
-	textures.insert(std::pair<std::string, Texture*>("ltLbl", ltLbl));
-	Texture* rbLbl = new Texture("..\\NuttyPutters\\rb.png");
-	textures.insert(std::pair<std::string, Texture*>("rbLbl", rbLbl));
-	Texture* lbLbl = new Texture("..\\NuttyPutters\\lb.png");
-	textures.insert(std::pair<std::string, Texture*>("lbLbl", lbLbl));
+	Texture* upLbl = new Texture("..\\NuttyPutters\\up.png");
+	textures.insert(std::pair<std::string, Texture*>("upLbl", upLbl));
+	Texture* leftLbl = new Texture("..\\NuttyPutters\\left.png");
+	textures.insert(std::pair<std::string, Texture*>("leftLbl", leftLbl));
+	Texture* downLbl = new Texture("..\\NuttyPutters\\down.png");
+	textures.insert(std::pair<std::string, Texture*>("downLbl", downLbl));
+	Texture* rightLbl = new Texture("..\\NuttyPutters\\right.png");
+	textures.insert(std::pair<std::string, Texture*>("rightLbl", rightLbl));
+
+	//// LOAD GAME XBOX BUTTON TEXTURES
+	buttonsXB[0] = new Texture("..\\NuttyPutters\\aButton.png");
+	buttonsXB[1] = new Texture("..\\NuttyPutters\\bButton.png");
+	buttonsXB[2] = new Texture("..\\NuttyPutters\\xButton.png");
+	buttonsXB[3] = new Texture("..\\NuttyPutters\\yButton.png");
+	//// LOAD GAME PLAYSTATION BUTTON TEXTURES
+	buttonsPS[0] = new Texture("..\\NuttyPutters\\PSSQUARE.png");
+	buttonsPS[1] = new Texture("..\\NuttyPutters\\psx.png");
+	buttonsPS[2] = new Texture("..\\NuttyPutters\\pscircle.png");
+	buttonsPS[3] = new Texture("..\\NuttyPutters\\pstriangle.png");
+	buttonsPS[4] = new Texture("..\\NuttyPutters\\pslone.png");
+	buttonsPS[5] = new Texture("..\\NuttyPutters\\psrone.png");
+	buttonsPS[6] = new Texture("..\\NuttyPutters\\psltwo.png");
+	buttonsPS[7] = new Texture("..\\NuttyPutters\\psrtwo.png");
+	buttonsPS[8] = new Texture("..\\NuttyPutters\\psselect.png");
+	buttonsPS[9] = new Texture("..\\NuttyPutters\\psstart.png");
+	buttonsPS[10] = new Texture("..\\NuttyPutters\\psstickleft.png");
+	buttonsPS[11] = new Texture("..\\NuttyPutters\\psstickright.png");
+	buttonsPS[12] = new Texture("..\\NuttyPutters\\psbutton.png");
+	buttonsPS[13] = new Texture("..\\NuttyPutters\\pspad.png");
+	buttonsPS[14] = new Texture("..\\NuttyPutters\\psup.png");
+	buttonsPS[15] = new Texture("..\\NuttyPutters\\psleft.png");
+	buttonsPS[16] = new Texture("..\\NuttyPutters\\psdown.png");
+	buttonsPS[17] = new Texture("..\\NuttyPutters\\psright.png");
+
 	// Read saves file for file names of saves images
 	ifstream saves("saves.csv");
 	while (!saves.eof())
@@ -228,6 +243,17 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
 	Texture* arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	textures.insert(std::pair<std::string, Texture*>("arrowTexture", arrowTexture));
+
+	// Set the default controller layout
+	// Setup the functions/buttons - the function being the index and button being the equal value
+	// FUNCTION/BUTTONS
+	gameFunctions[0] = 2;
+	gameFunctions[1] = 3;
+	gameFunctions[2] = 0;
+	gameFunctions[3] = 5;
+	gameFunctions[4] = 9;
+	gameFunctions[5] = 6;
+	gameFunctions[6] = 7;
 
 
 	// Setup start scene

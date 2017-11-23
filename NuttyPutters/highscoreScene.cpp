@@ -31,7 +31,6 @@ void highscoreScene::Init(GLFWwindow * win)
 	// Set selectfire button label
 	windowMgr::getInstance()->meshes.at(4)->SetScale(0.25f, 0.25f);
 	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(1.0f, 1.45f, 0.0f));
-	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["aButtonLbl"]);
 	// Back Reset
 	// Set backreset label
 	windowMgr::getInstance()->meshes.at(5)->SetScale(2.0f, 0.5f);
@@ -40,7 +39,6 @@ void highscoreScene::Init(GLFWwindow * win)
 	// Set backreset button label
 	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(1.0f, 1.1f, 0.0f));
-	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["bButtonLbl"]);
 	// Pause
 	// Set pause label
 	windowMgr::getInstance()->meshes.at(7)->SetScale(1.0f, 0.5f);
@@ -49,87 +47,152 @@ void highscoreScene::Init(GLFWwindow * win)
 	// Set pause button label
 	windowMgr::getInstance()->meshes.at(8)->SetScale(0.28f, 0.28f);
 	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(1.0f, 0.75f, 0.0f));
-	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["menuButtonLbl"]);
+	// Arrows
+	// Up
+	windowMgr::getInstance()->meshes.at(9)->SetScale(0.35f, 0.35f);
+	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(-1.0f, 0.4f, 0.0f));
+	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["upLbl"]);
+	// Set pause button label
+	windowMgr::getInstance()->meshes.at(10)->SetScale(0.35f, 0.35f);
+	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(1.0f, 0.4f, 0.0f));
+	// Left
+	windowMgr::getInstance()->meshes.at(11)->SetScale(0.35f, 0.35f);
+	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(-1.0f, 0.05f, 0.0f));
+	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
+	// Set pause button label
+	windowMgr::getInstance()->meshes.at(12)->SetScale(0.35f, 0.35f);
+	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(1.0f, 0.05f, 0.0f));
+	// Down 
+	windowMgr::getInstance()->meshes.at(13)->SetScale(0.35f, 0.35f);
+	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(-1.0f, -0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["downLbl"]);
+	// Set pause button label
+	windowMgr::getInstance()->meshes.at(14)->SetScale(0.35f, 0.35f);
+	windowMgr::getInstance()->meshes.at(14)->SetPos(vec3(1.0f, -0.3f, 0.0f));
+	// Right
+	windowMgr::getInstance()->meshes.at(15)->SetScale(0.35f, 0.35f);
+	windowMgr::getInstance()->meshes.at(15)->SetPos(vec3(-1.0f, -0.75f, 0.0f));
+	windowMgr::getInstance()->meshes.at(15)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
+	// Set pause button label
+	windowMgr::getInstance()->meshes.at(16)->SetScale(0.35f, 0.35f);
+	windowMgr::getInstance()->meshes.at(16)->SetPos(vec3(1.0f, -0.75f, 0.0f));
 
-	// Setup the default controls for the xbox controller
-	// BUTTONS
-	// A/Sqaure = 0
-	// B/X(PS) = 1
-	// X(XB)/Circle = 2
-	// Y/Triangle = 3
-	// /L1 = 4
-	// /R1 = 5
-	// /L2 = 6
-	// /R2 = 7
-	// /Select = 8
-	// /Start = 9
-	// /Left Stick Push = 10
-	// /Right Stick Push = 11
-	// /PS Button =12
-	// /Pad = 13
-	// /DPAD UP = 14
-	// /DPAD LEFT = 15 
-	// /DPAD DOWN = 16
-	// /DPAD RIGHT = 17
 
-	// FUCTIONS
-	// Select/fire = 0
-	// Back/Reset = 1
-	// Pause = 2
-	// DPAD UP = 3
-	// DPAD LEFT = 4
-	// DPAD DOWN = 5
-	// DPAD RIGHT = 6
+	// Create a variable to check if the joy stick is present - 1 means true
+	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
 
-	// FUNCTION/BUTTONS
-	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(0, 2)); 
-	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(1, 3)); 
-	windowMgr::getInstance()->buttonValues.insert(std::pair<int, int>(2, 0));
-
-	// For all the functions in the game 
-	for (int functions = 0; functions < windowMgr::getInstance()->buttonValues.size(); functions++)
+	// If controller is connected 
+	if (1 == present)
 	{
-		// If function is assigned to 0 then 
-		if (windowMgr::getInstance()->buttonValues.find(functions)->second == 0)
+		// Dected how many buttons the controller has
+		int buttonCount;
+		const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
+		// If the amount of buttons detected is equal to 18 then 
+		if (buttonCount == 18)
 		{
-			// 4+function*2 is done below because the meshes we want to update go 4, 6, 8, 10 and that formula fits
-			// Update texture at mesh position 4+function*2 - to A button
-			windowMgr::getInstance()->meshes.at(4+(functions*2))->SetTexture(windowMgr::getInstance()->textures["aButtonLbl"]);
+			cout << "Controller type = PS4! " << endl;
+			// For all the fucntions 
+			for (int allFunctions = 0; allFunctions < 7; allFunctions++)
+			{
+				// If the button is 0 then 
+				if (windowMgr::getInstance()->gameFunctions[allFunctions] == 0)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[0]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 1)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[1]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 2)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[2]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 3)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[3]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 4)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[4]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 5)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[5]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 6)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[6]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 7)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[7]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 8)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[8]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 9)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[9]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 10)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[10]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 11)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[11]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 12)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[12]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 13)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[13]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 14)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[14]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 15)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[15]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 16)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[16]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 17)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[17]);
+				}
+			}
 		}
-		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 1)
+		else 
 		{
-			// Update texture at mesh position 4+function*2 - to B button
-			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["bButtonLbl"]);
-		}
-		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 2)
-		{
-			// Update texture at mesh position 4+function*2 - to X button
-			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["xButtonLbl"]);
-		}
-		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 3)
-		{
-			// Update texture at mesh position 4+function*2 - to Y button
-			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["yButtonLbl"]);
-		}
-		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 4)
-		{
-			// Update texture at mesh position 4+function*2 - to Left Bumber button
-			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["lbLbl"]);
-		}
-		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 5)
-		{
-			// Update texture at mesh position 4+function*2 - to Right Bumber button
-			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["rbLbl"]);
-		}
-		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 6)
-		{
-			// Update texture at mesh position 4+function*2 - to Left Trigger button
-			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["ltLbl"]);
-		}
-		else if (windowMgr::getInstance()->buttonValues.find(functions)->second == 7)
-		{
-			// Update texture at mesh position 4+function*2 - to Right Trigger button
-			windowMgr::getInstance()->meshes.at(4 + (functions * 2))->SetTexture(windowMgr::getInstance()->textures["rtLbl"]);
+			cout << "Controller type = XBOX360 OR OTHER! " << endl;
+			// For all the buttons in the game 
+			for (int allFunctions = 0; allFunctions < 3; allFunctions++)
+			{
+				// If the button is 0 then 
+				if (windowMgr::getInstance()->gameFunctions[allFunctions] == 0)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[0]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 1)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[1]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 2)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[2]);
+				}
+				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 3)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[3]);
+				}
+			}
 		}
 	}
 }
@@ -160,141 +223,173 @@ void highscoreScene::Input(GLFWwindow* win)
 {
 	// Create a variable to check if the joy stick is present - 1 means true
 	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
-	//cout << "Joystick/Gamepad 1 status: " << present << endl;
+
+	// Dected how many buttons the controller has
+	int buttonCount;
+	const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
 
 	// If controller is connected 
 	if (1 == present)
 	{
-		// Dected how many axis the controller has
-		int axesCount;
-// M - Will axes be used again? Get rid of it if not! 
-		const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
-		// 6 axis, both anaolgues left/right, up/down =4 then L2 = 5 AND R2 =6 
-		//cout << "Number of axis available: " << axesCount << endl;
-		//Print a few blank lines to see results movement
-		//cout << endl;
-		// Print positions of analoges and triggers
-		//cout << "Left Stick X Axis: " << axes[0] << endl;
-		//cout << "Left Stick Y Axis: " << axes[1] << endl;
-		//cout << "Right Stick X Axis: " << axes[2] << endl;
-		//cout << "Right Stick Y Axis: " << axes[3] << endl;
-		//cout << "Left Trigger/L2: " << axes[4] << endl;
-		//cout << "Right Trigger/R2: " << axes[5] << endl;
-
-		// Dected how many buttons the controller has
-		int buttonCount;
-		const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
-
-		// Print map - for testing
-		for (int functions = 0; functions < windowMgr::getInstance()->buttonValues.size(); functions++)
+		// If the amount of buttons detected is equal to 18 then 
+		if (buttonCount == 18)
 		{
-			cout << "Function: " << functions << " at: " << windowMgr::getInstance()->buttonValues.at(functions) << endl;
-		}
-
-
-		// Remappign controls
-		// For loop which checks to see if buttons are pressed
-// M - Just to check, is there no way of listening for input rather than checking each button every frame? 
-// This would be similar to the input callbacks we were first using for keyboard commands
-		for (int i = 0; i < 17; i++)
-		{
-			// If button i is pressed then set corresponding boolean to true
-			if (GLFW_PRESS == buttons[i])
+			cout << "Controller type = PS4! " << endl;
+			// For loop which checks to see if buttons are pressed - i buttons
+			for (int buttonNumber = 0; buttonNumber < 18; buttonNumber++)
 			{
-				buttonPressed[i] = true;
-			}
-		}
-
-// M - My immediate concern for the button code is the number of loops you're doing - 119 iterations every frame (including above loop), with at least one if statement
-// ...for each loop. If it runs smoothly I suppose it's all good, but I have a suggestion for the way you're storing the buttons (which would require a lot of changes so up to you)
-// I suggest just using an array to store the button values. The reason you're using a map is to explicity show the relationship between functions and buttons, but you could
-// ...achieve the same thing with an implicit representation using an array; the index is the function value. Eg our first function 'select/fire' is given the value 0,
-// ...so the corresponding button value is the first thing (0 index) in the array. You can use an array since it'll always be a fixed size of 6. The advantages of this are that
-// ...arrays take less memory to store than maps and are easier to search. I might have missed a key reason of using the map to actually store the function value, but it should
-// ...still be possible with index alone - let me know your thoughts!
-
-// Finally, all of the logic you've written here needs to be ported over to windowMgr so that we can call these exact same functions from gameScene!
-
-
-		// For all buttons 
-		for (int i = 0; i < 17; i++)
-		{
-			// If i Button bool is true and i button is not being pressed then 
-			if (buttonPressed[i] && !GLFW_PRESS == buttons[i])
-			{
-				// Loop through all the entries in the buttonVlaues map
-				for (const auto& keyval : windowMgr::getInstance()->buttonValues) // Look at each key-value pair
+				// If button i is pressed then set corresponding boolean to true
+				if (GLFW_PRESS == buttons[buttonNumber])
 				{
-					// If i is assigned to a function then ie second value then
-					if (keyval.second == i) 
+					buttonPressed[buttonNumber] = true;
+				}
+
+				// If a button has just been pressed and is longer being pressed then
+				if (buttonPressed[buttonNumber] && !GLFW_PRESS == buttons[buttonNumber])
+				{
+					// If there is an empty function then
+					if (isFunctionEmpty)
 					{
-						// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-						windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-						windowMgr::getInstance()->buttonValues.at(keyval.first) = 99;
-						// Set is Function Empty to true
-						isFunctionEmpty = true;
-						// Break out of for loop
-						break;
-					}
-					// If i is not assigned to a function then 
-					else
-					{
-						// If there is an empty function then
-						if (isFunctionEmpty)
+						// Loop through all the different functions
+						for (int functionNumber = 0; functionNumber < 7; functionNumber++)
 						{
-							// Find the empty function - equal to 99 means no button is assigned to the button
-							if (keyval.second == 99)
+							// Find the empty function which will be equal to 99
+							if (windowMgr::getInstance()->gameFunctions[functionNumber] == 99)
 							{
-								// Set the second value to i
-								windowMgr::getInstance()->buttonValues.at(keyval.first) = i;
-								windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["aButtonLbl"]);
-								// Reset the is Function Empty to false
-								isFunctionEmpty = false;
+								// Loop through all the functions once more
+								for (int functionNumber = 0; functionNumber < 7; functionNumber++)
+								{
+									// Check if button just pressed has a function assigned to it
+									if (buttonNumber == windowMgr::getInstance()->gameFunctions[functionNumber])
+									{
+										// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+										windowMgr::getInstance()->meshes.at(4 + (functionNumber * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+										windowMgr::getInstance()->gameFunctions[functionNumber] = 99;
+										// Break out of the for loop
+										break;
+									}
+								}
+
+								// Make the original empty function equal to the button
+								windowMgr::getInstance()->gameFunctions[functionNumber] = buttonNumber;
+								windowMgr::getInstance()->meshes.at(4 + (functionNumber * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[buttonNumber]);
+
+								// Check if a function is equal to 99
+								if (windowMgr::getInstance()->gameFunctions[0] == 99 || windowMgr::getInstance()->gameFunctions[1] == 99 || windowMgr::getInstance()->gameFunctions[2] == 99)
+								{
+									isFunctionEmpty = true; // Set bool to true if a function is empty
+								}
+								else
+								{
+									isFunctionEmpty = false; // Set bool to false if no function is empty
+								}
+								// Break out the for loop
+								break;
 							}
 						}
 					}
+					else
+					{
+						// Loop through all the entries in the buttonVlaues map - j functions
+						for (int functionNumber = 0; functionNumber < 7; functionNumber++)
+						{
+							// If function is assigned to a button then
+							if (windowMgr::getInstance()->gameFunctions[functionNumber] == buttonNumber)
+							{
+								// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+								windowMgr::getInstance()->meshes.at(4 + (functionNumber * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+								windowMgr::getInstance()->gameFunctions[functionNumber] = 99;
+								// Set is Function Empty to true
+								isFunctionEmpty = true;
+								// Break out of for loop
+								break;
+							}
+						}
+					}
+					// Reset button pressed
+					buttonPressed[buttonNumber] = false;
 				}
-				// Reset button pressed
-				buttonPressed[i] = false;
 			}
+		}
+		else
+		{
+			//cout << "Controller type = XBOX360 OR OTHER! " << endl;
+			// For loop which checks to see if buttons are pressed - i buttons
+			for (int buttonNumber = 0; buttonNumber < 14; buttonNumber++)
+			{
+				// If button i is pressed then set corresponding boolean to true
+				if (GLFW_PRESS == buttons[buttonNumber])
+				{
+					buttonPressed[buttonNumber] = true;
+				}
 
-			// If B Button bool is true and A button is not being pressed then 
-			//if (bButtonPressed && !GLFW_PRESS == buttons[1])
-			//{
-			//	// Loop through all the entries in the buttonVlaues map
-			//	for (const auto& keyval : windowMgr::getInstance()->buttonValues) // Look at each key-value pair
-			//	{
-			//		// If B/X(PS) is assigned to a function then
-			//		if (keyval.second == 1) // If the value is 0...
-			//		{
-			//			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-			//			windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-			//			windowMgr::getInstance()->buttonValues.at(keyval.first) = 99;
-			//			// Set is Function Empty to true
-			//			isFunctionEmpty = true;
-			//			// Break out of for loop
-			//			break;
-			//		}
-			//		// If B/X(PS) is not assigned to a function then 
-			//		else
-			//		{
-			//			// If there is an empty function then
-			//			if (isFunctionEmpty)
-			//			{
-			//				// Find the empty function - equal to 99 means no button is assigned to the button
-			//				if (keyval.second == 99)
-			//				{
-			//					// Set the second value to B/X(PS)
-			//					windowMgr::getInstance()->buttonValues.at(keyval.first) = 1;
-			//					windowMgr::getInstance()->meshes.at(4 + (keyval.first * 2))->SetTexture(windowMgr::getInstance()->textures["bButtonLbl"]);
-			//					// Reset the is Function Empty to false
-			//					isFunctionEmpty = false;
-			//				}
-			//			}
-			//		}
-			//	}
-			//	bButtonPressed = false;
-			//}
+				// If a button has just been pressed and is longer being pressed then
+				if (buttonPressed[buttonNumber] && !GLFW_PRESS == buttons[buttonNumber])
+				{
+					// If there is an empty function then
+					if (isFunctionEmpty)
+					{
+						// Loop through all the different functions
+						for (int functionNumber = 0; functionNumber < 7; functionNumber++)
+						{
+							// Find the empty function which will be equal to 99
+							if (windowMgr::getInstance()->gameFunctions[functionNumber] == 99)
+							{
+								// Loop through all the functions once more
+								for (int functionNumber = 0; functionNumber < 7; functionNumber++)
+								{
+									// Check if button just pressed has a function assigned to it
+									if (buttonNumber == windowMgr::getInstance()->gameFunctions[functionNumber])
+									{
+										// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+										windowMgr::getInstance()->meshes.at(4 + (functionNumber * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+										windowMgr::getInstance()->gameFunctions[functionNumber] = 99;
+										// Break out of the for loop
+										break;
+									}
+								}
+
+								// Make the original empty function equal to the button
+								windowMgr::getInstance()->gameFunctions[functionNumber] = buttonNumber;
+								windowMgr::getInstance()->meshes.at(4 + (functionNumber * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[buttonNumber]);
+
+								// Check if a function is equal to 99
+								if (windowMgr::getInstance()->gameFunctions[0] == 99 || windowMgr::getInstance()->gameFunctions[1] == 99 || windowMgr::getInstance()->gameFunctions[2] == 99)
+								{
+									isFunctionEmpty = true; // Set bool to true if a function is empty
+								}
+								else
+								{
+									isFunctionEmpty = false; // Set bool to false if no function is empty
+								}
+								// Break out the for loop
+								break;
+							}
+						}
+					}
+					else 
+					{
+						// Loop through all the entries in the buttonVlaues map - j functions
+						for (int functionNumber = 0; functionNumber < 7; functionNumber++)
+						{
+							// If function is assigned to a button then
+							if (windowMgr::getInstance()->gameFunctions[functionNumber] == buttonNumber)
+							{
+								// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+								windowMgr::getInstance()->meshes.at(4 + (functionNumber * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+								windowMgr::getInstance()->gameFunctions[functionNumber] = 99;
+								// Set is Function Empty to true
+								isFunctionEmpty = true;
+								// Break out of for loop
+								break;
+							}
+						}
+					}
+					
+					// Reset button pressed
+					buttonPressed[buttonNumber] = false;
+				}
+			}
 		}
 	}
 }
@@ -314,7 +409,7 @@ void highscoreScene::Render(GLFWwindow* win)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 17; i++)
 	{
 		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);

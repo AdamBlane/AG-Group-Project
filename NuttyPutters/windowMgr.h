@@ -49,9 +49,40 @@ class windowMgr
 		Mesh* player2Mesh;
 		Mesh* arrowMesh;
 
-		// All controller information for remappable controls is stored here
-		// FUNCTION/BUTTONS
-		map<int, int> buttonValues;
+		// All contorller related textures are stored in here
+		Texture* buttonsPS[17];
+		Texture* buttonsXB[4];
+		// All the game functions are stored here with the index being the function and the value being the button number
+		int gameFunctions[17];
+
+		// BUTTONS
+		// A/Sqaure = 0
+		// B/X(PS) = 1
+		// X(XB)/Circle = 2
+		// Y/Triangle = 3
+		// /L1 = 4
+		// /R1 = 5
+		// /L2 = 6
+		// /R2 = 7
+		// /Select = 8
+		// /Start = 9
+		// /Left Stick Push = 10
+		// /Right Stick Push = 11
+		// /PS Button =12
+		// /Pad = 13
+		// /DPAD UP = 14
+		// /DPAD LEFT = 15 
+		// /DPAD DOWN = 16
+		// /DPAD RIGHT = 17
+
+		// FUCTIONS
+		// Select/fire = 0
+		// Back/Reset = 1
+		// Pause = 2
+		// DPAD UP = 3
+		// DPAD LEFT = 4
+		// DPAD DOWN = 5
+		// DPAD RIGHT = 6
 
 		// Cameras
 		target_camera* HUDtargetCam;
