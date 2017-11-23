@@ -87,7 +87,7 @@ GLFWwindow* windowMgr::Init()
 
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < 24; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -148,12 +148,28 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("downLbl", downLbl));
 	Texture* rightLbl = new Texture("..\\NuttyPutters\\right.png");
 	textures.insert(std::pair<std::string, Texture*>("rightLbl", rightLbl));
+	Texture* jumpLbl = new Texture("..\\NuttyPutters\\jump.png");
+	textures.insert(std::pair<std::string, Texture*>("jumpLbl", jumpLbl));
+	Texture* zoomInLbl = new Texture("..\\NuttyPutters\\zoomin.png");
+	textures.insert(std::pair<std::string, Texture*>("zoomInLbl", zoomInLbl));
+	Texture* zoomOutLbl = new Texture("..\\NuttyPutters\\zoomout.png");
+	textures.insert(std::pair<std::string, Texture*>("zoomOutLbl", zoomOutLbl));
 
 	//// LOAD GAME XBOX BUTTON TEXTURES
 	buttonsXB[0] = new Texture("..\\NuttyPutters\\aButton.png");
 	buttonsXB[1] = new Texture("..\\NuttyPutters\\bButton.png");
 	buttonsXB[2] = new Texture("..\\NuttyPutters\\xButton.png");
 	buttonsXB[3] = new Texture("..\\NuttyPutters\\yButton.png");
+	buttonsXB[4] = new Texture("..\\NuttyPutters\\lb.png");
+	buttonsXB[5] = new Texture("..\\NuttyPutters\\rb.png");
+	buttonsXB[6] = new Texture("..\\NuttyPutters\\xbback.png");
+	buttonsXB[7] = new Texture("..\\NuttyPutters\\xbstart.png");
+	buttonsXB[8] = new Texture("..\\NuttyPutters\\psstickleft.png");
+	buttonsXB[9] = new Texture("..\\NuttyPutters\\psstickright.png");
+	buttonsXB[10] = new Texture("..\\NuttyPutters\\psup.png");
+	buttonsXB[11] = new Texture("..\\NuttyPutters\\psleft.png");
+	buttonsXB[12] = new Texture("..\\NuttyPutters\\psdown.png");
+	buttonsXB[13] = new Texture("..\\NuttyPutters\\psselect.png");
 	//// LOAD GAME PLAYSTATION BUTTON TEXTURES
 	buttonsPS[0] = new Texture("..\\NuttyPutters\\PSSQUARE.png");
 	buttonsPS[1] = new Texture("..\\NuttyPutters\\psx.png");
@@ -243,17 +259,6 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
 	Texture* arrowTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	textures.insert(std::pair<std::string, Texture*>("arrowTexture", arrowTexture));
-
-	// Set the default controller layout
-	// Setup the functions/buttons - the function being the index and button being the equal value
-	// FUNCTION/BUTTONS
-	gameFunctions[0] = 2;
-	gameFunctions[1] = 3;
-	gameFunctions[2] = 0;
-	gameFunctions[3] = 5;
-	gameFunctions[4] = 9;
-	gameFunctions[5] = 6;
-	gameFunctions[6] = 7;
 
 
 	// Setup start scene
