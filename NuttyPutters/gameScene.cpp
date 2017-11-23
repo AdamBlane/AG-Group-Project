@@ -1656,6 +1656,7 @@ void gameScene::Collisions()
 	} // end case 9
 	} // end collisions switch
 
+	// TODO Determine if this can be done more cheapply
 	// If players are on the same tile, check for collisions with each other
 	if (p1CurrentTile == p2CurrentTile)
 	{
@@ -1663,17 +1664,22 @@ void gameScene::Collisions()
 		vec3 distance = abs(player1.transform.getPos() - player2.transform.getPos());	
 		float magnitude = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
 		// If less than two radii apart
-		if (magnitude < 2 * player1.radius)
+		if (magnitude < player1.radius * 2)
 		{
-			// TODO - this properly
-			vec3 temp = player1.direction;
-			player1.direction = player2.direction;
-			player2.direction = temp;
-			//player1.velocity = vec3(0, 0, 0);
-			//player2.velocity = vec3(0, 0, 0);
-			// Fire
-			player1 = physicsSystem.Fire(player1, 2.0f);
-			player2 = physicsSystem.Fire(player2, 2.0f);
+			// First normalize the distance vector; the collision normal
+			vec3 collisionNormal = player1.transform.getPos() - player2.transform.getPos();
+			collisionNormal = normalize(collisionNormal);
+			// Find the length of the component of each movement vector on collision normal
+			float a1 = dot(player1.velocity, collisionNormal);
+			float a2 = dot(player2.velocity, collisionNormal);
+			// Using optimized version according to https://www.gamasutra.com/view/feature/131424/pool_hall_lessons_fast_accurate_.php?page=3
+			float optimizedP = (2.0 * (a1 - a2)) / (player1.mass + player2.mass);
+			// Calculate new veloctiy for each player
+			vec3 v1New = player1.velocity - optimizedP * player2.mass * collisionNormal;
+			vec3 v2New = player2.velocity + optimizedP * player1.mass * collisionNormal;
+			// Set players velocity to 0, then assign new velocities
+			player1.velocity = v1New;
+			player2.velocity = v2New;
 		}
 
 	}
