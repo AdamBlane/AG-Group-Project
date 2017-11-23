@@ -51,7 +51,7 @@ class windowMgr
 		target_camera* PAUSEtargetCam;
 		free_camera* freeCam;
 		chase_camera* p1ChaseCam;
-
+		chase_camera* p2ChaseCam;
 		// Shaders
 		Shader* textureShader;
 		Shader* skyboxShader;

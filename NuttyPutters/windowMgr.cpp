@@ -96,11 +96,16 @@ GLFWwindow* windowMgr::Init()
 	freeCam->rotate(-10.0, 0.0);
 	freeCam->set_Target(vec3(0, 0, 0));
 	freeCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
-	// Chase camera for in game
+	// Chase camera for p1 in game
 	p1ChaseCam = new chase_camera();
 	p1ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p1ChaseCam->set_springiness(0.2f);
 	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	// p2 chase cam
+	p2ChaseCam = new chase_camera();
+	p2ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
+	p2ChaseCam->set_springiness(0.2f);
+	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
