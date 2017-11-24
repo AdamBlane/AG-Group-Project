@@ -311,15 +311,14 @@ int Tile::randomNumber(int min, int max)
 //obstacle method generating obstacles of different types
 void Tile::obstacle()
 {
-	int randomObstacle = randomNumber(0, 1);
 
-	switch (randomObstacle)
+	switch (thisObstacleID)
 	{
-	case 0:
+	case 1:
 		cout << "Has obstacle 0!" << endl << endl << endl;
 		obstacleSlalom();
 		break;
-	case 1:
+	case 2:
 		cout << "Has obstacle 1!" << endl << endl << endl;
 		obstacleCube();
 		break;

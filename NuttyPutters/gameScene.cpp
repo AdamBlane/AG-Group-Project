@@ -444,14 +444,6 @@ void gameScene::SetupTilesToBeDrawn()
 		// Ramp up when dir is down
 		if (t.id == 7)
 		{
-			//hasObstacle = Tile::randomNumber(0, 1);
-			//if (hasObstacle)
-			//{
-			//	obstacleID = Tile::randomNumber(1, 2);
-			//	//save this tile position in algTiles
-			//	obstacles.push_back(index);
-			//	obstacles.push_back(obstacleID);
-			//}
 			// Create straight tile
 			Tile tile(Tile::STRAIGHT, t.thisCoords, 0);
 			// Rotate on x
@@ -491,7 +483,7 @@ void gameScene::SetupTilesToBeDrawn()
 				obstacles.push_back(obstacleID);
 			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, 0);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, 2);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
@@ -506,7 +498,7 @@ void gameScene::SetupTilesToBeDrawn()
 				obstacles.push_back(obstacleID);
 			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, 0);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, 2);
 			// Straight needs rotating by 90, since it's vertical by default
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
