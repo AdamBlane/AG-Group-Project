@@ -37,7 +37,7 @@ Player Physics::RampResistance(Player player, float magnitude)
 }
 
 
-// For funsies
+// Jump
 Player Physics::Jump(Player player, float magnitude)
 {
 	// Manually set direction to y for jumping up

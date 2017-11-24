@@ -21,7 +21,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	// Get initial cursor pos
 	glfwSetCursorPos(window, cursor_x, cursor_y);
-
+	// Scene background
+	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
@@ -52,24 +53,27 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 
 
 	// Setup player position (must use transform as it's a loaded model - not drawn)
-	//player1Transform.getScale() = vec3(0.5);
-	//player1Transform.getPos() = vec3(0.0, 1.0, 0.0);
 	player1.transform.getScale() = vec3(0.5);
 	player1.transform.getPos() = vec3(0.0, 10.0, 0.0);
-
 	// Arrow
-	//arrowTransform.getScale() = vec3(0.5);
-	//arrowTransform.getPos() = vec3(player1Transform.getPos().x, player1Transform.getPos().y - 1.6, player1Transform.getPos().z);
-	windowMgr::getInstance()->arrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowTexture"]); //?
+	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	player1.arrowTransform.getScale() = vec3(0.5);
 	player1.arrowTransform.getPos() = vec3(player1.transform.getPos().x, player1.transform.getPos().y - 1.6, player1.transform.getPos().z);
+
+	// P2 
+	player2.transform.getScale() = vec3(0.5);
+	player2.transform.getPos() = vec3(3.0f, 1.0f, 0.0f);
+	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
+	player2.arrowTransform.getScale() = vec3(0.5);
+	player2.arrowTransform.getPos() = vec3(player2.transform.getPos().x, player2.transform.getPos().y - 1.6, player2.transform.getPos().z);
+
 
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
 	windowMgr::getInstance()->freeCam->set_Target(vec3(0, 0, 0));
-	//windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1Transform.getPos()));	
-	windowMgr::getInstance()->chaseCam->set_target_pos(vec3(player1.transform.getPos()));
+	windowMgr::getInstance()->p1ChaseCam->set_target_pos(vec3(player1.transform.getPos()));
+	windowMgr::getInstance()->p2ChaseCam->set_target_pos(vec3(player2.transform.getPos()));
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamPos);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamTarget);
 
@@ -91,36 +95,34 @@ void gameScene::LoadGame(string seed)
 	{
 		// Some magic numbers in the following section; for milestone 2, will replace after
 		// Insert start
-		//levelSeed.push_back(0);
-		//// Open seeds file 
-		//ifstream seedsFile("res12.csv");
-		//// find how many lines in seed file (hardcoded for now)
-		//int seedsCount = 341;
-		//// pick random number in that range
-		//default_random_engine rng(random_device{}());
-		//uniform_int_distribution<int> distribution(1, seedsCount);
-		//int choice = distribution(rng);
-		//// read that line
-		//string line;
-		//for (int l = 0; l < choice; ++l)
-		//{
-		//	getline(seedsFile, line);
-		//} // last iteration will be on desired line, so line should be correct seed now
-		//// parse seed into array
-		//for (int c = 0; c < line.length(); ++c)
-		//{
-		//	// Convert each character in string to int
-		//	levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
-		//}
-
 		levelSeed.push_back(0);
-		levelSeed.push_back(1);
-		levelSeed.push_back(7);
-		levelSeed.push_back(3);
-		levelSeed.push_back(4);
-		levelSeed.push_back(8);
-		levelSeed.push_back(1);
-		levelSeed.push_back(9);
+		// Open seeds file 
+		ifstream seedsFile("res12.csv");
+		// find how many lines in seed file (hardcoded for now)
+		int seedsCount = 341;
+		// pick random number in that range
+		default_random_engine rng(random_device{}());
+		uniform_int_distribution<int> distribution(1, seedsCount);
+		int choice = distribution(rng);
+		// read that line
+		string line;
+		for (int l = 0; l < choice; ++l)
+		{
+			getline(seedsFile, line);
+		} // last iteration will be on desired line, so line should be correct seed now
+		// parse seed into array
+		for (int c = 0; c < line.length(); ++c)
+		{
+			// Convert each character in string to int
+			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
+		}
+
+		//levelSeed.push_back(0);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(9);
+
 
 	} // end if seed is default
 	else // this has been given a seed value
@@ -575,20 +577,17 @@ void gameScene::SetupTilesToBeDrawn()
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
-	// Scene background
-	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
+	// Clear buffer bits (should this be done here?)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Input
 	Input(window);
-
 
 	// Update
 	Update(window);
 
 	// Collisions
 	Collisions();
-
 
 	// Render
 	Render(window);
@@ -597,11 +596,35 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
-	// For funsies
-	if (glfwGetKey(window, GLFW_KEY_J))
+	// P1 Jump
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL))
 	{
-		player1 = physicsSystem.Jump(player1, 1.0f);
-		player1.isMoving = true;
+		player1.jumpPressed = true;
+	}
+	if (!glfwGetKey(window, GLFW_KEY_LEFT_CONTROL))
+	{
+		if (player1.jumpPressed)
+		{
+			player1 = physicsSystem.Jump(player1, 5.0f);
+			player1.isMoving = true;
+
+			player1.jumpPressed = false;
+		}
+	}
+	// P2 Jump
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT))
+	{
+		player2.jumpPressed = true;
+	}
+	if (!glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT))
+	{
+		if (player2.jumpPressed)
+		{
+			player2 = physicsSystem.Jump(player2, 5.0f);
+			player2.isMoving = true;
+
+			player2.jumpPressed = false;
+		}
 	}
 	// Pause
 	if (glfwGetKey(window, GLFW_KEY_P))
@@ -710,7 +733,7 @@ void gameScene::Input(GLFWwindow* window)
 		cout << "Free Camera selected" << endl;
 		cameraType = 0;
 		// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
-		windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->chaseCam->get_Posistion());
+		windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->p1ChaseCam->get_Posistion());
 	}
 
 	// If button two is pressed change to chase camera
@@ -778,38 +801,76 @@ void gameScene::Input(GLFWwindow* window)
 			if (glfwGetKey(window, GLFW_KEY_D))
 			{
 				//function to rotate 
-				windowMgr::getInstance()->chaseCam->yaw_it(camSpeed * dt * 0.5);
+				windowMgr::getInstance()->p1ChaseCam->yaw_it(camSpeed * dt * 0.5);
 				// Decrease chase camera angle (out of 360 degrees)
 				chaseCamAngle -= (camSpeed * dt * 0.5);
 			}
 			if (glfwGetKey(window, GLFW_KEY_A))
 			{
-				windowMgr::getInstance()->chaseCam->neg_yaw_it(camSpeed * dt * 0.5);
+				windowMgr::getInstance()->p1ChaseCam->neg_yaw_it(camSpeed * dt * 0.5);
 				// Increase chase camera angle (out of 360 degrees)
 				chaseCamAngle += (camSpeed * dt * 0.5);
 			}
 		}
+
+		if (!player2.isMoving)
+		{
+			// controls in the chase camera 
+			if (glfwGetKey(window, GLFW_KEY_J))
+			{
+				//function to rotate 
+				windowMgr::getInstance()->p2ChaseCam->yaw_it(camSpeed * dt * 0.5);
+				// Decrease chase camera angle (out of 360 degrees)
+				p2ChaseCamAngle -= (camSpeed * dt * 0.5);
+			}
+			if (glfwGetKey(window, GLFW_KEY_L))
+			{
+				windowMgr::getInstance()->p2ChaseCam->neg_yaw_it(camSpeed * dt * 0.5);
+				// Increase chase camera angle (out of 360 degrees)
+				p2ChaseCamAngle += (camSpeed * dt * 0.5);
+			}
+		}
+
+
+		// P1
 		if (glfwGetKey(window, GLFW_KEY_S))
 		{
-			windowMgr::getInstance()->chaseCam->neg_pitch_it(camSpeed * dt * 0.5, player1.transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
+			windowMgr::getInstance()->p1ChaseCam->neg_pitch_it(camSpeed * dt * 0.5, player1.transform.getPos(), windowMgr::getInstance()->p1ChaseCam->get_Posistion(), windowMgr::getInstance()->p1ChaseCam->get_pos_offset().y);
 			//windowMgr::getInstance()->chaseCam->neg_pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_W))
 		{
-			windowMgr::getInstance()->chaseCam->pitch_it(camSpeed * dt * 0.5, player1.transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
+			windowMgr::getInstance()->p1ChaseCam->pitch_it(camSpeed * dt * 0.5, player1.transform.getPos(), windowMgr::getInstance()->p1ChaseCam->get_Posistion(), windowMgr::getInstance()->p1ChaseCam->get_pos_offset().y);
 			//windowMgr::getInstance()->chaseCam->pitch_it(camSpeed * dt * 0.5, player1Transform.getPos(), windowMgr::getInstance()->chaseCam->get_Posistion(), windowMgr::getInstance()->chaseCam->get_pos_offset().y);
 		}
 		if (glfwGetKey(window, GLFW_KEY_Q))
 		{
 			//function to rotate 
-			windowMgr::getInstance()->chaseCam->zoom_out(camSpeed * dt * 0.5);
+			windowMgr::getInstance()->p1ChaseCam->zoom_out(camSpeed * dt * 0.5);
 		}
 		if (glfwGetKey(window, GLFW_KEY_E))
 		{
-			windowMgr::getInstance()->chaseCam->zoom_in(camSpeed * dt * 0.5);
+			windowMgr::getInstance()->p1ChaseCam->zoom_in(camSpeed * dt * 0.5);
 		}
 
-
+		// P2
+		if (glfwGetKey(window, GLFW_KEY_K))
+		{
+			windowMgr::getInstance()->p2ChaseCam->neg_pitch_it(camSpeed * dt * 0.5, player2.transform.getPos(), windowMgr::getInstance()->p2ChaseCam->get_Posistion(), windowMgr::getInstance()->p2ChaseCam->get_pos_offset().y);
+		}
+		if (glfwGetKey(window, GLFW_KEY_I))
+		{
+			windowMgr::getInstance()->p2ChaseCam->pitch_it(camSpeed * dt * 0.5, player2.transform.getPos(), windowMgr::getInstance()->p2ChaseCam->get_Posistion(), windowMgr::getInstance()->p2ChaseCam->get_pos_offset().y);
+		}
+		if (glfwGetKey(window, GLFW_KEY_U))
+		{
+			//function to rotate 
+			windowMgr::getInstance()->p2ChaseCam->zoom_out(camSpeed * dt * 0.5);
+		}
+		if (glfwGetKey(window, GLFW_KEY_O))
+		{
+			windowMgr::getInstance()->p2ChaseCam->zoom_in(camSpeed * dt * 0.5);
+		}
 		// If chase camera angle is greater than 360 reset to 0
 		if (chaseCamAngle > 6.28319)
 		{
@@ -819,6 +880,18 @@ void gameScene::Input(GLFWwindow* window)
 		else if (chaseCamAngle < 0)
 		{
 			chaseCamAngle = 6.28319;
+		}
+
+		// Again for p2
+		// If chase camera angle is greater than 360 reset to 0
+		if (p2ChaseCamAngle > 6.28319)
+		{
+			p2ChaseCamAngle = 0.0;
+		}
+		// If chase camera angle is less than 0 then reset to 360
+		else if (p2ChaseCamAngle < 0)
+		{
+			p2ChaseCamAngle = 6.28319;
 		}
 	}
 
@@ -834,7 +907,6 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				// Increment power counter as long as fire is held
 				fireCounter += 0.2f;
-
 
 				// Update the power bar based on the the fireCounter value 
 				//powerBarTrans.getPos().x -= (fireCounter/5.0f) * powerBarMesh->getGeomPos().x;
@@ -869,15 +941,53 @@ void gameScene::Input(GLFWwindow* window)
 					// x = cos(theta - 270), z = sin(theta- 270)
 					player1.direction = normalize(vec3(cos(chaseCamAngle - 4.71239), 0.0, sin(chaseCamAngle - 4.71239)));
 				}
-				firePressed = true;
+				player1.firePressed = true;
 			}
 		}
+
+		// If p2 fire is pressed
+		if (glfwGetKey(window, GLFW_KEY_ENTER))
+		{
+			if (!player2.isMoving)
+			{
+				// Increment power counter as long as fire is held
+				p2fireCounter += 0.2f;
+
+				// If camera angle is between 0 and 90
+				if (p2ChaseCamAngle >= 0 && p2ChaseCamAngle < 1.5708)
+				{
+					// x = -sin(theta), z = cos(theta)
+					player2.direction = normalize(vec3(-sin(p2ChaseCamAngle), 0.0, cos(p2ChaseCamAngle)));
+				}
+				// If camera angle is between 90 and 180
+				else if (p2ChaseCamAngle > 1.5709 && p2ChaseCamAngle < 3.14159)
+				{
+					// x = -cos(theta - 90), z = -sin(theta - 90)
+					player2.direction = normalize(vec3(-cos(p2ChaseCamAngle - 1.5708), 0.0, -sin(p2ChaseCamAngle - 1.5708)));
+				}
+				// If camera angle is between 180 and 270
+				else if (p2ChaseCamAngle > 3.1416 && p2ChaseCamAngle < 4.71239)
+				{
+					// x = sin(theta - 180), z = -cos(theta - 180)
+					player2.direction = normalize(vec3(sin(p2ChaseCamAngle - 3.1416), 0.0, -cos(p2ChaseCamAngle - 3.1416)));
+				}
+				// If camera angle is anything else
+				else if (p2ChaseCamAngle > 4.724 && p2ChaseCamAngle <= 6.28319)
+				{
+					// x = cos(theta - 270), z = sin(theta- 270)
+					player2.direction = normalize(vec3(cos(p2ChaseCamAngle - 4.71239), 0.0, sin(p2ChaseCamAngle - 4.71239)));
+				}
+				// Flip
+				p2firePressed = true;
+			}
+		}
+
 	}
 	// When Fire is realesed
 	if ((glfwGetKey(window, GLFW_KEY_SPACE)) == false)
 	{
 		// Only work if fire button was just released
-		if (firePressed)
+		if (player1.firePressed)
 		{
 			// Power measure accumulated by holding space is impulse magnitude
 			// Normal of impulse is direction
@@ -957,11 +1067,29 @@ void gameScene::Input(GLFWwindow* window)
 			}
 
 			// Flip
-			firePressed = false;
+			player1.firePressed = false;
 		}
 	} // End if (p is released)
 
+	// When p2 fire is released
+	if (!glfwGetKey(window, GLFW_KEY_ENTER))
+	{
+		// Only work if just released
+		if (p2firePressed)
+		{
+			// Power measure accumulated by holding space is impulse magnitude
+			// Normal of impulse is direction
+			player2 = physicsSystem.Fire(player2, p2fireCounter);
+			// Reset fire power counter
+			p2fireCounter = 0;
+			// And we're off! 
+			player2.isMoving = true;
+			cout << "P2 fired" << endl;
 
+			// Flip
+			p2firePressed = false;
+		}
+	}
 
 }
 
@@ -969,32 +1097,22 @@ void gameScene::Input(GLFWwindow* window)
 void gameScene::Update(GLFWwindow* window)
 {
 	// Spatial partitioning
+	// TODO Consider using threads to update current tiles
 	int tileTracker = 0;
 	// Check which tile player is on (do this every n frames, not each tick)
 	for (auto &t : algTiles)
 	{
-		// if (t.isPlayerOnTile)
-		// currentTile = tileTracker
-		// if not, tileTracker++
 		if (t.isPlayerOnTile(player1.transform.getPos()))
 		{
-			currentTile = tileTracker;
+			p1CurrentTile = tileTracker;
 		}
-		else
-			tileTracker++;
+		if (t.isPlayerOnTile(player2.transform.getPos()))
+		{
+			p2CurrentTile = tileTracker;
+		}
+
+		tileTracker++;
 	}
-
-
-
-
-
-
-	//lastFrame = thisFrame;
-	//thisFrame = glfwGetTime();
-	//dt = (float)(thisFrame - lastFrame);
-	//if (dt > 0.03)
-	//	dt = 0.016;
-
 
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
@@ -1014,9 +1132,11 @@ void gameScene::Update(GLFWwindow* window)
 	cursor_x = current_x;
 	cursor_y = current_y;
 
-	// Update chase cam
-	windowMgr::getInstance()->chaseCam->move(player1.transform.getPos(), player1.transform.getRot());
-	windowMgr::getInstance()->chaseCam->update(0.00001);
+	// Update chase cams
+	windowMgr::getInstance()->p1ChaseCam->move(player1.transform.getPos(), player1.transform.getRot());
+	windowMgr::getInstance()->p1ChaseCam->update(0.00001);
+	windowMgr::getInstance()->p2ChaseCam->move(player2.transform.getPos(), player2.transform.getRot());
+	windowMgr::getInstance()->p2ChaseCam->update(0.00001);
 
 	// Update hud target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
@@ -1029,20 +1149,21 @@ void gameScene::Update(GLFWwindow* window)
 	double newTime = glfwGetTime();
 	double frameTime = newTime - currentTime;
 	currentTime = newTime;
-
+	// Calculate fps
 	double fps = 1 / frameTime;
-	cout << "FPS:" << fps << endl;
+	
 
 	accumulator += frameTime;
-	
-	// PLAYER UPDATE
+	if (accumulator > 1.0f)
+		cout << "FPS:" << fps << endl;
+	// PLAYER 1 UPDATE
 	if (player1.isMoving)
 	{
-
-		if (algTiles.at(currentTile).id == 8)
+		// Down ramp behaviour neads tweaking
+		/*if (algTiles.at(p1CurrentTile).id == 8)
 		{
 			DownRampDown ramp;
-			ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
 			ramp.thisCoords.y += 1.8;
 			float floorPos = ramp.SetPlayerHeight(player1);
 			physicsSystem.ApplyGravity(player1, floorPos);
@@ -1057,19 +1178,18 @@ void gameScene::Update(GLFWwindow* window)
 				player1 = physicsSystem.Integrate(player1, dt, floorPos);
 				accumulator -= dt;
 			}
-			
-		}
 
-		// Must pass in floor position to update - might be on ramp
-		else if (algTiles.at(currentTile).id == 7)
+		}*/
+
+		// If on ramp, need to know exact y position to be at at this point on tile
+		if (algTiles.at(p1CurrentTile).id == 7)
 		{
 			// Instantiate in order to call member functions
 			UpRampDown ramp;
 			// Set deets
-			ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+			ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
 			// Raise it a bit
 			ramp.thisCoords.y += 1.8;
-			// So long as player isn't in the air...	
 			// Find floor level at this point on ramp
 			float floorPos = ramp.SetPlayerHeight(player1);
 			// Work out whether to apply gravity or not (is player on the floor/in air)
@@ -1081,9 +1201,10 @@ void gameScene::Update(GLFWwindow* window)
 				physicsSystem.epsilon = 0.0001f;
 				player1 = physicsSystem.RampResistance(player1, -1.0f);
 			}
-
+			// Perform physics step
 			if (accumulator >= dt)
 			{
+				// Update position
 				player1 = physicsSystem.Integrate(player1, dt, floorPos);
 				accumulator -= dt;
 			}
@@ -1091,13 +1212,15 @@ void gameScene::Update(GLFWwindow* window)
 		}
 		else
 		{
+			// Ensure correct slowdown/stop margin
 			physicsSystem.epsilon = 0.5f;
 			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(player1, algTiles.at(currentTile).thisCoords.y + 1.0f); // 1 is floor gap
-			// Update position			
+			physicsSystem.ApplyGravity(player1, algTiles.at(p1CurrentTile).thisCoords.y + 1.0f); // 1 is floor gap
+			// Perform physics step	
 			if (accumulator >= dt)
 			{
-				player1 = physicsSystem.Integrate(player1, dt, algTiles.at(currentTile).thisCoords.y + 1);
+				// Update position
+				player1 = physicsSystem.Integrate(player1, dt, algTiles.at(p1CurrentTile).thisCoords.y + 1);
 				accumulator -= dt;
 			}
 
@@ -1107,43 +1230,43 @@ void gameScene::Update(GLFWwindow* window)
 		//player1.transform.getRot() += rot * dt;
 	}
 
-
-
-	// Velocity is direction by power by delta time
-	// In this case, power is akin to force. Mass is 1 so ignored in this equation
-	//player1.velocity = (player1.direction * player1.power);
-
-	// Apply friction when moving
-/*	if (player1.power > 0 + 0.5) // was power without player// this magic number is epsilon
-	{
-		player1.power -= player1.power * 0.03; // was power without player // this magic number is friction
-		 // Rotation is cross product of direction and up
-		//vec3 rot = normalize(cross(normalize(gbDirection), vec3(0.0f, 1.0f, 0.0f)));
-		vec3 rot = normalize(cross(normalize(player1.direction), vec3(0.0f, 1.0f, 0.0f)));
-
-		//rot *= power *  dt;
-		//player1Transform.getRot() += -rot;
-
-		rot *= player1.power *  dt;
-		player1.transform.getRot() += -rot;
-
-	}
-	// Prevent it moving forever
-	else
-	{
-		//power = 0;
-		//golfballmoving = false;
-		player1.power = 0;
-		player1.isMoving = false;
-	} */
-	// Lock to frame rate
-	//gbVelocity *= dt;
-	//player1.velocity *= dt;
-	// Update positions of ball and arrow
-	//player1.transform.getPos() += player1.velocity;
+	// Update p1 arrow mesh position to follow player
 	player1.arrowTransform.getPos() = vec3(player1.transform.getPos().x, player1.transform.getPos().y - 1.6, player1.transform.getPos().z);
 
-	// TIMER RELATED INFORMATION
+
+	// PLAYER 2 UPDATE
+	if (player2.isMoving)
+	{
+		// If on ramp, need to know exact y position to be at at this point on tile
+		if (algTiles.at(p2CurrentTile).id == 7)
+		{
+			// TODO
+		}
+		else
+		{
+			// Ensure correct slowdown/stop margin
+			physicsSystem.epsilon = 0.5f;
+
+			// Work out whether to apply gravity or not (is player on the floor/in air)
+			physicsSystem.ApplyGravity(player2, algTiles.at(p2CurrentTile).thisCoords.y + 1.0f); // 1 is floor gap
+			// Perform physics step																			   // Perform physics step	
+			if (accumulator >= dt)
+			{
+				// Update position
+				player2 = physicsSystem.Integrate(player2, dt, algTiles.at(p2CurrentTile).thisCoords.y + 1);
+				accumulator -= dt;
+			}
+
+		}
+	}
+
+
+
+	// Update p2 arrow mesh position to follow player
+	player2.arrowTransform.getPos() = vec3(player2.transform.getPos().x, player2.transform.getPos().y - 1.6, player2.transform.getPos().z);
+
+
+	// HUD TIMER RELATED INFORMATION
 	// If the time been in scene is equal to zero then
 	if (timeBeenInScene == 0)
 	{
@@ -1250,12 +1373,11 @@ void gameScene::Collisions()
 
 	// Check collisions for the tile player is on only
 	// TODO - Sort out virtual instantiation issue
-	//algTiles.at(currentTile).CheckCollisions(player1);
+	//algTiles.at(p1CurrentTile).CheckCollisions(player1);
 
-	// Switch on the currentTile 
-	switch (algTiles.at(currentTile).id)
+	// Switch on the p1CurrentTile 
+	switch (algTiles.at(p1CurrentTile).id)
 	{
-
 		// On start tile
 	case 0:
 	{
@@ -1272,7 +1394,7 @@ void gameScene::Collisions()
 	{
 		//onRamp = false;
 		StraightTile_V straightV;
-		straightV.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		straightV.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
 		// Ensure don't go through floor
 		//player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
 		player1 = straightV.CheckCollisions(player1);
@@ -1300,7 +1422,7 @@ void gameScene::Collisions()
 	{
 		//onRamp = false;
 		StraightTile_H straightH;
-		straightH.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		straightH.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
 		player1 = straightH.CheckCollisions(player1);
 		// Are there obstacles on this tile to collide with?
 		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
@@ -1325,7 +1447,7 @@ void gameScene::Collisions()
 	{
 		//onRamp = false;
 		CornerTile_BL cornerBL;
-		cornerBL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		cornerBL.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
 		player1 = cornerBL.CheckCollisions(player1);
 		break;
 	}
@@ -1334,7 +1456,7 @@ void gameScene::Collisions()
 	{
 		//onRamp = false;
 		CornerTile_BR cornerBR;
-		cornerBR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		cornerBR.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
 		player1 = cornerBR.CheckCollisions(player1);
 		break;
 	}
@@ -1343,7 +1465,7 @@ void gameScene::Collisions()
 	{
 		//onRamp = false;
 		CornerTile_TL cornerTL;
-		cornerTL.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		cornerTL.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
 		player1 = cornerTL.CheckCollisions(player1);
 		break;
 	}
@@ -1352,7 +1474,7 @@ void gameScene::Collisions()
 	{
 		//onRamp = false;
 		CornerTile_TR cornerTR;
-		cornerTR.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		cornerTR.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
 		player1 = cornerTR.CheckCollisions(player1);
 		break;
 	}
@@ -1363,21 +1485,21 @@ void gameScene::Collisions()
 		//// Instantiate in order to call member functions
 		//UpRampDown ramp;
 		//// Set deets
-		//ramp.SetCoords(algTiles.at(currentTile).GetThisCoords());
+		//ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
 		//// Raise it a bit
 		//ramp.thisCoords.y += 1.8;
 		//// So long as player isn't in the air...	
 		//// Find floor level at this point on ramp
 		//float floorPos = ramp.SetPlayerHeight(player1);
-	
+
 		//// Set player height
 		//player1.transform.getPos().y = floorPos;
-		
-		
+
+
 
 		break;
 	}
-	
+
 	case 8:
 	{
 		break;
@@ -1387,8 +1509,8 @@ void gameScene::Collisions()
 	{
 		//onRamp = false;
 		EndTile end;
-		end.SetCoords(algTiles.at(currentTile).GetThisCoords());
-		end.outDir = algTiles.at(currentTile).outDir;
+		end.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
+		end.outDir = algTiles.at(p1CurrentTile).outDir;
 		player1 = end.CheckCollisions(player1);
 
 		// If user hasnt completed hole then - get
@@ -1410,6 +1532,171 @@ void gameScene::Collisions()
 	} // end case 9
 	} // end collisions switch
 
+	// P2 Collisions
+	switch (algTiles.at(p2CurrentTile).id)
+	{
+		// On start tile
+	case 0:
+	{
+		// Need to do this to access start only methods (which includes col check)
+		//onRamp = false;
+		StartTile start;
+		player2 = start.CheckCollisions(player2);
+		break;
+	}
+	// On straight V tile
+	case 1:
+	{
+		//onRamp = false;
+		StraightTile_V straightV;
+		straightV.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
+		// Ensure don't go through floor
+		//player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
+		player2 = straightV.CheckCollisions(player2);
+		// Check if this has obstacles to collide with
+		//for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+		//{
+		//	switch (obstacles.at(i + 1))
+		//	{
+		//	case 1:
+
+		//		break;
+		//	case 2:
+		//		//	player1.direction = CheckCollisionsObstacle1(straightV.thisCoords, player1.transform.getPos(),
+		//		//		player1.direction, straightV.displace, straightV.radius);
+		//		break;
+		//	default:
+		//		break;
+		//	} // end switch
+		//} // end for loop
+		break; // this tile break
+	} // end case 1 
+	  // On straight H tile
+	case 2:
+	{
+		//onRamp = false;
+		StraightTile_H straightH;
+		straightH.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
+		player2 = straightH.CheckCollisions(player2);
+		// Are there obstacles on this tile to collide with?
+		//for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
+		//{
+		//	switch (obstacles.at(i + 1))
+		//	{
+		//	case 1:
+
+		//		break;
+		//	case 2:
+		//		//	player1.direction = CheckCollisionsObstacle1(straightH.thisCoords, player1.transform.getPos(),
+		//		//		player1.direction, straightH.displace, straightH.radius);
+		//		break;
+		//	default:
+		//		break;
+		//	} // switch end
+		//} // for loop end
+		break;
+	} // this tile case end
+	  // On corner_BL tile
+	case 3:
+	{
+		//onRamp = false;
+		CornerTile_BL cornerBL;
+		cornerBL.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
+		player2 = cornerBL.CheckCollisions(player2);
+		break;
+	}
+	// On corner_BR tile
+	case 4:
+	{
+		//onRamp = false;
+		CornerTile_BR cornerBR;
+		cornerBR.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
+		player2 = cornerBR.CheckCollisions(player2);
+		break;
+	}
+	// On corner_TL tile
+	case 5:
+	{
+		//onRamp = false;
+		CornerTile_TL cornerTL;
+		cornerTL.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
+		player2 = cornerTL.CheckCollisions(player2);
+		break;
+	}
+	// On corner_TR tile
+	case 6:
+	{
+		//onRamp = false;
+		CornerTile_TR cornerTR;
+		cornerTR.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
+		player2 = cornerTR.CheckCollisions(player2);
+		break;
+	}
+	// Up ramp tile
+	case 7:
+	{
+
+		//// Instantiate in order to call member functions
+		//UpRampDown ramp;
+		//// Set deets
+		//ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
+		//// Raise it a bit
+		//ramp.thisCoords.y += 1.8;
+		//// So long as player isn't in the air...	
+		//// Find floor level at this point on ramp
+		//float floorPos = ramp.SetPlayerHeight(player1);
+
+		//// Set player height
+		//player1.transform.getPos().y = floorPos;
+
+
+
+		break;
+	}
+
+	case 8:
+	{
+		break;
+	}
+	// End tile
+	case 9:
+	{
+		//onRamp = false;
+		EndTile end;
+		end.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
+		end.outDir = algTiles.at(p2CurrentTile).outDir;
+		player2 = end.CheckCollisions(player2);
+		break;
+	} // end case 9
+	} // end collisions switch
+
+	// TODO Determine if this can be done more cheapply
+	// If players are on the same tile, check for collisions with each other
+	if (p1CurrentTile == p2CurrentTile)
+	{
+		// Find distance between players
+		vec3 distance = abs(player1.transform.getPos() - player2.transform.getPos());	
+		float magnitude = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
+		// If less than two radii apart
+		if (magnitude < player1.radius * 2)
+		{
+			// First normalize the distance vector; the collision normal
+			vec3 collisionNormal = player1.transform.getPos() - player2.transform.getPos();
+			collisionNormal = normalize(collisionNormal);
+			// Find the length of the component of each movement vector on collision normal
+			float a1 = dot(player1.velocity, collisionNormal);
+			float a2 = dot(player2.velocity, collisionNormal);
+			// Using optimized version according to https://www.gamasutra.com/view/feature/131424/pool_hall_lessons_fast_accurate_.php?page=3
+			float optimizedP = (2.0 * (a1 - a2)) / (player1.mass + player2.mass);
+			// Calculate new veloctiy for each player
+			vec3 v1New = player1.velocity - optimizedP * player2.mass * collisionNormal;
+			vec3 v2New = player2.velocity + optimizedP * player1.mass * collisionNormal;
+			// Set players velocity to 0, then assign new velocities
+			player1.velocity = v1New;
+			player2.velocity = v2New;
+		}
+
+	}
 } // end collisions function
 
 vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, float displace, float radius)
@@ -1466,6 +1753,9 @@ vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, 
 // Draw stuff
 void gameScene::Render(GLFWwindow* window)
 {
+	// This draws stuff to left hand side of screen
+	glViewport(0, 0, 800, 900);
+
 	// Calculate mvp matrix
 	mat4 mvp;
 	// If camera type is free camera then
@@ -1476,7 +1766,7 @@ void gameScene::Render(GLFWwindow* window)
 	// Else camera type is chase camera
 	else if (cameraType == 1)
 	{
-		mvp = windowMgr::getInstance()->chaseCam->get_Projection() * windowMgr::getInstance()->chaseCam->get_View();
+		mvp = windowMgr::getInstance()->p1ChaseCam->get_Projection() * windowMgr::getInstance()->p1ChaseCam->get_View();
 	}
 	// Else if camera type is pause camera
 	else if (cameraType == 2)
@@ -1529,7 +1819,6 @@ void gameScene::Render(GLFWwindow* window)
 
 	// Skybox 
 	windowMgr::getInstance()->skyboxShader->Bind();
-	//sky->thisTexture->Bind(0);
 	windowMgr::getInstance()->skyboxShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
 	sky->Draw();
 	// Bind texture shader
@@ -1546,33 +1835,90 @@ void gameScene::Render(GLFWwindow* window)
 		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	}
 
+	// P2 RENDER TEST
+	windowMgr::getInstance()->textures["playerBlueTexture"]->Bind(0);
+	windowMgr::getInstance()->textureShader->Update(player2.transform, mvp);
+	windowMgr::getInstance()->player2Mesh->Draw();
+	// Putting the above code below the arrow rendering gives odd behaviour of arrow
+	// Perhaps due to reuse of texture being rebound? 
+
+
 	// Render player 1
 	windowMgr::getInstance()->textures["playerRedTexture"]->Bind(0);
-	/*windowMgr::getInstance()->textureShader->Update(player1Transform, mvp);*/
 	windowMgr::getInstance()->textureShader->Update(player1.transform, mvp);
 	windowMgr::getInstance()->player1Mesh->Draw();
+
+
 	// Render player 1 arrow
-	windowMgr::getInstance()->arrowMesh->thisTexture.Bind(0);
-	//windowMgr::getInstance()->textureShader->Update(arrowTransform, mvp);
+	windowMgr::getInstance()->p1ArrowMesh->thisTexture.Bind(0);
 	windowMgr::getInstance()->textureShader->Update(player1.arrowTransform, mvp);
 	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
-	//arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
 	player1.arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
-
-	// Arrow
-	//arrowTexture->Bind(0);
-	//textureShader->Update(arrowTransform, mvp);
-	//arrowTransform.setRot(glm::vec3(0, -chaseCamAngle - 1.5708, 0));
 
 	// If ball is not moving draw arrow (ie dont draw arrow when ball moving as not needed)
 	if (!player1.isMoving) // was !golfBallMoving
 	{
 		// Draw the arrow
-		windowMgr::getInstance()->arrowMesh->Draw();
+		windowMgr::getInstance()->p1ArrowMesh->Draw();
 	}
 
-	// Update texture shader
+	// Update texture shader for free cam
 	windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, (windowMgr::getInstance()->freeCam->get_Projection() * windowMgr::getInstance()->freeCam->get_View()));
+
+
+	// ################### PLAYER 2 SCREEN ################### //
+
+		// Playe 2 has the right hand vertical half of the screen
+	glViewport(800, 0, 800, 900);
+
+	// model view projection matrix for p2 cam
+	mat4 mvp2;
+
+	// Render player 2's chase camera
+	mvp2 = windowMgr::getInstance()->p2ChaseCam->get_Projection() * windowMgr::getInstance()->p2ChaseCam->get_View();
+
+	// Skybox 
+	windowMgr::getInstance()->skyboxShader->Bind();
+	windowMgr::getInstance()->skyboxShader->Update(windowMgr::getInstance()->texShaderTransform, mvp2);
+	sky->Draw();
+
+	// Bind texture shader
+	windowMgr::getInstance()->textureShader->Bind();
+	// DRAW all level tiles
+	for (auto &t : tiles)
+	{
+		t.drawTile(windowMgr::getInstance()->textureShader, mvp2);
+	}
+	// DRAW all scenery tiles
+	for (auto &t : sceneryTiles)
+	{
+		t.drawTile(windowMgr::getInstance()->textureShader, mvp2);
+	}
+
+
+	// Render player 1
+	windowMgr::getInstance()->textures["playerRedTexture"]->Bind(0);
+	windowMgr::getInstance()->textureShader->Update(player1.transform, mvp2);
+	windowMgr::getInstance()->player1Mesh->Draw();
+	// Can't seem to draw p1 arrow... though it seems fitting that you can't
+	// see the other player's direction
+
+
+	// Render player 2
+	windowMgr::getInstance()->textures["playerBlueTexture"]->Bind(0);
+	windowMgr::getInstance()->textureShader->Update(player2.transform, mvp2);
+	windowMgr::getInstance()->player2Mesh->Draw();
+
+	// Render player 2 arrow
+	windowMgr::getInstance()->p2ArrowMesh->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(player2.arrowTransform, mvp2);
+	player2.arrowTransform.setRot(glm::vec3(0, -p2ChaseCamAngle - 1.5708, 0));
+	// Only draw if player 2 is still
+	if (!player2.isMoving)
+	{
+		windowMgr::getInstance()->p2ArrowMesh->Draw();
+	}
+
 
 	// Fully reset depth range for next frame - REQUIRED
 	glDepthRange(0, 1.0);

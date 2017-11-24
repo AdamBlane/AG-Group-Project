@@ -43,14 +43,15 @@ class windowMgr
 		// GAME SCENE UNIQUE MESHES
 		Mesh* player1Mesh;
 		Mesh* player2Mesh;
-		Mesh* arrowMesh;
+		Mesh* p1ArrowMesh;
+		Mesh* p2ArrowMesh;
 
 		// Cameras
 		target_camera* HUDtargetCam;
 		target_camera* PAUSEtargetCam;
 		free_camera* freeCam;
-		chase_camera* chaseCam;
-
+		chase_camera* p1ChaseCam;
+		chase_camera* p2ChaseCam;
 		// Shaders
 		Shader* textureShader;
 		Shader* skyboxShader;

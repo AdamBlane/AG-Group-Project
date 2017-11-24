@@ -30,6 +30,7 @@
 using namespace AllCamera;
 using namespace std::chrono;
 
+
 class gameScene
 {
 public:
@@ -78,44 +79,28 @@ public:
 	int playerTwoShots = 0; // The amount of shots uer two has taken
 
 	// Spatial (tile!) partitioning - tracks which tile player is currently on		
-	int currentTile = 0; 
+	int p1CurrentTile = 0; 
+	int p2CurrentTile = 0;
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
 	double accumulator = 0.0;
+	float dt = 0.016;  // This is 60fps
 
-	double lastFrame = 0;
-	double thisFrame = glfwGetTime();
-	float dt = 0.016; // First frame; is reset thereafter
 	// Fire action variables
-	bool firePressed = false; // Prevent shooting ball again whilst already moving
+	bool p2firePressed = false; // Prevent shooting ball again whilst already moving
 	float fireCounter; // This is a force counter (TODO: rename)
-	
+	float p2fireCounter;
 	bool levelSaved = false; // Prevent saving same level more than once
 
 	// Camera variables
 	float camSpeed = 2.0f; 
-	float chaseCamAngle, cameraType = 1; // for switching between free/chase cam (default)
+	float chaseCamAngle, p2ChaseCamAngle, cameraType = 1; // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)
 	double cursor_x, cursor_y = 0.0; 
 	vec3 pauseCamPos, pauseCamTarget;
 
 
-	//struct player
-	//{
-	//	Transform transform;
-	//	Transform arrowTransform;
-	//	vec3 direction;
-	//	vec3 velocity;
-	//	float speed;
-	//	bool isMoving = false;
-	//} player1, player2;
-	// Player variables
-	//Transform player1Transform, arrowTransform;
-	//// TODO - will need to rename dir & vel to p1Vel, p2vel etc
-	//vec3 gbDirection; // Normalised direction vector
-	//vec3 gbVelocity; // Velocity is dir * speed	
-	//bool golfBallMoving = false; // Is golf ball moving
-	//float speed; // Ball speed
+
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)
