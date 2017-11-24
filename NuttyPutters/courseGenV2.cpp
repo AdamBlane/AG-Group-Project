@@ -2,7 +2,8 @@
 #include <random>
 #include <chrono>
 #include <algorithm>
-
+#include <fstream>
+#include <string>
 
 using namespace std::chrono;
 
@@ -50,7 +51,7 @@ vector<BaseTile> courseGenV2::run()
 	return gameTiles;
 }
 
-
+// Looks for straights/corners and picks one
 void courseGenV2::PlaceTile()
 {
 	// Search for available tiles
@@ -298,4 +299,289 @@ bool courseGenV2::tilePosTaken(vec3 checkPos)
 			return true;
 	}
 	return false;
+}
+
+// Setup game seed based on default/given seed value
+vector<int> courseGenV2::SetupSeed(string seed)
+{
+	// Resulting seeds list
+	vector<int> levelSeed;
+	// Only get seed from file if not given to us from load game screen
+	if (seed == "seed") // it's the default value
+	{
+		// Some magic numbers in the following section; for milestone 2, will replace after
+		// Insert start
+		levelSeed.push_back(0);
+		// Open seeds file 
+		ifstream seedsFile("res12.csv");
+		// find how many lines in seed file (hardcoded for now)
+		int seedsCount = 341;
+		// pick random number in that range
+		default_random_engine rng(random_device{}());
+		uniform_int_distribution<int> distribution(1, seedsCount);
+		int choice = distribution(rng);
+		// read that line
+		string line;
+		for (int l = 0; l < choice; ++l)
+		{
+			getline(seedsFile, line);
+		} // last iteration will be on desired line, so line should be correct seed now
+		  // parse seed into array
+		for (int c = 0; c < line.length(); ++c)
+		{
+			// Convert each character in string to int
+			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
+		}
+
+		//levelSeed.push_back(0);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(9);
+
+
+	} // end if seed is default
+	else // this has been given a seed value
+	{
+		// Prevent this level being saved again
+		//levelSaved = true;
+		// Parse into ints as above
+		for (int c = 0; c < seed.length(); ++c)
+		{
+			levelSeed.push_back(seed[c] - 48);
+		}
+	}
+
+	return levelSeed;
+}
+
+// Sets up alg tiles list
+vector<BaseTile> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
+{
+	// Resulting alg tiles list
+	vector<BaseTile> algTiles;
+	// Start added first (this & next coords already set)
+	StartTile start;
+	algTiles.push_back(start);
+	// Track currently looked at coords
+	vec3 curCoords;
+	// Update size tracker
+	float size = start.size;
+	// For each number in seed array
+	for (auto &i : levelSeed)
+	{
+		// Update current coordinates (next coords of last thing in list) 
+		curCoords = algTiles.back().GetNextCoords();
+		switch (i)
+		{
+			// Straight_V
+		case 1:
+		{
+			// Create tile
+			StraightTile_V straightV;
+			// Set its position
+			straightV.SetCoords(curCoords);
+			// Find next position - based on direction
+			if (algTiles.back().outDir.going_down)
+			{
+				// The position of next tile in list
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
+				straightV.SetNextCoords(nextPos);
+				// Set dir
+				straightV.outDir.going_down = true;
+			}
+			else if (algTiles.back().outDir.going_up)
+			{
+				// The position of next tile in list
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
+				straightV.SetNextCoords(nextPos);
+				// Set dir
+				straightV.outDir.going_up = true;
+			}
+			// Add tile to list, finish (break)
+			algTiles.push_back(straightV);
+			break;
+		}
+		// Straight_H
+		case 2:
+		{
+			// Create tile
+			StraightTile_H straightH;
+			// Set its position
+			straightH.SetCoords(curCoords);
+			// Find next position
+			if (algTiles.back().outDir.going_right)
+			{
+				// Position of next tile in list
+				vec3 nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
+				straightH.SetNextCoords(nextPos);
+				// Set dir
+				straightH.outDir.going_right = true;
+			}
+			else if (algTiles.back().outDir.going_left)
+			{
+				// Position of next tile in list
+				vec3 nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
+				straightH.SetNextCoords(nextPos);
+				// Set dir
+				straightH.outDir.going_left = true;
+			}
+			// Add to list
+			algTiles.push_back(straightH);
+			break;
+		}
+		// Corner_BL
+		case 3:
+		{
+			// Create tile
+			CornerTile_BL cornerBL;
+			// Set pos
+			cornerBL.SetCoords(curCoords);
+			// Find next position
+			if (algTiles.back().outDir.going_down)
+			{
+				// Last tile was going down; next tile is going right
+				vec3 nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
+				cornerBL.SetNextCoords(nextPos);
+				// Set dir
+				cornerBL.outDir.going_right = true;
+			}
+			else if (algTiles.back().outDir.going_left)
+			{
+				// Last tile was going left; next tile is going up
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
+				cornerBL.SetNextCoords(nextPos);
+				// Set dir
+				cornerBL.outDir.going_up = true;
+			}
+			// Add to list
+			algTiles.push_back(cornerBL);
+			break;
+		}
+		// Corner_BR
+		case 4:
+		{
+			// Create tile
+			CornerTile_BR cornerBR;
+			// Set pos
+			cornerBR.SetCoords(curCoords);
+			// Find next position
+			if (algTiles.back().outDir.going_down)
+			{
+				// Last tile was going down; next tile is going left
+				vec3 nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
+				cornerBR.SetNextCoords(nextPos);
+				// Set dir
+				cornerBR.outDir.going_left = true;
+			}
+			else if (algTiles.back().outDir.going_right)
+			{
+				// Last tile was going right; next tile is going up
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
+				cornerBR.SetNextCoords(nextPos);
+				// Set dir
+				cornerBR.outDir.going_up = true;
+			}
+			// Add to list
+			algTiles.push_back(cornerBR);
+			break;
+		}
+		// Corner_TL
+		case 5:
+		{
+			// Create tile
+			CornerTile_TL cornerTL;
+			cornerTL.SetCoords(curCoords);
+			// Find next pos
+			if (algTiles.back().outDir.going_up)
+			{
+				// Last tile was going up; next going right
+				vec3 nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
+				cornerTL.SetNextCoords(nextPos);
+				// Set dir
+				cornerTL.outDir.going_right = true;
+			}
+			else if (algTiles.back().outDir.going_left)
+			{
+				// Last tile was going left; next tile going down
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
+				cornerTL.SetNextCoords(nextPos);
+				// Set dir
+				cornerTL.outDir.going_down = true;
+			}
+			// Add to list
+			algTiles.push_back(cornerTL);
+			break;
+		}
+		// Corner_TR
+		case 6:
+		{
+			// Create tile
+			CornerTile_TR cornerTR;
+			// Set pos
+			cornerTR.SetCoords(curCoords);
+			// Find next pos
+			if (algTiles.back().outDir.going_right)
+			{
+				// Last tile going right; next tile going down
+				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
+				cornerTR.SetNextCoords(nextPos);
+				// Set dir
+				cornerTR.outDir.going_down = true;
+			}
+			else if (algTiles.back().outDir.going_up)
+			{
+				// Last tile going up; next tile going left
+				vec3 nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
+				cornerTR.SetNextCoords(nextPos);
+				// Set dir
+				cornerTR.outDir.going_left = true;
+			}
+			// Add to list
+			algTiles.push_back(cornerTR);
+			break;
+		}
+		// UpRampDown
+		case 7:
+		{
+			// Create tile
+			UpRampDown upRamp;
+			upRamp.SetCoords(curCoords);
+			// Find next pos (always know dir is down when 7 is placed)
+			vec3 nextPos = vec3(curCoords.x, curCoords.y + 3.8, curCoords.z + size); //usually + 3.8
+			upRamp.SetNextCoords(nextPos);
+			upRamp.outDir.going_down = true;
+			algTiles.push_back(upRamp);
+			break;
+		}
+		// DownRampDown
+		case 8:
+		{
+			// Create tile
+			DownRampDown downRamp;
+			downRamp.SetCoords(curCoords);
+			// Find next pos (always know dir is up with tile 8)
+			vec3 nextPos = vec3(curCoords.x, curCoords.y - 3.8, curCoords.z - size);
+			downRamp.SetNextCoords(nextPos);
+			downRamp.outDir.going_up = true;
+			algTiles.push_back(downRamp);
+			break;
+		}
+		// End tile
+		case 9:
+		{
+			// Create end tile
+			EndTile end;
+			end.SetCoords(curCoords);
+			end.outDir = algTiles.back().outDir;
+			algTiles.push_back(end);
+			break;
+		}
+
+		default: break;
+		} // Switch end
+
+	} // for loop create games tiles from alg tiles end
+
+	return algTiles;
 }

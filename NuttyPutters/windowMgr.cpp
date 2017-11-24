@@ -9,6 +9,7 @@
 /// On window close, it runs through closing steps
 /// Called from main.cpp
 
+
 // Private Constructor
 windowMgr::windowMgr() { }
 // Private Deconstructor
