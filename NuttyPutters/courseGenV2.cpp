@@ -17,20 +17,20 @@ courseGenV2::courseGenV2(int difficulty)
 	courseLimit = difficulty;
 
 	// Create start tile
-	StartTile start;
+	StartTile* start = new StartTile();
 
 	// Get direction
-	dir = start.outDir;
+	dir = start->outDir;
 
 	// Update curCoords tracker
-	curTileCoords = start.nextCoords;
+	curTileCoords = start->nextCoords;
 
 	// Add it to game tiles list
 	gameTiles.push_back(start);
 }
 
 // Main algorithm loop
-vector<BaseTile> courseGenV2::run()
+vector<BaseTile*> courseGenV2::run()
 {
 	// Until course is built...
 	// -1 since end tile will be added afterwards
@@ -40,12 +40,10 @@ vector<BaseTile> courseGenV2::run()
 	}
 
 	// Add end tile manually
-	EndTile end;
-	end.SetCoords(curTileCoords);
-	end.outDir = dir;
+	EndTile* end = new EndTile();
+	end->SetCoords(curTileCoords);
+	end->outDir = dir;
 	gameTiles.push_back(end);
-
-
 
 
 	return gameTiles;
@@ -69,11 +67,16 @@ void courseGenV2::PlaceTile()
 	gameTiles.push_back(potentialTiles.at(choice));
 
 	// Update current tile position tracker
-	curTileCoords = gameTiles.back().GetNextCoords();
+	curTileCoords = gameTiles.back()->GetNextCoords();
 
 	// Update direction for placement of next tile
-	dir = gameTiles.back().outDir;
+	dir = gameTiles.back()->outDir;
 
+	// Delete unused potential tiles 
+	for (auto &t : potentialTiles)
+	{
+		delete(t);
+	}
 	// Clear potential tiles for next iteration
 	potentialTiles.clear();
 }
@@ -115,19 +118,19 @@ void courseGenV2::CheckStraights()
 		// If this pos is free, can add straight
 		if (!tilePosTaken(followingPos))
 		{
-			StraightTile_V straightV;
+			StraightTile_V* straightV = new StraightTile_V();
 			// Set position and next tile pos
-			straightV.SetCoords(curTileCoords);
-			straightV.SetNextCoords(followingPos);
+			straightV->SetCoords(curTileCoords);
+			straightV->SetNextCoords(followingPos);
 			// Set out direction
 			if (dir.going_up)
 			{
 				// Continue going up
-				straightV.outDir.going_up = true;
+				straightV->outDir.going_up = true;
 			}
 			else if (dir.going_down)
 				// Continue going down
-				straightV.outDir.going_down = true;
+				straightV->outDir.going_down = true;
 				
 			// Add to list of potential next tiles
 			potentialTiles.push_back(straightV);
@@ -141,15 +144,15 @@ void courseGenV2::CheckStraights()
 		// If this pos is free, can add straight
 		if (!tilePosTaken(followingPos))
 		{
-			StraightTile_H straightH;
+			StraightTile_H* straightH = new StraightTile_H();
 			// Set position and next tile pos
-			straightH.SetCoords(curTileCoords);
-			straightH.SetNextCoords(followingPos);
+			straightH->SetCoords(curTileCoords);
+			straightH->SetNextCoords(followingPos);
 			// Set out direction
 			if (dir.going_left)
-				straightH.outDir.going_left = true;
+				straightH->outDir.going_left = true;
 			else if (dir.going_right)
-				straightH.outDir.going_right = true;
+				straightH->outDir.going_right = true;
 			// Add to list of potential next tiles
 			potentialTiles.push_back(straightH);
 		}
@@ -161,14 +164,14 @@ void courseGenV2::CheckStraights()
 		vec3 followingPos = vec3(curTileCoords.x, curTileCoords.y + 3.8, curTileCoords.z + zDiff);
 		if (!tilePosTaken(followingPos))
 		{
-			UpRampDown ramp;
-			ramp.SetCoords(curTileCoords);
-			ramp.SetNextCoords(followingPos);
-			ramp.outDir.going_down = true;
+			UpRampDown* ramp = new UpRampDown();
+			ramp->SetCoords(curTileCoords);
+			ramp->SetNextCoords(followingPos);
+			ramp->outDir.going_down = true;
 			potentialTiles.push_back(ramp);
 		}
 	}
-	if (dir.going_up)
+	/*if (dir.going_up) // Ignoring this ramp type for now
 	{
 		vec3 followingPos = vec3(curTileCoords.x, curTileCoords.y - 3.8, curTileCoords.z + zDiff);
 		if (!tilePosTaken(followingPos))
@@ -179,7 +182,7 @@ void courseGenV2::CheckStraights()
 			ramp.outDir.going_up = true;
 			potentialTiles.push_back(ramp);
 		}
-	}
+	}*/
 	
 }
 
@@ -194,11 +197,11 @@ void courseGenV2::CheckCorners()
 		// If free, can add corner
 		if (!tilePosTaken(followingPosR))
 		{
-			CornerTile_BL cornerBL;
+			CornerTile_BL* cornerBL = new CornerTile_BL();
 			// Set positions
-			cornerBL.SetCoords(curTileCoords);
-			cornerBL.SetNextCoords(followingPosR);
-			cornerBL.outDir.going_right = true;
+			cornerBL->SetCoords(curTileCoords);
+			cornerBL->SetNextCoords(followingPosR);
+			cornerBL->outDir.going_right = true;
 			// Add to potentials list
 			potentialTiles.push_back(cornerBL);
 		}
@@ -207,10 +210,10 @@ void courseGenV2::CheckCorners()
 		// If free, add corner
 		if (!tilePosTaken(followingPosL))
 		{
-			CornerTile_BR cornerBR;
-			cornerBR.SetCoords(curTileCoords);
-			cornerBR.SetNextCoords(followingPosL);
-			cornerBR.outDir.going_left = true;
+			CornerTile_BR* cornerBR = new CornerTile_BR();
+			cornerBR->SetCoords(curTileCoords);
+			cornerBR->SetNextCoords(followingPosL);
+			cornerBR->outDir.going_left = true;
 			potentialTiles.push_back(cornerBR);
 		}
 	}
@@ -221,20 +224,20 @@ void courseGenV2::CheckCorners()
 		vec3 followingPosR = vec3(curTileCoords.x + tileSize, curTileCoords.y, curTileCoords.z);
 		if (!tilePosTaken(followingPosR))
 		{
-			CornerTile_TL cornerTL;
-			cornerTL.SetCoords(curTileCoords);
-			cornerTL.SetNextCoords(followingPosR);
-			cornerTL.outDir.going_right = true;
+			CornerTile_TL* cornerTL = new CornerTile_TL();
+			cornerTL->SetCoords(curTileCoords);
+			cornerTL->SetNextCoords(followingPosR);
+			cornerTL->outDir.going_right = true;
 			potentialTiles.push_back(cornerTL);
 		}
 		// Top right - goes up to the left
 		vec3 followingPosL = vec3(curTileCoords.x - tileSize, curTileCoords.y, curTileCoords.z);
 		if (!tilePosTaken(followingPosL))
 		{
-			CornerTile_TR cornerTR;
-			cornerTR.SetCoords(curTileCoords);
-			cornerTR.SetNextCoords(followingPosL);
-			cornerTR.outDir.going_left = true;
+			CornerTile_TR* cornerTR = new CornerTile_TR();
+			cornerTR->SetCoords(curTileCoords);
+			cornerTR->SetNextCoords(followingPosL);
+			cornerTR->outDir.going_left = true;
 			potentialTiles.push_back(cornerTR);
 		}
 	}
@@ -245,20 +248,20 @@ void courseGenV2::CheckCorners()
 		vec3 followingPosD = vec3(curTileCoords.x, curTileCoords.y, curTileCoords.z + tileSize);
 		if (!tilePosTaken(followingPosD))
 		{
-			CornerTile_TL cornerTL;
-			cornerTL.SetCoords(curTileCoords);
-			cornerTL.SetNextCoords(followingPosD);
-			cornerTL.outDir.going_down = true;
+			CornerTile_TL* cornerTL = new CornerTile_TL();
+			cornerTL->SetCoords(curTileCoords);
+			cornerTL->SetNextCoords(followingPosD);
+			cornerTL->outDir.going_down = true;
 			potentialTiles.push_back(cornerTL);
 		}
 		// Bottom left - goes left and up
 		vec3 followingPosU = vec3(curTileCoords.x, curTileCoords.y, curTileCoords.z - tileSize);
 		if (!tilePosTaken(followingPosU))
 		{
-			CornerTile_BL cornerBL;
-			cornerBL.SetCoords(curTileCoords);
-			cornerBL.SetNextCoords(followingPosU);
-			cornerBL.outDir.going_up = true;
+			CornerTile_BL* cornerBL = new CornerTile_BL();
+			cornerBL->SetCoords(curTileCoords);
+			cornerBL->SetNextCoords(followingPosU);
+			cornerBL->outDir.going_up = true;
 			potentialTiles.push_back(cornerBL);
 		}
 	}
@@ -269,20 +272,20 @@ void courseGenV2::CheckCorners()
 		vec3 followingPosD = vec3(curTileCoords.x, curTileCoords.y, curTileCoords.z + tileSize);
 		if (!tilePosTaken(followingPosD))
 		{
-			CornerTile_TR cornerTR;
-			cornerTR.SetCoords(curTileCoords);
-			cornerTR.SetNextCoords(followingPosD);
-			cornerTR.outDir.going_down = true;
+			CornerTile_TR* cornerTR = new CornerTile_TR();
+			cornerTR->SetCoords(curTileCoords);
+			cornerTR->SetNextCoords(followingPosD);
+			cornerTR->outDir.going_down = true;
 			potentialTiles.push_back(cornerTR);
 		}
 		// Bottom right - goes right and up
 		vec3 followingPosU = vec3(curTileCoords.x, curTileCoords.y, curTileCoords.z - tileSize);
 		if (!tilePosTaken(followingPosU))
 		{
-			CornerTile_BR cornerBR;
-			cornerBR.SetCoords(curTileCoords);
-			cornerBR.SetNextCoords(followingPosU);
-			cornerBR.outDir.going_up = true;
+			CornerTile_BR* cornerBR = new CornerTile_BR();
+			cornerBR->SetCoords(curTileCoords);
+			cornerBR->SetNextCoords(followingPosU);
+			cornerBR->outDir.going_up = true;
 			potentialTiles.push_back(cornerBR);
 		}
 	}
@@ -295,7 +298,7 @@ bool courseGenV2::tilePosTaken(vec3 checkPos)
 	for (auto &t : gameTiles)
 	{
 		// Check for a match with checkPos
-		if (checkPos == t.thisCoords)
+		if (checkPos == t->thisCoords)
 			return true;
 	}
 	return false;
@@ -356,47 +359,48 @@ vector<int> courseGenV2::SetupSeed(string seed)
 }
 
 // Sets up alg tiles list
-vector<BaseTile> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
+vector<BaseTile*> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 {
 	// Resulting alg tiles list
-	vector<BaseTile> algTiles;
+	vector<BaseTile*> algTiles;
 	// Start added first (this & next coords already set)
-	StartTile start;
+	StartTile* start = new StartTile();
+	// Add it to our list
 	algTiles.push_back(start);
 	// Track currently looked at coords
 	vec3 curCoords;
 	// Update size tracker
-	float size = start.size;
+	float size = start->size;
 	// For each number in seed array
 	for (auto &i : levelSeed)
 	{
 		// Update current coordinates (next coords of last thing in list) 
-		curCoords = algTiles.back().GetNextCoords();
+		curCoords = algTiles.back()->GetNextCoords();
 		switch (i)
 		{
 			// Straight_V
 		case 1:
 		{
 			// Create tile
-			StraightTile_V straightV;
+			StraightTile_V* straightV = new StraightTile_V();
 			// Set its position
-			straightV.SetCoords(curCoords);
+			straightV->SetCoords(curCoords);
 			// Find next position - based on direction
-			if (algTiles.back().outDir.going_down)
+			if (algTiles.back()->outDir.going_down)
 			{
 				// The position of next tile in list
 				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
-				straightV.SetNextCoords(nextPos);
+				straightV->SetNextCoords(nextPos);
 				// Set dir
-				straightV.outDir.going_down = true;
+				straightV->outDir.going_down = true;
 			}
-			else if (algTiles.back().outDir.going_up)
+			else if (algTiles.back()->outDir.going_up)
 			{
 				// The position of next tile in list
 				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
-				straightV.SetNextCoords(nextPos);
+				straightV->SetNextCoords(nextPos);
 				// Set dir
-				straightV.outDir.going_up = true;
+				straightV->outDir.going_up = true;
 			}
 			// Add tile to list, finish (break)
 			algTiles.push_back(straightV);
@@ -406,25 +410,25 @@ vector<BaseTile> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 		case 2:
 		{
 			// Create tile
-			StraightTile_H straightH;
+			StraightTile_H* straightH = new StraightTile_H();
 			// Set its position
-			straightH.SetCoords(curCoords);
+			straightH->SetCoords(curCoords);
 			// Find next position
-			if (algTiles.back().outDir.going_right)
+			if (algTiles.back()->outDir.going_right)
 			{
 				// Position of next tile in list
 				vec3 nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
-				straightH.SetNextCoords(nextPos);
+				straightH->SetNextCoords(nextPos);
 				// Set dir
-				straightH.outDir.going_right = true;
+				straightH->outDir.going_right = true;
 			}
-			else if (algTiles.back().outDir.going_left)
+			else if (algTiles.back()->outDir.going_left)
 			{
 				// Position of next tile in list
 				vec3 nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
-				straightH.SetNextCoords(nextPos);
+				straightH->SetNextCoords(nextPos);
 				// Set dir
-				straightH.outDir.going_left = true;
+				straightH->outDir.going_left = true;
 			}
 			// Add to list
 			algTiles.push_back(straightH);
@@ -434,25 +438,25 @@ vector<BaseTile> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 		case 3:
 		{
 			// Create tile
-			CornerTile_BL cornerBL;
+			CornerTile_BL* cornerBL = new CornerTile_BL();
 			// Set pos
-			cornerBL.SetCoords(curCoords);
+			cornerBL->SetCoords(curCoords);
 			// Find next position
-			if (algTiles.back().outDir.going_down)
+			if (algTiles.back()->outDir.going_down)
 			{
 				// Last tile was going down; next tile is going right
 				vec3 nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
-				cornerBL.SetNextCoords(nextPos);
+				cornerBL->SetNextCoords(nextPos);
 				// Set dir
-				cornerBL.outDir.going_right = true;
+				cornerBL->outDir.going_right = true;
 			}
-			else if (algTiles.back().outDir.going_left)
+			else if (algTiles.back()->outDir.going_left)
 			{
 				// Last tile was going left; next tile is going up
 				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
-				cornerBL.SetNextCoords(nextPos);
+				cornerBL->SetNextCoords(nextPos);
 				// Set dir
-				cornerBL.outDir.going_up = true;
+				cornerBL->outDir.going_up = true;
 			}
 			// Add to list
 			algTiles.push_back(cornerBL);
@@ -462,25 +466,25 @@ vector<BaseTile> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 		case 4:
 		{
 			// Create tile
-			CornerTile_BR cornerBR;
+			CornerTile_BR* cornerBR = new CornerTile_BR();
 			// Set pos
-			cornerBR.SetCoords(curCoords);
+			cornerBR->SetCoords(curCoords);
 			// Find next position
-			if (algTiles.back().outDir.going_down)
+			if (algTiles.back()->outDir.going_down)
 			{
 				// Last tile was going down; next tile is going left
 				vec3 nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
-				cornerBR.SetNextCoords(nextPos);
+				cornerBR->SetNextCoords(nextPos);
 				// Set dir
-				cornerBR.outDir.going_left = true;
+				cornerBR->outDir.going_left = true;
 			}
-			else if (algTiles.back().outDir.going_right)
+			else if (algTiles.back()->outDir.going_right)
 			{
 				// Last tile was going right; next tile is going up
 				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
-				cornerBR.SetNextCoords(nextPos);
+				cornerBR->SetNextCoords(nextPos);
 				// Set dir
-				cornerBR.outDir.going_up = true;
+				cornerBR->outDir.going_up = true;
 			}
 			// Add to list
 			algTiles.push_back(cornerBR);
@@ -490,24 +494,24 @@ vector<BaseTile> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 		case 5:
 		{
 			// Create tile
-			CornerTile_TL cornerTL;
-			cornerTL.SetCoords(curCoords);
+			CornerTile_TL* cornerTL = new CornerTile_TL();
+			cornerTL->SetCoords(curCoords);
 			// Find next pos
-			if (algTiles.back().outDir.going_up)
+			if (algTiles.back()->outDir.going_up)
 			{
 				// Last tile was going up; next going right
 				vec3 nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
-				cornerTL.SetNextCoords(nextPos);
+				cornerTL->SetNextCoords(nextPos);
 				// Set dir
-				cornerTL.outDir.going_right = true;
+				cornerTL->outDir.going_right = true;
 			}
-			else if (algTiles.back().outDir.going_left)
+			else if (algTiles.back()->outDir.going_left)
 			{
 				// Last tile was going left; next tile going down
 				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
-				cornerTL.SetNextCoords(nextPos);
+				cornerTL->SetNextCoords(nextPos);
 				// Set dir
-				cornerTL.outDir.going_down = true;
+				cornerTL->outDir.going_down = true;
 			}
 			// Add to list
 			algTiles.push_back(cornerTL);
@@ -517,25 +521,25 @@ vector<BaseTile> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 		case 6:
 		{
 			// Create tile
-			CornerTile_TR cornerTR;
+			CornerTile_TR* cornerTR = new CornerTile_TR();
 			// Set pos
-			cornerTR.SetCoords(curCoords);
+			cornerTR->SetCoords(curCoords);
 			// Find next pos
-			if (algTiles.back().outDir.going_right)
+			if (algTiles.back()->outDir.going_right)
 			{
 				// Last tile going right; next tile going down
 				vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
-				cornerTR.SetNextCoords(nextPos);
+				cornerTR->SetNextCoords(nextPos);
 				// Set dir
-				cornerTR.outDir.going_down = true;
+				cornerTR->outDir.going_down = true;
 			}
-			else if (algTiles.back().outDir.going_up)
+			else if (algTiles.back()->outDir.going_up)
 			{
 				// Last tile going up; next tile going left
 				vec3 nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
-				cornerTR.SetNextCoords(nextPos);
+				cornerTR->SetNextCoords(nextPos);
 				// Set dir
-				cornerTR.outDir.going_left = true;
+				cornerTR->outDir.going_left = true;
 			}
 			// Add to list
 			algTiles.push_back(cornerTR);
@@ -545,12 +549,12 @@ vector<BaseTile> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 		case 7:
 		{
 			// Create tile
-			UpRampDown upRamp;
-			upRamp.SetCoords(curCoords);
+			UpRampDown* upRamp = new UpRampDown();
+			upRamp->SetCoords(curCoords);
 			// Find next pos (always know dir is down when 7 is placed)
 			vec3 nextPos = vec3(curCoords.x, curCoords.y + 3.8, curCoords.z + size); //usually + 3.8
-			upRamp.SetNextCoords(nextPos);
-			upRamp.outDir.going_down = true;
+			upRamp->SetNextCoords(nextPos);
+			upRamp->outDir.going_down = true;
 			algTiles.push_back(upRamp);
 			break;
 		}
@@ -558,22 +562,22 @@ vector<BaseTile> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 		case 8:
 		{
 			// Create tile
-			DownRampDown downRamp;
-			downRamp.SetCoords(curCoords);
-			// Find next pos (always know dir is up with tile 8)
-			vec3 nextPos = vec3(curCoords.x, curCoords.y - 3.8, curCoords.z - size);
-			downRamp.SetNextCoords(nextPos);
-			downRamp.outDir.going_up = true;
-			algTiles.push_back(downRamp);
+			//DownRampDown* downRamp;
+			//downRamp.SetCoords(curCoords);
+			//// Find next pos (always know dir is up with tile 8)
+			//vec3 nextPos = vec3(curCoords.x, curCoords.y - 3.8, curCoords.z - size);
+			//downRamp.SetNextCoords(nextPos);
+			//downRamp.outDir.going_up = true;
+			//algTiles.push_back(downRamp);
 			break;
 		}
 		// End tile
 		case 9:
 		{
 			// Create end tile
-			EndTile end;
-			end.SetCoords(curCoords);
-			end.outDir = algTiles.back().outDir;
+			EndTile* end = new EndTile();
+			end->SetCoords(curCoords);
+			end->outDir = algTiles.back()->outDir;
 			algTiles.push_back(end);
 			break;
 		}

@@ -8,7 +8,14 @@
 // Default constructor
 gameScene::gameScene() { }
 // Deconstructor
-gameScene::~gameScene() { }
+gameScene::~gameScene() 
+{
+	// Delete everything in alg tiles since it was declared on heap
+	for (auto &t : algTiles)
+	{
+		delete(t);
+	}
+}
 
 // Setup scene; seed is an optional param passed in by loadGameScene
 void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
@@ -111,18 +118,18 @@ void gameScene::FillScenery()
 	float yMin = 0;
 	for (auto &t : algTiles)
 	{
-		if (t.thisCoords.x > xMax)
-			xMax = t.thisCoords.x;
-		if (t.thisCoords.x < xMin)
-			xMin = t.thisCoords.x;
+		if (t->thisCoords.x > xMax)
+			xMax = t->thisCoords.x;
+		if (t->thisCoords.x < xMin)
+			xMin = t->thisCoords.x;
 
-		if (t.thisCoords.z > zMax)
-			zMax = t.thisCoords.z;
-		if (t.thisCoords.z < zMin)
-			zMin = t.thisCoords.z;
+		if (t->thisCoords.z > zMax)
+			zMax = t->thisCoords.z;
+		if (t->thisCoords.z < zMin)
+			zMin = t->thisCoords.z;
 
-		if (t.thisCoords.y < yMin)
-			yMin = t.thisCoords.y;
+		if (t->thisCoords.y < yMin)
+			yMin = t->thisCoords.y;
 	}
 	// Add another tile's width to boundaries
 	xMin -= 10; // To add another layer to the boundary, add 10 to each value
@@ -147,7 +154,7 @@ void gameScene::FillScenery()
 			// Contains search; there will only be one match
 			for (int i = 0; i < algTiles.size(); ++i)
 			{
-				if (algTiles.at(i).thisCoords == thisPos)
+				if (algTiles.at(i)->thisCoords == thisPos)
 				{
 					// We have a match
 					posTaken = true;
@@ -180,7 +187,7 @@ void gameScene::SetupTilesToBeDrawn()
 
 		// Ramp testing
 		// Ramp up when dir is down
-		if (t.id == 7)
+		if (t->id == 7)
 		{
 			//hasObstacle = Tile::randomNumber(0, 1);
 			//if (hasObstacle)
@@ -191,7 +198,7 @@ void gameScene::SetupTilesToBeDrawn()
 			//	obstacles.push_back(obstacleID);
 			//}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, 0);
+			Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y += 1.8;
@@ -199,26 +206,26 @@ void gameScene::SetupTilesToBeDrawn()
 			tiles.push_back(tile);
 		}
 		// Ramp down when dir is up
-		if (t.id == 8)
+		if (t->id == 8)
 		{
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, obstacleID);
+			Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y -= 1.8;
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		if (t.id == 0) // Start
+		if (t->id == 0) // Start
 		{
 			// Create start tile
-			Tile tile(Tile::START, t.thisCoords, obstacleID);
+			Tile tile(Tile::START, t->thisCoords, obstacleID);
 			// Start tile needs rotating 180 (should always face down)
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.id == 1) // Straight V
+		else if (t->id == 1) // Straight V
 		{
 			hasObstacle = Tile::randomNumber(0, 1);
 			if (hasObstacle)
@@ -229,11 +236,11 @@ void gameScene::SetupTilesToBeDrawn()
 				obstacles.push_back(obstacleID);
 			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, 0);
+			Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.id == 2) // Straight H
+		else if (t->id == 2) // Straight H
 		{
 			hasObstacle = Tile::randomNumber(0, 1);
 			if (hasObstacle)
@@ -244,64 +251,64 @@ void gameScene::SetupTilesToBeDrawn()
 				obstacles.push_back(obstacleID);
 			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, 0);
+			Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
 			// Straight needs rotating by 90, since it's vertical by default
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.id == 3) // Corner BL
+		else if (t->id == 3) // Corner BL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, obstacleID);
+			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.id == 4) // Corner BR
+		else if (t->id == 4) // Corner BR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, obstacleID);
+			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = 3.14159;
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.id == 5) // Corner TL
+		else if (t->id == 5) // Corner TL
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, obstacleID);
+			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.id == 6) // Corner TR
+		else if (t->id == 6) // Corner TR
 		{
 			// Create corner tile
-			Tile tile(Tile::CORNER, t.thisCoords, obstacleID);
+			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
 			// Corner needs rotating by 90
 			tile.transform.getRot().y = -1.5708;
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
-		else if (t.id == 9) // end
+		else if (t->id == 9) // end
 		{
 			// Create start tile
-			Tile tile(Tile::END, t.thisCoords, obstacleID);
+			Tile tile(Tile::END, t->thisCoords, obstacleID);
 			// Consult direction to determine how much to rotate
-			if (t.outDir.going_up)
+			if (t->outDir.going_up)
 			{
 				tile.transform.getRot().y = 3.14159;
 			}
-			else if (t.outDir.going_down)
+			else if (t->outDir.going_down)
 			{
 				// No rotation needed
 			}
-			else if (t.outDir.going_left)
+			else if (t->outDir.going_left)
 			{
 				tile.transform.getRot().y = -1.5708;
 			}
-			else if (t.outDir.going_right)
+			else if (t->outDir.going_right)
 			{
 				tile.transform.getRot().y = 1.5708;
 			}
@@ -402,7 +409,7 @@ void gameScene::Input(GLFWwindow* window)
 					// ID of each tile makes up seed
 					for (auto &t : algTiles)
 					{
-						saves << t.id;
+						saves << t->id;
 					}
 					saves << endl;
 					cout << "Level saved" << endl;
@@ -458,6 +465,7 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				// glLoadIdentity(); might need this later
 				windowMgr::getInstance()->sceneManager.changeScene(1);
+				break;
 			}
 
 		} // end while paused
@@ -840,11 +848,11 @@ void gameScene::Update(GLFWwindow* window)
 	// Check which tile player is on (do this every n frames, not each tick)
 	for (auto &t : algTiles)
 	{
-		if (t.isPlayerOnTile(player1.transform.getPos()))
+		if (t->isPlayerOnTile(player1.transform.getPos()))
 		{
 			p1CurrentTile = tileTracker;
 		}
-		if (t.isPlayerOnTile(player2.transform.getPos()))
+		if (t->isPlayerOnTile(player2.transform.getPos()))
 		{
 			p2CurrentTile = tileTracker;
 		}
@@ -887,11 +895,10 @@ void gameScene::Update(GLFWwindow* window)
 	double newTime = glfwGetTime();
 	double frameTime = newTime - currentTime;
 	currentTime = newTime;
-	// Calculate fps
-	double fps = 1 / frameTime;
-	
 
 	accumulator += frameTime;
+	// Calculate fps
+	double fps = 1.0 / frameTime;
 	if (accumulator > 1.0f)
 		cout << "FPS:" << fps << endl;
 	// PLAYER 1 UPDATE
@@ -920,12 +927,12 @@ void gameScene::Update(GLFWwindow* window)
 		}*/
 
 		// If on ramp, need to know exact y position to be at at this point on tile
-		if (algTiles.at(p1CurrentTile).id == 7)
+		if (algTiles.at(p1CurrentTile)->id == 7)
 		{
 			// Instantiate in order to call member functions
 			UpRampDown ramp;
 			// Set deets
-			ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
+			ramp.SetCoords(algTiles.at(p1CurrentTile)->GetThisCoords());
 			// Raise it a bit
 			ramp.thisCoords.y += 1.8;
 			// Find floor level at this point on ramp
@@ -953,12 +960,12 @@ void gameScene::Update(GLFWwindow* window)
 			// Ensure correct slowdown/stop margin
 			physicsSystem.epsilon = 0.5f;
 			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(player1, algTiles.at(p1CurrentTile).thisCoords.y + 1.0f); // 1 is floor gap
+			physicsSystem.ApplyGravity(player1, algTiles.at(p1CurrentTile)->thisCoords.y + 1.0f); // 1 is floor gap
 			// Perform physics step	
 			if (accumulator >= dt)
 			{
 				// Update position
-				player1 = physicsSystem.Integrate(player1, dt, algTiles.at(p1CurrentTile).thisCoords.y + 1);
+				player1 = physicsSystem.Integrate(player1, dt, algTiles.at(p1CurrentTile)->thisCoords.y + 1);
 				accumulator -= dt;
 			}
 
@@ -976,7 +983,7 @@ void gameScene::Update(GLFWwindow* window)
 	if (player2.isMoving)
 	{
 		// If on ramp, need to know exact y position to be at at this point on tile
-		if (algTiles.at(p2CurrentTile).id == 7)
+		if (algTiles.at(p2CurrentTile)->id == 7)
 		{
 			// TODO
 		}
@@ -986,12 +993,12 @@ void gameScene::Update(GLFWwindow* window)
 			physicsSystem.epsilon = 0.5f;
 
 			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(player2, algTiles.at(p2CurrentTile).thisCoords.y + 1.0f); // 1 is floor gap
+			physicsSystem.ApplyGravity(player2, algTiles.at(p2CurrentTile)->thisCoords.y + 1.0f); // 1 is floor gap
 			// Perform physics step																			   // Perform physics step	
 			if (accumulator >= dt)
 			{
 				// Update position
-				player2 = physicsSystem.Integrate(player2, dt, algTiles.at(p2CurrentTile).thisCoords.y + 1);
+				player2 = physicsSystem.Integrate(player2, dt, algTiles.at(p2CurrentTile)->thisCoords.y + 1);
 				accumulator -= dt;
 			}
 
@@ -1103,310 +1110,13 @@ void gameScene::Update(GLFWwindow* window)
 	}
 }
 
-// Tracks current tile player is on (TODO improve performance)
+// Tracks current tile player is on 
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-
-
-	// Check collisions for the tile player is on only
-	// TODO - Sort out virtual instantiation issue
-	//algTiles.at(p1CurrentTile).CheckCollisions(player1);
-
-	// Switch on the p1CurrentTile 
-	switch (algTiles.at(p1CurrentTile).id)
-	{
-		// On start tile
-	case 0:
-	{
-		// Need to do this to access start only methods (which includes col check)
-		//onRamp = false;
-		StartTile start;
-		player1 = start.CheckCollisions(player1);
-
-
-		break;
-	}
-	// On straight V tile
-	case 1:
-	{
-		//onRamp = false;
-		StraightTile_V straightV;
-		straightV.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-		// Ensure don't go through floor
-		//player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
-		player1 = straightV.CheckCollisions(player1);
-		// Check if this has obstacles to collide with
-		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
-		{
-			switch (obstacles.at(i + 1))
-			{
-			case 1:
-
-				break;
-			case 2:
-				//	player1.direction = CheckCollisionsObstacle1(straightV.thisCoords, player1.transform.getPos(),
-				//		player1.direction, straightV.displace, straightV.radius);
-				break;
-			default:
-				break;
-			} // end switch
-		} // end for loop
-		break; // this tile break
-	} // end case 1 
-
-	// On straight H tile
-	case 2:
-	{
-		//onRamp = false;
-		StraightTile_H straightH;
-		straightH.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-		player1 = straightH.CheckCollisions(player1);
-		// Are there obstacles on this tile to collide with?
-		for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
-		{
-			switch (obstacles.at(i + 1))
-			{
-			case 1:
-
-				break;
-			case 2:
-				//	player1.direction = CheckCollisionsObstacle1(straightH.thisCoords, player1.transform.getPos(),
-				//		player1.direction, straightH.displace, straightH.radius);
-				break;
-			default:
-				break;
-			} // switch end
-		} // for loop end
-		break;
-	} // this tile case end
-	// On corner_BL tile
-	case 3:
-	{
-		//onRamp = false;
-		CornerTile_BL cornerBL;
-		cornerBL.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-		player1 = cornerBL.CheckCollisions(player1);
-		break;
-	}
-	// On corner_BR tile
-	case 4:
-	{
-		//onRamp = false;
-		CornerTile_BR cornerBR;
-		cornerBR.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-		player1 = cornerBR.CheckCollisions(player1);
-		break;
-	}
-	// On corner_TL tile
-	case 5:
-	{
-		//onRamp = false;
-		CornerTile_TL cornerTL;
-		cornerTL.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-		player1 = cornerTL.CheckCollisions(player1);
-		break;
-	}
-	// On corner_TR tile
-	case 6:
-	{
-		//onRamp = false;
-		CornerTile_TR cornerTR;
-		cornerTR.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-		player1 = cornerTR.CheckCollisions(player1);
-		break;
-	}
-	// Up ramp tile
-	case 7:
-	{
-
-		//// Instantiate in order to call member functions
-		//UpRampDown ramp;
-		//// Set deets
-		//ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-		//// Raise it a bit
-		//ramp.thisCoords.y += 1.8;
-		//// So long as player isn't in the air...	
-		//// Find floor level at this point on ramp
-		//float floorPos = ramp.SetPlayerHeight(player1);
-
-		//// Set player height
-		//player1.transform.getPos().y = floorPos;
-
-
-
-		break;
-	}
-
-	case 8:
-	{
-		break;
-	}
-	// End tile
-	case 9:
-	{
-		//onRamp = false;
-		EndTile end;
-		end.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-		end.outDir = algTiles.at(p1CurrentTile).outDir;
-		player1 = end.CheckCollisions(player1);
-
-		// If user hasnt completed hole then - get
-		if (!hasUserCompletedHole)
-		{
-			// If ball in hole is equal to true - function to courseGenTiles
-			if (end.getBallInHole());
-			{
-				// Update boolean to user having completed the hole
-				hasUserCompletedHole = true;
-				// Update necessary textures
-				windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["holeLbl"]);
-				windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["completeLbl"]);
-				windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["saveGameLbl"]);
-				windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
-			}
-		}
-		break;
-	} // end case 9
-	} // end collisions switch
-
-	// P2 Collisions
-	switch (algTiles.at(p2CurrentTile).id)
-	{
-		// On start tile
-	case 0:
-	{
-		// Need to do this to access start only methods (which includes col check)
-		//onRamp = false;
-		StartTile start;
-		player2 = start.CheckCollisions(player2);
-		break;
-	}
-	// On straight V tile
-	case 1:
-	{
-		//onRamp = false;
-		StraightTile_V straightV;
-		straightV.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
-		// Ensure don't go through floor
-		//player1Transform.setPos(straightV.SetPlayerHeight(player1Transform.getPos()));
-		player2 = straightV.CheckCollisions(player2);
-		// Check if this has obstacles to collide with
-		//for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
-		//{
-		//	switch (obstacles.at(i + 1))
-		//	{
-		//	case 1:
-
-		//		break;
-		//	case 2:
-		//		//	player1.direction = CheckCollisionsObstacle1(straightV.thisCoords, player1.transform.getPos(),
-		//		//		player1.direction, straightV.displace, straightV.radius);
-		//		break;
-		//	default:
-		//		break;
-		//	} // end switch
-		//} // end for loop
-		break; // this tile break
-	} // end case 1 
-	  // On straight H tile
-	case 2:
-	{
-		//onRamp = false;
-		StraightTile_H straightH;
-		straightH.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
-		player2 = straightH.CheckCollisions(player2);
-		// Are there obstacles on this tile to collide with?
-		//for (unsigned int i = 0; i < obstacles.size(); i = i + 2)
-		//{
-		//	switch (obstacles.at(i + 1))
-		//	{
-		//	case 1:
-
-		//		break;
-		//	case 2:
-		//		//	player1.direction = CheckCollisionsObstacle1(straightH.thisCoords, player1.transform.getPos(),
-		//		//		player1.direction, straightH.displace, straightH.radius);
-		//		break;
-		//	default:
-		//		break;
-		//	} // switch end
-		//} // for loop end
-		break;
-	} // this tile case end
-	  // On corner_BL tile
-	case 3:
-	{
-		//onRamp = false;
-		CornerTile_BL cornerBL;
-		cornerBL.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
-		player2 = cornerBL.CheckCollisions(player2);
-		break;
-	}
-	// On corner_BR tile
-	case 4:
-	{
-		//onRamp = false;
-		CornerTile_BR cornerBR;
-		cornerBR.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
-		player2 = cornerBR.CheckCollisions(player2);
-		break;
-	}
-	// On corner_TL tile
-	case 5:
-	{
-		//onRamp = false;
-		CornerTile_TL cornerTL;
-		cornerTL.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
-		player2 = cornerTL.CheckCollisions(player2);
-		break;
-	}
-	// On corner_TR tile
-	case 6:
-	{
-		//onRamp = false;
-		CornerTile_TR cornerTR;
-		cornerTR.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
-		player2 = cornerTR.CheckCollisions(player2);
-		break;
-	}
-	// Up ramp tile
-	case 7:
-	{
-
-		//// Instantiate in order to call member functions
-		//UpRampDown ramp;
-		//// Set deets
-		//ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-		//// Raise it a bit
-		//ramp.thisCoords.y += 1.8;
-		//// So long as player isn't in the air...	
-		//// Find floor level at this point on ramp
-		//float floorPos = ramp.SetPlayerHeight(player1);
-
-		//// Set player height
-		//player1.transform.getPos().y = floorPos;
-
-
-
-		break;
-	}
-
-	case 8:
-	{
-		break;
-	}
-	// End tile
-	case 9:
-	{
-		//onRamp = false;
-		EndTile end;
-		end.SetCoords(algTiles.at(p2CurrentTile).GetThisCoords());
-		end.outDir = algTiles.at(p2CurrentTile).outDir;
-		player2 = end.CheckCollisions(player2);
-		break;
-	} // end case 9
-	} // end collisions switch
+	// Check collisions for the tile each player is on only
+	algTiles.at(p1CurrentTile)->CheckCollisions(player1);
+	algTiles.at(p2CurrentTile)->CheckCollisions(player2);
 
 	// TODO Determine if this can be done more cheapply
 	// If players are on the same tile, check for collisions with each other
@@ -1437,56 +1147,6 @@ void gameScene::Collisions()
 	}
 } // end collisions function
 
-vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, float displace, float radius)
-{
-	// M - here, you're checking for player pos within an x range
-	// Check x axis - left side of cube corner boundary
-	if (playerPos.x > coords.x - (1 + radius) && playerPos.x < coords.x + (1 + radius))
-	{
-		// M - This section should be removed, only one deflection (-dir) should take place for each collision
-		// the above if statement only checks what x range the ball is in - not if it should actually collide
-		// Hit going right, reflect on x
-		dir.x = -dir.x;
-		// Move away from boundary so as not to retrigger this
-		playerPos.x -= displace;
-
-
-
-		//lower boundary of cube
-		// M - change this to read 'if player.z < coords.z + (1 + radius) && dir of travel is towards this boundary
-		//   dir will be up when gbDir.z is negative
-		if (playerPos.z > coords.z - (1 + radius) && playerPos.z < coords.z + (1 + radius))
-		{
-			// Hit going right, reflect on x
-			dir.z = -dir.z;
-			// Move away from boundary so as not to retrigger this
-			playerPos.z -= displace;
-		}
-
-
-		// M -Add another if statement as above, this time checking for upper boundary of cube
-		// player.z > coords.z - (1 + radius) && dir.z is positive
-
-	}
-
-	// M - Repeat above for the following z block (change x with z)
-	if (playerPos.z > coords.z - (1 + radius) && playerPos.z < coords.z + (1 + radius))
-	{
-		// Hit going right, reflect on x
-		dir.x = -dir.x;
-		// Move away from boundary so as not to retrigger this
-		playerPos.x -= displace;
-
-		if (playerPos.x > coords.x - (1 + radius) && playerPos.x < coords.x + (1 + radius))
-		{
-			// Hit going right, reflect on x
-			dir.z = -dir.z;
-			// Move away from boundary so as not to retrigger this
-			playerPos.z -= displace;
-		}
-	}
-	return dir;
-}
 
 // Draw stuff
 void gameScene::Render(GLFWwindow* window)

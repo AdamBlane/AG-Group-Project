@@ -34,9 +34,8 @@ bool BaseTile::isPlayerOnTile(vec3 playerPos)
 	return false;
 }
 
-
 // Collision check for start tile
-Player StartTile::CheckCollisions(Player player)
+void StartTile::CheckCollisions(Player &player)
 {
 	// Check on X axis - boundaries either side
 	if (player.transform.getPos().x > thisCoords.x + (4 - radius))
@@ -62,12 +61,10 @@ Player StartTile::CheckCollisions(Player player)
 		player.velocity.z = -player.velocity.z;
 
 	}
-
-	return player;
 }
 
 // Collision check for straight vertical tile
-Player StraightTile_V::CheckCollisions(Player player)
+void StraightTile_V::CheckCollisions(Player &player)
 {
 	// Check on X axis - boundaries either side
 	if (player.transform.getPos().x > thisCoords.x + (4 - radius))
@@ -85,11 +82,11 @@ Player StraightTile_V::CheckCollisions(Player player)
 		player.velocity.x = -player.velocity.x;
 
 	}
-	return player;
+
 }
 
 // Collision check for straight horizontal tile
-Player StraightTile_H::CheckCollisions(Player player)
+void StraightTile_H::CheckCollisions(Player &player)
 {
 	// Check on X axis - boundaries either side
 	if (player.transform.getPos().z > thisCoords.z + (4 - radius))
@@ -109,11 +106,10 @@ Player StraightTile_H::CheckCollisions(Player player)
 		player.velocity.z = -player.velocity.z;
 	}
 
-	return player;
 }
 
 // Collision check for bottom left corner tile
-Player CornerTile_BL::CheckCollisions(Player player)
+void CornerTile_BL::CheckCollisions(Player &player)
 {
 	// Check on X axis - left boundary
 	if (player.transform.getPos().x < thisCoords.x - (4 - radius))
@@ -152,11 +148,10 @@ Player CornerTile_BL::CheckCollisions(Player player)
 		player.velocity.z = -player.velocity.z;
 	}
 
-	return player;
 }
 
 // Collision check for bottom right corner tile
-Player CornerTile_BR::CheckCollisions(Player player)
+void CornerTile_BR::CheckCollisions(Player &player)
 {
 	// Axis seems odd since tile has been rotated
 	// Check on X axis - left boundary
@@ -195,11 +190,11 @@ Player CornerTile_BR::CheckCollisions(Player player)
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
 	}
-	return player;
+
 }
 
 // Collision check for top left corner tile
-Player CornerTile_TL::CheckCollisions(Player player)
+void CornerTile_TL::CheckCollisions(Player &player)
 {
 	// Axis seems odd since tile has been rotated
 	// Check on X axis - left boundary
@@ -238,11 +233,11 @@ Player CornerTile_TL::CheckCollisions(Player player)
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
 	}
-	return player;
+
 }
 
 // Collision check for top right corner tile
-Player CornerTile_TR::CheckCollisions(Player player)
+void CornerTile_TR::CheckCollisions(Player &player)
 {
 	// Axis seems odd since tile has been rotated
 	// Check on X axis - right boundary
@@ -281,7 +276,7 @@ Player CornerTile_TR::CheckCollisions(Player player)
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
 	}
-	return player;
+
 }
 
 // Ramp - set y position of player on ramp accordingly
@@ -319,7 +314,7 @@ float DownRampDown::SetPlayerHeight(Player player)
 	return y + 1; // was return player
 }
 // Collisions check for end tile
-Player EndTile::CheckCollisions(Player player)
+void EndTile::CheckCollisions(Player &player)
 {
 	// Based on velocity
 	if (outDir.going_up)
@@ -437,5 +432,5 @@ Player EndTile::CheckCollisions(Player player)
 			ballInHole = true;
 		}
 	}
-	return player;
+
 }

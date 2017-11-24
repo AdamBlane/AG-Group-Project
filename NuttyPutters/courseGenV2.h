@@ -19,9 +19,9 @@ public:
 	// Position of current tile yet to be placed
 	vec3 curTileCoords;
 	// Holds all game tiles added to course
-	vector<BaseTile> gameTiles;
+	vector<BaseTile*> gameTiles;
 	// Holds all potential tiles for next tile placement
-	vector<BaseTile> potentialTiles;
+	vector<BaseTile*> potentialTiles;
 	// Sense of direction
 	Direction dir;
 
@@ -30,7 +30,7 @@ public:
 	~courseGenV2() {};
 
 	// Course generation algorithm functions
-	vector<BaseTile> run();
+	vector<BaseTile*> run();
 	void PlaceTile();
 	void CheckStraights();
 	void CheckCorners();
@@ -40,7 +40,7 @@ public:
 	// Load game seed 
 	vector<int> SetupSeed(string seed);
 	// Setup Alg tiles
-	vector<BaseTile> SetupAlgTiles(vector<int> levelSeed);
+	vector<BaseTile*> SetupAlgTiles(vector<int> levelSeed);
 };
 
 
