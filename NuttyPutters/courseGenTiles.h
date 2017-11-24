@@ -59,7 +59,7 @@ public:
 	bool isPlayerOnTile(vec3 playerPos);
 
 	// Perform collisions checks
-	//virtual Player CheckCollisions(Player player) = 0;
+	virtual void CheckCollisions(Player &player) = 0;
 };
 
 // Start Tile type, inherits from Tileb
@@ -78,7 +78,7 @@ public:
 
 
 	// Checks whether player has hit boundaries of this tile
-	Player CheckCollisions(Player player);
+	virtual void CheckCollisions(Player &player);
 	
 };
 
@@ -90,7 +90,7 @@ public:
 	~StraightTile_V() {};
 
 	// Checks whether player has hit boundaries of this tile
-	Player CheckCollisions(Player player);
+	virtual void CheckCollisions(Player &player);
 	
 };
 // Straight horizontal tile
@@ -101,7 +101,7 @@ public:
 	~StraightTile_H() {};
 
 	// Checks whether player has hit boundaries of this tile
-	Player CheckCollisions(Player player);
+	virtual void CheckCollisions(Player &player);
 
 };
 
@@ -113,7 +113,7 @@ public:
 	~CornerTile_BL() {};
 
 	// Checks whether player has hit boundaries of this tile
-	Player CheckCollisions(Player player);
+	virtual void CheckCollisions(Player &player);
 	
 };
 
@@ -125,7 +125,7 @@ public:
 	~CornerTile_BR() {};
 
 	// Checks whether player has hit boundaries of this tile
-	virtual Player CheckCollisions(Player player);
+	virtual void CheckCollisions(Player &player);
 	
 };
 
@@ -137,7 +137,7 @@ public:
 	~CornerTile_TL() {};
 
 	// Checks whether player has hit boundaries of this tile
-	Player CheckCollisions(Player player);
+	virtual void CheckCollisions(Player &player);
 	
 };
 
@@ -149,7 +149,7 @@ public:
 	~CornerTile_TR() {};
 
 	// Checks whether player has hit boundaries of this tile
-	Player CheckCollisions(Player player);
+	virtual void CheckCollisions(Player &player);
 	
 };
 
@@ -163,7 +163,7 @@ public:
 	// Sets player height based on where it is on ramp
 	float SetPlayerHeight(Player player);
 
-	virtual Player CheckCollisions(Player player) { return player; }
+	virtual void CheckCollisions(Player &player) {}
 
 };
 
@@ -177,7 +177,7 @@ public:
 	// Sets player height based on where it is on ramp
 	float SetPlayerHeight(Player player);
 
-	Player CheckCollisions(Player player) { return player; }
+	virtual void CheckCollisions(Player &player) {}
 };
 
 // Bridge tile
@@ -187,7 +187,7 @@ public:
 	Bridge_V() { id = 10; }
 	~Bridge_V() {};
 
-	Player CheckCollisions(Player player) { return player; }
+	virtual void CheckCollisions(Player &player) {}
 };
 
 // End tile
@@ -203,6 +203,6 @@ public:
 	inline bool getBallInHole() { return ballInHole; }
 
 	// Checks whether player has hit boundaries of this tile
-	Player CheckCollisions(Player player);
+	virtual void CheckCollisions(Player &player);
 	
 };

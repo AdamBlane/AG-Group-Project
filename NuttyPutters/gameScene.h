@@ -46,7 +46,7 @@ public:
 	Mesh* sky;
 	
 	// General game variables
-	vector<BaseTile> algTiles; // Game tiles list; these tiles have position data (by M)
+	vector<BaseTile*> algTiles; // Game tiles list; these tiles have position data (by M)
 	vector<Tile> tiles; // Tile meshes to be rendered, created by V
 	vector<Tile> sceneryTiles; // sceneryTiles to be rendered
 	vector<int> levelSeed; // This course seed; each tile has an int id
@@ -112,6 +112,5 @@ public:
 	void Input(GLFWwindow* window);
 	void Update(GLFWwindow* window);
 	void Collisions();
-	vec3 CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, float displace, float radius);
 	void Render(GLFWwindow* window);
 };
