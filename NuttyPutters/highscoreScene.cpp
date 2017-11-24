@@ -334,63 +334,46 @@ void highscoreScene::Input(GLFWwindow* win)
 					// If there is an empty function then
 					if (isFunctionEmpty)
 					{
-						// Loop through all the different functions
-						for (int functionNumber = 0; functionNumber < 10; functionNumber++)
+						// Find the index of the gameFunction which has a value of 99
+						indexAt99 = std::distance(windowMgr::getInstance()->gameFunctions, std::find(windowMgr::getInstance()->gameFunctions, windowMgr::getInstance()->gameFunctions + 10, 99));
+						// Find the index of the game function whih is assigned to the button that has just been pressed
+						indexAtButton = std::distance(windowMgr::getInstance()->gameFunctions, std::find(windowMgr::getInstance()->gameFunctions, windowMgr::getInstance()->gameFunctions + 10, buttonNumber));
+						// Check if button just pressed has a function assigned to it
+						if (buttonNumber == windowMgr::getInstance()->gameFunctions[indexAtButton])
 						{
-							// Find the empty function which will be equal to 99
-							if (windowMgr::getInstance()->gameFunctions[functionNumber] == 99)
-							{
-								// Loop through all the functions once more
-								for (int functionNumber = 0; functionNumber < 10; functionNumber++)
-								{
-									// Check if button just pressed has a function assigned to it
-									if (buttonNumber == windowMgr::getInstance()->gameFunctions[functionNumber])
-									{
-										// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-										windowMgr::getInstance()->meshes.at(4 + (functionNumber * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-										windowMgr::getInstance()->gameFunctions[functionNumber] = 99;
-										// Break out of the for loop
-										break;
-									}
-								}
+							// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+							windowMgr::getInstance()->meshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+							windowMgr::getInstance()->gameFunctions[indexAtButton] = 99;
+						}
 
-								// Make the original empty function equal to the button
-								windowMgr::getInstance()->gameFunctions[functionNumber] = buttonNumber;
-								windowMgr::getInstance()->meshes.at(4 + (functionNumber * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[buttonNumber]);
+						// Make the original empty function equal to the button
+						windowMgr::getInstance()->gameFunctions[indexAt99] = buttonNumber;
+						windowMgr::getInstance()->meshes.at(4 + (indexAt99 * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[buttonNumber]);
 
-								// Check if a function is equal to 99
-								if (windowMgr::getInstance()->gameFunctions[0] == 99 || windowMgr::getInstance()->gameFunctions[1] == 99 || windowMgr::getInstance()->gameFunctions[2] == 99 ||
-									windowMgr::getInstance()->gameFunctions[3] == 99 || windowMgr::getInstance()->gameFunctions[4] == 99 || windowMgr::getInstance()->gameFunctions[5] == 99 ||
-									windowMgr::getInstance()->gameFunctions[6] == 99 || windowMgr::getInstance()->gameFunctions[7] == 99 || windowMgr::getInstance()->gameFunctions[8] == 99 ||
-									windowMgr::getInstance()->gameFunctions[9] == 99)
-								{
-									isFunctionEmpty = true; // Set bool to true if a function is empty
-								}
-								else
-								{
-									isFunctionEmpty = false; // Set bool to false if no function is empty
-								}
-								// Break out the for loop
-								break;
-							}
+						// Check if a function is equal to 99
+						if (windowMgr::getInstance()->gameFunctions[0] == 99 || windowMgr::getInstance()->gameFunctions[1] == 99 || windowMgr::getInstance()->gameFunctions[2] == 99 ||
+							windowMgr::getInstance()->gameFunctions[3] == 99 || windowMgr::getInstance()->gameFunctions[4] == 99 || windowMgr::getInstance()->gameFunctions[5] == 99 ||
+							windowMgr::getInstance()->gameFunctions[6] == 99 || windowMgr::getInstance()->gameFunctions[7] == 99 || windowMgr::getInstance()->gameFunctions[8] == 99 ||
+							windowMgr::getInstance()->gameFunctions[9] == 99)
+						{
+							isFunctionEmpty = true; // Set bool to true if a function is empty
+						}
+						else
+						{
+							isFunctionEmpty = false; // Set bool to false if no function is empty
 						}
 					}
 					else
 					{
-						// Loop through all the entries in the buttonVlaues map - j functions
-						for (int functionNumber = 0; functionNumber < 10; functionNumber++)
+						indexAtButton = std::distance(windowMgr::getInstance()->gameFunctions, std::find(windowMgr::getInstance()->gameFunctions, windowMgr::getInstance()->gameFunctions + 10, buttonNumber));
+						// If function is assigned to a button then
+						if (windowMgr::getInstance()->gameFunctions[indexAtButton] == buttonNumber)
 						{
-							// If function is assigned to a button then
-							if (windowMgr::getInstance()->gameFunctions[functionNumber] == buttonNumber)
-							{
-								// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-								windowMgr::getInstance()->meshes.at(4 + (functionNumber * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-								windowMgr::getInstance()->gameFunctions[functionNumber] = 99;
-								// Set is Function Empty to true
-								isFunctionEmpty = true;
-								// Break out of for loop
-								break;
-							}
+							// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+							windowMgr::getInstance()->meshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+							windowMgr::getInstance()->gameFunctions[indexAtButton] = 99;
+							// Set is Function Empty to true
+							isFunctionEmpty = true;
 						}
 					}
 					// Reset button pressed
@@ -433,8 +416,10 @@ void highscoreScene::Input(GLFWwindow* win)
 						windowMgr::getInstance()->meshes.at(4 + (indexAt99 * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[buttonNumber]);
 
 						// Check if a function is equal to 99
-						///// THIS FUNCTION IS THE ERROR
-						if (!find(windowMgr::getInstance()->gameFunctions, windowMgr::getInstance()->gameFunctions + 10, 99))
+						if (windowMgr::getInstance()->gameFunctions[0] == 99 || windowMgr::getInstance()->gameFunctions[1] == 99 || windowMgr::getInstance()->gameFunctions[2] == 99 ||
+							windowMgr::getInstance()->gameFunctions[3] == 99 || windowMgr::getInstance()->gameFunctions[4] == 99 || windowMgr::getInstance()->gameFunctions[5] == 99 ||
+							windowMgr::getInstance()->gameFunctions[6] == 99 || windowMgr::getInstance()->gameFunctions[7] == 99 || windowMgr::getInstance()->gameFunctions[8] == 99 ||
+							windowMgr::getInstance()->gameFunctions[9] == 99)
 						{
 							isFunctionEmpty = true; // Set bool to true if a function is empty
 						}
@@ -446,11 +431,15 @@ void highscoreScene::Input(GLFWwindow* win)
 					else
 					{
 						indexAtButton = std::distance(windowMgr::getInstance()->gameFunctions, std::find(windowMgr::getInstance()->gameFunctions, windowMgr::getInstance()->gameFunctions + 10, buttonNumber));
-						// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-						windowMgr::getInstance()->meshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-						windowMgr::getInstance()->gameFunctions[indexAtButton] = 99;
-						// Set is Function Empty to true
-						isFunctionEmpty = true;
+						// If function is assigned to a button then
+						if (windowMgr::getInstance()->gameFunctions[indexAtButton] == buttonNumber)
+						{
+							// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+							windowMgr::getInstance()->meshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+							windowMgr::getInstance()->gameFunctions[indexAtButton] = 99;
+							// Set is Function Empty to true
+							isFunctionEmpty = true;
+						}
 					}
 
 					// Reset button pressed
