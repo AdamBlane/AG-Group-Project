@@ -64,7 +64,6 @@ GLFWwindow* windowMgr::Init()
 		std::cout << "Glew failed to initialise!" << std::endl;
 	}
 
-
 	// ############################ AUDIO ############################
 	// Init fmod system
 	FMOD::System_Create(&system);
@@ -101,13 +100,14 @@ GLFWwindow* windowMgr::Init()
 	p1ChaseCam = new chase_camera();
 	p1ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p1ChaseCam->set_springiness(0.2f);
-	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width /2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width  / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	chaseCams.push_back(p1ChaseCam);
 	// p2 chase cam
 	p2ChaseCam = new chase_camera();
 	p2ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p2ChaseCam->set_springiness(0.2f);
 	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width /2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
-
+	chaseCams.push_back(p2ChaseCam);
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
 	for (int i = 0; i < 20; ++i)

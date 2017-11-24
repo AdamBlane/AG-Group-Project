@@ -9,7 +9,6 @@
 #include "sceneMgr.h"
 
 
-
 class windowMgr
 {
 	private:
@@ -52,6 +51,7 @@ class windowMgr
 		free_camera* freeCam;
 		chase_camera* p1ChaseCam;
 		chase_camera* p2ChaseCam;
+		vector<chase_camera*> chaseCams;
 		// Shaders
 		Shader* textureShader;
 		Shader* skyboxShader;

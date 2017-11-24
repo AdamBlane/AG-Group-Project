@@ -432,7 +432,7 @@ void loadGameScene::Input(GLFWwindow* win)
 		{
 			enterPressed = false; // Suspect this is unnecessary
 			// Current seed is index of seeds list, send as optional param
-			windowMgr::getInstance()->sceneManager.changeScene(6, 12, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)		
+			windowMgr::getInstance()->sceneManager.changeScene(6, 12, playerCount, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)		
 		}
 	}
 	

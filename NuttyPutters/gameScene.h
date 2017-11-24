@@ -41,17 +41,22 @@ public:
 
 	//Player player1, player2;
 	vector<Player> players;
+	int numPlayers = 1;
+	// Handles UI logic
 	UI uiMgr;
+	// Handles physics logic
 	Physics physicsSystem;
-	//Trying Skybox
+
+
+	// Points to skybox mesh
 	Mesh* sky;
 	
 	// General game variables
+	int courseSize; // Total number of tiles this level
 	vector<BaseTile*> algTiles; // Game tiles list; these tiles have position data (by M)
 	vector<Tile> tiles; // Tile meshes to be rendered, created by V
 	vector<Tile> sceneryTiles; // sceneryTiles to be rendered
 	vector<int> levelSeed; // This course seed; each tile has an int id
-	int courseSize; // Total number of tiles this level
 	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
 
 	// Gameplay variables
@@ -89,7 +94,8 @@ public:
 
 	// Camera variables
 	float camSpeed = 2.0f; 
-	float chaseCamAngle, p2ChaseCamAngle, cameraType = 1; // for switching between free/chase cam (default)
+	float  cameraType = 1;
+	// TODO - replace these for player members - float chaseCamAngle, p2ChaseCamAngle, // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)
 	double cursor_x, cursor_y = 0.0; 
 	vec3 pauseCamPos, pauseCamTarget;
@@ -99,7 +105,7 @@ public:
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)
-	void Init(GLFWwindow* window, int courseLength, string seed = "seed"); 
+	void Init(GLFWwindow* window, int courseLength, int playerCount, string seed = "seed"); 
 	// Loads level of given size; random if no optional seed given
 	void LoadGame(string seed);
 	// Fills space around level with scenery tiles

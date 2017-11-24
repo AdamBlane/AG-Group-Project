@@ -15,7 +15,7 @@ sceneMgr::sceneMgr()
 sceneMgr::~sceneMgr() { }
 
 // Update game state to new scene, initialise the new scene
-void sceneMgr::changeScene(unsigned int newScene, int courseLength, string seed)
+void sceneMgr::changeScene(unsigned int newScene, int courseLength, int playerCount, string seed)
 {
 	// Change current scene tracker to new scene
 	curScene = newScene;
@@ -55,7 +55,7 @@ void sceneMgr::changeScene(unsigned int newScene, int courseLength, string seed)
 	case 6:
 		// This can take 2 optional params - course size, seed string
 		gameScene.~gameScene();
-		gameScene.Init(windowMgr::getInstance()->win, courseLength, seed);
+		gameScene.Init(windowMgr::getInstance()->win, courseLength, playerCount, seed);
 		break;
 	}
 

@@ -313,6 +313,7 @@ float DownRampDown::SetPlayerHeight(Player player)
 	// this is the alternate; forcibly pushing the player upwards to appear level
 	return y + 1; // was return player
 }
+
 // Collisions check for end tile
 void EndTile::CheckCollisions(Player &player)
 {

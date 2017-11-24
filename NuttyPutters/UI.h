@@ -34,7 +34,7 @@ public:
 	string temp;
 	string minutesAsString, tenthsAsString, secondsAsString, timeCombined;
 	int timeRemainingInSeconds = 0, timeRemainingInTenths = 0, timeRemainingInMinutes = 0;
-	Player player;
+	//Player player; need this?
 
 	bool updateStrokeMesh(int strokeCounter); // Method which updates the users stroke counter
 	bool updateTimer(int timeSinceContinueWasPressed, int timeToThisMethod, int holeTimer);
