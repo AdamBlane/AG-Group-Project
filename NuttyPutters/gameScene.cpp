@@ -188,6 +188,15 @@ void gameScene::SetupTilesToBeDrawn()
 {
 	int index = 0;
 
+	// ***************** V - TODO
+	// A map could be better? map<index, obstacleID> ?	--> no odd loops or switches needed afterwards
+	// how to pass a different information to the algTiles? --> having a property bool/int for obstacle?
+	// Should obstacle collisions be in courseGenTiles, where all collision happen?
+	// if in gameScene --> gather current tile, check if has obstacle (using a map?)
+	// if in courseGenTiles --> no current tile to gather (possibly?), just check if has obstacle (map or different way?)
+	// mix of two solutions --> separate method for obstacles in courseGenTiles, called then for the current tile in gameScene (?)
+	// *****************
+
 	// TILE CREATION
 	for (auto &t : algTiles)
 	{
