@@ -16,4 +16,5 @@ public:
 	bool ballInHole = false;
 	// Action variables
 	bool firePressed = false;
+	bool jumpPressed = false;
 };

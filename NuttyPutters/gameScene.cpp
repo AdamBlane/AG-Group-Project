@@ -21,7 +21,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	// Get initial cursor pos
 	glfwSetCursorPos(window, cursor_x, cursor_y);
-
+	// Scene background
+	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
@@ -59,7 +60,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	player1.arrowTransform.getScale() = vec3(0.5);
 	player1.arrowTransform.getPos() = vec3(player1.transform.getPos().x, player1.transform.getPos().y - 1.6, player1.transform.getPos().z);
 
-	// P2 RENDER TEST
+	// P2 
 	player2.transform.getScale() = vec3(0.5);
 	player2.transform.getPos() = vec3(3.0f, 1.0f, 0.0f);
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
@@ -576,20 +577,17 @@ void gameScene::SetupTilesToBeDrawn()
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
-	// Scene background
-	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
+	// Clear buffer bits (should this be done here?)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Input
 	Input(window);
-
 
 	// Update
 	Update(window);
 
 	// Collisions
 	Collisions();
-
 
 	// Render
 	Render(window);
@@ -601,18 +599,33 @@ void gameScene::Input(GLFWwindow* window)
 	// P1 Jump
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL))
 	{
-		player1 = physicsSystem.Jump(player1, 1.0f);
-		player1.isMoving = true;
+		player1.jumpPressed = true;
 	}
+	if (!glfwGetKey(window, GLFW_KEY_LEFT_CONTROL))
+	{
+		if (player1.jumpPressed)
+		{
+			player1 = physicsSystem.Jump(player1, 5.0f);
+			player1.isMoving = true;
 
+			player1.jumpPressed = false;
+		}
+	}
 	// P2 Jump
 	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT))
 	{
-		player2 = physicsSystem.Jump(player2, 1.0f);
-		player2.isMoving = true;
+		player2.jumpPressed = true;
 	}
+	if (!glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT))
+	{
+		if (player2.jumpPressed)
+		{
+			player2 = physicsSystem.Jump(player2, 5.0f);
+			player2.isMoving = true;
 
-
+			player2.jumpPressed = false;
+		}
+	}
 	// Pause
 	if (glfwGetKey(window, GLFW_KEY_P))
 	{
@@ -1138,10 +1151,11 @@ void gameScene::Update(GLFWwindow* window)
 	currentTime = newTime;
 	// Calculate fps
 	double fps = 1 / frameTime;
-	//cout << "FPS:" << fps << endl;
+	
 
 	accumulator += frameTime;
-
+	if (accumulator > 1.0f)
+		cout << "FPS:" << fps << endl;
 	// PLAYER 1 UPDATE
 	if (player1.isMoving)
 	{
