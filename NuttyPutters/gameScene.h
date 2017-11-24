@@ -39,7 +39,8 @@ public:
 	// Deconstructor
 	~gameScene();
 
-	Player player1, player2;
+	//Player player1, player2;
+	vector<Player> players;
 	UI uiMgr;
 	Physics physicsSystem;
 	//Trying Skybox
@@ -74,9 +75,7 @@ public:
 	int playerOneShots = 0; // The amount of shots users one has taken
 	int playerTwoShots = 0; // The amount of shots uer two has taken
 
-	// Spatial (tile!) partitioning - tracks which tile player is currently on		
-	int p1CurrentTile = 0; 
-	int p2CurrentTile = 0;
+
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
 	double accumulator = 0.0;
