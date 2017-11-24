@@ -40,8 +40,12 @@ public:
 	void Input(GLFWwindow* win);
 
 	void Init(GLFWwindow* win);
+
+	void Track_Mouse(GLFWwindow* win);
 	// Update
 	void Update(GLFWwindow* window);
 	// Render
 	void Render(GLFWwindow* window);
+	//for action keys
+	void Action(GLFWwindow* window);
 };

@@ -8,6 +8,22 @@ highscoreScene::highscoreScene() { }
 // Deconstructor
 highscoreScene::~highscoreScene() { }
 
+void highscoreScene::Track_Mouse(GLFWwindow *window)
+{
+	glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+
+	if ((windowMgr::getInstance()->mouse_x >= 1039 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1429 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 711 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 839 * windowMgr::getInstance()->windowScale))
+	{
+		//highlights the back button
+		windowMgr::getInstance()->button_manager = 1;
+	}
+	else
+	{
+		//highlights nothing
+		windowMgr::getInstance()->button_manager = 0;
+	}
+}
 
 void highscoreScene::Init(GLFWwindow * win)
 {
@@ -19,6 +35,8 @@ void highscoreScene::Init(GLFWwindow * win)
 	tarCam->set_Posistion(vec3(0, 0, 5.0f));
 	tarCam->set_Target(vec3(0, 0, 0));
 	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+
+	windowMgr::getInstance()->button_manager = 0;
 
 	cout << "Textures before all: " << windowMgr::getInstance()->textures.size() << endl;
 	// Background image will never change so setup here
@@ -45,53 +63,106 @@ void highscoreScene::Loop(GLFWwindow * win)
 
 	// Update
 	Update(win);
-
+	//track mouse 
+	Track_Mouse(win);
 	// Render
 	Render(win);
 }
+void highscoreScene::Action(GLFWwindow* win)
+{
+	if (windowMgr::getInstance()->button_manager == 1)
+	{
+		windowMgr::getInstance()->sceneManager.changeScene(1);
 
+	}
+}
 
 void highscoreScene::Input(GLFWwindow* win)
 {
-	switch (button_manager)
+	switch (windowMgr::getInstance()->button_manager)
 	{
+		case 0:
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+			break;
 		case 1:
 			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["backBtnSelected"]);
 			break;
 	}
-	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
+	if (glfwGetKey(win, GLFW_KEY_ENTER))
 	{
-		total_time = 0.0f;
-		if (button_manager == 1)
+		windowMgr::getInstance()->enterPressed = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
+	{
+		if (windowMgr::getInstance()->enterPressed)
 		{
-			windowMgr::getInstance()->sceneManager.changeScene(1);
+			Action(win);
+			windowMgr::getInstance()->enterPressed = false;
 		}
 	}
-	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 5.0f)
+	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) && total_time >= 5.0f)
 	{
-		total_time = 0.0f;
-		if (button_manager == 1)
+		windowMgr::getInstance()->mouseLpressed = true;
+	}
+	if (!glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+	{
+		if (windowMgr::getInstance()->mouseLpressed)
 		{
-			button_manager = 1;
-		}
-		else
-		{
-			button_manager--;
+			Action(win);
+			windowMgr::getInstance()->mouseLpressed = false;
 		}
 	}
-	if (glfwGetKey(win, GLFW_KEY_DOWN) && total_time >= 5.0f)
+	if (glfwGetKey(win, GLFW_KEY_UP))
 	{
-		total_time = 0.0f;
-		if (button_manager == 1)
+		windowMgr::getInstance()->upPressed = true;
+	}
+
+	if (!glfwGetKey(win, GLFW_KEY_UP))
+	{
+		if (windowMgr::getInstance()->upPressed)
 		{
-			button_manager = 1;
-		}
-		else
-		{
-			button_manager++;
+			total_time = 0.0f;
+			if (windowMgr::getInstance()->button_manager == 1)
+			{
+				windowMgr::getInstance()->button_manager = 1;
+			}
+			else
+			{
+				windowMgr::getInstance()->button_manager--;
+			}
+			windowMgr::getInstance()->upPressed = false;
 		}
 	}
-	total_time += 1.0f;
+	if (glfwGetKey(win, GLFW_KEY_DOWN))
+	{
+		windowMgr::getInstance()->downPressed = true;
+	}
+
+	if (!glfwGetKey(win, GLFW_KEY_DOWN))
+	{
+		if (windowMgr::getInstance()->downPressed)
+		{
+			if (windowMgr::getInstance()->button_manager == 1)
+			{
+				windowMgr::getInstance()->button_manager = 1;
+			}
+			else if (windowMgr::getInstance()->button_manager == 0)
+			{
+				windowMgr::getInstance()->button_manager = 1;
+			}
+			else
+			{
+				windowMgr::getInstance()->button_manager++;
+			}
+
+			windowMgr::getInstance()->downPressed = false;
+		}
+	}
+
+	while (total_time <= 5.0f)
+	{
+		total_time += 1.0f;
+	}
 }
 
 void highscoreScene::Update(GLFWwindow* win)

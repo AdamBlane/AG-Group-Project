@@ -11,8 +11,6 @@ loadGameScene::~loadGameScene() { }
 // Setup scene; display choice saved games
 void loadGameScene::Init(GLFWwindow* win)
 {
-	// Set initial button press bools to false
-	upPressed = downPressed = leftPressed = rightPressed = enterPressed = mouseLpressed = false;
 	// Set initial values for navigation variables
 	lastImageSelected = currentImageSelected = savesImagesIndex = enterCooldown =  0;
 	// Set initial current page value
@@ -177,11 +175,11 @@ void loadGameScene::Input(GLFWwindow* win)
 	// TESTING MOUSE
 	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
 	{
-		mouseLpressed = true;
+		windowMgr::getInstance()->mouseLpressed = true;
 	}
 	if (!glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
 	{
-		if (mouseLpressed)
+		if (windowMgr::getInstance()->mouseLpressed)
 		{
 			// Where is the mouse? 
 			double xPos, yPos;
@@ -190,10 +188,10 @@ void loadGameScene::Input(GLFWwindow* win)
 			// If mouse pos falls within button area...
 			// Using hardcoded values since we can't match up coord systems (meshes origin is window centre measured in floats, cursor pos origin it top left measured in pixels)
 			// Left column
-			if (xPos > 214 * windowMgr::getInstance()->width / 1600.0 && xPos < 604)
+			if (xPos > 214 * windowMgr::getInstance()->windowScale && xPos < 604 * windowMgr::getInstance()->windowScale)
 			{
 				// Top image mesh
-				if (yPos > 59 && yPos < 276)
+				if (yPos > 59 * windowMgr::getInstance()->windowScale&& yPos < 276 * windowMgr::getInstance()->windowScale)
 				{
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 0;
@@ -203,7 +201,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					ResizeCurLastSelected();
 				}
 				// Middle 
-				else if (yPos > 275 * windowMgr::getInstance()->width / 1600.0 && yPos < 492)
+				else if (yPos > 275 * windowMgr::getInstance()->windowScale&& yPos < 492 * windowMgr::getInstance()->windowScale)
 				{
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 1;
@@ -213,7 +211,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					ResizeCurLastSelected();
 				}
 				// Bottom
-				else if (yPos > 491 * windowMgr::getInstance()->width / 1600.0  && yPos < 709)
+				else if (yPos > 491 * windowMgr::getInstance()->windowScale  && yPos < 709 * windowMgr::getInstance()->windowScale)
 				{
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 2;
@@ -224,10 +222,10 @@ void loadGameScene::Input(GLFWwindow* win)
 				}
 			} // end for loop first column
 			// Middle column
-			else if (xPos > 604 * windowMgr::getInstance()->width / 1600.0 && xPos < 996)
+			else if (xPos > 604 * windowMgr::getInstance()->windowScale && xPos < 996 * windowMgr::getInstance()->windowScale)
 			{
 				// Top image mesh
-				if (yPos > 59 && yPos < 276)
+				if (yPos > 59 * windowMgr::getInstance()->windowScale && yPos < 276 * windowMgr::getInstance()->windowScale)
 				{
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 3;
@@ -237,7 +235,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					ResizeCurLastSelected();
 				}
 				// Middle 
-				else if (yPos > 275 * windowMgr::getInstance()->width / 1600.0 && yPos < 492)
+				else if (yPos > 275 * windowMgr::getInstance()->windowScale && yPos < 492 * windowMgr::getInstance()->windowScale)
 				{
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 4;
@@ -247,7 +245,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					ResizeCurLastSelected();
 				}
 				// Bottom
-				else if (yPos > 491 * windowMgr::getInstance()->width / 1600.0  && yPos < 709)
+				else if (yPos > 491 * windowMgr::getInstance()->windowScale && yPos < 709 * windowMgr::getInstance()->windowScale)
 				{
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 5;
@@ -258,10 +256,10 @@ void loadGameScene::Input(GLFWwindow* win)
 				}
 			} // end for loop middle column
 			  // Right column
-			else if (xPos > 995 * windowMgr::getInstance()->width / 1600.0 && xPos < 1385)
+			else if (xPos > 995 * windowMgr::getInstance()->windowScale && xPos < 1385 * windowMgr::getInstance()->windowScale)
 			{
 				// Top image mesh
-				if (yPos > 59 && yPos < 276)
+				if (yPos > 59 * windowMgr::getInstance()->windowScale && yPos < 276 * windowMgr::getInstance()->windowScale)
 				{
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 6;
@@ -271,7 +269,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					ResizeCurLastSelected();
 				}
 				// Middle 
-				else if (yPos > 275 * windowMgr::getInstance()->width / 1600.0 && yPos < 492)
+				else if (yPos > 275 * windowMgr::getInstance()->windowScale && yPos < 492 * windowMgr::getInstance()->windowScale)
 				{
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 7;
@@ -281,7 +279,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					ResizeCurLastSelected();
 				}
 				// Bottom
-				else if (yPos > 491 * windowMgr::getInstance()->width / 1600.0  && yPos < 709)
+				else if (yPos > 491 * windowMgr::getInstance()->windowScale  && yPos < 709 * windowMgr::getInstance()->windowScale)
 				{
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 8;
@@ -291,7 +289,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					ResizeCurLastSelected();
 				}
 			} // end for loop right column
-			mouseLpressed = false;
+			windowMgr::getInstance()->mouseLpressed = false;
 		}
 
 	}
@@ -307,12 +305,12 @@ void loadGameScene::Input(GLFWwindow* win)
 	// Go back/up an image mesh
 	if (glfwGetKey(win, GLFW_KEY_UP))
 	{
-		upPressed = true;
+		windowMgr::getInstance()->upPressed = true;
 	}
 	if (!glfwGetKey(win, GLFW_KEY_UP))
 	{
 		// Only if left was just released...
-		if (upPressed)
+		if (windowMgr::getInstance()->upPressed)
 		{	
 			// Have we reached first image mesh? 
 			if (currentImageSelected == 0)
@@ -338,18 +336,18 @@ void loadGameScene::Input(GLFWwindow* win)
 			}
 
 
-			upPressed = false;
+			windowMgr::getInstance()->upPressed = false;
 		}
 	}
 
 	// Go along/down an image mesh
 	if (glfwGetKey(win, GLFW_KEY_DOWN))
 	{
-		downPressed = true;
+		windowMgr::getInstance()->downPressed = true;
 	}
 	if (!glfwGetKey(win, GLFW_KEY_DOWN))
 	{
-		if (downPressed)
+		if (windowMgr::getInstance()->downPressed)
 		{
 			// Have we reached last image mesh?
 			if (currentImageSelected == 8)
@@ -373,10 +371,7 @@ void loadGameScene::Input(GLFWwindow* win)
 				// Resize this and last choice
 				ResizeCurLastSelected();
 			}
-
-
-
-			downPressed = false;
+			windowMgr::getInstance()->downPressed = false;
 		}
 
 	}
@@ -384,11 +379,11 @@ void loadGameScene::Input(GLFWwindow* win)
 	// View next page
 	if (glfwGetKey(win, GLFW_KEY_RIGHT))
 	{
-		rightPressed = true;
+		windowMgr::getInstance()->rightPressed = true;
 	}
 	if (!glfwGetKey(win, GLFW_KEY_RIGHT))
 	{
-		if (rightPressed)
+		if (windowMgr::getInstance()->rightPressed)
 		{
 			if (currentPage < (int)pageCount)
 			{
@@ -399,16 +394,16 @@ void loadGameScene::Input(GLFWwindow* win)
 			}
 
 		}
-		rightPressed = false;
+		windowMgr::getInstance()->rightPressed = false;
 	}
 	// View last page
 	if (glfwGetKey(win, GLFW_KEY_LEFT))
 	{
-		leftPressed = true;
+		windowMgr::getInstance()->leftPressed = true;
 	}
 	if (!glfwGetKey(win, GLFW_KEY_LEFT))
 	{
-		if (leftPressed)
+		if (windowMgr::getInstance()->leftPressed)
 		{
 			if (currentPage > 1)
 			{
@@ -419,18 +414,18 @@ void loadGameScene::Input(GLFWwindow* win)
 			}
 
 		}
-		leftPressed = false;
+		windowMgr::getInstance()->leftPressed = false;
 	}
 	// Select this level to load
 	if (glfwGetKey(win, GLFW_KEY_ENTER) && enterCooldown > enterCooldownMax)
 	{
-		enterPressed = true;
+		windowMgr::getInstance()->enterPressed = true;
 	}
 	if (!glfwGetKey(win, GLFW_KEY_ENTER))
 	{
-		if (enterPressed)
+		if (windowMgr::getInstance()->enterPressed)
 		{
-			enterPressed = false; // Suspect this is unnecessary
+			windowMgr::getInstance()->enterPressed = false; // Suspect this is unnecessary
 			// Current seed is index of seeds list, send as optional param
 			windowMgr::getInstance()->sceneManager.changeScene(6, 12, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)		
 		}

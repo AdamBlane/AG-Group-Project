@@ -30,10 +30,7 @@ public:
 	float dt = 0.016; // Lock to 60fps for first frame
 	
 	// Used for navigating through menu options
-	// This determines which button should be highlighted
-	int button_manager = 1;
 	float total_time = 5.0f;
-	bool downPressed = false;
 	// SPIKE - save last button index visited; that's the button to make tex = unselected
 
 	// Only need one transform (can be reused for each mesh)
@@ -52,5 +49,9 @@ public:
 	// Update
 	void Update(GLFWwindow* window);
 	// Render
+	//Tracks Mouse
+	void Track_Mouse(GLFWwindow* win);
+
 	void Render(GLFWwindow* window);
+	void Action(GLFWwindow* window);
 };

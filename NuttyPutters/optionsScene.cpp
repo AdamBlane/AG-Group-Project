@@ -7,10 +7,79 @@ optionsScene::optionsScene() { }
 // Deconstructor
 optionsScene::~optionsScene() { }
 
+void optionsScene::Track_Mouse(GLFWwindow *window)
+{
+	glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	
+	if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 59 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale))
+	{
+		if (windowMgr::getInstance()->mouse_y <= 200 * windowMgr::getInstance()->windowScale)
+		{
+			//highlights 1600x900 button
+			windowMgr::getInstance()->button_manager = 1;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
+		{
+			//highlights 1600x900 button
+			windowMgr::getInstance()->button_manager = 2;
+		}
+	}
+	else if ((windowMgr::getInstance()->mouse_x >= 1039 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1429 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 711 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 839 * windowMgr::getInstance()->windowScale))
+	{
+		//highlights the back button
+		windowMgr::getInstance()->button_manager = 3;
+	}
+	else
+	{
+		//highlights nothing
+		windowMgr::getInstance()->button_manager = 0;
+	}
+}
+void optionsScene::Action(GLFWwindow *win)
+{
+	//cases for changing size of screen
+	switch (windowMgr::getInstance()->button_manager)
+	{
+			// Case 1 - windowed at 1600x900
+		case 1:
+			windowMgr::getInstance()->width = 1600;
+			windowMgr::getInstance()->height = 900;
+			windowMgr::getInstance()->PosX = 100;
+			windowMgr::getInstance()->PosY = 100;
+			break;
+			// Case 2 - fullscreen at 1280 x 720
+		case 2:
+			windowMgr::getInstance()->width = 1280;
+			windowMgr::getInstance()->height = 720;
+			windowMgr::getInstance()->PosX = 100;
+			windowMgr::getInstance()->PosY = 100;
+			break;
+			// Case 3 - Back button
+		case 3:
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+			break;
+	}
+	// If window has been re-scaled
+	if (windowMgr::getInstance()->button_manager != 3)
+	{
+		//Sets window size by calling open gl function
+		glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+		//sets window postion by calling opengl function - posiotn needs updating as first funtion is just scale
+		glfwSetWindowPos(win, windowMgr::getInstance()->PosX, windowMgr::getInstance()->PosY);
+		//calls the initalise function again mainly for viewport 
+		glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+		windowMgr::getInstance()->setWindowScale(windowMgr::getInstance()->width);
+	}
+}
+
 void optionsScene::Init(GLFWwindow * win)
 {
 	//to reformat texutures
 	glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+	//resets the button manager
+	windowMgr::getInstance()->button_manager = 0;
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
@@ -47,10 +116,10 @@ void optionsScene::Loop(GLFWwindow * win)
 
 	// Input
 	Input(win);
-
 	// Update
 	Update(win);
-
+	//Tracks Mouse
+	Track_Mouse(win);
 	// Render
 	Render(win);
 }
@@ -58,78 +127,104 @@ void optionsScene::Loop(GLFWwindow * win)
 
 void optionsScene::Input(GLFWwindow* win)
 {
-	switch (button_manager)
+	switch (windowMgr::getInstance()->button_manager)
 	{
-		case 1:
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnSelected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
-			break;
-		case 2:
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnSelected"]);
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
-			break;
-		case 3:
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnSelected"]);
-			break;
+	case 0:
+		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+		break;
+	case 1:
+		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnSelected"]);
+		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+		break;
+	case 2:
+		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnSelected"]);
+		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+		break;
+	case 3:
+		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnSelected"]);
+		break;
 	}
-	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 3.0f)
+	if (glfwGetKey(win, GLFW_KEY_ENTER))
 	{
-		total_time = 0.0f;
-		//cases for changing size of screen
-		switch (button_manager)
+		windowMgr::getInstance()->enterPressed = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
+	{
+		if (windowMgr::getInstance()->enterPressed)
 		{
-		case 1:
-			windowMgr::getInstance()->width = 1600;
-			windowMgr::getInstance()->height = 900;
-			windowMgr::getInstance()->PosX = 100;
-			windowMgr::getInstance()->PosY = 100;
-			break;
-		case 2:
-			windowMgr::getInstance()->width = 1920;
-			windowMgr::getInstance()->height = 1080;
-			windowMgr::getInstance()->PosX = 0;
-			windowMgr::getInstance()->PosY = 0;
-			break;
-		case 3:
-			windowMgr::getInstance()->sceneManager.changeScene(1);
-			break;
-		}
-		if (button_manager != 3)
-		{
-			glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
-			glfwSetWindowPos(win, windowMgr::getInstance()->PosX, windowMgr::getInstance()->PosY);
-			optionsScene::Init(win);
+			Action(win);
+			windowMgr::getInstance()->enterPressed = false;
 		}
 	}
-	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 5.0f)
+	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) && total_time >= 5.0f)
 	{
-		total_time = 0.0f;
-		if (button_manager == 1)
+		windowMgr::getInstance()->mouseLpressed = true;
+	}
+	if (!glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+	{
+		if (windowMgr::getInstance()->mouseLpressed)
 		{
-			button_manager = 3;
-		}
-		else
-		{
-			button_manager--;
+			Action(win);
+			windowMgr::getInstance()->mouseLpressed = false;
 		}
 	}
-	if (glfwGetKey(win, GLFW_KEY_DOWN) && total_time >= 5.0f)
+	if (glfwGetKey(win, GLFW_KEY_UP))
 	{
-		total_time = 0.0f;
-		if (button_manager == 3)
+		windowMgr::getInstance()->upPressed = true;
+	}
+
+	if (!glfwGetKey(win, GLFW_KEY_UP))
+	{
+		if (windowMgr::getInstance()->upPressed)
 		{
-			button_manager = 1;
-		}
-		else
-		{
-			button_manager++;
+			total_time = 0.0f;
+			if (windowMgr::getInstance()->button_manager == 1)
+			{
+				windowMgr::getInstance()->button_manager = 3;
+			}
+			else
+			{
+				windowMgr::getInstance()->button_manager--;
+			}
+			windowMgr::getInstance()->upPressed = false;
 		}
 	}
-	total_time += 0.5f;
+	if (glfwGetKey(win, GLFW_KEY_DOWN))
+	{
+		windowMgr::getInstance()->downPressed = true;
+	}
+
+	if (!glfwGetKey(win, GLFW_KEY_DOWN))
+	{
+		if (windowMgr::getInstance()->downPressed)
+		{
+			if (windowMgr::getInstance()->button_manager == 3)
+			{
+				windowMgr::getInstance()->button_manager = 1;
+			}
+			else if (windowMgr::getInstance()->button_manager == 0)
+			{
+				windowMgr::getInstance()->button_manager = 3;
+			}
+			else
+			{
+				windowMgr::getInstance()->button_manager++;
+			}
+
+			windowMgr::getInstance()->downPressed = false;
+		}
+	}
+
+	while (total_time <= 5.0f)
+	{
+		total_time += 1.0f;
+	}
 }
 
 void optionsScene::Update(GLFWwindow* win)

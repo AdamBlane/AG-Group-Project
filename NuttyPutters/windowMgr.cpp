@@ -53,6 +53,9 @@ GLFWwindow* windowMgr::Init()
 		exit(EXIT_FAILURE);
 	}
 
+	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	// Clicking is toggled not held for effect
+	glfwSetInputMode(win, GLFW_STICKY_MOUSE_BUTTONS, 1);
 	// Make window the current context
 	glfwMakeContextCurrent(win);
 
