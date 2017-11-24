@@ -197,10 +197,6 @@ public:
 	EndTile() { id = 9; }
 	~EndTile() {};
 
-	bool ballInHole;
-
-	// Getters
-	inline bool getBallInHole() { return ballInHole; }
 
 	// Checks whether player has hit boundaries of this tile
 	virtual void CheckCollisions(Player &player);

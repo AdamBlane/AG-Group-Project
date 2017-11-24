@@ -426,11 +426,11 @@ void EndTile::CheckCollisions(Player &player)
 	if (player.transform.getPos().x > thisCoords.x - 0.75 && player.transform.getPos().x < thisCoords.x + 0.75 &&
 		player.transform.getPos().z > thisCoords.z - 0.75 && player.transform.getPos().z < thisCoords.z + 0.75)
 	{
-		if(player.power < 2.0f)
+		if(length(player.velocity) < 2.0f)
 		{
 			// Apply gravity
-			player.velocity.y -= 0.2f;
-			ballInHole = true;
+			//player.velocity.y -= 0.2f;
+			player.ballInHole = true;
 		}
 	}
 

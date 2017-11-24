@@ -38,7 +38,7 @@ public:
 
 	bool updateStrokeMesh(int strokeCounter); // Method which updates the users stroke counter
 	bool updateTimer(int timeSinceContinueWasPressed, int timeToThisMethod, int holeTimer);
-	bool hasUserCompletedTheHole();
+	bool hasUserCompletedTheHole(Player &player);
 
 	// Sets up meshes and texures stored in winMgr
 	void Init();

@@ -37,11 +37,11 @@ public:
 
 	// Generates impulse vector for player 
 	// (normal usage, uses player members for dir & vel
-	Player Fire(Player player, float magnitude);
-	Player RampResistance(Player player, float magnitude);
-	Player Jump(Player player, float magnitude);
+	void Fire(Player &player, float magnitude);
+	void RampResistance(Player &player, float magnitude);
+	void Jump(Player &player, float magnitude);
 	// Work out whether or not to apply gravity
-	void ApplyGravity(Player player, float floorLevel);
+	void ApplyGravity(Player &player, float floorLevel);
 	// Semi-implicit Euler method
-	Player Integrate(Player player, float dt, float floorLevel);
+	void Integrate(Player &player, float dt, float floorLevel);
 };

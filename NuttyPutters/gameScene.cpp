@@ -353,7 +353,7 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			if (p.jumpPressed)
 			{
-				p = physicsSystem.Jump(p, 5.0f); // Arbitrary jump value
+				physicsSystem.Jump(p, 5.0f); // Arbitrary jump value
 				p.isMoving = true;
 				// Flip
 				p.jumpPressed = false;
@@ -642,7 +642,7 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				// Power measure accumulated by holding space is impulse magnitude
 				// Normal of impulse is direction
-				p = physicsSystem.Fire(p, p.power);
+				physicsSystem.Fire(p, p.power);
 				// Reset fire power counter
 				p.power = 0;
 				// And we're off! 
@@ -800,7 +800,7 @@ void gameScene::Update(GLFWwindow* window)
 			if (accumulator >= dt)
 			{
 				// Update position
-				p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1);
+				physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1);
 				accumulator -= dt;
 			}
 		}
@@ -933,7 +933,7 @@ void gameScene::Render(GLFWwindow* window)
 	}
 
 	// If user has completed the hole or if the continue button hasnt been pressed of if the user has run out of time or if the user has run out of strokes
-	if (hasUserCompletedHole || !continuePressed || isUserOutOfTime || isUserOutOfStrokes)
+	if (players[0].ballInHole || !continuePressed || isUserOutOfTime || isUserOutOfStrokes)
 	{
 		// For loop which goes through all the information elements and binds, updates and draws them.
 		for (int i = 10; i < 14; i++)

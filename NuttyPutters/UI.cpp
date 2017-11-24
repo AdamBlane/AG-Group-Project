@@ -233,11 +233,10 @@ bool UI::updateTimer(int timeSinceContinueWasPressed, int timeToThisMethod, int 
 }
 
 // Method which checks if user has completed the hole
-bool UI::hasUserCompletedTheHole()
+bool UI::hasUserCompletedTheHole(Player &player)
 {
 	// If ball in hole is equal to true - function to courseGenTiles
-	EndTile end;
-	if (!end.ballInHole)
+	if (player.ballInHole)
 	{
 		// Update necessary textures
 		windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["holeLbl"]);
