@@ -49,7 +49,7 @@ public:
 
 
 	// Points to skybox mesh
-	Mesh* sky;
+//	Mesh* sky;
 	
 	// General game variables
 	int courseSize; // Total number of tiles this level

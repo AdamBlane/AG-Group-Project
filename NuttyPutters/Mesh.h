@@ -55,7 +55,7 @@ public:
 	Mesh(typeShape shape, glm::vec3 newPosition, GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f, bool isFloor = false, bool isFluid = false);
 
 	// Skybox constructor - this needs to be changed (see .cpp)
-	Mesh(const std::vector<std::string> &filenames);
+	Mesh(Texture* tex);
 
 	//Get position of mesh geometry created by geometry builder
 	glm::vec3 GetGeomPos();
@@ -67,7 +67,7 @@ public:
 	Texture thisTexture;
 
 	// Skybox texture
-	Texture* skyTex;
+	Texture skyTex;
 
 	// Setter for mesh texture takes in a pointer to texture
 	void SetTexture(Texture* tex) { thisTexture = *tex; }

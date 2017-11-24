@@ -31,9 +31,10 @@ Mesh::Mesh(typeShape shape, glm::vec3 newPosition, GLfloat size1, GLfloat size2,
 // Skybox constructor
 // TODO - needs editing such that it does not create a new texture, 
 // instead it takes an already initialised texture(s) as param
-Mesh::Mesh(const std::vector<std::string>& filenames)
+Mesh::Mesh(Texture* tex)
 {
-	skyTex = new Texture(filenames[0], filenames[1], filenames[2], filenames[3], filenames[4], filenames[5]);
+//	skyTex = new Texture(filenames[0], filenames[1], filenames[2], filenames[3], filenames[4], filenames[5]);
+	skyTex = *tex;
 	thisShape = SKYBOX;
 	chooseGeometry();
 }
@@ -85,8 +86,6 @@ void Mesh::SetAsFluid(bool isFluid)
 Mesh::~Mesh()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayObject);
-	// Remove texture memory from heap
-	delete(skyTex);
 }
 
 //method to create geometry from chosen type

@@ -64,6 +64,17 @@ GLFWwindow* windowMgr::Init()
 		std::cout << "Glew failed to initialise!" << std::endl;
 	}
 
+	cout << GLFW_KEY_ENTER << endl;
+	cout << GLFW_KEY_RIGHT_SHIFT << endl;
+	cout << GLFW_KEY_I << endl;
+	cout << GLFW_KEY_K << endl;
+	cout << GLFW_KEY_J << endl;
+	cout << GLFW_KEY_L << endl;
+	cout << GLFW_KEY_U << endl;
+	cout << GLFW_KEY_O << endl;
+
+
+
 	// ############################ AUDIO ############################
 	// Init fmod system
 	FMOD::System_Create(&system);
@@ -221,6 +232,11 @@ GLFWwindow* windowMgr::Init()
 	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnSelected", fullscreenBtnSelected));
 	// GAME SCENE TEXTURES
+	// Skybox textures
+	skyboxTexture = new Texture(posXfileName, negXfileName, posYfileName, negYfileName, posZfileName, negZfileName);
+	// Skybox mesh must be created after
+	skyboxMesh = new Mesh(skyboxTexture);
+
 	Texture* playerRedTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
 	Texture* playerBlueTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");

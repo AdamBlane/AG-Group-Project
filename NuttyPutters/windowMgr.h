@@ -38,12 +38,21 @@ class windowMgr
 		vector<Texture*> savesImages;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
-
+		// Skybox vars
+		Texture* skyboxTexture;
+		Mesh* skyboxMesh;
+		const string posXfileName = "..\\NuttyPutters\\skyboxes\\left.png";
+		const string negXfileName = "..\\NuttyPutters\\skyboxes\\right.png";
+		const string posYfileName = "..\\NuttyPutters\\skyboxes\\top.png";
+		const string negYfileName = "..\\NuttyPutters\\skyboxes\\bot.png";
+		const string posZfileName = "..\\NuttyPutters\\skyboxes\\back.png";
+		const string negZfileName = "..\\NuttyPutters\\skyboxes\\front.png";
 		// GAME SCENE UNIQUE MESHES
 		Mesh* player1Mesh;
 		Mesh* player2Mesh;
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
+		
 
 		// Cameras
 		target_camera* HUDtargetCam;

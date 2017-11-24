@@ -16,8 +16,6 @@ gameScene::~gameScene()
 		delete(t);
 	}
 
-	// Remove skybox from heap
-	delete(sky);
 }
 
 // Setup scene; seed is an optional param passed in by loadGameScene
@@ -49,18 +47,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, stri
 	// Setup scenery tiles
 	FillScenery();
 
-	// TODO - find a way to not init this here
-	// Skybox stuff
-	vector<string> filenames;
-	//negx and posx are inverted (mistery)
-	filenames.push_back("..\\NuttyPutters\\skyboxes\\left.png");	//negx
-	filenames.push_back("..\\NuttyPutters\\skyboxes\\right.png");	//posx
-	filenames.push_back("..\\NuttyPutters\\skyboxes\\top.png");		//posy
-	filenames.push_back("..\\NuttyPutters\\skyboxes\\bot.png");		//negy
-	filenames.push_back("..\\NuttyPutters\\skyboxes\\back.png");	//posz
-	filenames.push_back("..\\NuttyPutters\\skyboxes\\front.png");	//negz
-	sky = new Mesh(filenames);
-
+	
 	// Save player count
 	numPlayers = playerCount;
 
@@ -77,6 +64,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, stri
 		player.arrowTransform.getScale() = vec3(0.5);
 		player.arrowTransform.getPos() = vec3(player.transform.getPos().x, player.transform.getPos().y - 1.6, player.transform.getPos().z);
 		// Chase cam setup	
+		windowMgr::getInstance()->chaseCams[p]->set_target_roation(vec3(0.0f, 0.0f, 0.0f));
 		windowMgr::getInstance()->chaseCams[p]->set_target_pos(vec3(player.transform.getPos()));	
 		
 		// Add to players list
@@ -389,6 +377,7 @@ void gameScene::Input(GLFWwindow* window)
 			bool paused = true;
 			while (paused)
 			{
+				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 				// Need this to listen for further key presses
 				glfwPollEvents();
 				// Exit game 
@@ -455,6 +444,7 @@ void gameScene::Input(GLFWwindow* window)
 				// Unpause
 				if (glfwGetKey(window, GLFW_KEY_U))
 				{
+					glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 					cameraType = 1;
 					paused = false;
 					break;
@@ -480,7 +470,7 @@ void gameScene::Input(GLFWwindow* window)
 			cout << "Free Camera selected" << endl;
 			cameraType = 0;
 			// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
-			windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->p1ChaseCam->get_Posistion());
+			windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->chaseCams[0]->get_Posistion());
 		}
 
 		// If button two is pressed change to chase camera
@@ -741,6 +731,9 @@ void gameScene::Update(GLFWwindow* window)
 	}
 	else if (numPlayers == 2)
 	{
+		windowMgr::getInstance()->chaseCams[0]->update(0.00001);
+		windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
+
 		windowMgr::getInstance()->chaseCams[1]->update(0.00001);
 		windowMgr::getInstance()->chaseCams[1]->move(players[1].transform.getPos(), players[1].transform.getRot());
 	}
@@ -773,55 +766,7 @@ void gameScene::Update(GLFWwindow* window)
 			// Special case for on a ramp tile (ignored for now)
 			//if (algTiles.at(p.currentTile)->id == 7)
 			//{
-				// TODO
-			//}
-
-			// Ensure correct slowdown/stop margin
-			physicsSystem.epsilon = 0.5f;
-			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-			// If time to perform another physics step																						 // Perform physics step	
-			if (accumulator >= dt)
-			{
-				// Update position
-				p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1);
-				accumulator -= dt;
-			}
-		}
-		// Update p1 arrow mesh position to follow player
-		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
-
-	}
-/*	
-	// PLAYER 1 UPDATE
-	if (players[0].isMoving)
-	{
-		// Down ramp behaviour neads tweaking
-		/*if (algTiles.at(p1CurrentTile).id == 8)
-		{
-			DownRampDown ramp;
-			ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-			ramp.thisCoords.y += 1.8;
-			float floorPos = ramp.SetPlayerHeight(players[0]);
-			physicsSystem.ApplyGravity(players[0], floorPos);
-			if (physicsSystem.gravFlag == 0)
-			{
-				physicsSystem.epsilon = 0.0001f;
-				players[0] = physicsSystem.RampResistance(players[0], -1.0f);
-			}
-
-			if (accumulator >= dt)
-			{
-				players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
-				accumulator -= dt;
-			}
-
-		}
-
-		// If on ramp, need to know exact y position to be at at this point on tile
-		if (algTiles.at(p1CurrentTile)->id == 7)
-		{
-			// Instantiate in order to call member functions
+			/* Instantiate in order to call member functions
 			UpRampDown ramp;
 			// Set deets
 			ramp.SetCoords(algTiles.at(p1CurrentTile)->GetThisCoords());
@@ -844,59 +789,27 @@ void gameScene::Update(GLFWwindow* window)
 				// Update position
 				players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
 				accumulator -= dt;
-			}
+			}*/
+			//}
 
-		}
-		else
-		{
 			// Ensure correct slowdown/stop margin
 			physicsSystem.epsilon = 0.5f;
 			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(players[0], algTiles.at(p1CurrentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-			// Perform physics step	
+			physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
+			// If time to perform another physics step																						 // Perform physics step	
 			if (accumulator >= dt)
 			{
 				// Update position
-				players[0] = physicsSystem.Integrate(players[0], dt, algTiles.at(p1CurrentTile)->thisCoords.y + 1);
+				p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1);
 				accumulator -= dt;
 			}
-
 		}
+		// Update p1 arrow mesh position to follow player
+		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
 
-		//vec3 rot = cross(normalize(players[0].velocity), vec3(0.0f, 1.0f, 0.0f));
-		//players[0].transform.getRot() += rot * dt;
 	}
-
 	
 
-	// PLAYER 2 UPDATE
-	if (players[1].isMoving)
-	{
-		// If on ramp, need to know exact y position to be at at this point on tile
-		if (algTiles.at(p2CurrentTile)->id == 7)
-		{
-			// TODO
-		}
-		else
-		{
-			// Ensure correct slowdown/stop margin
-			physicsSystem.epsilon = 0.5f;
-
-			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(players[1], algTiles.at(p2CurrentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-			// Perform physics step																			   // Perform physics step	
-			if (accumulator >= dt)
-			{
-				// Update position
-				players[1] = physicsSystem.Integrate(players[1], dt, algTiles.at(p2CurrentTile)->thisCoords.y + 1);
-				accumulator -= dt;
-			}
-
-		}
-	}
-	// Update p2 arrow mesh position to follow player
-	players[1].arrowTransform.getPos() = vec3(players[1].transform.getPos().x, players[1].transform.getPos().y - 1.6, players[1].transform.getPos().z);
-*/
 	// HUD TIMER RELATED INFORMATION
 	// If the time been in scene is equal to zero then
 	if (timeBeenInScene == 0)
@@ -995,7 +908,7 @@ void gameScene::Render(GLFWwindow* window)
 	// Else camera type is chase camera
 	else if (cameraType == 1)
 	{
-		mvp = windowMgr::getInstance()->p1ChaseCam->get_Projection() * windowMgr::getInstance()->p1ChaseCam->get_View();
+		mvp = windowMgr::getInstance()->chaseCams[0]->get_Projection() * windowMgr::getInstance()->chaseCams[0]->get_View();
 	}
 	// Else if camera type is pause camera
 	else if (cameraType == 2)
@@ -1049,7 +962,7 @@ void gameScene::Render(GLFWwindow* window)
 	// Skybox 
 	windowMgr::getInstance()->skyboxShader->Bind();
 	windowMgr::getInstance()->skyboxShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
-	sky->Draw();
+	windowMgr::getInstance()->skyboxMesh->Draw();
 	// Bind texture shader
 	windowMgr::getInstance()->textureShader->Bind();
 
@@ -1109,12 +1022,12 @@ void gameScene::Render(GLFWwindow* window)
 		mat4 mvp2;
 
 		// Render player 2's chase camera
-		mvp2 = windowMgr::getInstance()->p2ChaseCam->get_Projection() * windowMgr::getInstance()->p2ChaseCam->get_View();
+		mvp2 = windowMgr::getInstance()->chaseCams[1]->get_Projection() * windowMgr::getInstance()->chaseCams[1]->get_View();
 
 		// Skybox 
 		windowMgr::getInstance()->skyboxShader->Bind();
 		windowMgr::getInstance()->skyboxShader->Update(windowMgr::getInstance()->texShaderTransform, mvp2);
-		sky->Draw();
+		windowMgr::getInstance()->skyboxMesh->Draw();
 
 		// Bind texture shader
 		windowMgr::getInstance()->textureShader->Bind();

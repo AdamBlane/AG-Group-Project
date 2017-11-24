@@ -9,6 +9,7 @@ playerSelectScene::~playerSelectScene() { }
 // Setup scene; does nothing atm
 void playerSelectScene::Init(GLFWwindow * win)
 {
+	buttonSelect = 1;
 	// Set the HUDs and labels - all have unique positions and scales so all lines below are required
 	// Set the background
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
