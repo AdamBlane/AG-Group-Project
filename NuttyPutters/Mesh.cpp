@@ -85,6 +85,8 @@ void Mesh::SetAsFluid(bool isFluid)
 Mesh::~Mesh()
 {
 	glDeleteVertexArrays(1, &m_vertexArrayObject);
+	// Remove texture memory from heap
+	delete(skyTex);
 }
 
 //method to create geometry from chosen type

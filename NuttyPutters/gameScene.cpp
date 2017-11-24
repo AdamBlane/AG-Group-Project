@@ -15,6 +15,9 @@ gameScene::~gameScene()
 	{
 		delete(t);
 	}
+
+	// Remove skybox from heap
+	delete(sky);
 }
 
 // Setup scene; seed is an optional param passed in by loadGameScene
@@ -1146,7 +1149,6 @@ void gameScene::Collisions()
 
 	}
 } // end collisions function
-
 
 // Draw stuff
 void gameScene::Render(GLFWwindow* window)
