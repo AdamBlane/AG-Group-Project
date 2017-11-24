@@ -74,7 +74,7 @@ private:
 	int thisObstacleID;
 
 	//size of the hole
-	GLfloat ballSizeMargin = 1.4f;
+	GLfloat ballSizeMargin = 1.5f;
 
 	//position of the tile
 	vec3 tilePos;

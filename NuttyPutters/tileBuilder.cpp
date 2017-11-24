@@ -340,13 +340,13 @@ void Tile::obstacleCube()
 
 void Tile::obstacleSlalom()
 {
-	windowMgr::getInstance()->obstacleMeshes.at(1)->SetScale(measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
-	windowMgr::getInstance()->obstacleMeshes.at(1)->SetPos(vec3(tilePos.x - (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z + ballSizeMargin * 2));
+	windowMgr::getInstance()->obstacleMeshes.at(1)->SetScale(measures.x - (measures.y * 3) - ballSizeMargin, measures.y, measures.y);
+	windowMgr::getInstance()->obstacleMeshes.at(1)->SetPos(vec3(tilePos.x - ((ballSizeMargin / 2) + (measures.y / 2)), tilePos.y + measures.y, tilePos.z + ballSizeMargin * 2));
 	windowMgr::getInstance()->obstacleMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
 	tileObstacle.push_back(windowMgr::getInstance()->obstacleMeshes.at(1));
 
-	windowMgr::getInstance()->obstacleMeshes.at(2)->SetScale(measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
-	windowMgr::getInstance()->obstacleMeshes.at(2)->SetPos(vec3(tilePos.x + (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z - ballSizeMargin * 2));
+	windowMgr::getInstance()->obstacleMeshes.at(2)->SetScale(measures.x - (measures.y * 3) - ballSizeMargin, measures.y, measures.y);
+	windowMgr::getInstance()->obstacleMeshes.at(2)->SetPos(vec3(tilePos.x + ((ballSizeMargin / 2) + (measures.y / 2)), tilePos.y + measures.y, tilePos.z - ballSizeMargin * 2));
 	windowMgr::getInstance()->obstacleMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
 	tileObstacle.push_back(windowMgr::getInstance()->obstacleMeshes.at(2));
 }

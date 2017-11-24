@@ -483,7 +483,7 @@ void gameScene::SetupTilesToBeDrawn()
 				obstacles.push_back(obstacleID);
 			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, 2);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, 1);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
@@ -498,7 +498,7 @@ void gameScene::SetupTilesToBeDrawn()
 				obstacles.push_back(obstacleID);
 			}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t.thisCoords, 2);
+			Tile tile(Tile::STRAIGHT, t.thisCoords, 1);
 			// Straight needs rotating by 90, since it's vertical by default
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -1357,6 +1357,54 @@ void gameScene::Update(GLFWwindow* window)
 	}
 }
 
+void changeDirection(Player &player, vec3 rectCenter, vec3 rectSize, float displace)
+{
+
+	float sphereXDistance = abs(player.transform.getPos().x - rectCenter.x);
+	float sphereYDistance = abs(player.transform.getPos().y - rectCenter.y);
+	float sphereZDistance = abs(player.transform.getPos().z - rectCenter.z);
+
+	vec3 p = player.transform.getPos() - rectCenter;
+	p = normalize(p);
+
+	float speed = fmax(length(player.velocity), 1.0f);
+
+	player.velocity = p * speed;
+	player.velocity.y = 0.0f;
+}
+
+bool SphereRectCollision(Player player, vec3 rectCenter,vec3 rectSize)
+{
+
+	float sphereXDistance = abs(player.transform.getPos().x - rectCenter.x);
+	float sphereYDistance = abs(player.transform.getPos().y - rectCenter.y);
+	float sphereZDistance = abs(player.transform.getPos().z - rectCenter.z);
+
+	if (sphereXDistance >= (rectSize.x + player.radius)) { return false; }
+	if (sphereYDistance >= (rectSize.y + player.radius)) { return false; }
+	if (sphereZDistance >= (rectSize.z + player.radius)) { return false; }
+
+	if (sphereXDistance < (rectSize.x))
+	{
+		return true;
+	}
+	if (sphereYDistance < (rectSize.y))
+	{
+		return true;
+	}
+	if (sphereZDistance < (rectSize.z))
+	{
+		return true;
+	}
+
+	float cornerDistance_sq = ((sphereXDistance - rectSize.x) * (sphereXDistance - rectSize.x)) +
+		((sphereYDistance - rectSize.y) * (sphereYDistance - rectSize.y) +
+		((sphereYDistance - rectSize.z) * (sphereYDistance - rectSize.z)));
+
+	return (cornerDistance_sq < (player.radius * player.radius));
+}
+
+
 // Tracks current tile player is on (TODO improve performance)
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
@@ -1396,12 +1444,37 @@ void gameScene::Collisions()
 			switch (obstacles.at(i + 1))
 			{
 			case 1:
-
+			{
+				float ballSize = player1.radius * 3;
+				float heightTile = 1.0f;
+				vec3 box1Pos = vec3(straightV.thisCoords.x - ((ballSize / 2) + (heightTile / 2)), 200.0f, straightV.thisCoords.z + ballSize * 2);
+				vec3 box1Size = vec3(straightV.size - (heightTile * 3) - ballSize, heightTile, heightTile);
+				bool intersect = SphereRectCollision(player1, box1Pos, box1Size);
+				if (intersect)
+				{
+					changeDirection(player1, box1Pos, box1Size, straightV.displace);
+				}
+			}
 				break;
 			case 2:
-				//	player1.direction = CheckCollisionsObstacle1(straightV.thisCoords, player1.transform.getPos(),
-				//		player1.direction, straightV.displace, straightV.radius);
-				break;
+			{
+				float ballSize = player1.radius * 3;
+				float heightTile = 1.0f;
+				vec3 box1Pos = vec3(straightV.thisCoords.x - ((ballSize / 2) + (heightTile / 2)), 200.0f, (straightV.thisCoords.z + ballSize * 2) / 2.0f);
+				vec3 box1Size = vec3(straightV.size - (heightTile * 3) - ballSize, heightTile, heightTile);
+				bool intersect = SphereRectCollision(player1, box1Pos, box1Size);
+				if (intersect)
+				{
+					changeDirection(player1, box1Pos, box1Size, straightV.displace);
+				}
+
+				//bool intersect = SphereRectCollision(player1, straightV.thisCoords, vec3(1.0f, 100.0f, 1.0f));
+				//if (intersect)
+				//{
+				//	changeDirection(player1, straightV.thisCoords, vec3(1.0f, 100.0f, 1.0f), straightV.displace);
+				//}
+			}
+			break;
 			default:
 				break;
 			} // end switch
@@ -1422,12 +1495,39 @@ void gameScene::Collisions()
 			switch (obstacles.at(i + 1))
 			{
 			case 1:
-
+			{
+				float ballSize = player1.radius * 3;
+				float heightTile = 1.0f;
+				vec3 box1Pos = vec3(straightH.thisCoords.x - ((ballSize / 2) + (heightTile / 2)), 200.0f, straightH.thisCoords.z + ballSize * 2);
+				vec3 box1Size = vec3(straightH.size - (heightTile * 3) - ballSize, heightTile, heightTile);
+				bool intersect = SphereRectCollision(player1, box1Pos, box1Size);
+				if (intersect)
+				{
+					changeDirection(player1, box1Pos, box1Size, straightH.displace);
+				}
+			}
 				break;
 			case 2:
-				//	player1.direction = CheckCollisionsObstacle1(straightH.thisCoords, player1.transform.getPos(),
-				//		player1.direction, straightH.displace, straightH.radius);
-				break;
+			{
+
+				float ballSize = player1.radius * 3;
+				float heightTile = 1.0f;
+				vec3 box1Pos = vec3(straightH.thisCoords.x - ((ballSize / 2) + (heightTile / 2)), 200.0f, (straightH.thisCoords.z + ballSize * 2) / 2.0f);
+				vec3 box1Size = vec3(straightH.size - (heightTile * 3) - ballSize, heightTile, heightTile);
+				bool intersect = SphereRectCollision(player1, box1Pos, box1Size);
+				if (intersect)
+				{
+					changeDirection(player1, box1Pos, box1Size, straightH.displace);
+				}
+
+				//bool intersect = SphereRectCollision(player1, straightH.thisCoords, vec3(1.0f, 100.0f, 1.0f));
+
+				//if (intersect)
+				//{
+				//	changeDirection(player1, straightH.thisCoords, vec3(1.0f, 100.0f, 1.0f), straightH.displace);
+				//}
+			}
+			break;
 			default:
 				break;
 			} // switch end
