@@ -54,7 +54,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 
 	// Setup player position (must use transform as it's a loaded model - not drawn)
 	player1.transform.getScale() = vec3(0.5);
-	player1.transform.getPos() = vec3(0.0, 10.0, 0.0);
+	player1.transform.getPos() = vec3(0.0, 1.0, 0.0);
 	// Arrow
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	player1.arrowTransform.getScale() = vec3(0.5);
