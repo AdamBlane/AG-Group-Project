@@ -162,8 +162,6 @@ void gameScene::FillScenery()
 				//tile.transform.getRot().x = -0.785398;
 				// Add to list of tiles to be rendered
 				sceneryTiles.push_back(tile);
-
-
 			}
 		} // end x block
 	} // end z block
