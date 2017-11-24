@@ -53,12 +53,18 @@ public:
 	
 	// General game variables
 	int courseSize; // Total number of tiles this level
-	vector<BaseTile*> algTiles; // Game tiles list; these tiles have position data (by M)
-	vector<Tile> tiles; // Tile meshes to be rendered, created by V
-	vector<Tile> sceneryTiles; // sceneryTiles to be rendered
-	vector<int> levelSeed; // This course seed; each tile has an int id
-	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
 
+	vector<BaseTile*> algTiles; // Game tiles list; these tiles have position data (by M)
+	vector<BaseTile*> level2algTiles;
+	vector<Tile> tiles; // Tile meshes to be rendered, created by V
+	vector<Tile> level2tiles;
+	vector<Tile> sceneryTiles; // sceneryTiles to be rendered
+	vector<Tile> level2sceneryTiles;
+	vector<int> levelSeed; // This course seed; each tile has an int id
+	vector<int> level2seed;
+	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
+	bool onLevel2 = false;
+	bool loadLevel2 = false;
 	// Gameplay variables
 	// TODO - set these in init to be safe (sometimes not reset in other scenes)
 	int timeBeenInScene = 0; // Time from when the scene is fully loaded

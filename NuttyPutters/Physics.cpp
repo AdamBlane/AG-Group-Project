@@ -85,7 +85,17 @@ void Physics::Integrate(Player &player, float dt, float floorLevel)
 		gravFlag = 1;
 		gravity.y = -9.8f;
 	}
-		
+	if (player.transform.getPos().y < -490.0f)
+	{
+		// tp to top
+		player.transform.getPos().y = 480.0f;
+		// clear vel and reset position
+		player.velocity.x = player.velocity.z = 0.0f;
+		player.transform.getPos().x = player.transform.getPos().z = 0.0f;
+		// reset ball in hole
+		player.ballInHole = false;
+	}
+	
 	// If the goes below the ground, reset its position to floor level and clear any accrued gravity
 	if (player.transform.getPos().y < floorLevel) // This 1.0f should be (floor level)
 	{

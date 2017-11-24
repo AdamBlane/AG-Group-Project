@@ -104,73 +104,142 @@ void gameScene::LoadGame(string seed)
 	// Use seed to generate the algorithm tiles list
 	algTiles = cgSystem.SetupAlgTiles(levelSeed);
 
+	// Testing
+	level2seed = cgSystem.SetupSeed(seed);
+	level2algTiles = cgSystem.SetupAlgTiles(level2seed);
 }
 
 // Populates scenery tiles
 void gameScene::FillScenery()
 {
-	// Get boundary positions of level tiles in x and z
-	float xMax = 0;
-	float xMin = 0;
-	float zMax = 0;
-	float zMin = 0;
-	float yMin = 0;
-	for (auto &t : algTiles)
-	{
-		if (t->thisCoords.x > xMax)
-			xMax = t->thisCoords.x;
-		if (t->thisCoords.x < xMin)
-			xMin = t->thisCoords.x;
 
-		if (t->thisCoords.z > zMax)
-			zMax = t->thisCoords.z;
-		if (t->thisCoords.z < zMin)
-			zMin = t->thisCoords.z;
-
-		if (t->thisCoords.y < yMin)
-			yMin = t->thisCoords.y;
-	}
-	// Add another tile's width to boundaries
-	xMin -= 10; // To add another layer to the boundary, add 10 to each value
-	zMin -= 20;
-	xMax += 20;
-	zMax += 10;
-	// Set the pause target cam pos and target, now that we know level dimensions
-	pauseCamPos.x = xMin, pauseCamPos.y = 30.0f, pauseCamPos.z = zMin;
-	pauseCamTarget.x = (xMax + xMin) / 2.0f, pauseCamTarget.y = 1.0f, pauseCamTarget.z = (zMax + zMin) / 2.0f;
-
-
-	// Starting in corner, fill with scenery tile if not already filled by level tile
-	// Z
-	for (int zPos = zMax; zPos > zMin; zPos -= 10) // 10 = tile size
-	{
-		// Work in rows; every x for a single z
-		for (int xPos = xMin; xPos < xMax; xPos += 10)
+		// Get boundary positions of level tiles in x and z
+		float xMax2 = 0;
+		float xMin2 = 0;
+		float zMax2 = 0;
+		float zMin2 = 0;
+		float yMin2 = 0;
+		for (auto &t : level2algTiles)
 		{
-			vec3 thisPos = vec3(xPos, 0.0f, zPos); // Not dealing with ramps for now
-			// Check if this pos is already taken by a level tile
-			bool posTaken = false;
-			// Contains search; there will only be one match
-			for (int i = 0; i < algTiles.size(); ++i)
+			if (t->thisCoords.x > xMax2)
+				xMax2 = t->thisCoords.x;
+			if (t->thisCoords.x < xMin2)
+				xMin2 = t->thisCoords.x;
+
+			if (t->thisCoords.z > zMax2)
+				zMax2 = t->thisCoords.z;
+			if (t->thisCoords.z < zMin2)
+				zMin2 = t->thisCoords.z;
+
+			if (t->thisCoords.y < yMin2)
+				yMin2 = t->thisCoords.y;
+		}
+		// Add another tile's width to boundaries
+		xMin2 -= 10; // To add another layer to the boundary, add 10 to each value
+		zMin2-= 20;
+		xMax2 += 20;
+		zMax2 += 10;
+		// Set the pause target cam pos and target, now that we know level dimensions
+		pauseCamPos.x = xMin2, pauseCamPos.y = 30.0f, pauseCamPos.z = zMin2;
+		pauseCamTarget.x = (xMax2 + xMin2) / 2.0f, pauseCamTarget.y = 1.0f, pauseCamTarget.z = (zMax2 + zMin2) / 2.0f;
+
+
+		// Starting in corner, fill with scenery tile if not already filled by level tile
+		// Z
+		for (int zPos = zMax2; zPos > zMin2; zPos -= 10) // 10 = tile size
+		{
+			// Work in rows; every x for a single z
+			for (int xPos = xMin2; xPos < xMax2; xPos += 10)
 			{
-				if (algTiles.at(i)->thisCoords == thisPos)
+				vec3 thisPos = vec3(xPos, 0.0f, zPos); // Not dealing with ramps for now
+													   // Check if this pos is already taken by a level tile
+				bool posTaken = false;
+				// Contains search; there will only be one match
+				for (int i = 0; i < level2algTiles.size(); ++i)
 				{
-					// We have a match
-					posTaken = true;
+					if (level2algTiles.at(i)->thisCoords == thisPos)
+					{
+						// We have a match
+						posTaken = true;
+					}
 				}
-			}
-			// If able to create a scenery tile...
-			if (!posTaken)
+				// If able to create a scenery tile...
+				if (!posTaken)
+				{
+					// Create straight tile
+					//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
+					Tile tile(Tile::SCENERY, thisPos, 0);
+					//tile.transform.getRot().x = -0.785398;
+					// Add to list of tiles to be rendered
+					level2sceneryTiles.push_back(tile);
+				}
+			} // end x block
+		} // end z block
+
+		// Get boundary positions of level tiles in x and z
+		float xMax = 0;
+		float xMin = 0;
+		float zMax = 0;
+		float zMin = 0;
+		float yMin = 0;
+		for (auto &t : algTiles)
+		{
+			if (t->thisCoords.x > xMax)
+				xMax = t->thisCoords.x;
+			if (t->thisCoords.x < xMin)
+				xMin = t->thisCoords.x;
+
+			if (t->thisCoords.z > zMax)
+				zMax = t->thisCoords.z;
+			if (t->thisCoords.z < zMin)
+				zMin = t->thisCoords.z;
+
+			if (t->thisCoords.y < yMin)
+				yMin = t->thisCoords.y;
+		}
+		// Add another tile's width to boundaries
+		xMin -= 10; // To add another layer to the boundary, add 10 to each value
+		zMin -= 20;
+		xMax += 20;
+		zMax += 10;
+		// Set the pause target cam pos and target, now that we know level dimensions
+		pauseCamPos.x = xMin, pauseCamPos.y = 30.0f, pauseCamPos.z = zMin;
+		pauseCamTarget.x = (xMax + xMin) / 2.0f, pauseCamTarget.y = 1.0f, pauseCamTarget.z = (zMax + zMin) / 2.0f;
+
+
+		// Starting in corner, fill with scenery tile if not already filled by level tile
+		// Z
+		for (int zPos = zMax; zPos > zMin; zPos -= 10) // 10 = tile size
+		{
+			// Work in rows; every x for a single z
+			for (int xPos = xMin; xPos < xMax; xPos += 10)
 			{
-				// Create straight tile
-				//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
-				Tile tile(Tile::SCENERY, thisPos, 0);
-				//tile.transform.getRot().x = -0.785398;
-				// Add to list of tiles to be rendered
-				sceneryTiles.push_back(tile);
-			}
-		} // end x block
-	} // end z block
+				vec3 thisPos = vec3(xPos, 0.0f, zPos); // Not dealing with ramps for now
+													   // Check if this pos is already taken by a level tile
+				bool posTaken = false;
+				// Contains search; there will only be one match
+				for (int i = 0; i < algTiles.size(); ++i)
+				{
+					if (algTiles.at(i)->thisCoords == thisPos)
+					{
+						// We have a match
+						posTaken = true;
+					}
+				}
+				// If able to create a scenery tile...
+				if (!posTaken)
+				{
+					// Create straight tile
+					//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
+					Tile tile(Tile::SCENERY, thisPos, 0);
+					//tile.transform.getRot().x = -0.785398;
+					// Add to list of tiles to be rendered
+					sceneryTiles.push_back(tile);
+				}
+			} // end x block
+		} // end z block
+	
+
 }
 
 // Creates tile classes to be drawn
@@ -178,143 +247,284 @@ void gameScene::SetupTilesToBeDrawn()
 {
 	int index = 0;
 
-	// TILE CREATION
-	for (auto &t : algTiles)
-	{
-		int obstacleID = 0;
-		bool hasObstacle = false;
 
-		// Ramp testing
-		// Ramp up when dir is down
-		if (t->id == 7)
+		// TILE CREATION
+		for (auto &t : level2algTiles)
 		{
-			//hasObstacle = Tile::randomNumber(0, 1);
-			//if (hasObstacle)
-			//{
-			//	obstacleID = Tile::randomNumber(1, 2);
-			//	//save this tile position in algTiles
-			//	obstacles.push_back(index);
-			//	obstacles.push_back(obstacleID);
-			//}
-			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
-			// Rotate on x
-			tile.transform.getRot().x = -0.349066;
-			tile.transform.getPos().y += 1.8;
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		// Ramp down when dir is up
-		if (t->id == 8)
-		{
-			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
-			// Rotate on x
-			tile.transform.getRot().x = -0.349066;
-			tile.transform.getPos().y -= 1.8;
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		if (t->id == 0) // Start
-		{
-			// Create start tile
-			Tile tile(Tile::START, t->thisCoords, obstacleID);
-			// Start tile needs rotating 180 (should always face down)
-			tile.transform.getRot().y = 3.14159;
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		else if (t->id == 1) // Straight V
-		{
-			hasObstacle = Tile::randomNumber(0, 1);
-			if (hasObstacle)
+			int obstacleID = 0;
+			bool hasObstacle = false;
+
+			// Ramp testing
+			// Ramp up when dir is down
+			if (t->id == 7)
 			{
-				obstacleID = Tile::randomNumber(1, 2);
-				//save this tile position in algTiles
-				obstacles.push_back(index);
-				obstacles.push_back(obstacleID);
+				//hasObstacle = Tile::randomNumber(0, 1);
+				//if (hasObstacle)
+				//{
+				//	obstacleID = Tile::randomNumber(1, 2);
+				//	//save this tile position in algTiles
+				//	obstacles.push_back(index);
+				//	obstacles.push_back(obstacleID);
+				//}
+				// Create straight tile
+				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				// Rotate on x
+				tile.transform.getRot().x = -0.349066;
+				tile.transform.getPos().y += 1.8;
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
 			}
-			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		else if (t->id == 2) // Straight H
-		{
-			hasObstacle = Tile::randomNumber(0, 1);
-			if (hasObstacle)
+			// Ramp down when dir is up
+			if (t->id == 8)
 			{
-				obstacleID = Tile::randomNumber(1, 2);
-				//save this tile position in algTiles
-				obstacles.push_back(index);
-				obstacles.push_back(obstacleID);
+				// Create straight tile
+				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
+				// Rotate on x
+				tile.transform.getRot().x = -0.349066;
+				tile.transform.getPos().y -= 1.8;
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
 			}
-			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
-			// Straight needs rotating by 90, since it's vertical by default
-			tile.transform.getRot().y = 1.5708;
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		else if (t->id == 3) // Corner BL
-		{
-			// Create corner tile
-			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
-			// Corner needs rotating by 90
-			tile.transform.getRot().y = 1.5708;
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		else if (t->id == 4) // Corner BR
-		{
-			// Create corner tile
-			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
-			// Corner needs rotating by 90
-			tile.transform.getRot().y = 3.14159;
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		else if (t->id == 5) // Corner TL
-		{
-			// Create corner tile
-			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		else if (t->id == 6) // Corner TR
-		{
-			// Create corner tile
-			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
-			// Corner needs rotating by 90
-			tile.transform.getRot().y = -1.5708;
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
-		}
-		else if (t->id == 9) // end
-		{
-			// Create start tile
-			Tile tile(Tile::END, t->thisCoords, obstacleID);
-			// Consult direction to determine how much to rotate
-			if (t->outDir.going_up)
+			if (t->id == 0) // Start
 			{
+				// Create start tile
+				Tile tile(Tile::START, t->thisCoords, obstacleID);
+				// Start tile needs rotating 180 (should always face down)
 				tile.transform.getRot().y = 3.14159;
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
 			}
-			else if (t->outDir.going_down)
+			else if (t->id == 1) // Straight V
 			{
-				// No rotation needed
+				hasObstacle = Tile::randomNumber(0, 1);
+				if (hasObstacle)
+				{
+					obstacleID = Tile::randomNumber(1, 2);
+					//save this tile position in algTiles
+					obstacles.push_back(index);
+					obstacles.push_back(obstacleID);
+				}
+				// Create straight tile
+				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
 			}
-			else if (t->outDir.going_left)
+			else if (t->id == 2) // Straight H
 			{
-				tile.transform.getRot().y = -1.5708;
-			}
-			else if (t->outDir.going_right)
-			{
+				hasObstacle = Tile::randomNumber(0, 1);
+				if (hasObstacle)
+				{
+					obstacleID = Tile::randomNumber(1, 2);
+					//save this tile position in algTiles
+					obstacles.push_back(index);
+					obstacles.push_back(obstacleID);
+				}
+				// Create straight tile
+				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				// Straight needs rotating by 90, since it's vertical by default
 				tile.transform.getRot().y = 1.5708;
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
 			}
-			// Add to list of tiles to be rendered
-			tiles.push_back(tile);
+			else if (t->id == 3) // Corner BL
+			{
+				// Create corner tile
+				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
+				// Corner needs rotating by 90
+				tile.transform.getRot().y = 1.5708;
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
+			}
+			else if (t->id == 4) // Corner BR
+			{
+				// Create corner tile
+				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
+				// Corner needs rotating by 90
+				tile.transform.getRot().y = 3.14159;
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
+			}
+			else if (t->id == 5) // Corner TL
+			{
+				// Create corner tile
+				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
+			}
+			else if (t->id == 6) // Corner TR
+			{
+				// Create corner tile
+				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
+				// Corner needs rotating by 90
+				tile.transform.getRot().y = -1.5708;
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
+			}
+			else if (t->id == 9) // end
+			{
+				// Create start tile
+				Tile tile(Tile::END, t->thisCoords, obstacleID);
+				// Consult direction to determine how much to rotate
+				if (t->outDir.going_up)
+				{
+					tile.transform.getRot().y = 3.14159;
+				}
+				else if (t->outDir.going_down)
+				{
+					// No rotation needed
+				}
+				else if (t->outDir.going_left)
+				{
+					tile.transform.getRot().y = -1.5708;
+				}
+				else if (t->outDir.going_right)
+				{
+					tile.transform.getRot().y = 1.5708;
+				}
+				// Add to list of tiles to be rendered
+				level2tiles.push_back(tile);
+			}
 		}
-	}
+
+		// TILE CREATION
+		for (auto &t : algTiles)
+		{
+			int obstacleID = 0;
+			bool hasObstacle = false;
+
+			// Ramp testing
+			// Ramp up when dir is down
+			if (t->id == 7)
+			{
+				//hasObstacle = Tile::randomNumber(0, 1);
+				//if (hasObstacle)
+				//{
+				//	obstacleID = Tile::randomNumber(1, 2);
+				//	//save this tile position in algTiles
+				//	obstacles.push_back(index);
+				//	obstacles.push_back(obstacleID);
+				//}
+				// Create straight tile
+				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				// Rotate on x
+				tile.transform.getRot().x = -0.349066;
+				tile.transform.getPos().y += 1.8;
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+			// Ramp down when dir is up
+			if (t->id == 8)
+			{
+				// Create straight tile
+				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
+				// Rotate on x
+				tile.transform.getRot().x = -0.349066;
+				tile.transform.getPos().y -= 1.8;
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+			if (t->id == 0) // Start
+			{
+				// Create start tile
+				Tile tile(Tile::START, t->thisCoords, obstacleID);
+				// Start tile needs rotating 180 (should always face down)
+				tile.transform.getRot().y = 3.14159;
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+			else if (t->id == 1) // Straight V
+			{
+				hasObstacle = Tile::randomNumber(0, 1);
+				if (hasObstacle)
+				{
+					obstacleID = Tile::randomNumber(1, 2);
+					//save this tile position in algTiles
+					obstacles.push_back(index);
+					obstacles.push_back(obstacleID);
+				}
+				// Create straight tile
+				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+			else if (t->id == 2) // Straight H
+			{
+				hasObstacle = Tile::randomNumber(0, 1);
+				if (hasObstacle)
+				{
+					obstacleID = Tile::randomNumber(1, 2);
+					//save this tile position in algTiles
+					obstacles.push_back(index);
+					obstacles.push_back(obstacleID);
+				}
+				// Create straight tile
+				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				// Straight needs rotating by 90, since it's vertical by default
+				tile.transform.getRot().y = 1.5708;
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+			else if (t->id == 3) // Corner BL
+			{
+				// Create corner tile
+				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
+				// Corner needs rotating by 90
+				tile.transform.getRot().y = 1.5708;
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+			else if (t->id == 4) // Corner BR
+			{
+				// Create corner tile
+				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
+				// Corner needs rotating by 90
+				tile.transform.getRot().y = 3.14159;
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+			else if (t->id == 5) // Corner TL
+			{
+				// Create corner tile
+				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+			else if (t->id == 6) // Corner TR
+			{
+				// Create corner tile
+				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
+				// Corner needs rotating by 90
+				tile.transform.getRot().y = -1.5708;
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+			else if (t->id == 9) // end
+			{
+				// Create start tile
+				Tile tile(Tile::END, t->thisCoords, obstacleID);
+				// Consult direction to determine how much to rotate
+				if (t->outDir.going_up)
+				{
+					tile.transform.getRot().y = 3.14159;
+				}
+				else if (t->outDir.going_down)
+				{
+					// No rotation needed
+				}
+				else if (t->outDir.going_left)
+				{
+					tile.transform.getRot().y = -1.5708;
+				}
+				else if (t->outDir.going_right)
+				{
+					tile.transform.getRot().y = 1.5708;
+				}
+				// Add to list of tiles to be rendered
+				tiles.push_back(tile);
+			}
+		}
+	
+
 
 }
 
@@ -681,29 +891,62 @@ void gameScene::Input(GLFWwindow* window)
 // Update positions
 void gameScene::Update(GLFWwindow* window)
 {
+	if (players[0].transform.getPos().y < -100.0f)
+		onLevel2 = true;
+
+	if (onLevel2)
+	{
+		if (players[0].transform.getPos().y > 50.0f)
+			players[0].transform.getPos().x = players[0].transform.getPos().z = 0.0f;
+	}
 	// Spatial partitioning
 	// TODO Consider using threads to update current tiles
-	int tileTracker = 0;
+	//int tileTracker = 0;
 	// Check which tile player is on (do this every n frames, not each tick)
 	// TODO - improve performance (even if set at start of alg tiles list, 
 	// this will continue to look through each tile against both players)
 	// escape bools 
 	// In every tile
-	for (auto &t : algTiles)
+	if (onLevel2)
 	{
-		// For every player
-		for (auto &p : players)
+		int tileTracker = 0;
+		for (auto &t : level2algTiles)
 		{
-			// Is this player on this tile?
-			if (t->isPlayerOnTile(p.transform.getPos()))
+			// For every player
+			for (auto &p : players)
 			{
-				// Update player's personal current tile property
-				p.currentTile = tileTracker;
+				// Is this player on this tile?
+				if (t->isPlayerOnTile(p.transform.getPos()))
+				{
+					// Update player's personal current tile property
+					p.currentTile = tileTracker;
+					cout << "player on tile: " << p.currentTile << endl;
+				}
 			}
+			// Increase the tile tracker counter
+			tileTracker++;
 		}
-		// Increase the tile tracker counter
-		tileTracker++;
 	}
+	else
+	{
+		int tileTracker = 0;
+		for (auto &t : algTiles)
+		{
+			// For every player
+			for (auto &p : players)
+			{
+				// Is this player on this tile?
+				if (t->isPlayerOnTile(p.transform.getPos()))
+				{
+					// Update player's personal current tile property
+					p.currentTile = tileTracker;
+				}
+			}
+			// Increase the tile tracker counter
+			tileTracker++;
+		}
+	}
+
 
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
@@ -755,60 +998,125 @@ void gameScene::Update(GLFWwindow* window)
 	// Calculate fps
 	double fps = 1.0 / frameTime;
 	if (accumulator > 1.0f)
-		cout << "FPS:" << fps << endl;
+		//cout << "FPS:" << fps << endl;
 	
-	// Update each player
-	for (auto &p : players)
+
+	if (onLevel2)
 	{
-		// Only apply physics if it's moving
-		if (p.isMoving)
+		// Update each player
+		for (auto &p : players)
 		{
-			// Special case for on a ramp tile (ignored for now)
-			//if (algTiles.at(p.currentTile)->id == 7)
-			//{
-			/* Instantiate in order to call member functions
-			UpRampDown ramp;
-			// Set deets
-			ramp.SetCoords(algTiles.at(p1CurrentTile)->GetThisCoords());
-			// Raise it a bit
-			ramp.thisCoords.y += 1.8;
-			// Find floor level at this point on ramp
-			float floorPos = ramp.SetPlayerHeight(players[0]);
-			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(players[0], floorPos);
-			// Add impulse which is ramp resistance; only applied if on ground
-			if (physicsSystem.gravFlag == 0)
+			// Only apply physics if it's moving
+			if (p.isMoving)
 			{
+				// Special case for on a ramp tile (ignored for now)
+				//if (algTiles.at(p.currentTile)->id == 7)
+				//{
+				/* Instantiate in order to call member functions
+				UpRampDown ramp;
+				// Set deets
+				ramp.SetCoords(algTiles.at(p1CurrentTile)->GetThisCoords());
+				// Raise it a bit
+				ramp.thisCoords.y += 1.8;
+				// Find floor level at this point on ramp
+				float floorPos = ramp.SetPlayerHeight(players[0]);
+				// Work out whether to apply gravity or not (is player on the floor/in air)
+				physicsSystem.ApplyGravity(players[0], floorPos);
+				// Add impulse which is ramp resistance; only applied if on ground
+				if (physicsSystem.gravFlag == 0)
+				{
 				// These numbers need tweaking
 				physicsSystem.epsilon = 0.0001f;
 				players[0] = physicsSystem.RampResistance(players[0], -1.0f);
-			}
-			// Perform physics step
-			if (accumulator >= dt)
-			{
+				}
+				// Perform physics step
+				if (accumulator >= dt)
+				{
 				// Update position
 				players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
 				accumulator -= dt;
-			}*/
-			//}
+				}*/
+				//}
 
-			// Ensure correct slowdown/stop margin
-			physicsSystem.epsilon = 0.5f;
-			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-			// If time to perform another physics step																						 // Perform physics step	
-			if (accumulator >= dt)
-			{
-				// Update position
-				physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1);
-				accumulator -= dt;
+				// Ensure correct slowdown/stop margin
+				physicsSystem.epsilon = 0.5f;
+				// Work out whether to apply gravity or not (is player on the floor/in air)
+				physicsSystem.ApplyGravity(p, level2algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
+																								// If time to perform another physics step																						 // Perform physics step	
+				if (accumulator >= dt)
+				{
+					// Update position
+					physicsSystem.Integrate(p, dt, level2algTiles.at(p.currentTile)->thisCoords.y + 1);
+					accumulator -= dt;
+				}
 			}
+			// Update p1 arrow mesh position to follow player
+			p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
 		}
-		// Update p1 arrow mesh position to follow player
-		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
-
 	}
+
+
+	else
+	{
+		// Update each player
+		for (auto &p : players)
+		{
+			// Only apply physics if it's moving
+			if (p.isMoving)
+			{
+				// Special case for on a ramp tile (ignored for now)
+				//if (algTiles.at(p.currentTile)->id == 7)
+				//{
+				/* Instantiate in order to call member functions
+				UpRampDown ramp;
+				// Set deets
+				ramp.SetCoords(algTiles.at(p1CurrentTile)->GetThisCoords());
+				// Raise it a bit
+				ramp.thisCoords.y += 1.8;
+				// Find floor level at this point on ramp
+				float floorPos = ramp.SetPlayerHeight(players[0]);
+				// Work out whether to apply gravity or not (is player on the floor/in air)
+				physicsSystem.ApplyGravity(players[0], floorPos);
+				// Add impulse which is ramp resistance; only applied if on ground
+				if (physicsSystem.gravFlag == 0)
+				{
+				// These numbers need tweaking
+				physicsSystem.epsilon = 0.0001f;
+				players[0] = physicsSystem.RampResistance(players[0], -1.0f);
+				}
+				// Perform physics step
+				if (accumulator >= dt)
+				{
+				// Update position
+				players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
+				accumulator -= dt;
+				}*/
+				//}
+
+				// Ensure correct slowdown/stop margin
+				physicsSystem.epsilon = 0.5f;
+				// Work out whether to apply gravity or not (is player on the floor/in air)
+				physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
+																								// If time to perform another physics step																						 // Perform physics step	
+				if (accumulator >= dt)
+				{
+					// Update position
+					physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1);
+					accumulator -= dt;
+				}
+			}
+			// Update p1 arrow mesh position to follow player
+			p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
+		}
+	}
+
+
 	
+	
+
+
+
+
 
 	// HUD TIMER RELATED INFORMATION
 	// If the time been in scene is equal to zero then
@@ -842,12 +1150,23 @@ void gameScene::Update(GLFWwindow* window)
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-
-	// Check collisions for the tile each player is on only
-	for (auto &p : players)
+	if (onLevel2)
 	{
-		algTiles.at(p.currentTile)->CheckCollisions(p);
+		// Check collisions for the tile each player is on only
+		for (auto &p : players)
+		{
+			level2algTiles.at(p.currentTile)->CheckCollisions(p);
+		}
 	}
+	else
+	{
+		// Check collisions for the tile each player is on only
+		for (auto &p : players)
+		{
+			algTiles.at(p.currentTile)->CheckCollisions(p);
+		}
+	}
+
 
 	// TODO Determine if this can be done more cheapply, and less hardcoded
 	// If players are on the same tile, check for collisions with each other
@@ -966,16 +1285,33 @@ void gameScene::Render(GLFWwindow* window)
 	// Bind texture shader
 	windowMgr::getInstance()->textureShader->Bind();
 
-	// DRAW all level tiles
-	for (auto &t : tiles)
+	if (onLevel2)
 	{
-		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+		// DRAW all level tiles
+		for (auto &t : level2tiles)
+		{
+			t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+		}
+		// DRAW all scenery tiles
+		for (auto &t : level2sceneryTiles)
+		{
+			t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+		}
 	}
-	// DRAW all scenery tiles
-	for (auto &t : sceneryTiles)
+	else
 	{
-		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+		// DRAW all level tiles
+		for (auto &t : tiles)
+		{
+			t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+		}
+		// DRAW all scenery tiles
+		for (auto &t : sceneryTiles)
+		{
+			t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+		}
 	}
+
 
 	// If there are two players...
 	if (numPlayers == 2)
