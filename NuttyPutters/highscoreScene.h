@@ -14,7 +14,6 @@
 #include "target_camera.h"
 #include "Shader.h"
 
-
 class highscoreScene
 {
 public:
@@ -23,21 +22,47 @@ public:
 	// Deconstructor
 	~highscoreScene();
 
-	// Create a target camera - used for HUD elements
-	AllCamera::target_camera* tarCam;
-
-	Shader* textureShader;
-
-	Mesh* backButton;
-	Transform backButtonTrans;
-
-	Mesh* background;
-	Transform backgroundTrans;
+	// Used to lock framerate
+	double lastFrame = 0;
+	double thisFrame = glfwGetTime();
+	float dt = 0.016; // Lock to 60fps
 
 	Transform optionSceneTransform;
-	int button_manager = 1;
 
-	float total_time = 2.0f;
+	bool buttonPressed[18] = { false };
+	bool isFunctionEmpty = false;
+	int meshesInScene = 24; // Used so everytime a mesh is added the number doesnt need updating
+	int indexAt99 = 0;
+	int indexAtButton = 0;
+
+	// BUTTONS
+	// A/Sqaure = 0
+	// B/X(PS) = 1
+	// X(XB)/Circle = 2
+	// Y/Triangle = 3
+	// LB/L1 = 4
+	// RB/R1 = 5
+	// Back/L2 = 6
+	// Start/R2 = 7
+	// Left Stick Push/Select = 8
+	// Right Stick Push/Start = 9
+	// DPAD UP/Left Stick Push = 10
+	// DPAD LEFT/Right Stick Push = 11
+	// DPAD DOWN/PS Button =12
+	// DPAD RIGHT/Pad = 13
+	// /DPAD UP = 14
+	// /DPAD LEFT = 15 
+	// /DPAD DOWN = 16
+	// /DPAD RIGHT = 17
+
+	// FUCTIONS
+	// Select/fire = 0
+	// Back/Reset = 1
+	// Pause = 2
+	// DPAD UP = 3
+	// DPAD LEFT = 4
+	// DPAD DOWN = 5
+	// DPAD RIGHT = 6
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);

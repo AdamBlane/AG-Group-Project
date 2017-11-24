@@ -46,6 +46,42 @@ class windowMgr
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
 
+		// All contorller related textures are stored in here
+		Texture* buttonsPS[18];
+		Texture* buttonsXB[14];
+		// All the game functions are stored here with the index being the function and the value being the button number
+		int gameFunctions[9];
+
+		// BUTTONS
+		// A/Sqaure = 0
+		// B/X(PS) = 1
+		// X(XB)/Circle = 2
+		// Y/Triangle = 3
+		// LB/L1 = 4
+		// RB/R1 = 5
+		// Back/L2 = 6
+		// Start/R2 = 7
+		// Left Stick Push/Select = 8
+		// Right Stick Push/Start = 9
+		// DPAD UP/Left Stick Push = 10
+		// DPAD LEFT/Right Stick Push = 11
+		// DPAD DOWN/PS Button =12
+		// DPAD RIGHT/Pad = 13
+		// /DPAD UP = 14
+		// /DPAD LEFT = 15 
+		// /DPAD DOWN = 16
+		// /DPAD RIGHT = 17
+
+		// FUCTIONS
+		// Select/fire = 0
+		// Back/Reset = 1
+		// Pause = 2
+		// DPAD UP = 3
+		// DPAD LEFT = 4
+		// DPAD DOWN = 5
+		// DPAD RIGHT = 6
+		
+
 		// Cameras
 		target_camera* HUDtargetCam;
 		target_camera* PAUSEtargetCam;

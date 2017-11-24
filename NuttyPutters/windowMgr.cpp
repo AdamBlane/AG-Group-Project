@@ -110,7 +110,7 @@ GLFWwindow* windowMgr::Init()
 
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < 24; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -150,9 +150,71 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("exitBtnSelected", exitBtnSelected));
 	Texture* exitBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\exitUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("exitBtnUnselected", exitBtnUnselected));
-	// LOAD GAME SCENE TEXTURES
-	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\highscore\\optbackground.png");
+	// LOAD HIGHSCORE SCENE TEXTURES
+	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\grass.png");
 	textures.insert(std::pair<std::string, Texture*>("loadGameBackground", loadGameBackground));
+	Texture* actionLbl = new Texture("..\\NuttyPutters\\Controller\\action.png");
+	textures.insert(std::pair<std::string, Texture*>("actionLbl", actionLbl));
+	Texture* buttonLbl = new Texture("..\\NuttyPutters\\Controller\\buttonLbl.png");
+	textures.insert(std::pair<std::string, Texture*>("buttonLbl", buttonLbl));
+	Texture* selectfireLbl = new Texture("..\\NuttyPutters\\Controller\\selectfire.png");
+	textures.insert(std::pair<std::string, Texture*>("selectfireLbl", selectfireLbl));
+	Texture* backresetLbl = new Texture("..\\NuttyPutters\\Controller\\backreset.png");
+	textures.insert(std::pair<std::string, Texture*>("backresetLbl", backresetLbl));
+	Texture* pauseLbl = new Texture("..\\NuttyPutters\\Controller\\pause.png");
+	textures.insert(std::pair<std::string, Texture*>("pauseLbl", pauseLbl));
+	Texture* questionMarkLbl = new Texture("..\\NuttyPutters\\questionmarks.png");
+	textures.insert(std::pair<std::string, Texture*>("questionMarkLbl", questionMarkLbl));
+	Texture* upLbl = new Texture("..\\NuttyPutters\\Controller\\up.png");
+	textures.insert(std::pair<std::string, Texture*>("upLbl", upLbl));
+	Texture* leftLbl = new Texture("..\\NuttyPutters\\Controller\\left.png");
+	textures.insert(std::pair<std::string, Texture*>("leftLbl", leftLbl));
+	Texture* downLbl = new Texture("..\\NuttyPutters\\Controller\\down.png");
+	textures.insert(std::pair<std::string, Texture*>("downLbl", downLbl));
+	Texture* rightLbl = new Texture("..\\NuttyPutters\\Controller\\right.png");
+	textures.insert(std::pair<std::string, Texture*>("rightLbl", rightLbl));
+	Texture* jumpLbl = new Texture("..\\NuttyPutters\\Controller\\jump.png");
+	textures.insert(std::pair<std::string, Texture*>("jumpLbl", jumpLbl));
+	Texture* zoomInLbl = new Texture("..\\NuttyPutters\\Controller\\zoomin.png");
+	textures.insert(std::pair<std::string, Texture*>("zoomInLbl", zoomInLbl));
+	Texture* zoomOutLbl = new Texture("..\\NuttyPutters\\Controller\\zoomout.png");
+	textures.insert(std::pair<std::string, Texture*>("zoomOutLbl", zoomOutLbl));
+
+	//// LOAD GAME XBOX BUTTON TEXTURES
+	buttonsXB[0] = new Texture("..\\NuttyPutters\\Controller\\aButton.png");
+	buttonsXB[1] = new Texture("..\\NuttyPutters\\Controller\\bButton.png");
+	buttonsXB[2] = new Texture("..\\NuttyPutters\\Controller\\xButton.png");
+	buttonsXB[3] = new Texture("..\\NuttyPutters\\Controller\\yButton.png");
+	buttonsXB[4] = new Texture("..\\NuttyPutters\\Controller\\lb.png");
+	buttonsXB[5] = new Texture("..\\NuttyPutters\\Controller\\rb.png");
+	buttonsXB[6] = new Texture("..\\NuttyPutters\\Controller\\xbback.png");
+	buttonsXB[7] = new Texture("..\\NuttyPutters\\Controller\\xbstart.png");
+	buttonsXB[8] = new Texture("..\\NuttyPutters\\Controller\\psstickleft.png");
+	buttonsXB[9] = new Texture("..\\NuttyPutters\\Controller\\psstickright.png");
+	buttonsXB[10] = new Texture("..\\NuttyPutters\\Controller\\psup.png");
+	buttonsXB[11] = new Texture("..\\NuttyPutters\\Controller\\psleft.png");
+	buttonsXB[12] = new Texture("..\\NuttyPutters\\Controller\\psdown.png");
+	buttonsXB[13] = new Texture("..\\NuttyPutters\\Controller\\psright.png");
+	//// LOAD GAME PLAYSTATION BUTTON TEXTURES
+	buttonsPS[0] = new Texture("..\\NuttyPutters\\Controller\\PSSQUARE.png");
+	buttonsPS[1] = new Texture("..\\NuttyPutters\\Controller\\psx.png");
+	buttonsPS[2] = new Texture("..\\NuttyPutters\\Controller\\pscircle.png");
+	buttonsPS[3] = new Texture("..\\NuttyPutters\\Controller\\pstriangle.png");
+	buttonsPS[4] = new Texture("..\\NuttyPutters\\Controller\\pslone.png");
+	buttonsPS[5] = new Texture("..\\NuttyPutters\\Controller\\psrone.png");
+	buttonsPS[6] = new Texture("..\\NuttyPutters\\Controller\\psltwo.png");
+	buttonsPS[7] = new Texture("..\\NuttyPutters\\Controller\\psrtwo.png");
+	buttonsPS[8] = new Texture("..\\NuttyPutters\\Controller\\psselect.png");
+	buttonsPS[9] = new Texture("..\\NuttyPutters\\Controller\\psstart.png");
+	buttonsPS[10] = new Texture("..\\NuttyPutters\\Controller\\psstickleft.png");
+	buttonsPS[11] = new Texture("..\\NuttyPutters\\Controller\\psstickright.png");
+	buttonsPS[12] = new Texture("..\\NuttyPutters\\Controller\\psbutton.png");
+	buttonsPS[13] = new Texture("..\\NuttyPutters\\Controller\\pspad.png");
+	buttonsPS[14] = new Texture("..\\NuttyPutters\\Controller\\psup.png");
+	buttonsPS[15] = new Texture("..\\NuttyPutters\\Controller\\psleft.png");
+	buttonsPS[16] = new Texture("..\\NuttyPutters\\Controller\\psdown.png");
+	buttonsPS[17] = new Texture("..\\NuttyPutters\\Controller\\psright.png");
+
 	// Read saves file for file names of saves images
 	ifstream saves("saves.csv");
 	while (!saves.eof())
