@@ -169,7 +169,7 @@ GLFWwindow* windowMgr::Init()
 	buttonsXB[10] = new Texture("..\\NuttyPutters\\psup.png");
 	buttonsXB[11] = new Texture("..\\NuttyPutters\\psleft.png");
 	buttonsXB[12] = new Texture("..\\NuttyPutters\\psdown.png");
-	buttonsXB[13] = new Texture("..\\NuttyPutters\\psselect.png");
+	buttonsXB[13] = new Texture("..\\NuttyPutters\\psright.png");
 	//// LOAD GAME PLAYSTATION BUTTON TEXTURES
 	buttonsPS[0] = new Texture("..\\NuttyPutters\\PSSQUARE.png");
 	buttonsPS[1] = new Texture("..\\NuttyPutters\\psx.png");

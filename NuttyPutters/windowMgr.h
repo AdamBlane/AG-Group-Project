@@ -50,8 +50,8 @@ class windowMgr
 		Mesh* arrowMesh;
 
 		// All contorller related textures are stored in here
-		Texture* buttonsPS[17];
-		Texture* buttonsXB[13];
+		Texture* buttonsPS[18];
+		Texture* buttonsXB[14];
 		// All the game functions are stored here with the index being the function and the value being the button number
 		int gameFunctions[9];
 
