@@ -51,7 +51,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\front.png");	//negz
 	sky = new Mesh(filenames);
 
-
 	// Setup player position (must use transform as it's a loaded model - not drawn)
 	player1.transform.getScale() = vec3(0.5);
 	player1.transform.getPos() = vec3(0.0, 10.0, 0.0);
@@ -66,7 +65,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
 	player2.arrowTransform.getScale() = vec3(0.5);
 	player2.arrowTransform.getPos() = vec3(player2.transform.getPos().x, player2.transform.getPos().y - 1.6, player2.transform.getPos().z);
-
 
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
@@ -626,6 +624,7 @@ void gameScene::Input(GLFWwindow* window)
 			player2.jumpPressed = false;
 		}
 	}
+
 	// Pause
 	if (glfwGetKey(window, GLFW_KEY_P))
 	{
@@ -1011,60 +1010,11 @@ void gameScene::Input(GLFWwindow* window)
 				//Decrease fireCounter until reaches 0
 				fireCounter -= 0.5;
 			} */
+
 			// Increment stroke counter by one
 			strokeCounter += 1;
-
-			// Switch statement which changes the stroke counter based on how many strokes the player has taken
-			switch (strokeCounter)
-			{
-			case 0:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["zeroStrokeLbl"]);
-				break;
-			case 1:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["oneStrokeLbl"]);
-				break;
-			case 2:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["twoStrokeLbl"]);
-				break;
-			case 3:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["threeStrokeLbl"]);
-				break;
-			case 4:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["fourStrokeLbl"]);
-				break;
-			case 5:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["fiveStrokeLbl"]);
-				break;
-			case 6:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["sixStrokeLbl"]);
-				break;
-			case 7:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["sevenStrokeLbl"]);
-				break;
-			case 8:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["eightStrokeLbl"]);
-				break;
-			case 9:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["nineStrokeLbl"]);
-				break;
-			case 10:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["tenStrokeLbl"]);
-				break;
-			case 11:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["elevenStrokeLbl"]);
-				break;
-			case 12:
-				windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["twelveStrokeLbl"]);
-				break;
-			case 13:
-				// If more than 13 strokes have been taken then update necessary textures and set boolean to true
-				windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["outOfLbl"]);
-				windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["outOfStrokesLbl"]);
-				windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["saveGameLbl"]);
-				windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
-				isUserOutOfStrokes = true;
-				break;
-			}
+			// Call update stroke mesh in UI.cpp to check if user is out of strokes
+			isUserOutOfStrokes = uiMgr.updateStrokeMesh(strokeCounter);;
 
 			// Flip
 			player1.firePressed = false;
@@ -1259,12 +1209,8 @@ void gameScene::Update(GLFWwindow* window)
 
 		}
 	}
-
-
-
 	// Update p2 arrow mesh position to follow player
 	player2.arrowTransform.getPos() = vec3(player2.transform.getPos().x, player2.transform.getPos().y - 1.6, player2.transform.getPos().z);
-
 
 	// HUD TIMER RELATED INFORMATION
 	// If the time been in scene is equal to zero then
@@ -1289,78 +1235,7 @@ void gameScene::Update(GLFWwindow* window)
 		// If at least a second has passed
 		if (timeSinceContinueWasPressed < glfwGetTime() - timeToThisMethod)
 		{
-			// Get the time since continue was pressed by taking away the time to this method 
-			timeSinceContinueWasPressed = glfwGetTime() - timeToThisMethod;
-
-			// Get the time remaining in seconds by taking away the time the user has to complete the hole 
-			timeRemainingInSeconds = holeTimer - timeSinceContinueWasPressed;
-			// Get the time in minutes, tenths and seconds - 0M:TS
-			timeRemainingInMinutes = timeRemainingInSeconds / 60;
-			timeRemainingInTenths = (timeRemainingInSeconds - (timeRemainingInMinutes * 60)) / 10;
-			timeRemainingInSeconds = timeRemainingInSeconds - (timeRemainingInMinutes * 60) - (timeRemainingInTenths * 10);
-			// Cast each above timer variable into a string eg 1, 3, 0
-			minutesAsString = std::to_string(timeRemainingInMinutes);
-			tenthsAsString = std::to_string(timeRemainingInTenths);
-			secondsAsString = std::to_string(timeRemainingInSeconds);
-			// Create a new empty string time - append each above var to it eg time = 130
-			timeCombined = minutesAsString + tenthsAsString + secondsAsString;
-
-			// for loop that runs 3 times
-			for (int i = 0; i < 3; i++)
-			{
-				// Get the timecombined at index i and make it equal to temp
-				temp = timeCombined[i];
-				// Convert temp to int
-				tempInt = atoi(temp.c_str());
-				// Switch using tempInt value
-				switch (tempInt)
-				{
-				case 0:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-					break;
-				case 1:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["oneLbl"]);
-					break;
-				case 2:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
-					break;
-				case 3:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["threeLbl"]);
-					break;
-				case 4:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["fourLbl"]);
-					break;
-				case 5:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["fiveLbl"]);
-					break;
-				case 6:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["sixLbl"]);
-					break;
-				case 7:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["sevenLbl"]);
-					break;
-				case 8:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["eightLbl"]);
-					break;
-				case 9:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["nineLbl"]);
-					break;
-				default:
-					windowMgr::getInstance()->meshes.at(i + 6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-					break;
-				}
-			}
-		}
-		// If user has no time remaining then
-		if (timeRemainingInSeconds < 0)
-		{
-			// Update necessary textures
-			windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["outOfLbl"]);
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["outOfTimeLbl"]);
-			windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["saveGameLbl"]);
-			windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
-			// Update boolean - used for rendering
-			isUserOutOfTime = true;
+			isUserOutOfTime = uiMgr.updateTimer(timeSinceContinueWasPressed, timeToThisMethod, holeTimer);
 		}
 	}
 }
@@ -1516,17 +1391,7 @@ void gameScene::Collisions()
 		// If user hasnt completed hole then - get
 		if (!hasUserCompletedHole)
 		{
-			// If ball in hole is equal to true - function to courseGenTiles
-			if (end.getBallInHole());
-			{
-				// Update boolean to user having completed the hole
-				hasUserCompletedHole = true;
-				// Update necessary textures
-				windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["holeLbl"]);
-				windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["completeLbl"]);
-				windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["saveGameLbl"]);
-				windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
-			}
+			hasUserCompletedHole = uiMgr.hasUserCompletedTheHole();
 		}
 		break;
 	} // end case 9
