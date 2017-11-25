@@ -51,7 +51,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// Record how many levels to load
 	//numLevels = levelCount;
-	numLevels = 10;
+	numLevels = 1;
 
 	// Save player count
 	numPlayers = playerCount;
@@ -85,7 +85,11 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 		// Chase cam setup	
 		windowMgr::getInstance()->chaseCams[p]->set_target_roation(vec3(0.0f, 0.0f, 0.0f));
 		windowMgr::getInstance()->chaseCams[p]->set_target_pos(vec3(player.transform.getPos()));
-
+		// 2 player?
+		if (numPlayers == 2)
+			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2  / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+		else
+			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 		// Add to players list
 		players.push_back(player);
 	}
@@ -688,6 +692,8 @@ void gameScene::Input(GLFWwindow* window)
 				physicsSystem.Fire(p, p.power);
 				// Reset fire power counter
 				p.power = 0;
+				// Increment player stroke counter
+				p.strokeCounter++;
 				// And we're off! 
 				p.isMoving = true;
 
@@ -753,7 +759,8 @@ void gameScene::CheckLoadNextLevel()
 		{
 			// Check if player is falling through end hole...
 			if (players[i].ballInHole && players[i].transform.getPos().y < -450.0f) // Abritrary time period before tp
-			{	// If there is another level to go...
+			{	
+				// If there is another level to go...
 				if (currentLevel < numLevels - 1)
 				{
 					// Move onto next level; draws behind player while falling
@@ -783,11 +790,17 @@ void gameScene::CheckLoadNextLevel()
 						changedLevel = true;
 					}
 				}
-				// Have finished last level
+				
+				// If finished last level
 				if (currentLevel == numLevels - 1)
 				{
 					// TODO - quit, pause, ask for next level etc
 					// currently just replays the last level played
+
+					// Stop camera from following player
+					players[i].camFollow = false;
+					// Print player scores
+					cout << "P" << i << " : " << players[i].strokeCounter << endl;
 				}
 			}
 		}
@@ -808,7 +821,6 @@ void gameScene::CheckLoadNextLevel()
 	}
 
 }
-
 
 
 // Update player positions, spatitial partitioning, check for level changeover
@@ -842,17 +854,28 @@ void gameScene::Update(GLFWwindow* window)
 
 	// Update chase cams
 	if (numPlayers == 1)
-	{
+	{	// Only follow if not just finished the last level
+		if (players[0].camFollow)
+		{		
+			windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
+		}
+		// Update
 		windowMgr::getInstance()->chaseCams[0]->update(0.00001);
-		windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
 	}
 	else if (numPlayers == 2)
 	{
+		// Only follow if not just finished the last level
+		if (players[0].camFollow)
+		{			
+			windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
+		}
 		windowMgr::getInstance()->chaseCams[0]->update(0.00001);
-		windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
-
+		// Only follow if not just finished the last level
+		if (players[1].camFollow)
+		{			
+			windowMgr::getInstance()->chaseCams[1]->move(players[1].transform.getPos(), players[1].transform.getRot());
+		}
 		windowMgr::getInstance()->chaseCams[1]->update(0.00001);
-		windowMgr::getInstance()->chaseCams[1]->move(players[1].transform.getPos(), players[1].transform.getRot());
 	}
 
 

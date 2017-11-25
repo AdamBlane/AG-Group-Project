@@ -130,6 +130,7 @@ public:
 	void Input(GLFWwindow* window);
 	void SpatialPartitioningUpdate();
 	void CheckLoadNextLevel();
+
 	void Update(GLFWwindow* window);
 	
 	void Collisions();
