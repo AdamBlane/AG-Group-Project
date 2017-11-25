@@ -49,7 +49,7 @@ class windowMgr
 		// All contorller related textures are stored in here
 		Texture* buttonsPS[18];
 		Texture* buttonsXB[14];
-		Texture* buttonsKeyboardOne[50];
+		Texture* buttonsKeyboardOne[45];
 
 		Texture* buttonsKey[99];
 		// All the game functions are stored here with the index being the function and the value being the button number
@@ -77,6 +77,31 @@ class windowMgr
 		// B = 17 
 		// C = 18
 		// D = 19
+		// E = 20
+		// F = 21
+		// G = 22
+		// H = 23
+		// I = 24
+		// J = 25
+		// K = 26
+		// L = 27
+		// M = 28
+		// N = 29
+		// O = 30
+		// P = 31
+		// Q = 32
+		// R = 33
+		// S = 34
+		// T = 35
+		// U = 36
+		// V = 37
+		// W = 38 
+		// X = 39
+		// Y = 40
+		// Z = 41
+		// Left bracket [ = 42
+		// Back slash = 43
+		// Right bracket ] = 44
 
 
 		// BUTTONS

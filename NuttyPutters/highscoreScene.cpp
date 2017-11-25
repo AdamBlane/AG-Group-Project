@@ -183,107 +183,107 @@ void highscoreScene::Init(GLFWwindow * win)
 		// If keyboard function is equal to A then change texture to A
 		if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 65)
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["aLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[16]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 66) // B
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["bLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[17]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 67) // C
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["cLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[18]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 68) // D
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["dLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[19]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 69) // E
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["eLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[20]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 70) // F
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["fLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[21]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 71) // G
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["gLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[22]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 72) // H
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["hLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[23]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 73) // I
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["iLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[24]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 74) // J
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["jLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[25]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 75) // K
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["kLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[26]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 76) // L
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["lLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[27]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 77) // M
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["mLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[28]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 78) // N
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["nLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[29]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 79) // O
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["oLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[30]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 80) // P
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["pLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[31]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 81) // Q
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["qLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[32]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 82) // R
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["rLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[33]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 83) // S
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["sLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[34]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 84) // T
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["tLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[35]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 85) // U
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["uLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[36]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 86) // V
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["vLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[37]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 87) // W
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["wLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[38]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 88) // X
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["xLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[39]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 89) // Y
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["yLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[40]);
 		}
 		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 90) // Z
 		{
-			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["zLbl"]);
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[41]);
 		}
 	}
 	
@@ -491,124 +491,411 @@ void highscoreScene::Loop(GLFWwindow * win)
 // Input 
 void highscoreScene::Input(GLFWwindow* win)
 {
-	// If A is pressed and boolean equals false
-	if (glfwGetKey(win, GLFW_KEY_A) && !aPressed)
+	// If key is pressed and boolean equals false then set bool to true
+	if (glfwGetKey(win, GLFW_KEY_COMMA) && !keyboardButtonPressed[0])
 	{
-		aPressed = true;
-		cout << "a PRESSED" << endl;
+		keyboardButtonPressed[0] = true;
+	}
+	// If key is no longer pressed and bool is true then
+	if (!glfwGetKey(win, GLFW_KEY_COMMA) && keyboardButtonPressed[0])
+	{
+		updateKeyboardFunctionsList(0);
 	}
 
-	if (!glfwGetKey(win, GLFW_KEY_A) && aPressed) // If A is realised
+	if (glfwGetKey(win, GLFW_KEY_MINUS) && !keyboardButtonPressed[1])
 	{
-		cout << "A realised" << endl;
-		// If a function is empty then
-		if (isFunctionEmptyKeyboard) // Check if A is assigned to a function 
-		{
-			// Find the index of the gameFunction which has a value of 99
-			indexAt99 = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 99));
-			// Find the index of the game function whih is assigned to the button that has just been pressed
-			indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 65));
-			// Check if button just pressed has a function assigned to it
-			if (65 == windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey])
-			{
-				// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-				windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-				windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 99;
-			}
-
-			// Make the original empty function equal to the button
-			windowMgr::getInstance()->gameKeyboardFunctions[indexAt99] = 65;
-			windowMgr::getInstance()->meshes.at(27 + indexAt99)->SetTexture(windowMgr::getInstance()->textures["aLbl"]);
-
-			// Check if a function is equal to 99
-			if (windowMgr::getInstance()->gameKeyboardFunctions[0] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[1] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[2] == 99 ||
-				windowMgr::getInstance()->gameKeyboardFunctions[3] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[4] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[5] == 99 ||
-				windowMgr::getInstance()->gameKeyboardFunctions[6] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[7] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[8] == 99 ||
-				windowMgr::getInstance()->gameKeyboardFunctions[9] == 99)
-			{
-				isFunctionEmptyKeyboard = true; // Set bool to true if a function is empty
-			}
-			else
-			{
-				isFunctionEmptyKeyboard = false; // Set bool to false if no function is empty
-			}
-		}
-		else
-		{
-			// Find the function index where the button has been pressed
-			indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 65));
-			// If function is assigned to a button then
-			if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == 65)
-			{
-				// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-				windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-				windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 99;
-				// Set is Function Empty to true
-				isFunctionEmptyKeyboard = true;
-			}
-		}
-
-		aPressed = false;
+		keyboardButtonPressed[1] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_MINUS) && keyboardButtonPressed[1])
+	{
+		updateKeyboardFunctionsList(1);
 	}
 
-	// If A is pressed and boolean equals false
-	if (glfwGetKey(win, GLFW_KEY_B) && !bPressed)
+	if (glfwGetKey(win, GLFW_KEY_PERIOD) && !keyboardButtonPressed[2])
 	{
-		bPressed = true;
-		cout << "b PRESSED" << endl;
+		keyboardButtonPressed[2] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_PERIOD) && keyboardButtonPressed[2])
+	{
+		updateKeyboardFunctionsList(2);
 	}
 
-	if (!glfwGetKey(win, GLFW_KEY_B) && bPressed) // If A is realised
+	if (glfwGetKey(win, GLFW_KEY_SLASH) && !keyboardButtonPressed[3])
 	{
-		cout << "B realised" << endl;
-		// If a function is empty then
-		if (isFunctionEmptyKeyboard) // Check if A is assigned to a function 
-		{
-			// Find the index of the gameFunction which has a value of 99
-			indexAt99 = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 99));
-			// Find the index of the game function which is assigned to the button that has just been pressed
-			indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 66));
-			// Check if button just pressed has a function assigned to it
-			if (66 == windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey])
-			{
-				// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-				windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-				windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 99;
-			}
+		keyboardButtonPressed[3] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_SLASH) && keyboardButtonPressed[3])
+	{
+		updateKeyboardFunctionsList(3);
+	}
 
-			// Make the original empty function equal to the button
-			windowMgr::getInstance()->gameKeyboardFunctions[indexAt99] = 66;
-			windowMgr::getInstance()->meshes.at(27 + indexAt99)->SetTexture(windowMgr::getInstance()->textures["bLbl"]);
+	if (glfwGetKey(win, GLFW_KEY_0) && !keyboardButtonPressed[4])
+	{
+		keyboardButtonPressed[4] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_0) && keyboardButtonPressed[4])
+	{
+		updateKeyboardFunctionsList(4);
+	}
 
-			// Check if a function is equal to 99
-			if (windowMgr::getInstance()->gameKeyboardFunctions[0] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[1] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[2] == 99 ||
-				windowMgr::getInstance()->gameKeyboardFunctions[3] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[4] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[5] == 99 ||
-				windowMgr::getInstance()->gameKeyboardFunctions[6] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[7] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[8] == 99 ||
-				windowMgr::getInstance()->gameKeyboardFunctions[9] == 99)
-			{
-				isFunctionEmptyKeyboard = true; // Set bool to true if a function is empty
-			}
-			else
-			{
-				isFunctionEmptyKeyboard = false; // Set bool to false if no function is empty
-			}
-		}
-		else
-		{
-			// Find the function index where the button has been pressed
-			indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 66));
-			// If function is assigned to a button then
-			if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == 66)
-			{
-				// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-				windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-				windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 99;
-				// Set is Function Empty to true
-				isFunctionEmptyKeyboard = true;
-			}
-		}
+	if (glfwGetKey(win, GLFW_KEY_1) && !keyboardButtonPressed[5])
+	{
+		keyboardButtonPressed[5] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_1) && keyboardButtonPressed[5])
+	{
+		updateKeyboardFunctionsList(5);
+	}
 
-		bPressed = false;
+	if (glfwGetKey(win, GLFW_KEY_2) && !keyboardButtonPressed[6])
+	{
+		keyboardButtonPressed[6] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_2) && keyboardButtonPressed[6])
+	{
+		updateKeyboardFunctionsList(6);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_3) && !keyboardButtonPressed[7])
+	{
+		keyboardButtonPressed[7] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_3) && keyboardButtonPressed[7])
+	{
+		updateKeyboardFunctionsList(7);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_4) && !keyboardButtonPressed[8])
+	{
+		keyboardButtonPressed[8] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_4) && keyboardButtonPressed[8])
+	{
+		updateKeyboardFunctionsList(8);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_5) && !keyboardButtonPressed[9])
+	{
+		keyboardButtonPressed[9] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_5) && keyboardButtonPressed[9])
+	{
+		updateKeyboardFunctionsList(9);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_6) && !keyboardButtonPressed[10])
+	{
+		keyboardButtonPressed[10] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_6) && keyboardButtonPressed[10])
+	{
+		updateKeyboardFunctionsList(10);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_7) && !keyboardButtonPressed[11])
+	{
+		keyboardButtonPressed[11] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_7) && keyboardButtonPressed[11])
+	{
+		updateKeyboardFunctionsList(11);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_8) && !keyboardButtonPressed[12])
+	{
+		keyboardButtonPressed[12] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_8) && keyboardButtonPressed[12])
+	{
+		updateKeyboardFunctionsList(12);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_9) && !keyboardButtonPressed[13])
+	{
+		keyboardButtonPressed[13] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_9) && keyboardButtonPressed[13])
+	{
+		updateKeyboardFunctionsList(13);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_SEMICOLON) && !keyboardButtonPressed[14])
+	{
+		keyboardButtonPressed[14] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_SEMICOLON) && keyboardButtonPressed[14])
+	{
+		updateKeyboardFunctionsList(14);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_EQUAL) && !keyboardButtonPressed[15])
+	{
+		keyboardButtonPressed[15] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_EQUAL) && keyboardButtonPressed[15])
+	{
+		updateKeyboardFunctionsList(15);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_A) && !keyboardButtonPressed[16])
+	{
+		keyboardButtonPressed[16] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_A) && keyboardButtonPressed[16])
+	{
+		updateKeyboardFunctionsList(16);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_B) && !keyboardButtonPressed[17])
+	{
+		keyboardButtonPressed[17] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_B) && keyboardButtonPressed[17])
+	{
+		updateKeyboardFunctionsList(17);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_C) && !keyboardButtonPressed[18])
+	{
+		keyboardButtonPressed[18] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_C) && keyboardButtonPressed[18])
+	{
+		updateKeyboardFunctionsList(18);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_D) && !keyboardButtonPressed[19])
+	{
+		keyboardButtonPressed[19] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_D) && keyboardButtonPressed[19])
+	{
+		updateKeyboardFunctionsList(19);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_E) && !keyboardButtonPressed[20])
+	{
+		keyboardButtonPressed[20] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_E) && keyboardButtonPressed[20])
+	{
+		updateKeyboardFunctionsList(20);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F) && !keyboardButtonPressed[21])
+	{
+		keyboardButtonPressed[21] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F) && keyboardButtonPressed[21])
+	{
+		updateKeyboardFunctionsList(21);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_G) && !keyboardButtonPressed[22])
+	{
+		keyboardButtonPressed[22] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_G) && keyboardButtonPressed[22])
+	{
+		updateKeyboardFunctionsList(22);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_H) && !keyboardButtonPressed[23])
+	{
+		keyboardButtonPressed[23] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_H) && keyboardButtonPressed[23])
+	{
+		updateKeyboardFunctionsList(23);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_I) && !keyboardButtonPressed[24])
+	{
+		keyboardButtonPressed[24] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_I) && keyboardButtonPressed[24])
+	{
+		updateKeyboardFunctionsList(24);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_J) && !keyboardButtonPressed[25])
+	{
+		keyboardButtonPressed[25] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_J) && keyboardButtonPressed[25])
+	{
+		updateKeyboardFunctionsList(25);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_K) && !keyboardButtonPressed[26])
+	{
+		keyboardButtonPressed[26] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_K) && keyboardButtonPressed[26])
+	{
+		updateKeyboardFunctionsList(26);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_L) && !keyboardButtonPressed[27])
+	{
+		keyboardButtonPressed[27] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_L) && keyboardButtonPressed[27])
+	{
+		updateKeyboardFunctionsList(27);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_M) && !keyboardButtonPressed[28])
+	{
+		keyboardButtonPressed[28] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_M) && keyboardButtonPressed[28])
+	{
+		updateKeyboardFunctionsList(28);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_N) && !keyboardButtonPressed[29])
+	{
+		keyboardButtonPressed[29] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_N) && keyboardButtonPressed[29])
+	{
+		updateKeyboardFunctionsList(29);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_O) && !keyboardButtonPressed[30])
+	{
+		keyboardButtonPressed[30] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_O) && keyboardButtonPressed[30])
+	{
+		updateKeyboardFunctionsList(30);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_P) && !keyboardButtonPressed[31])
+	{
+		keyboardButtonPressed[31] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_P) && keyboardButtonPressed[31])
+	{
+		updateKeyboardFunctionsList(31);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_Q) && !keyboardButtonPressed[32])
+	{
+		keyboardButtonPressed[32] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_Q) && keyboardButtonPressed[32])
+	{
+		updateKeyboardFunctionsList(32);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_R) && !keyboardButtonPressed[33])
+	{
+		keyboardButtonPressed[33] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_R) && keyboardButtonPressed[33])
+	{
+		updateKeyboardFunctionsList(33);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_S) && !keyboardButtonPressed[34])
+	{
+		keyboardButtonPressed[34] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_S) && keyboardButtonPressed[34])
+	{
+		updateKeyboardFunctionsList(34);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_T) && !keyboardButtonPressed[35])
+	{
+		keyboardButtonPressed[35] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_T) && keyboardButtonPressed[35])
+	{
+		updateKeyboardFunctionsList(35);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_U) && !keyboardButtonPressed[36])
+	{
+		keyboardButtonPressed[36] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_U) && keyboardButtonPressed[36])
+	{
+		updateKeyboardFunctionsList(36);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_V) && !keyboardButtonPressed[37])
+	{
+		keyboardButtonPressed[37] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_V) && keyboardButtonPressed[37])
+	{
+		updateKeyboardFunctionsList(37);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_W) && !keyboardButtonPressed[38])
+	{
+		keyboardButtonPressed[38] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_W) && keyboardButtonPressed[38])
+	{
+		updateKeyboardFunctionsList(38);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_X) && !keyboardButtonPressed[39])
+	{
+		keyboardButtonPressed[39] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_X) && keyboardButtonPressed[39])
+	{
+		updateKeyboardFunctionsList(39);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_Y) && !keyboardButtonPressed[40])
+	{
+		keyboardButtonPressed[40] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_Y) && keyboardButtonPressed[40])
+	{
+		updateKeyboardFunctionsList(40);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_Z) && !keyboardButtonPressed[41])
+	{
+		keyboardButtonPressed[41] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_Z) && keyboardButtonPressed[41])
+	{
+		updateKeyboardFunctionsList(41);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_LEFT_BRACKET) && !keyboardButtonPressed[42])
+	{
+		keyboardButtonPressed[42] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_LEFT_BRACKET) && keyboardButtonPressed[42])
+	{
+		updateKeyboardFunctionsList(42);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_BACKSLASH) && !keyboardButtonPressed[43])
+	{
+		keyboardButtonPressed[43] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_BACKSLASH) && keyboardButtonPressed[43])
+	{
+		updateKeyboardFunctionsList(43);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_RIGHT_BRACKET) && !keyboardButtonPressed[44])
+	{
+		keyboardButtonPressed[44] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_RIGHT_BRACKET) && keyboardButtonPressed[44])
+	{
+		updateKeyboardFunctionsList(44);
 	}
 
 	// Create a variable to check if the joy stick is present - 1 means true
@@ -755,6 +1042,58 @@ void highscoreScene::Input(GLFWwindow* win)
 			}
 		}
 	}
+}
+
+// Updates the keyboard function array
+void highscoreScene::updateKeyboardFunctionsList(int keyboardButtonNumber)
+{
+	if (isFunctionEmptyKeyboard) // Check if there is an empty keyboard function
+	{
+		// Find the index of the gameKeyboardFunctions which has a value of 999
+		indexAt99 = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 999));
+		// Find the index of the gameKeyboardFunctions which is assigned to the button that has just been pressed
+		indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, keyboardButtonNumber + 49));
+		// Check if button just pressed has a function assigned to it
+		if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == keyboardButtonNumber + 49)
+		{
+			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+			windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+			windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 999;
+		}
+
+		// Make the original empty function equal to the button
+		windowMgr::getInstance()->gameKeyboardFunctions[indexAt99] = keyboardButtonNumber + 49;
+		windowMgr::getInstance()->meshes.at(27 + indexAt99)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[keyboardButtonNumber]);
+
+		// Check if a function is equal to 99
+		if (windowMgr::getInstance()->gameKeyboardFunctions[0] == 999 || windowMgr::getInstance()->gameKeyboardFunctions[1] == 999 || windowMgr::getInstance()->gameKeyboardFunctions[2] == 999 ||
+			windowMgr::getInstance()->gameKeyboardFunctions[3] == 999 || windowMgr::getInstance()->gameKeyboardFunctions[4] == 999 || windowMgr::getInstance()->gameKeyboardFunctions[5] == 999 ||
+			windowMgr::getInstance()->gameKeyboardFunctions[6] == 999 || windowMgr::getInstance()->gameKeyboardFunctions[7] == 999 || windowMgr::getInstance()->gameKeyboardFunctions[8] == 999 ||
+			windowMgr::getInstance()->gameKeyboardFunctions[9] == 999)
+		{
+			isFunctionEmptyKeyboard = true; // Set bool to true if a function is empty
+		}
+		else
+		{
+			isFunctionEmptyKeyboard = false; // Set bool to false if no function is empty
+		}
+	}
+	else
+	{
+		// Find the function index where the button has been pressed
+		indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, keyboardButtonNumber + 49));
+		// If function is assigned to a button then
+		if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == keyboardButtonNumber + 49)
+		{
+			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+			windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+			windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 999;
+			// Set is Function Empty to true
+			isFunctionEmptyKeyboard = true;
+		}
+	}
+
+	keyboardButtonPressed[keyboardButtonNumber] = false;
 }
 
 void highscoreScene::Update(GLFWwindow* win)

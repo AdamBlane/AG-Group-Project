@@ -37,8 +37,54 @@ public:
 	int indexAtButton = 0;
 	int indexAtKey = 0;
 
-	bool aPressed = false;
-	bool bPressed = false;
+	bool keyboardButtonPressed[45] = { false };
+
+	// KEYBOARD - One
+	// Comma = 0
+	// Minus = 1
+	// Full stop = 2
+	// Forward Slash = 3
+	// Num 0 = 4
+	// Num 1 = 5
+	// Num 2 = 6
+	// Num 3 = 7
+	// Num 4 = 8
+	// Num 5 = 9
+	// Num 6 = 10
+	// Num 7 = 11
+	// Num 8 = 12
+	// Num 9 = 13
+	// SemiColon ; = 14
+	// Equals = = 15
+	// A = 16
+	// B = 17 
+	// C = 18
+	// D = 19
+	// E = 20
+	// F = 21
+	// G = 22
+	// H = 23
+	// I = 24
+	// J = 25
+	// K = 26
+	// L = 27
+	// M = 28
+	// N = 29
+	// O = 30
+	// P = 31
+	// Q = 32
+	// R = 33
+	// S = 34
+	// T = 35
+	// U = 36
+	// V = 37
+	// W = 38 
+	// X = 39
+	// Y = 40
+	// Z = 41
+	// Left bracket [ = 42
+	// Back slash = 43
+	// Right bracket ] = 44
 
 	// BUTTONS
 	// A/Sqaure = 0
@@ -72,8 +118,8 @@ public:
 	// Zoom in = 8
 	// Zoom out = 9
 
-	static void keyCallBack(GLFWwindow* win, int key, int scancode, int action, int mods);
-
+	// Update the keyboard functions list
+	void updateKeyboardFunctionsList(int keyboardButtonNumber);
 	// Draw stuff
 	void Loop(GLFWwindow* win);
 	// Input 
