@@ -50,13 +50,6 @@ void startScene::Track_Mouse(GLFWwindow *window)
 			windowMgr::getInstance()->button_manager = 6;
 		}
 	}
-	// Get rid of this! It prevents keyboard input
-	else
-	{
-		//highlights nothing
-		windowMgr::getInstance()->button_manager = 0;
-	}
-
 }
 // Setup; does nothing atm
 void startScene::Init(GLFWwindow* win)

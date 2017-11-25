@@ -1754,7 +1754,7 @@ vec3 gameScene::CheckCollisionsObstacle1(vec3 coords, vec3 playerPos, vec3 dir, 
 void gameScene::Render(GLFWwindow* window)
 {
 	// This draws stuff to left hand side of screen
-	glViewport(0, 0, 800, 900);
+	glViewport(0, 0, windowMgr::getInstance()->width/2.0, windowMgr::getInstance()->height);
 
 	// Calculate mvp matrix
 	mat4 mvp;

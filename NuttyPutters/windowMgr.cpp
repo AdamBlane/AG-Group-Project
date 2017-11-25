@@ -218,10 +218,14 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("windowBtnUnselected", windowBtnUnselected));
 	Texture* windowBtnSelected = new Texture("..\\NuttyPutters\\highscore\\wiw(1).png");
 	textures.insert(std::pair<std::string, Texture*>("windowBtnSelected", windowBtnSelected));
-	Texture* fullscreenBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\full.png");
+	Texture* fullscreenBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\doesitmatter.png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnUnselected", fullscreenBtnUnselected));
-	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
+	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\highscore\\no.png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnSelected", fullscreenBtnSelected));
+	Texture* smallwindowBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\full.png");
+	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnUnselected", smallwindowBtnUnselected));
+	Texture* smallwindowBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
+	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnSelected", smallwindowBtnSelected));
 	// GAME SCENE TEXTURES
 	Texture* playerRedTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
@@ -307,6 +311,7 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("holeLbl", holeLbl));
 	Texture* completeLbl = new Texture("..\\NuttyPutters\\complete.png");
 	textures.insert(std::pair<std::string, Texture*>("completeLbl", completeLbl));
+
 
 
 	//Tiles stuff initialized here

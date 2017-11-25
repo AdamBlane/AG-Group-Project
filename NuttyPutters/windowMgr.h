@@ -32,7 +32,7 @@ class windowMgr
 		//for mouse movement when the resoloution changes
 		double windowScale = 1.0;
 		//sets the window scalon the x axise by dividing by the orignal value
-		void setWindowScale(int value) { windowScale = value / 1600.0; }
+		void setWindowScale(int value) {  windowScale = value / 1600.0; }
 		// For button navigation across all menu scenes
 		int button_manager = 0;
 		//track mouse
