@@ -24,7 +24,6 @@ gameScene::~gameScene()
 	masterSceneryTiles.clear();
 	pauseCamLevelProperties.clear();
 	obstacles.clear();
-	
 
 }
 
@@ -52,7 +51,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// Record how many levels to load
 	//numLevels = levelCount;
-	numLevels = 1;
+	numLevels = 10;
 
 	// Save player count
 	numPlayers = playerCount;
@@ -718,50 +717,10 @@ void gameScene::Input(GLFWwindow* window)
 	}
 }
 
-// Update positions
-void gameScene::Update(GLFWwindow* window)
+// Update each player's current tile value 
+void gameScene::SpatialPartitioningUpdate()
 {
-	// Shall we load the next level? 
-	for (int i = 0; i < players.size(); ++i)
-	{
-		// Check if player is falling through end hole...
-		if (players[i].ballInHole && players[i].transform.getPos().y < -400.0f)
-		{
-			if (currentLevel < numLevels - 1)
-			{
-				// Move onto next level; draws behind player while falling
-				// Only do this once despite this block executing lotsa frames
-				if (!changedLevel)
-				{
-					currentLevel++;
-					changedLevel = true;
-				}
-				cout << "Current level:" << currentLevel << endl;
-			}
-
-			// Have finished last level
-			if (currentLevel == numLevels - 1)
-			{
-				// TODO - quit, pause, ask for next level etc
-				cout << "Finished last level" << endl;
-			}
-		}
-		// Check if player is falling from top of skybox onto next level
-		else if (players[i].isFalling && players[i].transform.getPos().y > 50.0f)
-		{
-			// Ensure player lands on start tile
-			players[i].transform.getPos().z = 0.0f;
-			players[i].transform.getPos().x = -2.0f + (i * 4.0f);
-			// Allow level changing for next level
-			changedLevel = false;
-			// Change pause cam properties to match with this level
-			windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[currentLevel * 2]);
-			windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[currentLevel * 2 + 1]);
-
-		}
-	}
-	
-	// Spatial partitioning
+	// Records index as list is iterated over
 	int tileTracker = 0;
 	for (auto &t : masterAlgTiles[currentLevel])
 	{
@@ -778,8 +737,67 @@ void gameScene::Update(GLFWwindow* window)
 		// Increase the tile tracker counter
 		tileTracker++;
 	}
+}
+
+// Acts on whether to load the next level or not
+void gameScene::CheckLoadNextLevel(Player &player)
+{
+	// Was player last on end tile for this level
+	//if (masterAlgTiles[currentLevel].at(player.currentTile)->id == 9)
+	{
+		// Check if player is falling through end hole...
+		if (player.ballInHole && player.transform.getPos().y < -400.0f)
+		{
+			if (currentLevel < numLevels - 1)
+			{
+				// Move onto next level; draws behind player while falling
+				// Only do this once (will trigger multiple frames)
+				if (!changedLevel)
+				{
+					// Increase level index
+					currentLevel++;
+					// Prevent further increments
+					changedLevel = true;
+				}
+			}
+			// Have finished last level
+			if (currentLevel == numLevels - 1)
+			{
+				// TODO - quit, pause, ask for next level etc
+				// currently just replays the last level played
+			}
+		}
+	}
+
+	// Otherwise check if player is falling from top of skybox onto next level
+	//else
+		if (player.isFalling && player.transform.getPos().y > 50.0f)
+	{
+		// Ensure player lands on start tile
+		player.transform.getPos().x =  player.transform.getPos().z = 0.0f;
+		
+		// Allow level changing for next level
+		changedLevel = false;
+		// Change pause cam properties to match with this level
+		windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[currentLevel * 2]);
+		windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[currentLevel * 2 + 1]);
+	}
+}
 
 
+
+// Update player positions, spatitial partitioning, check for level changeover
+void gameScene::Update(GLFWwindow* window)
+{
+	// Check whether to load next level, pass in player
+	for (auto &p : players)
+	{
+		CheckLoadNextLevel(p);
+	}
+	
+	// Update spatial partitioning
+	SpatialPartitioningUpdate();
+	
 
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;

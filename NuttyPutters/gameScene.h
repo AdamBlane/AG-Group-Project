@@ -47,15 +47,18 @@ public:
 	int numLevels = 1;
 	// Current level 
 	int currentLevel = 0;
+	// For loading a new level
 	bool changedLevel = false;
 	// Total number of tiles per level
 	int courseSize;
 
+	// SYSTEMS USED
 	// Handles UI logic
 	UI uiMgr;
 	// Handles physics logic
 	Physics physicsSystem;
 
+	// GAME VARIABLES
 	// List of all level seeds, this is used to create algTiles list
 	vector<vector<int>> masterLevelSeeds;
 	// List of all level alg tiles, used to determine collisions and spatial partitioning
@@ -69,6 +72,9 @@ public:
 	vector<vec3> pauseCamLevelProperties;
 	// Record obstacle data ( tilePos, obType, tilePos, obType etc)
 	vector<int> obstacles; 
+
+	// Prevent saving same level more than once
+	bool levelSaved = false; 
 
 	// Gameplay variables
 	// TODO - set these in init to be safe (sometimes not reset in other scenes)
@@ -97,11 +103,7 @@ public:
 	double accumulator = 0.0;
 	float dt = 0.016;  // This is 60fps
 
-	// Fire action variables
-	bool p2firePressed = false; // Prevent shooting ball again whilst already moving
-	float fireCounter; // This is a force counter (TODO: rename)
-	float p2fireCounter;
-	bool levelSaved = false; // Prevent saving same level more than once
+	
 
 	// Camera variables
 	float camSpeed = 2.0f; 
@@ -126,7 +128,10 @@ public:
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);
 	void Input(GLFWwindow* window);
+	void SpatialPartitioningUpdate();
+	void CheckLoadNextLevel(Player &player);
 	void Update(GLFWwindow* window);
+	
 	void Collisions();
 	void Render(GLFWwindow* window);
 };
