@@ -53,6 +53,7 @@ public:
 	vector<int> levelSeed; // This course seed; each tile has an int id
 	int courseSize; // Total number of tiles this level
 	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
+	map<int, int> obsMap;
 
 	// Gameplay variables
 	// TODO - set these in init to be safe (sometimes not reset in other scenes)

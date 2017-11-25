@@ -8,7 +8,7 @@
 // Default constructor
 gameScene::gameScene() { }
 // Deconstructor
-gameScene::~gameScene() 
+gameScene::~gameScene()
 {
 	// Delete everything in alg tiles since it was declared on heap
 	for (auto &t : algTiles)
@@ -61,12 +61,12 @@ void gameScene::Init(GLFWwindow* window, int courseLength, string seed)
 	filenames.push_back("..\\NuttyPutters\\skyboxes\\front.png");	//negz
 	sky = new Mesh(filenames);
 
-	
+
 
 	// Setup player position (must use transform as it's a loaded model - not drawn)
 	Player player1;
 	player1.transform.getScale() = vec3(0.5);
-	player1.transform.getPos() = vec3(0.0, 10.0, 0.0);
+	player1.transform.getPos() = vec3(0.0, 1.0, 0.0);
 	// Arrow
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	player1.arrowTransform.getScale() = vec3(0.5);
@@ -191,7 +191,7 @@ void gameScene::SetupTilesToBeDrawn()
 	// ***************** V - TODO
 	// A map could be better? map<index, obstacleID> ?	--> no odd loops or switches needed afterwards
 	// how to pass a different information to the algTiles? --> having a property bool/int for obstacle?
-	// Should obstacle collisions be in courseGenTiles, where all collision happen?
+	// Should obstacle collisions be in courseGenTiles, where all collisions happen?
 	// if in gameScene --> gather current tile, check if has obstacle (using a map?)
 	// if in courseGenTiles --> no current tile to gather (possibly?), just check if has obstacle (map or different way?)
 	// mix of two solutions --> separate method for obstacles in courseGenTiles, called then for the current tile in gameScene (?)
@@ -207,16 +207,8 @@ void gameScene::SetupTilesToBeDrawn()
 		// Ramp up when dir is down
 		if (t->id == 7)
 		{
-			//hasObstacle = Tile::randomNumber(0, 1);
-			//if (hasObstacle)
-			//{
-			//	obstacleID = Tile::randomNumber(1, 2);
-			//	//save this tile position in algTiles
-			//	obstacles.push_back(index);
-			//	obstacles.push_back(obstacleID);
-			//}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+			Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 			// Rotate on x
 			tile.transform.getRot().x = -0.349066;
 			tile.transform.getPos().y += 1.8;
@@ -245,31 +237,31 @@ void gameScene::SetupTilesToBeDrawn()
 		}
 		else if (t->id == 1) // Straight V
 		{
-			hasObstacle = Tile::randomNumber(0, 1);
-			if (hasObstacle)
-			{
-				obstacleID = Tile::randomNumber(1, 2);
+			//hasObstacle = Tile::randomNumber(0, 1);
+			//if (hasObstacle)
+			//{
+				obstacleID = 1/*Tile::randomNumber(1, 2)*/;
 				//save this tile position in algTiles
 				obstacles.push_back(index);
 				obstacles.push_back(obstacleID);
-			}
+			//}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+			Tile tile(Tile::STRAIGHT, t->thisCoords, 1);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
 		else if (t->id == 2) // Straight H
 		{
-			hasObstacle = Tile::randomNumber(0, 1);
-			if (hasObstacle)
-			{
-				obstacleID = Tile::randomNumber(1, 2);
+			//hasObstacle = Tile::randomNumber(0, 1);
+			//if (hasObstacle)
+			//{
+				obstacleID = 1 /*Tile::randomNumber(1, 2)*/;
 				//save this tile position in algTiles
 				obstacles.push_back(index);
 				obstacles.push_back(obstacleID);
-			}
+			//}
 			// Create straight tile
-			Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+			Tile tile(Tile::STRAIGHT, t->thisCoords, 1);
 			// Straight needs rotating by 90, since it's vertical by default
 			tile.transform.getRot().y = 1.5708;
 			// Add to list of tiles to be rendered
@@ -277,6 +269,14 @@ void gameScene::SetupTilesToBeDrawn()
 		}
 		else if (t->id == 3) // Corner BL
 		{
+			hasObstacle = Tile::randomNumber(0, 1);
+			if (hasObstacle)
+			{
+				obstacleID = 2;
+				//save this tile position in algTiles
+				obstacles.push_back(index);
+				obstacles.push_back(obstacleID);
+			}
 			// Create corner tile
 			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
 			// Corner needs rotating by 90
@@ -286,6 +286,14 @@ void gameScene::SetupTilesToBeDrawn()
 		}
 		else if (t->id == 4) // Corner BR
 		{
+			hasObstacle = Tile::randomNumber(0, 1);
+			if (hasObstacle)
+			{
+				obstacleID = 2;
+				//save this tile position in algTiles
+				obstacles.push_back(index);
+				obstacles.push_back(obstacleID);
+			}
 			// Create corner tile
 			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
 			// Corner needs rotating by 90
@@ -295,6 +303,14 @@ void gameScene::SetupTilesToBeDrawn()
 		}
 		else if (t->id == 5) // Corner TL
 		{
+			hasObstacle = Tile::randomNumber(0, 1);
+			if (hasObstacle)
+			{
+				obstacleID = 2;
+				//save this tile position in algTiles
+				obstacles.push_back(index);
+				obstacles.push_back(obstacleID);
+			}
 			// Create corner tile
 			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
 			// Add to list of tiles to be rendered
@@ -302,6 +318,14 @@ void gameScene::SetupTilesToBeDrawn()
 		}
 		else if (t->id == 6) // Corner TR
 		{
+			hasObstacle = Tile::randomNumber(0, 1);
+			if (hasObstacle)
+			{
+				obstacleID = 2;
+				//save this tile position in algTiles
+				obstacles.push_back(index);
+				obstacles.push_back(obstacleID);
+			}
 			// Create corner tile
 			Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
 			// Corner needs rotating by 90
@@ -333,8 +357,8 @@ void gameScene::SetupTilesToBeDrawn()
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
+		index++;
 	}
-
 }
 
 // Main game loop 
@@ -877,7 +901,7 @@ void gameScene::Update(GLFWwindow* window)
 	double fps = 1.0 / frameTime;
 	if (accumulator > 1.0f)
 		cout << "FPS:" << fps << endl;
-	
+
 	// Update each player
 	for (auto &p : players)
 	{
@@ -906,111 +930,111 @@ void gameScene::Update(GLFWwindow* window)
 		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
 
 	}
-/*	
-	// PLAYER 1 UPDATE
-	if (players[0].isMoving)
-	{
-		// Down ramp behaviour neads tweaking
-		/*if (algTiles.at(p1CurrentTile).id == 8)
+	/*
+		// PLAYER 1 UPDATE
+		if (players[0].isMoving)
 		{
-			DownRampDown ramp;
-			ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
-			ramp.thisCoords.y += 1.8;
-			float floorPos = ramp.SetPlayerHeight(players[0]);
-			physicsSystem.ApplyGravity(players[0], floorPos);
-			if (physicsSystem.gravFlag == 0)
+			// Down ramp behaviour neads tweaking
+			/*if (algTiles.at(p1CurrentTile).id == 8)
 			{
-				physicsSystem.epsilon = 0.0001f;
-				players[0] = physicsSystem.RampResistance(players[0], -1.0f);
+				DownRampDown ramp;
+				ramp.SetCoords(algTiles.at(p1CurrentTile).GetThisCoords());
+				ramp.thisCoords.y += 1.8;
+				float floorPos = ramp.SetPlayerHeight(players[0]);
+				physicsSystem.ApplyGravity(players[0], floorPos);
+				if (physicsSystem.gravFlag == 0)
+				{
+					physicsSystem.epsilon = 0.0001f;
+					players[0] = physicsSystem.RampResistance(players[0], -1.0f);
+				}
+
+				if (accumulator >= dt)
+				{
+					players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
+					accumulator -= dt;
+				}
+
 			}
 
-			if (accumulator >= dt)
+			// If on ramp, need to know exact y position to be at at this point on tile
+			if (algTiles.at(p1CurrentTile)->id == 7)
 			{
-				players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
-				accumulator -= dt;
+				// Instantiate in order to call member functions
+				UpRampDown ramp;
+				// Set deets
+				ramp.SetCoords(algTiles.at(p1CurrentTile)->GetThisCoords());
+				// Raise it a bit
+				ramp.thisCoords.y += 1.8;
+				// Find floor level at this point on ramp
+				float floorPos = ramp.SetPlayerHeight(players[0]);
+				// Work out whether to apply gravity or not (is player on the floor/in air)
+				physicsSystem.ApplyGravity(players[0], floorPos);
+				// Add impulse which is ramp resistance; only applied if on ground
+				if (physicsSystem.gravFlag == 0)
+				{
+					// These numbers need tweaking
+					physicsSystem.epsilon = 0.0001f;
+					players[0] = physicsSystem.RampResistance(players[0], -1.0f);
+				}
+				// Perform physics step
+				if (accumulator >= dt)
+				{
+					// Update position
+					players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
+					accumulator -= dt;
+				}
+
+			}
+			else
+			{
+				// Ensure correct slowdown/stop margin
+				physicsSystem.epsilon = 0.5f;
+				// Work out whether to apply gravity or not (is player on the floor/in air)
+				physicsSystem.ApplyGravity(players[0], algTiles.at(p1CurrentTile)->thisCoords.y + 1.0f); // 1 is floor gap
+				// Perform physics step
+				if (accumulator >= dt)
+				{
+					// Update position
+					players[0] = physicsSystem.Integrate(players[0], dt, algTiles.at(p1CurrentTile)->thisCoords.y + 1);
+					accumulator -= dt;
+				}
+
 			}
 
+			//vec3 rot = cross(normalize(players[0].velocity), vec3(0.0f, 1.0f, 0.0f));
+			//players[0].transform.getRot() += rot * dt;
 		}
 
-		// If on ramp, need to know exact y position to be at at this point on tile
-		if (algTiles.at(p1CurrentTile)->id == 7)
+
+
+		// PLAYER 2 UPDATE
+		if (players[1].isMoving)
 		{
-			// Instantiate in order to call member functions
-			UpRampDown ramp;
-			// Set deets
-			ramp.SetCoords(algTiles.at(p1CurrentTile)->GetThisCoords());
-			// Raise it a bit
-			ramp.thisCoords.y += 1.8;
-			// Find floor level at this point on ramp
-			float floorPos = ramp.SetPlayerHeight(players[0]);
-			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(players[0], floorPos);
-			// Add impulse which is ramp resistance; only applied if on ground
-			if (physicsSystem.gravFlag == 0)
+			// If on ramp, need to know exact y position to be at at this point on tile
+			if (algTiles.at(p2CurrentTile)->id == 7)
 			{
-				// These numbers need tweaking
-				physicsSystem.epsilon = 0.0001f;
-				players[0] = physicsSystem.RampResistance(players[0], -1.0f);
+				// TODO
 			}
-			// Perform physics step
-			if (accumulator >= dt)
+			else
 			{
-				// Update position
-				players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
-				accumulator -= dt;
+				// Ensure correct slowdown/stop margin
+				physicsSystem.epsilon = 0.5f;
+
+				// Work out whether to apply gravity or not (is player on the floor/in air)
+				physicsSystem.ApplyGravity(players[1], algTiles.at(p2CurrentTile)->thisCoords.y + 1.0f); // 1 is floor gap
+				// Perform physics step																			   // Perform physics step
+				if (accumulator >= dt)
+				{
+					// Update position
+					players[1] = physicsSystem.Integrate(players[1], dt, algTiles.at(p2CurrentTile)->thisCoords.y + 1);
+					accumulator -= dt;
+				}
+
 			}
-
 		}
-		else
-		{
-			// Ensure correct slowdown/stop margin
-			physicsSystem.epsilon = 0.5f;
-			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(players[0], algTiles.at(p1CurrentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-			// Perform physics step	
-			if (accumulator >= dt)
-			{
-				// Update position
-				players[0] = physicsSystem.Integrate(players[0], dt, algTiles.at(p1CurrentTile)->thisCoords.y + 1);
-				accumulator -= dt;
-			}
-
-		}
-
-		//vec3 rot = cross(normalize(players[0].velocity), vec3(0.0f, 1.0f, 0.0f));
-		//players[0].transform.getRot() += rot * dt;
-	}
-
-	
-
-	// PLAYER 2 UPDATE
-	if (players[1].isMoving)
-	{
-		// If on ramp, need to know exact y position to be at at this point on tile
-		if (algTiles.at(p2CurrentTile)->id == 7)
-		{
-			// TODO
-		}
-		else
-		{
-			// Ensure correct slowdown/stop margin
-			physicsSystem.epsilon = 0.5f;
-
-			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(players[1], algTiles.at(p2CurrentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-			// Perform physics step																			   // Perform physics step	
-			if (accumulator >= dt)
-			{
-				// Update position
-				players[1] = physicsSystem.Integrate(players[1], dt, algTiles.at(p2CurrentTile)->thisCoords.y + 1);
-				accumulator -= dt;
-			}
-
-		}
-	}
-	// Update p2 arrow mesh position to follow player
-	players[1].arrowTransform.getPos() = vec3(players[1].transform.getPos().x, players[1].transform.getPos().y - 1.6, players[1].transform.getPos().z);
-*/
+		// Update p2 arrow mesh position to follow player
+		players[1].arrowTransform.getPos() = vec3(players[1].transform.getPos().x, players[1].transform.getPos().y - 1.6, players[1].transform.getPos().z);
+	*/
 	// HUD TIMER RELATED INFORMATION
 	// If the time been in scene is equal to zero then
 	if (timeBeenInScene == 0)
@@ -1039,6 +1063,49 @@ void gameScene::Update(GLFWwindow* window)
 	}
 }
 
+void changeDirection(Player &player, vec3 rectCenter, vec3 rectSize)
+{
+	vec3 p = player.transform.getPos() - rectCenter;
+	p = normalize(p);
+
+	float speed = length(player.velocity);
+
+	player.velocity = p * speed;
+
+	player.velocity.y = 0.0f;
+}
+
+bool SphereRectCollision(Player player, vec3 rectCenter, vec3 rectSize)
+{
+
+	float sphereXDistance = abs(player.transform.getPos().x - rectCenter.x);
+	float sphereYDistance = abs(player.transform.getPos().y - rectCenter.y);
+	float sphereZDistance = abs(player.transform.getPos().z - rectCenter.z);
+
+	if (sphereXDistance >= (rectSize.x + player.radius)) { return false; }
+	if (sphereYDistance >= (rectSize.y + player.radius)) { return false; }
+	if (sphereZDistance >= (rectSize.z + player.radius)) { return false; }
+
+	if (sphereXDistance < (rectSize.x))
+	{
+		return true;
+	}
+	if (sphereYDistance < (rectSize.y))
+	{
+		return true;
+	}
+	if (sphereZDistance < (rectSize.z))
+	{
+		return true;
+	}
+
+	float cornerDistance_sq = ((sphereXDistance - rectSize.x) * (sphereXDistance - rectSize.x)) +
+		((sphereYDistance - rectSize.y) * (sphereYDistance - rectSize.y) +
+		((sphereYDistance - rectSize.z) * (sphereYDistance - rectSize.z)));
+
+	return (cornerDistance_sq < (player.radius * player.radius));
+}
+
 // Tracks current tile player is on 
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
@@ -1047,6 +1114,56 @@ void gameScene::Collisions()
 	// Check collisions for the tile each player is on only
 	for (auto &p : players)
 	{
+		for (unsigned int i = 0; i < obstacles.size(); i += 2)
+		{
+			if (p.currentTile == obstacles.at(i))
+			{
+				switch (obstacles.at(i + 1))
+				{
+				case 1:
+				{
+					//cout << "TILE ID ------------------> " << algTiles.at(p.currentTile)->id << endl;
+					float ballSize = p.radius * 3;
+					float heightTile = 1.0f;
+
+					vec3 box1Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x - ((ballSize / 2) + (heightTile / 2)), algTiles.at(p.currentTile)->thisCoords.y + heightTile, algTiles.at(p.currentTile)->thisCoords.z + ballSize * 2);
+					vec3 box2Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x + ((ballSize / 2) + (heightTile / 2)), algTiles.at(p.currentTile)->thisCoords.y + heightTile, algTiles.at(p.currentTile)->thisCoords.z - ballSize * 2);
+
+					vec3 boxSize = vec3((algTiles.at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2, 200.0f, heightTile / 2);
+
+					if (algTiles.at(p.currentTile)->id == 2)
+					{
+						box1Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x - ballSize * 2, heightTile, algTiles.at(p.currentTile)->thisCoords.z - ((ballSize / 2) + (heightTile / 2)));
+						box2Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x + ballSize * 2, heightTile, algTiles.at(p.currentTile)->thisCoords.z + ((ballSize / 2) + (heightTile / 2)));
+
+						boxSize = vec3(heightTile / 2, 200.0f, (algTiles.at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2);
+					}
+
+					bool intersect = SphereRectCollision(p, box1Pos, boxSize);
+					if (intersect)
+					{
+						changeDirection(p, box1Pos, boxSize);
+					}
+
+					bool intersect2 = SphereRectCollision(p, box2Pos, boxSize);
+					if (intersect2)
+					{
+						changeDirection(p, box2Pos, boxSize);
+					}
+				}
+				break;
+				case 2:
+				{
+					bool intersect = SphereRectCollision(p, algTiles.at(p.currentTile)->thisCoords, vec3(1.0f, 100.0f, 1.0f));
+					if (intersect)
+					{
+						changeDirection(p, algTiles.at(p.currentTile)->thisCoords, vec3(1.0f, 100.0f, 1.0f));
+					}
+				}
+				break;
+				}
+			}
+		}
 		algTiles.at(p.currentTile)->CheckCollisions(p);
 	}
 
@@ -1055,7 +1172,7 @@ void gameScene::Collisions()
 	if (players[0].currentTile == players[1].currentTile)
 	{
 		// Find distance between players
-		vec3 distance = abs(players[0].transform.getPos() - players[1].transform.getPos());	
+		vec3 distance = abs(players[0].transform.getPos() - players[1].transform.getPos());
 		float magnitude = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
 		// If less than two radii apart
 		if (magnitude < players[0].radius * 2)

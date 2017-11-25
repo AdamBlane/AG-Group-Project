@@ -16,11 +16,7 @@ Tile::Tile(typeTile desiredType, vec3 newPosition, int obstacleID)
 	//this_bridgeSurroundingTexture = bridgeSurroundingTexture;
 	thisTile = desiredType;
 
-	if (thisObstacleID != 0)
-	{
-		//Setting randomly the bool for the straight tile
-		obstacle();
-	}
+	obstacle();
 
 	//create tile method to generate meshes composing the tile
 	createTile();
@@ -311,17 +307,24 @@ int Tile::randomNumber(int min, int max)
 //obstacle method generating obstacles of different types
 void Tile::obstacle()
 {
-	int randomObstacle = randomNumber(0, 1);
+	//int randomObstacle = randomNumber(0, 1);
 
-	switch (randomObstacle)
+	switch (thisObstacleID)
 	{
 	case 0:
-		cout << "Has obstacle 0!" << endl << endl << endl;
-		obstacleSlalom();
-		break;
+		cout << "NO OBSTACLE!" << endl << endl << endl;
+	break;
 	case 1:
-		cout << "Has obstacle 1!" << endl << endl << endl;
+		{
+			cout << "Has obstacle 1!" << endl << endl << endl;
+			obstacleSlalom();
+		}
+		break;
+	case 2:
+	{
+		cout << "Has obstacle 2!" << endl << endl << endl;
 		obstacleCube();
+	}
 		break;
 	default:
 		obstacleCube();
@@ -341,13 +344,13 @@ void Tile::obstacleCube()
 
 void Tile::obstacleSlalom()
 {
-	windowMgr::getInstance()->obstacleMeshes.at(1)->SetScale(measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
-	windowMgr::getInstance()->obstacleMeshes.at(1)->SetPos(vec3(tilePos.x - (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z + ballSizeMargin * 2));
+	windowMgr::getInstance()->obstacleMeshes.at(1)->SetScale(measures.x - (measures.y * 3) - ballSizeMargin, measures.y, measures.y);
+	windowMgr::getInstance()->obstacleMeshes.at(1)->SetPos(vec3(tilePos.x - ((ballSizeMargin / 2) + (measures.y / 2)), tilePos.y + measures.y, tilePos.z + ballSizeMargin * 2));
 	windowMgr::getInstance()->obstacleMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
 	tileObstacle.push_back(windowMgr::getInstance()->obstacleMeshes.at(1));
 
-	windowMgr::getInstance()->obstacleMeshes.at(2)->SetScale(measures.x - (measures.y * 2) - ballSizeMargin, measures.y, measures.y);
-	windowMgr::getInstance()->obstacleMeshes.at(2)->SetPos(vec3(tilePos.x + (ballSizeMargin / 2), tilePos.y + measures.y, tilePos.z - ballSizeMargin * 2));
+	windowMgr::getInstance()->obstacleMeshes.at(2)->SetScale(measures.x - (measures.y * 3) - ballSizeMargin, measures.y, measures.y);
+	windowMgr::getInstance()->obstacleMeshes.at(2)->SetPos(vec3(tilePos.x + ((ballSizeMargin / 2) + (measures.y / 2)), tilePos.y + measures.y, tilePos.z - ballSizeMargin * 2));
 	windowMgr::getInstance()->obstacleMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
 	tileObstacle.push_back(windowMgr::getInstance()->obstacleMeshes.at(2));
 }
