@@ -39,8 +39,9 @@ public:
 	// Deconstructor
 	~gameScene();
 
-	//Player player1, player2;
+	//Players list
 	vector<Player> players;
+	// Number of players this game
 	int numPlayers = 1;
 	// Handles UI logic
 	UI uiMgr;
@@ -48,9 +49,6 @@ public:
 	Physics physicsSystem;
 
 
-	// Points to skybox mesh
-//	Mesh* sky;
-	
 	// General game variables
 	int courseSize; // Total number of tiles this level
 

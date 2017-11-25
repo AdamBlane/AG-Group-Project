@@ -11,10 +11,12 @@ Texture::Texture(const std::string& fileName)
 	// Store the width, height and number of components that make up a texture
 	// NumCoponents is rarely used but good to have incase using complex textures
 	int width, height, numComponents;
-
+	auto start = glfwGetTime();
 	// Load the texture data
 	unsigned char* imageData = stbi_load(fileName.c_str(), &width, &height, &numComponents, 4);
-
+	auto end = glfwGetTime();
+	int total = (int)(end - start);
+	std::cout << std::to_string(total) << std::endl;
 	if (imageData == NULL)
 	{
 		std::cout << "Texture loading failed for texture: " << fileName << std::endl;

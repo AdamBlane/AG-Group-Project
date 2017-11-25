@@ -1,6 +1,10 @@
 // Externals
 #include <iostream>
 #include <fstream>
+#include <memory>
+#include <thread>
+#include <future>
+#include <mutex>
 // Internals
 #include "windowMgr.h"
 
@@ -123,6 +127,15 @@ GLFWwindow* windowMgr::Init()
 	p1ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	p2ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	// ############################ TEXTURES ############################
+
+	// TESTING
+	//auto f = async(&windowMgr::LoadTextures, this, tileTextures);
+//	f.get();
+
+//	thread t(&windowMgr::LoadTextures, this, std::ref(tileTextures), win);
+//	t.join();
+
+
 	// START SCENE TEXTURES 
 	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
@@ -360,6 +373,33 @@ GLFWwindow* windowMgr::Init()
 
 	return win;
 }
+
+// Load texture thread function
+void windowMgr::LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* window)
+{
+	glfwMakeContextCurrent(window);
+
+	Texture* floorGrass = new Texture("..\\NuttyPutters\\grass.png");
+	tileTexs.insert(std::pair<std::string, Texture*>("floorGrass", floorGrass));
+
+	Texture* grassHole = new Texture("..\\NuttyPutters\\grassHole.png");
+	tileTexs.insert(std::pair<std::string, Texture*>("grassHole", grassHole));
+
+	Texture* grassScenery = new Texture("..\\NuttyPutters\\lava.jpg");
+	tileTexs.insert(std::pair<std::string, Texture*>("grassScenery", grassScenery));
+
+	Texture* tileWood = new Texture("..\\NuttyPutters\\box.jpg");
+	tileTexs.insert(std::pair<std::string, Texture*>("tileWood", tileWood));
+
+	Texture* waterBridge = new Texture("..\\NuttyPutters\\water.png");
+	tileTexs.insert(std::pair<std::string, Texture*>("waterBridge", waterBridge));
+
+	Texture* bottomBridge = new Texture("..\\NuttyPutters\\bridgeBottom.jpg");
+	tileTexs.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
+
+
+}
+
 
 // Called by gameScene.cpp whenever the user saves that level
 // Take the saved level seed and ask winMgr to grab the newly made image and add to list

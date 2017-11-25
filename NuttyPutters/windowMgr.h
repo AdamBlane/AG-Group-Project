@@ -3,7 +3,7 @@
 // Externals
 #include "glew_glfw.h"
 #include "include\inc\fmod.hpp"
-#include <thread>
+
 
 // Internals
 #include "sceneMgr.h"
@@ -78,8 +78,13 @@ class windowMgr
 		vector<Mesh*> planeMeshes;
 		map<std::string, Texture*> tileTextures;
 
+
+		//mutex mut;
+
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
+		// Load textures thread
+		void LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* window);
 		// Populate savesImages vector with image files read from saves folder
 		void UpdateSavesImages(string savedImagePath);
 		// Ask winMgr to get thread to play given sound
