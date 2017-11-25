@@ -93,6 +93,10 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
 
+	// TESTING
+	//windowMgr::getInstance()->reboundEffectMesh->SetTexture(windowMgr::getInstance()->reboundEffectTextures[0]);
+	//windowMgr::getInstance()->reboundEffectMesh->SetPos(vec3(-4.0f, 2.0f, 2.0f));
+
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
@@ -1069,6 +1073,12 @@ void gameScene::Render(GLFWwindow* window)
 	windowMgr::getInstance()->textureShader->Update(players[0].arrowTransform, mvp);
 	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
 	players[0].arrowTransform.setRot(glm::vec3(0, -players[0].chaseCamAngle - 1.5708, 0));
+
+
+	// TEST
+	//windowMgr::getInstance()->reboundEffectMesh->thisTexture.Bind(0);
+	//windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
+	//windowMgr::getInstance()->reboundEffectMesh->Draw();
 
 	// If ball is not moving draw arrow (ie dont draw arrow when ball moving as not needed)
 	if (!players[0].isMoving) // was !golfBallMoving

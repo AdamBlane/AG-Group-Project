@@ -126,6 +126,10 @@ GLFWwindow* windowMgr::Init()
 	player2Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
 	p1ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	p2ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
+	
+	//reboundEffectMesh = new Mesh(Mesh::CUBOID, vec3(1.0f, 10.0f, 10.0f), 1.0f, 1.0f, 1.0f);
+	//Texture* rbfx = new Texture("..\\NuttyPutters\\forcefield.png");
+	//reboundEffectTextures.push_back(rbfx)
 	// ############################ TEXTURES ############################
 
 	// TESTING
@@ -134,7 +138,6 @@ GLFWwindow* windowMgr::Init()
 
 //	thread t(&windowMgr::LoadTextures, this, std::ref(tileTextures), win);
 //	t.join();
-
 
 	// START SCENE TEXTURES 
 	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");

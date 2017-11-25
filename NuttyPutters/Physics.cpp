@@ -105,8 +105,32 @@ void Physics::Integrate(Player &player, float dt, float floorLevel)
 	// If the goes below the ground, reset its position to floor level and clear any accrued gravity
 	if (player.transform.getPos().y < floorLevel) // This 1.0f should be (floor level)
 	{
-		player.velocity.y = 0.0f;
+		// Move to floor level
 		player.transform.getPos().y = floorLevel;
+		
+		// Bounce with enough downwards force
+		if (abs(player.velocity.y) > epsilon)
+		{
+			// Reverse y direction; bounce
+			player.velocity.y = -player.velocity.y;
+			// Remove some velocity from damping
+			if (player.isFalling)
+			{
+				player.velocity.y = 0.0f;
+				player.isFalling = false;
+			}
+				
+			else
+				player.velocity.y *= 0.5f;
+			//player.velocity.y /= player.mass;
+		}
+		// Not enough downwards force; stop bouncing
+		else
+		{
+			player.velocity.y = 0.0f;		
+		}
+
+		
 	}
 
 	// Multiply gravity by flag to determine whether or not it should affect vel

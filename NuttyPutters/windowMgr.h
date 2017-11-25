@@ -52,7 +52,8 @@ class windowMgr
 		Mesh* player2Mesh;
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
-		
+		//Mesh* reboundEffectMesh;
+		//vector<Texture*> reboundEffectTextures;
 
 		// Cameras
 		target_camera* HUDtargetCam;
