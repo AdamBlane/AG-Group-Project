@@ -110,7 +110,7 @@ GLFWwindow* windowMgr::Init()
 
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
-	for (int i = 0; i < 24; ++i)
+	for (int i = 0; i < 37; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -367,7 +367,62 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("holeLbl", holeLbl));
 	Texture* completeLbl = new Texture("..\\NuttyPutters\\complete.png");
 	textures.insert(std::pair<std::string, Texture*>("completeLbl", completeLbl));
-
+	Texture* keyLbl = new Texture("..\\NuttyPutters\\Controller\\key.png");
+	textures.insert(std::pair<std::string, Texture*>("keyLbl", keyLbl));
+	// LOAD KEYBOARD KEYS
+	buttonsKeyboardOne = new Texture("..\\NuttyPutters\\controller\\A.png");
+	Texture* aLbl = new Texture("..\\NuttyPutters\\controller\\A.png");
+	textures.insert(std::pair<std::string, Texture*>("aLbl", aLbl));
+	Texture* bLbl = new Texture("..\\NuttyPutters\\controller\\B.png");
+	textures.insert(std::pair<std::string, Texture*>("bLbl", bLbl));
+	Texture* cLbl = new Texture("..\\NuttyPutters\\controller\\C.png");
+	textures.insert(std::pair<std::string, Texture*>("cLbl", cLbl));
+	Texture* dLbl = new Texture("..\\NuttyPutters\\controller\\D.png");
+	textures.insert(std::pair<std::string, Texture*>("dLbl", dLbl));
+	Texture* eLbl = new Texture("..\\NuttyPutters\\controller\\E.png");
+	textures.insert(std::pair<std::string, Texture*>("eLbl", eLbl));
+	Texture* fLbl = new Texture("..\\NuttyPutters\\controller\\F.png");
+	textures.insert(std::pair<std::string, Texture*>("fLbl", fLbl));
+	Texture* gLbl = new Texture("..\\NuttyPutters\\controller\\G.png");
+	textures.insert(std::pair<std::string, Texture*>("gLbl", gLbl));
+	Texture* hLbl = new Texture("..\\NuttyPutters\\controller\\H.png");
+	textures.insert(std::pair<std::string, Texture*>("hLbl", hLbl));
+	Texture* iLbl = new Texture("..\\NuttyPutters\\controller\\I.png");
+	textures.insert(std::pair<std::string, Texture*>("iLbl", iLbl));
+	Texture* jLbl = new Texture("..\\NuttyPutters\\controller\\J.png");
+	textures.insert(std::pair<std::string, Texture*>("jLbl", jLbl));
+	Texture* kLbl = new Texture("..\\NuttyPutters\\controller\\K.png");
+	textures.insert(std::pair<std::string, Texture*>("kLbl", kLbl));
+	Texture* lLbl = new Texture("..\\NuttyPutters\\controller\\L.png");
+	textures.insert(std::pair<std::string, Texture*>("lLbl", lLbl));
+	Texture* mLbl = new Texture("..\\NuttyPutters\\controller\\M.png");
+	textures.insert(std::pair<std::string, Texture*>("mLbl", mLbl));
+	Texture* nLbl = new Texture("..\\NuttyPutters\\controller\\N.png");
+	textures.insert(std::pair<std::string, Texture*>("nLbl", nLbl));
+	Texture* oLbl = new Texture("..\\NuttyPutters\\controller\\O.png");
+	textures.insert(std::pair<std::string, Texture*>("oLbl", oLbl));
+	Texture* pLbl = new Texture("..\\NuttyPutters\\controller\\P.png");
+	textures.insert(std::pair<std::string, Texture*>("pLbl", pLbl));
+	Texture* qLbl = new Texture("..\\NuttyPutters\\controller\\Q.png");
+	textures.insert(std::pair<std::string, Texture*>("qLbl", qLbl));
+	Texture* rLbl = new Texture("..\\NuttyPutters\\controller\\R.png");
+	textures.insert(std::pair<std::string, Texture*>("rLbl", rLbl));
+	Texture* sLbl = new Texture("..\\NuttyPutters\\controller\\S.png");
+	textures.insert(std::pair<std::string, Texture*>("sLbl", sLbl));
+	Texture* tLbl = new Texture("..\\NuttyPutters\\controller\\T.png");
+	textures.insert(std::pair<std::string, Texture*>("tLbl", tLbl));
+	Texture* uLbl = new Texture("..\\NuttyPutters\\controller\\U.png");
+	textures.insert(std::pair<std::string, Texture*>("uLbl", uLbl));
+	Texture* vLbl = new Texture("..\\NuttyPutters\\controller\\V.png");
+	textures.insert(std::pair<std::string, Texture*>("vLbl", vLbl));
+	Texture* wLbl = new Texture("..\\NuttyPutters\\controller\\W.png");
+	textures.insert(std::pair<std::string, Texture*>("wLbl", wLbl));
+	Texture* xLbl = new Texture("..\\NuttyPutters\\controller\\X.png");
+	textures.insert(std::pair<std::string, Texture*>("xLbl", xLbl));
+	Texture* yLbl = new Texture("..\\NuttyPutters\\controller\\Y.png");
+	textures.insert(std::pair<std::string, Texture*>("yLbl", yLbl));
+	Texture* zLbl = new Texture("..\\NuttyPutters\\controller\\Z.png");
+	textures.insert(std::pair<std::string, Texture*>("zLbl", zLbl));
 
 	//Tiles stuff initialized here
 	for (int i = 0; i < 15; ++i)

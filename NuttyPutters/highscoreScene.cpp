@@ -8,7 +8,6 @@ highscoreScene::highscoreScene() { }
 // Deconstructor
 highscoreScene::~highscoreScene() { }
 
-
 void highscoreScene::Init(GLFWwindow * win)
 {
 	// Set scale, position and size of various meshes - all unique
@@ -18,91 +17,277 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["loadGameBackground"]);
 	// Set action label
 	windowMgr::getInstance()->meshes.at(1)->SetScale(1.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.0f, 1.8f, 0.0f));
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.7f, 1.39f, 0.0f));
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["actionLbl"]);
 	// Set button label
 	windowMgr::getInstance()->meshes.at(2)->SetScale(1.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.0f, 1.8f, 0.0f));
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(-1.1f, 1.39f, 0.0f));
 	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["buttonLbl"]);
 	// Select Fire
 	// Set selectfire label
 	windowMgr::getInstance()->meshes.at(3)->SetScale(2.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(-2.0f, 1.45f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(-2.7f, 1.07f, 0.0f));
 	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["selectfireLbl"]);
-	// Set selectfire button label
+	// Set selectfire button label controller button
 	windowMgr::getInstance()->meshes.at(4)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0f, 1.45f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(-1.1f, 1.07f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->buttonsXB[2]);
 	// Back Reset
 	// Set backreset label
 	windowMgr::getInstance()->meshes.at(5)->SetScale(2.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-2.0f, 1.1f, 0.0f));
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-2.7f, 0.75f, 0.0f));
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["backresetLbl"]);
-	// Set backreset button label
+	// Set backreset button label controller button
 	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, 1.1f, 0.0f));
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(-1.1f, 0.75f, 0.0f));
+	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->buttonsXB[3]);
 	// Pause
 	// Set pause label
 	windowMgr::getInstance()->meshes.at(7)->SetScale(1.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(-2.0f, 0.75f, 0.0f));
+	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(-2.7f, 0.43f, 0.0f));
 	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["pauseLbl"]);
-	// Set pause button label
-	windowMgr::getInstance()->meshes.at(8)->SetScale(0.28f, 0.28f);
-	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0.0f, 0.75f, 0.0f));
+	// Set pause button label controller button
+	windowMgr::getInstance()->meshes.at(8)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(-1.1f, 0.43f, 0.0f));
+	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->buttonsXB[7]);
 	// Arrows
 	// Up
 	windowMgr::getInstance()->meshes.at(9)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(-2.0f, 0.4f, 0.0f));
+	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(-2.7f, 0.11f, 0.0f));
 	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["upLbl"]);
-	// Set pause button label
-	windowMgr::getInstance()->meshes.at(10)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, 0.4f, 0.0f));
+	// Set up controller button
+	windowMgr::getInstance()->meshes.at(10)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(-1.1f, 0.11f, 0.0f));
+	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->buttonsXB[10]);
 	// Left
 	windowMgr::getInstance()->meshes.at(11)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(-2.0f, 0.05f, 0.0f));
+	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(-2.7f, -0.21f, 0.0f));
 	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
-	// Set pause button label
-	windowMgr::getInstance()->meshes.at(12)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(0.0f, 0.05f, 0.0f));
+	// Set left controller button
+	windowMgr::getInstance()->meshes.at(12)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(-1.1f, -0.21f, 0.0f));
+	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->buttonsXB[11]);
 	// Down 
 	windowMgr::getInstance()->meshes.at(13)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(-2.0f, -0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(-2.7f, -0.53f, 0.0f));
 	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["downLbl"]);
-	// Set pause button label
-	windowMgr::getInstance()->meshes.at(14)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(14)->SetPos(vec3(0.0f, -0.3f, 0.0f));
+	// Set down controller button
+	windowMgr::getInstance()->meshes.at(14)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(14)->SetPos(vec3(-1.1f, -0.53f, 0.0f));
+	windowMgr::getInstance()->meshes.at(14)->SetTexture(windowMgr::getInstance()->buttonsXB[12]);
 	// Right
 	windowMgr::getInstance()->meshes.at(15)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(15)->SetPos(vec3(-2.0f, -0.65f, 0.0f));
+	windowMgr::getInstance()->meshes.at(15)->SetPos(vec3(-2.7f, -0.85f, 0.0f));
 	windowMgr::getInstance()->meshes.at(15)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
-	// Set pause button label
-	windowMgr::getInstance()->meshes.at(16)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(16)->SetPos(vec3(0.0f, -0.65f, 0.0f));
+	// Set right controller button
+	windowMgr::getInstance()->meshes.at(16)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(16)->SetPos(vec3(-1.1f, -0.85f, 0.0f));
+	windowMgr::getInstance()->meshes.at(16)->SetTexture(windowMgr::getInstance()->buttonsXB[13]);
 	// Jump
 	windowMgr::getInstance()->meshes.at(17)->SetScale(1.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(17)->SetPos(vec3(-2.0f, -1.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(17)->SetPos(vec3(-2.7f, -1.17f, 0.0f));
 	windowMgr::getInstance()->meshes.at(17)->SetTexture(windowMgr::getInstance()->textures["jumpLbl"]);
-	// Set pause button label
+	// Set jump controller button
 	windowMgr::getInstance()->meshes.at(18)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(18)->SetPos(vec3(0.0f, -1.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(18)->SetPos(vec3(-1.1f, -1.17f, 0.0f));
+	windowMgr::getInstance()->meshes.at(18)->SetTexture(windowMgr::getInstance()->buttonsXB[1]);
 	// Zoom In
 	windowMgr::getInstance()->meshes.at(19)->SetScale(2.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(19)->SetPos(vec3(-2.0f, -1.35f, 0.0f));
+	windowMgr::getInstance()->meshes.at(19)->SetPos(vec3(-2.7f, -1.50f, 0.0f));
 	windowMgr::getInstance()->meshes.at(19)->SetTexture(windowMgr::getInstance()->textures["zoomInLbl"]);
-	// Set pause button label
-	windowMgr::getInstance()->meshes.at(20)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(20)->SetPos(vec3(0.0f, -1.35f, 0.0f));
+	// Set zoom in controller button
+	windowMgr::getInstance()->meshes.at(20)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(20)->SetPos(vec3(-1.1f, -1.50f, 0.0f));
+	windowMgr::getInstance()->meshes.at(20)->SetTexture(windowMgr::getInstance()->buttonsXB[4]);
 	// Zoom Out
 	windowMgr::getInstance()->meshes.at(21)->SetScale(2.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(21)->SetPos(vec3(-2.0f, -1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(21)->SetPos(vec3(-2.7f, -1.82f, 0.0f));
 	windowMgr::getInstance()->meshes.at(21)->SetTexture(windowMgr::getInstance()->textures["zoomOutLbl"]);
-	// Set pause button label
-	windowMgr::getInstance()->meshes.at(22)->SetScale(0.35f, 0.35f);
-	windowMgr::getInstance()->meshes.at(22)->SetPos(vec3(0.0f, -1.7f, 0.0f));
+	// Set zoom out controller button
+	windowMgr::getInstance()->meshes.at(22)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(22)->SetPos(vec3(-1.1f, -1.82f, 0.0f));
+	windowMgr::getInstance()->meshes.at(22)->SetTexture(windowMgr::getInstance()->buttonsXB[5]);
 	// Main Menu
 	windowMgr::getInstance()->meshes.at(23)->SetScale(2.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(23)->SetPos(vec3(2.0f, 0.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(23)->SetPos(vec3(2.5f, 0.0f, 0.0f));
 	windowMgr::getInstance()->meshes.at(23)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
+	// Set the player one and player two lbls
+	// P1
+	windowMgr::getInstance()->meshes.at(24)->SetScale(1.8f, 0.45f);
+	windowMgr::getInstance()->meshes.at(24)->SetPos(vec3(-2.0f, 1.81f, 0.0f));
+	windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLbl"]);
+	// P2
+	windowMgr::getInstance()->meshes.at(25)->SetScale(1.8f, 0.45f);
+	windowMgr::getInstance()->meshes.at(25)->SetPos(vec3(0.0f, 1.81f, 0.0f));
+	windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLbl"]);
+	// Keyboard Label
+	windowMgr::getInstance()->meshes.at(26)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(26)->SetPos(vec3(0.5f, 1.39f, 0.0f));
+	windowMgr::getInstance()->meshes.at(26)->SetTexture(windowMgr::getInstance()->textures["keyLbl"]);
+	// Select fire keyboard 
+	windowMgr::getInstance()->meshes.at(27)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(27)->SetPos(vec3(0.5f, 1.07f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(27)->SetTexture(windowMgr::getInstance()->textures["aLbl"]);
+	// Back reset keyboard
+	windowMgr::getInstance()->meshes.at(28)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(28)->SetPos(vec3(0.5f, 0.75f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(28)->SetTexture(windowMgr::getInstance()->textures["bLbl"]);
+	// Pause keyboard
+	windowMgr::getInstance()->meshes.at(29)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(29)->SetPos(vec3(0.5f, 0.43f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(29)->SetTexture(windowMgr::getInstance()->textures["cLbl"]);
+	// Up keyboard
+	windowMgr::getInstance()->meshes.at(30)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(30)->SetPos(vec3(0.5f, 0.11f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(30)->SetTexture(windowMgr::getInstance()->textures["dLbl"]);
+	// Left keyboard
+	windowMgr::getInstance()->meshes.at(31)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(31)->SetPos(vec3(0.5f, -0.21f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(31)->SetTexture(windowMgr::getInstance()->textures["eLbl"]);
+	// Down keyboard
+	windowMgr::getInstance()->meshes.at(32)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(32)->SetPos(vec3(0.5f, -0.53f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(32)->SetTexture(windowMgr::getInstance()->textures["fLbl"]);
+	// Right keyboard
+	windowMgr::getInstance()->meshes.at(33)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(33)->SetPos(vec3(0.5f, -0.85f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(33)->SetTexture(windowMgr::getInstance()->textures["gLbl"]);
+	// Jump keyboard
+	windowMgr::getInstance()->meshes.at(34)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(34)->SetPos(vec3(0.5f, -1.17f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(34)->SetTexture(windowMgr::getInstance()->textures["hLbl"]);
+	// Zoom in keyboard
+	windowMgr::getInstance()->meshes.at(35)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(35)->SetPos(vec3(0.5f, -1.49, 0.0f));
+	//windowMgr::getInstance()->meshes.at(35)->SetTexture(windowMgr::getInstance()->textures["iLbl"]);
+	// Zoom out keyboard
+	windowMgr::getInstance()->meshes.at(36)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(36)->SetPos(vec3(0.5f, -1.81, 0.0f));
+	//windowMgr::getInstance()->meshes.at(36)->SetTexture(windowMgr::getInstance()->textures["jLbl"]);
 
+	//**********KEYBOARD SETUP**************//
+	windowMgr::getInstance()->gameKeyboardFunctions[0] = 81;
+	windowMgr::getInstance()->gameKeyboardFunctions[1] = 69;
+	windowMgr::getInstance()->gameKeyboardFunctions[2] = 80;
+	windowMgr::getInstance()->gameKeyboardFunctions[3] = 87;
+	windowMgr::getInstance()->gameKeyboardFunctions[4] = 68;
+	windowMgr::getInstance()->gameKeyboardFunctions[5] = 83;
+	windowMgr::getInstance()->gameKeyboardFunctions[6] = 65;
+	windowMgr::getInstance()->gameKeyboardFunctions[7] = 90;
+	windowMgr::getInstance()->gameKeyboardFunctions[8] = 82;
+	windowMgr::getInstance()->gameKeyboardFunctions[9] = 70;
+
+	// For all the functions
+	for (int allKeyboardFunctions = 0; allKeyboardFunctions < 10; allKeyboardFunctions++)
+	{
+		// If keyboard function is equal to A then change texture to A
+		if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 65)
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["aLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 66) // B
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["bLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 67) // C
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["cLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 68) // D
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["dLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 69) // E
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["eLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 70) // F
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["fLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 71) // G
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["gLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 72) // H
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["hLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 73) // I
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["iLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 74) // J
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["jLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 75) // K
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["kLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 76) // L
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["lLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 77) // M
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["mLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 78) // N
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["nLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 79) // O
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["oLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 80) // P
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["pLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 81) // Q
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["qLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 82) // R
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["rLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 83) // S
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["sLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 84) // T
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["tLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 85) // U
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["uLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 86) // V
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["vLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 87) // W
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["wLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 88) // X
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["xLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 89) // Y
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["yLbl"]);
+		}
+		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 90) // Z
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["zLbl"]);
+		}
+	}
+	
+	//******CONTROLLER SETUP*************//
 	// Create a variable to check if the joy stick is present - 1 means true
 	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
 
@@ -303,8 +488,129 @@ void highscoreScene::Loop(GLFWwindow * win)
 	Render(win);
 }
 
+// Input 
 void highscoreScene::Input(GLFWwindow* win)
 {
+	// If A is pressed and boolean equals false
+	if (glfwGetKey(win, GLFW_KEY_A) && !aPressed)
+	{
+		aPressed = true;
+		cout << "a PRESSED" << endl;
+	}
+
+	if (!glfwGetKey(win, GLFW_KEY_A) && aPressed) // If A is realised
+	{
+		cout << "A realised" << endl;
+		// If a function is empty then
+		if (isFunctionEmptyKeyboard) // Check if A is assigned to a function 
+		{
+			// Find the index of the gameFunction which has a value of 99
+			indexAt99 = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 99));
+			// Find the index of the game function whih is assigned to the button that has just been pressed
+			indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 65));
+			// Check if button just pressed has a function assigned to it
+			if (65 == windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey])
+			{
+				// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+				windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+				windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 99;
+			}
+
+			// Make the original empty function equal to the button
+			windowMgr::getInstance()->gameKeyboardFunctions[indexAt99] = 65;
+			windowMgr::getInstance()->meshes.at(27 + indexAt99)->SetTexture(windowMgr::getInstance()->textures["aLbl"]);
+
+			// Check if a function is equal to 99
+			if (windowMgr::getInstance()->gameKeyboardFunctions[0] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[1] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[2] == 99 ||
+				windowMgr::getInstance()->gameKeyboardFunctions[3] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[4] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[5] == 99 ||
+				windowMgr::getInstance()->gameKeyboardFunctions[6] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[7] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[8] == 99 ||
+				windowMgr::getInstance()->gameKeyboardFunctions[9] == 99)
+			{
+				isFunctionEmptyKeyboard = true; // Set bool to true if a function is empty
+			}
+			else
+			{
+				isFunctionEmptyKeyboard = false; // Set bool to false if no function is empty
+			}
+		}
+		else
+		{
+			// Find the function index where the button has been pressed
+			indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 65));
+			// If function is assigned to a button then
+			if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == 65)
+			{
+				// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+				windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+				windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 99;
+				// Set is Function Empty to true
+				isFunctionEmptyKeyboard = true;
+			}
+		}
+
+		aPressed = false;
+	}
+
+	// If A is pressed and boolean equals false
+	if (glfwGetKey(win, GLFW_KEY_B) && !bPressed)
+	{
+		bPressed = true;
+		cout << "b PRESSED" << endl;
+	}
+
+	if (!glfwGetKey(win, GLFW_KEY_B) && bPressed) // If A is realised
+	{
+		cout << "B realised" << endl;
+		// If a function is empty then
+		if (isFunctionEmptyKeyboard) // Check if A is assigned to a function 
+		{
+			// Find the index of the gameFunction which has a value of 99
+			indexAt99 = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 99));
+			// Find the index of the game function which is assigned to the button that has just been pressed
+			indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 66));
+			// Check if button just pressed has a function assigned to it
+			if (66 == windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey])
+			{
+				// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+				windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+				windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 99;
+			}
+
+			// Make the original empty function equal to the button
+			windowMgr::getInstance()->gameKeyboardFunctions[indexAt99] = 66;
+			windowMgr::getInstance()->meshes.at(27 + indexAt99)->SetTexture(windowMgr::getInstance()->textures["bLbl"]);
+
+			// Check if a function is equal to 99
+			if (windowMgr::getInstance()->gameKeyboardFunctions[0] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[1] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[2] == 99 ||
+				windowMgr::getInstance()->gameKeyboardFunctions[3] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[4] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[5] == 99 ||
+				windowMgr::getInstance()->gameKeyboardFunctions[6] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[7] == 99 || windowMgr::getInstance()->gameKeyboardFunctions[8] == 99 ||
+				windowMgr::getInstance()->gameKeyboardFunctions[9] == 99)
+			{
+				isFunctionEmptyKeyboard = true; // Set bool to true if a function is empty
+			}
+			else
+			{
+				isFunctionEmptyKeyboard = false; // Set bool to false if no function is empty
+			}
+		}
+		else
+		{
+			// Find the function index where the button has been pressed
+			indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 66));
+			// If function is assigned to a button then
+			if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == 66)
+			{
+				// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+				windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+				windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] = 99;
+				// Set is Function Empty to true
+				isFunctionEmptyKeyboard = true;
+			}
+		}
+
+		bPressed = false;
+	}
+
 	// Create a variable to check if the joy stick is present - 1 means true
 	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
 
@@ -365,6 +671,7 @@ void highscoreScene::Input(GLFWwindow* win)
 					}
 					else
 					{
+						// Find the function index where the button has been pressed
 						indexAtButton = std::distance(windowMgr::getInstance()->gameFunctions, std::find(windowMgr::getInstance()->gameFunctions, windowMgr::getInstance()->gameFunctions + 10, buttonNumber));
 						// If function is assigned to a button then
 						if (windowMgr::getInstance()->gameFunctions[indexAtButton] == buttonNumber)

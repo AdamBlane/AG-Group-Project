@@ -31,9 +31,14 @@ public:
 
 	bool buttonPressed[18] = { false };
 	bool isFunctionEmpty = false;
-	int meshesInScene = 24; // Used so everytime a mesh is added the number doesnt need updating
+	bool isFunctionEmptyKeyboard = false;
+	int meshesInScene = 37; // Used so everytime a mesh is added the number doesnt need updating
 	int indexAt99 = 0;
 	int indexAtButton = 0;
+	int indexAtKey = 0;
+
+	bool aPressed = false;
+	bool bPressed = false;
 
 	// BUTTONS
 	// A/Sqaure = 0
@@ -63,6 +68,11 @@ public:
 	// DPAD LEFT = 4
 	// DPAD DOWN = 5
 	// DPAD RIGHT = 6
+	// Jump = 7
+	// Zoom in = 8
+	// Zoom out = 9
+
+	static void keyCallBack(GLFWwindow* win, int key, int scancode, int action, int mods);
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);
