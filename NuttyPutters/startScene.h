@@ -51,7 +51,7 @@ public:
 	// Render
 	//Tracks Mouse
 	void Track_Mouse(GLFWwindow* win);
-
 	void Render(GLFWwindow* window);
+	// For mouse button actions
 	void Action(GLFWwindow* window);
 };

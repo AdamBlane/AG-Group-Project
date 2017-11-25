@@ -50,6 +50,7 @@ void startScene::Track_Mouse(GLFWwindow *window)
 			windowMgr::getInstance()->button_manager = 6;
 		}
 	}
+	// Get rid of this! It prevents keyboard input
 	else
 	{
 		//highlights nothing
@@ -99,13 +100,15 @@ void startScene::Loop(GLFWwindow* win)
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//tracks mouse
+	Track_Mouse(win);
+
 	// Input
 	Input(win);
 
 	// Update
 	Update(win);
-	//tracks mouse
-	Track_Mouse(win);
+
 	// Render
 	Render(win);
 }
