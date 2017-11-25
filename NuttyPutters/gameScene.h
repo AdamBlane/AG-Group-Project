@@ -129,7 +129,7 @@ public:
 	void Loop(GLFWwindow* window);
 	void Input(GLFWwindow* window);
 	void SpatialPartitioningUpdate();
-	void CheckLoadNextLevel(Player &player);
+	void CheckLoadNextLevel();
 	void Update(GLFWwindow* window);
 	
 	void Collisions();

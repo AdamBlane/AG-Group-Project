@@ -744,48 +744,69 @@ void gameScene::SpatialPartitioningUpdate()
 }
 
 // Acts on whether to load the next level or not
-void gameScene::CheckLoadNextLevel(Player &player)
+void gameScene::CheckLoadNextLevel()
 {
-	// Was player last on end tile for this level
-	//if (masterAlgTiles[currentLevel].at(player.currentTile)->id == 9)
+	for (int i = 0; i < players.size(); ++i)
 	{
-		// Check if player is falling through end hole...
-		if (player.ballInHole && player.transform.getPos().y < -400.0f)
+		// Was player last on end tile for this level
+		//if (masterAlgTiles[currentLevel].at(player.currentTile)->id == 9)
 		{
-			if (currentLevel < numLevels - 1)
-			{
-				// Move onto next level; draws behind player while falling
-				// Only do this once (will trigger multiple frames)
-				if (!changedLevel)
+			// Check if player is falling through end hole...
+			if (players[i].ballInHole && players[i].transform.getPos().y < -450.0f) // Abritrary time period before tp
+			{	// If there is another level to go...
+				if (currentLevel < numLevels - 1)
 				{
-					// Increase level index
-					currentLevel++;
-					// Prevent further increments
-					changedLevel = true;
+					// Move onto next level; draws behind player while falling
+					// Only do this once (will trigger multiple frames)
+					if (!changedLevel)
+					{
+						// If there are 2 players
+						if (numPlayers == 2)
+						{
+							// If this is players[0] it needs to check players[1], and visa versa
+							// Need a key to make a 0 always 1, and a 1 always 0
+							// i = (i * -1) + 1 is key
+							// i0 -> (0 * -1) + 1 = 1
+							// i1 -> (1 * -1) + 1 = 0 
+							// If other player isn't through end hole, tp him
+							if (!players[(i  * -1) + 1].ballInHole)
+							{
+								// Move him to new start tile
+								players[(i  * -1) + 1].transform.setPos(vec3(2.0f, 1.0f, 0.0f));
+							}
+						}
+						
+
+						// Increase level index
+						currentLevel++;
+						// Prevent further increments
+						changedLevel = true;
+					}
+				}
+				// Have finished last level
+				if (currentLevel == numLevels - 1)
+				{
+					// TODO - quit, pause, ask for next level etc
+					// currently just replays the last level played
 				}
 			}
-			// Have finished last level
-			if (currentLevel == numLevels - 1)
-			{
-				// TODO - quit, pause, ask for next level etc
-				// currently just replays the last level played
-			}
+		}
+
+		// Otherwise check if player is falling from top of skybox onto next level
+		//else
+		if (players[i].isFalling && players[i].transform.getPos().y > 50.0f)
+		{
+			// Ensure player lands on start tile
+			players[i].transform.getPos().x = players[i].transform.getPos().z = 0.0f;
+
+			// Allow level changing for next level
+			changedLevel = false;
+			// Change pause cam properties to match with this level
+			windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[currentLevel * 2]);
+			windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[currentLevel * 2 + 1]);
 		}
 	}
 
-	// Otherwise check if player is falling from top of skybox onto next level
-	//else
-		if (player.isFalling && player.transform.getPos().y > 50.0f)
-	{
-		// Ensure player lands on start tile
-		player.transform.getPos().x =  player.transform.getPos().z = 0.0f;
-		
-		// Allow level changing for next level
-		changedLevel = false;
-		// Change pause cam properties to match with this level
-		windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[currentLevel * 2]);
-		windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[currentLevel * 2 + 1]);
-	}
 }
 
 
@@ -794,10 +815,8 @@ void gameScene::CheckLoadNextLevel(Player &player)
 void gameScene::Update(GLFWwindow* window)
 {
 	// Check whether to load next level, pass in player
-	for (auto &p : players)
-	{
-		CheckLoadNextLevel(p);
-	}
+	CheckLoadNextLevel();
+	
 	
 	// Update spatial partitioning
 	SpatialPartitioningUpdate();
