@@ -11,11 +11,20 @@ gameScene::gameScene() { }
 gameScene::~gameScene()
 {
 	// Delete everything in alg tiles since it was declared on heap
-	for (auto &t : masterAlgTiles)
+	for (auto &l : masterAlgTiles)
 	{
-		for (auto &a : t)
-			delete(a);
+		for (auto &t : l)
+			delete(t);
+
+		l.clear();
 	}
+	// Clear all lists
+	masterLevelSeeds.clear();
+	masterTiles.clear();
+	masterSceneryTiles.clear();
+	pauseCamLevelProperties.clear();
+	obstacles.clear();
+	
 
 }
 
@@ -43,7 +52,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// Record how many levels to load
 	//numLevels = levelCount;
-	numLevels = 10;
+	numLevels = 1;
 
 	// Save player count
 	numPlayers = playerCount;
