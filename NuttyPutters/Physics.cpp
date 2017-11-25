@@ -18,6 +18,7 @@ void Physics::Fire(Player &player, float magnitude)
 
 }
 
+
 // Impulse vector responsible for pushing player back down ramp
 void Physics::RampResistance(Player &player, float magnitude)
 {
@@ -51,6 +52,7 @@ void Physics::Jump(Player &player, float magnitude)
 
 }
 
+
 // Either be 1 or 0 - 1 if in air, 0 if on floor
 // This is always multiplied by gravity
 void Physics::ApplyGravity(Player &player, float floorLevel)
@@ -77,23 +79,27 @@ void Physics::Integrate(Player &player, float dt, float floorLevel)
 	// Don't apply to y
 	friction.y = 0.0f;
 	
+	// If the player has reached end hole, set new lower floor level
 	if (player.ballInHole)
 	{
 		// Set lower floot limit
 		floorLevel = -500.0f;
-		// Apply gravity
+		// Apply and set gravity
 		gravFlag = 1;
 		gravity.y = -9.8f;
 	}
+	// If the player has since fallen through the hole and is near bottom of skybox
 	if (player.transform.getPos().y < -490.0f)
 	{
-		// tp to top
+		// Teleport playyer to top of skybox
 		player.transform.getPos().y = 480.0f;
 		// clear vel and reset position
 		player.velocity.x = player.velocity.z = 0.0f;
 		player.transform.getPos().x = player.transform.getPos().z = 0.0f;
 		// reset ball in hole
 		player.ballInHole = false;
+		// player is now falling
+		player.isFalling = true;
 	}
 	
 	// If the goes below the ground, reset its position to floor level and clear any accrued gravity
@@ -108,7 +114,7 @@ void Physics::Integrate(Player &player, float dt, float floorLevel)
 
 	// Add all forces together, divide by mass and find value for this timestep (by * dt)
 	player.velocity += ((friction + gravity) / player.mass) * dt; 
-	// REMOVED rampUpResistance as a force (applied as impulse now)
+	
 	
 	// Player velocity will never reach zero, since friction is a percentage of vel
 	// Check for when speed (magnitude of velocity) is below epsilon and just stop it
@@ -122,10 +128,7 @@ void Physics::Integrate(Player &player, float dt, float floorLevel)
 	
 
 	//std::cout << "V " << player.velocity.x << ", " << player.velocity.y << ", " << player.velocity.z << std::endl;
-	// When on a ramp
-	// return difference between where player SHOULD be on Y and where they actually are on Z
-	// times this difference by delta time
-	// add this into velocity.y
+
 
 	// Update position with velocity
 	player.transform.getPos() += player.velocity * dt; // WHY * dt twice? 

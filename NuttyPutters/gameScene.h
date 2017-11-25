@@ -43,26 +43,33 @@ public:
 	vector<Player> players;
 	// Number of players this game
 	int numPlayers = 1;
+	// Number of levels this game
+	int numLevels = 1;
+	// Current level 
+	int currentLevel = 0;
+	bool changedLevel = false;
+	// Total number of tiles per level
+	int courseSize;
+
 	// Handles UI logic
 	UI uiMgr;
 	// Handles physics logic
 	Physics physicsSystem;
 
+	// List of all level seeds, this is used to create algTiles list
+	vector<vector<int>> masterLevelSeeds;
+	// List of all level alg tiles, used to determine collisions and spatial partitioning
+	// Also used to create Tiles list, which makes up the geometry to be drawn
+	vector<vector<BaseTile*>> masterAlgTiles;
+	// List of all tile meshes which are rendered
+	vector<vector<Tile>> masterTiles;
+	// List of all scenery tile meshes which are rendered
+	vector<vector<Tile>> masterSceneryTiles;
+	// List of pause cam positions and targets for each level
+	vector<vec3> pauseCamLevelProperties;
+	// Record obstacle data ( tilePos, obType, tilePos, obType etc)
+	vector<int> obstacles; 
 
-	// General game variables
-	int courseSize; // Total number of tiles this level
-
-	vector<BaseTile*> algTiles; // Game tiles list; these tiles have position data (by M)
-	vector<BaseTile*> level2algTiles;
-	vector<Tile> tiles; // Tile meshes to be rendered, created by V
-	vector<Tile> level2tiles;
-	vector<Tile> sceneryTiles; // sceneryTiles to be rendered
-	vector<Tile> level2sceneryTiles;
-	vector<int> levelSeed; // This course seed; each tile has an int id
-	vector<int> level2seed;
-	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
-	bool onLevel2 = false;
-	bool loadLevel2 = false;
 	// Gameplay variables
 	// TODO - set these in init to be safe (sometimes not reset in other scenes)
 	int timeBeenInScene = 0; // Time from when the scene is fully loaded
@@ -102,14 +109,14 @@ public:
 	// TODO - replace these for player members - float chaseCamAngle, p2ChaseCamAngle, // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)
 	double cursor_x, cursor_y = 0.0; 
-	vec3 pauseCamPos, pauseCamTarget;
+	
 
 
 
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)
-	void Init(GLFWwindow* window, int courseLength, int playerCount, string seed = "seed"); 
+	void Init(GLFWwindow* window, int courseLength, int playerCount, int levelCount, string seed = "seed"); 
 	// Loads level of given size; random if no optional seed given
 	void LoadGame(string seed);
 	// Fills space around level with scenery tiles

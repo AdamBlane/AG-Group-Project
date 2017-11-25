@@ -29,7 +29,7 @@ public:
 	gameScene gameScene; //6
 
 	// Scene get/set; optional param: difficulty via course size, load game seed string
-	void changeScene(unsigned int newScene, int courseLength = 12, int playerCount = 1, string seed = "seed"); 
+	void changeScene(unsigned int newScene, int courseLength = 12, int playerCount = 1, int levelCount = 1, string seed = "seed");
 	unsigned int getScene() { return curScene; }
 
 

@@ -8,18 +8,19 @@
 // Default constructor
 gameScene::gameScene() { }
 // Deconstructor
-gameScene::~gameScene() 
+gameScene::~gameScene()
 {
 	// Delete everything in alg tiles since it was declared on heap
-	for (auto &t : algTiles)
+	for (auto &t : masterAlgTiles)
 	{
-		delete(t);
+		for (auto &a : t)
+			delete(a);
 	}
 
 }
 
 // Setup scene; seed is an optional param passed in by loadGameScene
-void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, string seed)
+void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int levelCount, string seed)
 {
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
@@ -31,6 +32,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, stri
 	glfwSetCursorPos(window, cursor_x, cursor_y);
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
+
+
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
@@ -38,18 +41,26 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, stri
 	// Record desired course size 
 	courseSize = courseLength;
 
-	// Load game, takes a seed (either given or default)
-	LoadGame(seed); // Results in filled algTiles and levelSeed lists
+	// Record how many levels to load
+	//numLevels = levelCount;
+	numLevels = 10;
 
-	// Take alg tiles, turn into render tiles
-	SetupTilesToBeDrawn();
-
-	// Setup scenery tiles
-	FillScenery();
-
-	
 	// Save player count
 	numPlayers = playerCount;
+
+	// Pre-load all requried levels this game
+	for (int i = 0; i < numLevels; ++i)
+	{
+		// Takes given seed, results in filled algTiles and levelSeed lists
+		LoadGame(seed);
+	}
+
+	// Take all alg tiles list, turn into render tiles
+	SetupTilesToBeDrawn();
+
+	// Setup scenery tiles for all levels
+	FillScenery();
+
 
 	// Setup players 
 	for (int p = 0; p < playerCount; ++p)
@@ -65,8 +76,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, stri
 		player.arrowTransform.getPos() = vec3(player.transform.getPos().x, player.transform.getPos().y - 1.6, player.transform.getPos().z);
 		// Chase cam setup	
 		windowMgr::getInstance()->chaseCams[p]->set_target_roation(vec3(0.0f, 0.0f, 0.0f));
-		windowMgr::getInstance()->chaseCams[p]->set_target_pos(vec3(player.transform.getPos()));	
-		
+		windowMgr::getInstance()->chaseCams[p]->set_target_pos(vec3(player.transform.getPos()));
+
 		// Add to players list
 		players.push_back(player);
 	}
@@ -74,14 +85,13 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, stri
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
 
-
-
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
 	windowMgr::getInstance()->freeCam->set_Target(vec3(0, 0, 0));
-	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamPos);
-	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamTarget);
+	// Pause cam initially takes the first two values (pos & target) from master list
+	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[0]);
+	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[1]);
 
 	// Initiate UI
 	uiMgr.Init();
@@ -96,94 +106,36 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, stri
 // Loads either random level of certain size, or level by seed
 void gameScene::LoadGame(string seed)
 {
-	// Create the course gen object
+	// Create the course gen object that deals with seed and alg tile creation
 	courseGenV2 cgSystem;
 	// Setup the seed (either given or default)
-	levelSeed = cgSystem.SetupSeed(seed);
-
+	vector<int> levelSeed = cgSystem.SetupSeed(seed);
+	// Add it to master seeds list
+	masterLevelSeeds.push_back(levelSeed);
 	// Use seed to generate the algorithm tiles list
-	algTiles = cgSystem.SetupAlgTiles(levelSeed);
+	vector<BaseTile*> algTiles = cgSystem.SetupAlgTiles(levelSeed);
+	// Add that to master algTiles list
+	masterAlgTiles.push_back(algTiles);
 
-	// Testing
-	level2seed = cgSystem.SetupSeed(seed);
-	level2algTiles = cgSystem.SetupAlgTiles(level2seed);
 }
 
 // Populates scenery tiles
+// Takes in an algTiles list, spits out a sceneryTiles list
 void gameScene::FillScenery()
 {
-
-		// Get boundary positions of level tiles in x and z
-		float xMax2 = 0;
-		float xMin2 = 0;
-		float zMax2 = 0;
-		float zMin2 = 0;
-		float yMin2 = 0;
-		for (auto &t : level2algTiles)
-		{
-			if (t->thisCoords.x > xMax2)
-				xMax2 = t->thisCoords.x;
-			if (t->thisCoords.x < xMin2)
-				xMin2 = t->thisCoords.x;
-
-			if (t->thisCoords.z > zMax2)
-				zMax2 = t->thisCoords.z;
-			if (t->thisCoords.z < zMin2)
-				zMin2 = t->thisCoords.z;
-
-			if (t->thisCoords.y < yMin2)
-				yMin2 = t->thisCoords.y;
-		}
-		// Add another tile's width to boundaries
-		xMin2 -= 10; // To add another layer to the boundary, add 10 to each value
-		zMin2-= 20;
-		xMax2 += 20;
-		zMax2 += 10;
-		// Set the pause target cam pos and target, now that we know level dimensions
-		pauseCamPos.x = xMin2, pauseCamPos.y = 30.0f, pauseCamPos.z = zMin2;
-		pauseCamTarget.x = (xMax2 + xMin2) / 2.0f, pauseCamTarget.y = 1.0f, pauseCamTarget.z = (zMax2 + zMin2) / 2.0f;
-
-
-		// Starting in corner, fill with scenery tile if not already filled by level tile
-		// Z
-		for (int zPos = zMax2; zPos > zMin2; zPos -= 10) // 10 = tile size
-		{
-			// Work in rows; every x for a single z
-			for (int xPos = xMin2; xPos < xMax2; xPos += 10)
-			{
-				vec3 thisPos = vec3(xPos, 0.0f, zPos); // Not dealing with ramps for now
-													   // Check if this pos is already taken by a level tile
-				bool posTaken = false;
-				// Contains search; there will only be one match
-				for (int i = 0; i < level2algTiles.size(); ++i)
-				{
-					if (level2algTiles.at(i)->thisCoords == thisPos)
-					{
-						// We have a match
-						posTaken = true;
-					}
-				}
-				// If able to create a scenery tile...
-				if (!posTaken)
-				{
-					// Create straight tile
-					//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
-					Tile tile(Tile::SCENERY, thisPos, 0);
-					//tile.transform.getRot().x = -0.785398;
-					// Add to list of tiles to be rendered
-					level2sceneryTiles.push_back(tile);
-				}
-			} // end x block
-		} // end z block
-
+	// Work on each algTiles list found in master list
+	for (auto &l : masterAlgTiles)
+	{
 		// Get boundary positions of level tiles in x and z
 		float xMax = 0;
 		float xMin = 0;
 		float zMax = 0;
 		float zMin = 0;
 		float yMin = 0;
-		for (auto &t : algTiles)
+		// For each tile in this list
+		for (auto &t : l)
 		{
+			// Find min and max
 			if (t->thisCoords.x > xMax)
 				xMax = t->thisCoords.x;
 			if (t->thisCoords.x < xMin)
@@ -203,10 +155,15 @@ void gameScene::FillScenery()
 		xMax += 20;
 		zMax += 10;
 		// Set the pause target cam pos and target, now that we know level dimensions
+		vec3 pauseCamPos, pauseCamTarget;
 		pauseCamPos.x = xMin, pauseCamPos.y = 30.0f, pauseCamPos.z = zMin;
 		pauseCamTarget.x = (xMax + xMin) / 2.0f, pauseCamTarget.y = 1.0f, pauseCamTarget.z = (zMax + zMin) / 2.0f;
+		// Add these to pause cam properties list 
+		pauseCamLevelProperties.push_back(pauseCamPos);
+		pauseCamLevelProperties.push_back(pauseCamTarget);
 
-
+		// Resulting scenery tiles list
+		vector<Tile> sceneryTiles;
 		// Starting in corner, fill with scenery tile if not already filled by level tile
 		// Z
 		for (int zPos = zMax; zPos > zMin; zPos -= 10) // 10 = tile size
@@ -215,12 +172,12 @@ void gameScene::FillScenery()
 			for (int xPos = xMin; xPos < xMax; xPos += 10)
 			{
 				vec3 thisPos = vec3(xPos, 0.0f, zPos); // Not dealing with ramps for now
-													   // Check if this pos is already taken by a level tile
+				// Check if this pos is already taken by a level tile
 				bool posTaken = false;
 				// Contains search; there will only be one match
-				for (int i = 0; i < algTiles.size(); ++i)
+				for (int i = 0; i < l.size(); ++i)
 				{
-					if (algTiles.at(i)->thisCoords == thisPos)
+					if (l.at(i)->thisCoords == thisPos)
 					{
 						// We have a match
 						posTaken = true;
@@ -230,26 +187,33 @@ void gameScene::FillScenery()
 				if (!posTaken)
 				{
 					// Create straight tile
-					//Mesh lava(Mesh::QUAD, "..\\NuttyPutters\\box.jpg", thisPos, 10.0f, 10.0f, 10.0f);
 					Tile tile(Tile::SCENERY, thisPos, 0);
-					//tile.transform.getRot().x = -0.785398;
 					// Add to list of tiles to be rendered
 					sceneryTiles.push_back(tile);
 				}
 			} // end x block
 		} // end z block
-	
+
+		// Add fininshed scenery tiles list to master list
+		masterSceneryTiles.push_back(sceneryTiles);
+	}
 
 }
 
 // Creates tile classes to be drawn
 void gameScene::SetupTilesToBeDrawn()
 {
-	int index = 0;
-
+	// Go through each alg tile list
+	for (auto &l : masterAlgTiles)
+	{
+		// The list that will be generated, and added to master list at end
+		vector<Tile> tiles;
+		// Index of the current tile in current alg tiles list
+		// Obstacles use this to know where in the list they are
+		int index = 0;
 
 		// TILE CREATION
-		for (auto &t : level2algTiles)
+		for (auto &t : l)
 		{
 			int obstacleID = 0;
 			bool hasObstacle = false;
@@ -258,153 +222,6 @@ void gameScene::SetupTilesToBeDrawn()
 			// Ramp up when dir is down
 			if (t->id == 7)
 			{
-				//hasObstacle = Tile::randomNumber(0, 1);
-				//if (hasObstacle)
-				//{
-				//	obstacleID = Tile::randomNumber(1, 2);
-				//	//save this tile position in algTiles
-				//	obstacles.push_back(index);
-				//	obstacles.push_back(obstacleID);
-				//}
-				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
-				// Rotate on x
-				tile.transform.getRot().x = -0.349066;
-				tile.transform.getPos().y += 1.8;
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-			// Ramp down when dir is up
-			if (t->id == 8)
-			{
-				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
-				// Rotate on x
-				tile.transform.getRot().x = -0.349066;
-				tile.transform.getPos().y -= 1.8;
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-			if (t->id == 0) // Start
-			{
-				// Create start tile
-				Tile tile(Tile::START, t->thisCoords, obstacleID);
-				// Start tile needs rotating 180 (should always face down)
-				tile.transform.getRot().y = 3.14159;
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-			else if (t->id == 1) // Straight V
-			{
-				hasObstacle = Tile::randomNumber(0, 1);
-				if (hasObstacle)
-				{
-					obstacleID = Tile::randomNumber(1, 2);
-					//save this tile position in algTiles
-					obstacles.push_back(index);
-					obstacles.push_back(obstacleID);
-				}
-				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-			else if (t->id == 2) // Straight H
-			{
-				hasObstacle = Tile::randomNumber(0, 1);
-				if (hasObstacle)
-				{
-					obstacleID = Tile::randomNumber(1, 2);
-					//save this tile position in algTiles
-					obstacles.push_back(index);
-					obstacles.push_back(obstacleID);
-				}
-				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
-				// Straight needs rotating by 90, since it's vertical by default
-				tile.transform.getRot().y = 1.5708;
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-			else if (t->id == 3) // Corner BL
-			{
-				// Create corner tile
-				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
-				// Corner needs rotating by 90
-				tile.transform.getRot().y = 1.5708;
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-			else if (t->id == 4) // Corner BR
-			{
-				// Create corner tile
-				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
-				// Corner needs rotating by 90
-				tile.transform.getRot().y = 3.14159;
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-			else if (t->id == 5) // Corner TL
-			{
-				// Create corner tile
-				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-			else if (t->id == 6) // Corner TR
-			{
-				// Create corner tile
-				Tile tile(Tile::CORNER, t->thisCoords, obstacleID);
-				// Corner needs rotating by 90
-				tile.transform.getRot().y = -1.5708;
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-			else if (t->id == 9) // end
-			{
-				// Create start tile
-				Tile tile(Tile::END, t->thisCoords, obstacleID);
-				// Consult direction to determine how much to rotate
-				if (t->outDir.going_up)
-				{
-					tile.transform.getRot().y = 3.14159;
-				}
-				else if (t->outDir.going_down)
-				{
-					// No rotation needed
-				}
-				else if (t->outDir.going_left)
-				{
-					tile.transform.getRot().y = -1.5708;
-				}
-				else if (t->outDir.going_right)
-				{
-					tile.transform.getRot().y = 1.5708;
-				}
-				// Add to list of tiles to be rendered
-				level2tiles.push_back(tile);
-			}
-		}
-
-		// TILE CREATION
-		for (auto &t : algTiles)
-		{
-			int obstacleID = 0;
-			bool hasObstacle = false;
-
-			// Ramp testing
-			// Ramp up when dir is down
-			if (t->id == 7)
-			{
-				//hasObstacle = Tile::randomNumber(0, 1);
-				//if (hasObstacle)
-				//{
-				//	obstacleID = Tile::randomNumber(1, 2);
-				//	//save this tile position in algTiles
-				//	obstacles.push_back(index);
-				//	obstacles.push_back(obstacleID);
-				//}
-				// Create straight tile
 				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
 				// Rotate on x
 				tile.transform.getRot().x = -0.349066;
@@ -522,10 +339,14 @@ void gameScene::SetupTilesToBeDrawn()
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
-		}
-	
+			// Increase index for next tile
+			index++;
+		} // End for every tile this list
 
+		// Add the populated tiles list to master
+		masterTiles.push_back(tiles);
 
+	} // end for every list in master list
 }
 
 // Main game loop 
@@ -569,7 +390,7 @@ void gameScene::Input(GLFWwindow* window)
 				p.jumpPressed = false;
 			}
 		}
-			
+
 		// Pause
 		if (glfwGetKey(window, GLFW_KEY_P))
 		{
@@ -607,7 +428,7 @@ void gameScene::Input(GLFWwindow* window)
 						// Open file to append level seed 
 						ofstream saves("saves.csv", ofstream::app);
 						// ID of each tile makes up seed
-						for (auto &t : algTiles)
+						for (auto &t : masterAlgTiles[currentLevel])
 						{
 							saves << t->id;
 						}
@@ -637,7 +458,7 @@ void gameScene::Input(GLFWwindow* window)
 						image.Attach(hBitmap);
 						// Build string to save with level seed name
 						string fileName = "..\\NuttyPutters\\savesImages\\";
-						for (auto &i : levelSeed)
+						for (auto &i : masterLevelSeeds[currentLevel])
 						{
 							fileName += to_string(i);
 						}
@@ -760,7 +581,7 @@ void gameScene::Input(GLFWwindow* window)
 				}
 			}
 
-		
+
 
 			// Camera movement
 			if (glfwGetKey(window, p.downButton))
@@ -781,7 +602,7 @@ void gameScene::Input(GLFWwindow* window)
 				windowMgr::getInstance()->chaseCams[thisPlayer]->zoom_in(camSpeed * dt * 0.5);
 			}
 
-			
+
 			// If chase camera angle is greater than 360 reset to 0
 			if (p.chaseCamAngle > 6.28319)
 			{
@@ -793,7 +614,7 @@ void gameScene::Input(GLFWwindow* window)
 				p.chaseCamAngle = 6.28319;
 			}
 
-			
+
 		} // end chase camera controls
 
 		// Player fire
@@ -842,10 +663,10 @@ void gameScene::Input(GLFWwindow* window)
 					}
 					p.firePressed = true;
 				}
-			}			
+			}
 		}
 		// When Fire is realesed
-		if (!glfwGetKey(window, p.fireButtton)) 
+		if (!glfwGetKey(window, p.fireButtton))
 		{
 			// Only work if fire button was just released
 			if (p.firePressed)
@@ -891,61 +712,64 @@ void gameScene::Input(GLFWwindow* window)
 // Update positions
 void gameScene::Update(GLFWwindow* window)
 {
-	if (players[0].transform.getPos().y < -100.0f)
-		onLevel2 = true;
+	// Shall we load the next level? 
+	for (int i = 0; i < players.size(); ++i)
+	{
+		// Check if player is falling through end hole...
+		if (players[i].ballInHole && players[i].transform.getPos().y < -400.0f)
+		{
+			if (currentLevel < numLevels - 1)
+			{
+				// Move onto next level; draws behind player while falling
+				// Only do this once despite this block executing lotsa frames
+				if (!changedLevel)
+				{
+					currentLevel++;
+					changedLevel = true;
+				}
+				cout << "Current level:" << currentLevel << endl;
+			}
 
-	if (onLevel2)
-	{
-		if (players[0].transform.getPos().y > 50.0f)
-			players[0].transform.getPos().x = players[0].transform.getPos().z = 0.0f;
+			// Have finished last level
+			if (currentLevel == numLevels - 1)
+			{
+				// TODO - quit, pause, ask for next level etc
+				cout << "Finished last level" << endl;
+			}
+		}
+		// Check if player is falling from top of skybox onto next level
+		else if (players[i].isFalling && players[i].transform.getPos().y > 50.0f)
+		{
+			// Ensure player lands on start tile
+			players[i].transform.getPos().z = 0.0f;
+			players[i].transform.getPos().x = -2.0f + (i * 4.0f);
+			// Allow level changing for next level
+			changedLevel = false;
+			// Change pause cam properties to match with this level
+			windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[currentLevel * 2]);
+			windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[currentLevel * 2 + 1]);
+
+		}
 	}
+	
 	// Spatial partitioning
-	// TODO Consider using threads to update current tiles
-	//int tileTracker = 0;
-	// Check which tile player is on (do this every n frames, not each tick)
-	// TODO - improve performance (even if set at start of alg tiles list, 
-	// this will continue to look through each tile against both players)
-	// escape bools 
-	// In every tile
-	if (onLevel2)
+	int tileTracker = 0;
+	for (auto &t : masterAlgTiles[currentLevel])
 	{
-		int tileTracker = 0;
-		for (auto &t : level2algTiles)
+		// For every player
+		for (auto &p : players)
 		{
-			// For every player
-			for (auto &p : players)
+			// Is this player on this tile?
+			if (t->isPlayerOnTile(p.transform.getPos()))
 			{
-				// Is this player on this tile?
-				if (t->isPlayerOnTile(p.transform.getPos()))
-				{
-					// Update player's personal current tile property
-					p.currentTile = tileTracker;
-					cout << "player on tile: " << p.currentTile << endl;
-				}
+				// Update player's personal current tile property
+				p.currentTile = tileTracker;
 			}
-			// Increase the tile tracker counter
-			tileTracker++;
 		}
+		// Increase the tile tracker counter
+		tileTracker++;
 	}
-	else
-	{
-		int tileTracker = 0;
-		for (auto &t : algTiles)
-		{
-			// For every player
-			for (auto &p : players)
-			{
-				// Is this player on this tile?
-				if (t->isPlayerOnTile(p.transform.getPos()))
-				{
-					// Update player's personal current tile property
-					p.currentTile = tileTracker;
-				}
-			}
-			// Increase the tile tracker counter
-			tileTracker++;
-		}
-	}
+
 
 
 	// Free cam stuff
@@ -999,123 +823,31 @@ void gameScene::Update(GLFWwindow* window)
 	double fps = 1.0 / frameTime;
 	if (accumulator > 1.0f)
 		//cout << "FPS:" << fps << endl;
-	
 
-	if (onLevel2)
+
+	
+	// Update each player
+	for (auto &p : players)
 	{
-		// Update each player
-		for (auto &p : players)
+		// Only apply physics if it's moving
+		if (p.isMoving)
 		{
-			// Only apply physics if it's moving
-			if (p.isMoving)
+			// Ensure correct slowdown/stop margin
+			physicsSystem.epsilon = 0.5f;
+			// Work out whether to apply gravity or not (is player on the floor/in air)
+			physicsSystem.ApplyGravity(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
+																							// If time to perform another physics step																						 // Perform physics step	
+			if (accumulator >= dt)
 			{
-				// Special case for on a ramp tile (ignored for now)
-				//if (algTiles.at(p.currentTile)->id == 7)
-				//{
-				/* Instantiate in order to call member functions
-				UpRampDown ramp;
-				// Set deets
-				ramp.SetCoords(algTiles.at(p1CurrentTile)->GetThisCoords());
-				// Raise it a bit
-				ramp.thisCoords.y += 1.8;
-				// Find floor level at this point on ramp
-				float floorPos = ramp.SetPlayerHeight(players[0]);
-				// Work out whether to apply gravity or not (is player on the floor/in air)
-				physicsSystem.ApplyGravity(players[0], floorPos);
-				// Add impulse which is ramp resistance; only applied if on ground
-				if (physicsSystem.gravFlag == 0)
-				{
-				// These numbers need tweaking
-				physicsSystem.epsilon = 0.0001f;
-				players[0] = physicsSystem.RampResistance(players[0], -1.0f);
-				}
-				// Perform physics step
-				if (accumulator >= dt)
-				{
 				// Update position
-				players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
+				physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 1);
 				accumulator -= dt;
-				}*/
-				//}
-
-				// Ensure correct slowdown/stop margin
-				physicsSystem.epsilon = 0.5f;
-				// Work out whether to apply gravity or not (is player on the floor/in air)
-				physicsSystem.ApplyGravity(p, level2algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-																								// If time to perform another physics step																						 // Perform physics step	
-				if (accumulator >= dt)
-				{
-					// Update position
-					physicsSystem.Integrate(p, dt, level2algTiles.at(p.currentTile)->thisCoords.y + 1);
-					accumulator -= dt;
-				}
 			}
-			// Update p1 arrow mesh position to follow player
-			p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
 		}
+		// Update p1 arrow mesh position to follow player
+		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
 	}
-
-
-	else
-	{
-		// Update each player
-		for (auto &p : players)
-		{
-			// Only apply physics if it's moving
-			if (p.isMoving)
-			{
-				// Special case for on a ramp tile (ignored for now)
-				//if (algTiles.at(p.currentTile)->id == 7)
-				//{
-				/* Instantiate in order to call member functions
-				UpRampDown ramp;
-				// Set deets
-				ramp.SetCoords(algTiles.at(p1CurrentTile)->GetThisCoords());
-				// Raise it a bit
-				ramp.thisCoords.y += 1.8;
-				// Find floor level at this point on ramp
-				float floorPos = ramp.SetPlayerHeight(players[0]);
-				// Work out whether to apply gravity or not (is player on the floor/in air)
-				physicsSystem.ApplyGravity(players[0], floorPos);
-				// Add impulse which is ramp resistance; only applied if on ground
-				if (physicsSystem.gravFlag == 0)
-				{
-				// These numbers need tweaking
-				physicsSystem.epsilon = 0.0001f;
-				players[0] = physicsSystem.RampResistance(players[0], -1.0f);
-				}
-				// Perform physics step
-				if (accumulator >= dt)
-				{
-				// Update position
-				players[0] = physicsSystem.Integrate(players[0], dt, floorPos);
-				accumulator -= dt;
-				}*/
-				//}
-
-				// Ensure correct slowdown/stop margin
-				physicsSystem.epsilon = 0.5f;
-				// Work out whether to apply gravity or not (is player on the floor/in air)
-				physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-																								// If time to perform another physics step																						 // Perform physics step	
-				if (accumulator >= dt)
-				{
-					// Update position
-					physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1);
-					accumulator -= dt;
-				}
-			}
-			// Update p1 arrow mesh position to follow player
-			p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
-		}
-	}
-
-
-	
-	
-
-
-
+		
 
 
 	// HUD TIMER RELATED INFORMATION
@@ -1150,21 +882,11 @@ void gameScene::Update(GLFWwindow* window)
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-	if (onLevel2)
+
+	// Check collisions for the tile each player is on only
+	for (auto &p : players)
 	{
-		// Check collisions for the tile each player is on only
-		for (auto &p : players)
-		{
-			level2algTiles.at(p.currentTile)->CheckCollisions(p);
-		}
-	}
-	else
-	{
-		// Check collisions for the tile each player is on only
-		for (auto &p : players)
-		{
-			algTiles.at(p.currentTile)->CheckCollisions(p);
-		}
+		masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
 	}
 
 
@@ -1285,33 +1007,17 @@ void gameScene::Render(GLFWwindow* window)
 	// Bind texture shader
 	windowMgr::getInstance()->textureShader->Bind();
 
-	if (onLevel2)
-	{
-		// DRAW all level tiles
-		for (auto &t : level2tiles)
-		{
-			t.drawTile(windowMgr::getInstance()->textureShader, mvp);
-		}
-		// DRAW all scenery tiles
-		for (auto &t : level2sceneryTiles)
-		{
-			t.drawTile(windowMgr::getInstance()->textureShader, mvp);
-		}
-	}
-	else
-	{
-		// DRAW all level tiles
-		for (auto &t : tiles)
-		{
-			t.drawTile(windowMgr::getInstance()->textureShader, mvp);
-		}
-		// DRAW all scenery tiles
-		for (auto &t : sceneryTiles)
-		{
-			t.drawTile(windowMgr::getInstance()->textureShader, mvp);
-		}
-	}
 
+	// DRAW all level tiles
+	for (auto &t : masterTiles[currentLevel])
+	{
+		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+	}
+	// DRAW all scenery tiles
+	for (auto &t : masterSceneryTiles[currentLevel])
+	{
+		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+	}
 
 	// If there are two players...
 	if (numPlayers == 2)
@@ -1368,12 +1074,12 @@ void gameScene::Render(GLFWwindow* window)
 		// Bind texture shader
 		windowMgr::getInstance()->textureShader->Bind();
 		// DRAW all level tiles
-		for (auto &t : tiles)
+		for (auto &t : masterTiles[currentLevel])
 		{
 			t.drawTile(windowMgr::getInstance()->textureShader, mvp2);
 		}
 		// DRAW all scenery tiles
-		for (auto &t : sceneryTiles)
+		for (auto &t : masterSceneryTiles[currentLevel])
 		{
 			t.drawTile(windowMgr::getInstance()->textureShader, mvp2);
 		}

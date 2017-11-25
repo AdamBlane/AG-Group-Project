@@ -24,7 +24,7 @@ public:
 	int currentTile = 0; // For spatial partitioning
 	bool isMoving = false; // Physics is only applied when moving
 	bool ballInHole = false; // Has the player reached end hole
-	
+	bool isFalling = false;
 	float chaseCamAngle;
 
 
