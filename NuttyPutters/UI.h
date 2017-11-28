@@ -41,7 +41,7 @@ public:
 	bool hasUserCompletedTheHole(Player &player);
 
 	// Sets up meshes and texures stored in winMgr
-	void Init();
+	// TODO - allow for 1 or 2 players
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);
 	void Input(GLFWwindow* window);

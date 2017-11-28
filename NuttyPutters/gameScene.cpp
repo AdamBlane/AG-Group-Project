@@ -128,8 +128,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Initiate UI
 	uiMgr.Init();
 
-	// Set the amount of time the user has to complete the hole
-	holeTimer = 80;
+
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -725,24 +724,10 @@ void gameScene::Input(GLFWwindow* window)
 				p.isMoving = true;
 
 
-
-				// M - update power bar hud stuff here (invoke UI class method)
-				//repeat until fireCounter is reset to 0
-	// M - This essentially blocks all other code!
-		/*		while (fireCounter > 0.0)
-				{
-					//This just inverts the increasing in size and positions done before when P was pressed
-					//powerBarTrans.getPos().x += (fireCounter / 5.0f) * powerBarMesh->getGeomPos().x;
-					//powerBarTrans.getPos().x -= fireCounter / 100.0f;
-					//powerBarTrans.getScale().x -= fireCounter / 5.0f;
-					//Decrease fireCounter until reaches 0
-					fireCounter -= 0.5;
-				} */
-
 				// Increment stroke counter by one
-				strokeCounter += 1;
+				p.strokeCounter += 1;
 				// Call update stroke mesh in UI.cpp to check if user is out of strokes
-				isUserOutOfStrokes = uiMgr.updateStrokeMesh(strokeCounter);
+				//isUserOutOfStrokes = uiMgr.updateStrokeMesh(strokeCounter);
 
 				// Flip
 				p.firePressed = false;
@@ -950,32 +935,6 @@ void gameScene::Update(GLFWwindow* window)
 		
 
 
-	// HUD TIMER RELATED INFORMATION
-	// If the time been in scene is equal to zero then
-	if (timeBeenInScene == 0)
-	{
-		// Get the amount of time been in scene
-		timeBeenInScene = glfwGetTime();
-	}
-	// Increment time Counter - used for splash screen
-	timeCounter++;
-
-	// If the continue button is pressed 
-	if (continuePressed)
-	{
-		// If the time taken to reach this method is zero then
-		if (timeToThisMethod == 0)
-		{
-			// Get the time to this method
-			timeToThisMethod = glfwGetTime();
-		}
-
-		// If at least a second has passed
-		if (timeSinceContinueWasPressed < glfwGetTime() - timeToThisMethod)
-		{
-			isUserOutOfTime = uiMgr.updateTimer(timeSinceContinueWasPressed, timeToThisMethod, holeTimer);
-		}
-	}
 }
 
 // Tracks current tile player is on 
@@ -1066,38 +1025,9 @@ void gameScene::Render(GLFWwindow* window)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	// If timeCounter - which is a variable that increases as of when the scene has loaded is less than the time been in scene + a value that can be changed then
-	if (timeCounter < timeBeenInScene + 300)
-	{
-		// Display splash screen
-		windowMgr::getInstance()->meshes.at(19)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(19)->Draw();
-	}
+	// TODO HUD stuff
 
-	// If user has completed the hole or if the continue button hasnt been pressed of if the user has run out of time or if the user has run out of strokes
-	if (players[0].ballInHole || !continuePressed || isUserOutOfTime || isUserOutOfStrokes)
-	{
-		// For loop which goes through all the information elements and binds, updates and draws them.
-		for (int i = 10; i < 14; i++)
-		{
-			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(i)->Draw();
-		}
-	}
-	// Else then display remaining gameplay HUDs
-	else
-	{
-		// For loop which goes through all 10 HUD elements and binds, updates anbd draws the meshes.
-		for (int i = 0; i < 10; i++)
-		{
-			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(i)->Draw();
-		}
-	}
-
+	
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
