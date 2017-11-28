@@ -30,13 +30,15 @@ public:
 	UI() {}
 	~UI() {}
 
-	// Index value in winMgr list - each player has 2 meshes 
-	int p1StrokeMeshIndex = 0; 
-	int p2StrokeMeshIndex = 2;
+
 
 	// Sets up basic HUD layout 
-	void Setup(int players);
-
+	void p1Setup();
+	void p2Setup(vec3 endHolePos);
+	// Update game clock
+	void UpdateHUDClock(int time);
+	// Update world clock
+	void UpdateWorldClock(int time);
 	// Increment stroke counter for a player
 	void UpdateStrokeCounter(int playerIndex, int strokeCount);
 };

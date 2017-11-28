@@ -40,6 +40,8 @@ class windowMgr
 		vector<Texture*> savesImages;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
+		// 2P variant world clock meshes
+		vector<Mesh*> worldClock;
 		// Skybox vars
 		Texture* skyboxTexture;
 		Mesh* skyboxMesh;

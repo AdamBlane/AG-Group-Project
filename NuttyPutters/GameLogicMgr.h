@@ -27,7 +27,7 @@ public:
 
 
 	// Setup start of game HUD
-	void Setup(int numPlayers);
+	void Setup(int numPlayers, vec3 endHolePos);
 
 	// Start game clock
 	void StartGameClock();

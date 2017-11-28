@@ -51,6 +51,8 @@ public:
 	bool changedLevel = false;
 	// Total number of tiles per level
 	int courseSize;
+	// Best position of world clock
+
 
 	// SYSTEMS USED
 	// Handles gameplay logic

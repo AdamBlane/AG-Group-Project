@@ -129,7 +129,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 
 	// Start game logic mgr
-	gameLogicMgr.Setup(numPlayers);
+	// Pass in end hole position for two player mode
+	gameLogicMgr.Setup(numPlayers, masterAlgTiles[0].back()->thisCoords);
 	
 
 
@@ -1030,18 +1031,35 @@ void gameScene::Render(GLFWwindow* window)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	// TODO HUD stuff
-	windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
-	windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(0)->Draw();
-	windowMgr::getInstance()->meshes.at(1)->thisTexture.Bind(0);
-	windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-	windowMgr::getInstance()->meshes.at(1)->Draw();
+
+	// Display HUD (exact meshes to draw depend on player count)
+	if (numPlayers == 1)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->meshes.at(i)->Draw();
+		}
+	}
+	else // its 2 player
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->meshes.at(i)->Draw();
+		}
+	}
+
 
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
+
+	
+	
 
 	// Skybox 
 	windowMgr::getInstance()->skyboxShader->Bind();
@@ -1050,6 +1068,13 @@ void gameScene::Render(GLFWwindow* window)
 	// Bind texture shader
 	windowMgr::getInstance()->textureShader->Bind();
 
+	// DRAW WORLD CLOCK
+	for (auto &m : windowMgr::getInstance()->worldClock)
+	{
+		m->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
+		m->Draw();
+	}
 
 	// DRAW all level tiles
 	for (auto &t : masterTiles[currentLevel])
@@ -1071,6 +1096,14 @@ void gameScene::Render(GLFWwindow* window)
 		windowMgr::getInstance()->player1Mesh->Draw();
 		// Putting the above code below the arrow rendering gives odd behaviour of arrow
 		// Perhaps due to reuse of texture being rebound?
+
+		// Draw world clock
+		for (auto &m : windowMgr::getInstance()->worldClock)
+		{
+			m->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
+			m->Draw();
+		}
 	}
 
 
@@ -1104,6 +1137,10 @@ void gameScene::Render(GLFWwindow* window)
 
 
 	// ################### PLAYER 2 SCREEN ################### //
+	// ################### PLAYER 2 SCREEN ################### //
+	// ################### PLAYER 2 SCREEN ################### //
+
+
 	if (numPlayers == 2)
 	{
 		// Player 2 has the right hand vertical half of the screen
@@ -1129,6 +1166,8 @@ void gameScene::Render(GLFWwindow* window)
 		// Reset the depth range to allow for objects at a distance to be rendered
 		glDepthRange(0.01, 1.0);
 
+
+
 		// Skybox 
 		windowMgr::getInstance()->skyboxShader->Bind();
 		windowMgr::getInstance()->skyboxShader->Update(windowMgr::getInstance()->texShaderTransform, mvp2);
@@ -1136,6 +1175,15 @@ void gameScene::Render(GLFWwindow* window)
 
 		// Bind texture shader
 		windowMgr::getInstance()->textureShader->Bind();
+
+		// DRAW WORLD CLOCK
+		for (auto &m : windowMgr::getInstance()->worldClock)
+		{
+			m->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp2);
+			m->Draw();
+		}
+
 		// DRAW all level tiles
 		for (auto &t : masterTiles[currentLevel])
 		{

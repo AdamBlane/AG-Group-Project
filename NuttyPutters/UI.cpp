@@ -3,34 +3,111 @@
 
 
 
-// Sets up basic HUD layout 
-void UI::Setup(int players)
+// Sets up basic HUD layout for 1 player game
+void UI::p1Setup()
 {
-	// Stroke label
-	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
-	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex + 1)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex + 1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex + 1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Stroke labels
+	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+	windowMgr::getInstance()->meshes.at(1)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+	// Timer seconds digit
+	windowMgr::getInstance()->meshes.at(2)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(2.8f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Timer tens digit
+	windowMgr::getInstance()->meshes.at(3)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(2.95f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Timer minutes digit
+	windowMgr::getInstance()->meshes.at(4)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(3.15f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Timer tens of minutes digit
+	windowMgr::getInstance()->meshes.at(5)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(3.3f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Timer semi colon
+	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(3.05f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
+
+}
+
+// Sets up basic HUD layout for 2 player game
+void UI::p2Setup(vec3 endHolePos)
+{
+	// P1 Stroke labels
+	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+	windowMgr::getInstance()->meshes.at(1)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+		
+	// P2 Stroke Labels
+	windowMgr::getInstance()->meshes.at(2)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+	windowMgr::getInstance()->meshes.at(3)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
 
-	// Is this for 2 players?
-	if (players == 2)
+	// World clock setup - appear behind end hole
+
+
+	// Set initial textures
+	for (int i = 0; i <  windowMgr::getInstance()->worldClock.size(); i++)
 	{
-		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex)->SetScale(0.5f, 0.5f);
-		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
-		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-
-		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex + 1)->SetScale(0.5f, 0.5f);
-		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex + 1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
-		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex + 1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-
+		if (i == 2)
+			windowMgr::getInstance()->worldClock.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
+		else
+			windowMgr::getInstance()->worldClock.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 	}
+
+	
 }
 
 
+// Update game clock - only applies to 1 player mode
+void UI::UpdateHUDClock(int time)
+{
+	// Time given is elapsed time since start in seconds
+	//	// Get the time in minutes, tenths and seconds - 0M:TS
+	int	minutes = time / 60;
+	int	tensSeconds = (time - (minutes * 60)) / 10;
+	int	seconds = time - (minutes * 60) - (tensSeconds * 10);
+	
+	// Update HUD meshes accordingly
+	// Minutes
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(minutes));
+	// Tens of seconds
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(tensSeconds));
+	// Seconds
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(seconds));
+}
+
+// Update world clock - only applied in 2 player mode
+void UI::UpdateWorldClock(int time)
+{
+	// Time given is elapsed time since start in seconds
+	//	// Get the time in minutes, tenths and seconds - 0M:TS
+	int	minutes = time / 60;
+	int	tensSeconds = (time - (minutes * 60)) / 10;
+	int	seconds = time - (minutes * 60) - (tensSeconds * 10);
+
+	windowMgr::getInstance()->worldClock.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(seconds));
+	windowMgr::getInstance()->worldClock.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(tensSeconds));
+	windowMgr::getInstance()->worldClock.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(minutes));
+}
 // Update ui to reflect increase to stroke counter
 void UI::UpdateStrokeCounter(int playerIndex, int strokeCounter)
 {
@@ -58,46 +135,21 @@ void UI::UpdateStrokeCounter(int playerIndex, int strokeCounter)
 	if (playerIndex == 0)
 	{
 		// Update 10s
-		windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
+		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
 		// Update 1s
-		windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex + 1)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
+		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
 	}
 	// P2
 	else if (playerIndex == 1)
 	{
 		// Update 10s
-		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
+		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
 		// Update 1s
-		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex + 1)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
+		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
 	}
 
 	
 }
-
-
-
-
-// Timer first unit
-////	windowMgr::getInstance()->meshes.at(5)->SetScale(0.25f, 0.25f);
-////	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(2.8f, 1.7f, 0.0f));
-////	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-////	// Timer second unit
-////	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
-////	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(2.95f, 1.7f, 0.0f));
-////	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-////	// Timer third unit
-////	windowMgr::getInstance()->meshes.at(7)->SetScale(0.25f, 0.25f);
-////	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.15f, 1.7f, 0.0f));
-////	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
-////	// Timer forth unit
-////	windowMgr::getInstance()->meshes.at(8)->SetScale(0.25f, 0.25f);
-////	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(3.3f, 1.7f, 0.0f));
-////	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
-////	// Timer semi colon
-////	windowMgr::getInstance()->meshes.at(9)->SetScale(0.25f, 0.25f);
-////	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(3.05f, 1.725f, 0.0f));
-////	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["semiColonLbl"]);
-
 
 
 

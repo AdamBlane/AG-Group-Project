@@ -2,27 +2,22 @@
 #include "GameLogicMgr.h"
 
 // Setup start of game HUD
-void GameLogicMgr::Setup(int numPlayers)
+void GameLogicMgr::Setup(int numPlayers, vec3 endHolePos)
 {
 	// Set number of players this game
 	players = numPlayers;
 
 	// Invoke UImgr to perform its setup
-	uiMgr.Setup(players);
-
-	int timer = glfwGetTime();
-	// Act on number of players since logic is different for both game modes
 	if (players == 1)
 	{
-		// Need a countdown timer
-		// Need a stroke limit
-		// Update stroke counter on fire
-	} 
+		uiMgr.p1Setup();
+	}
 	else if (players == 2)
 	{
-		// Need elapsed timer
-		// Update stroke counter on fire
+		uiMgr.p2Setup(endHolePos);
 	}
+
+
 }
 
 // Start tracking time for this game
@@ -37,21 +32,26 @@ void GameLogicMgr::StartGameClock()
 // Updates UI to refelct increase to strokeCounter
 void GameLogicMgr::PlayerFired(int playerIndex, Player &player)
 {
-	// Is this a 1 player game? 
-	if (players == 1)
+	// Only allows for 2 digits of stroke count
+	if (player.strokeCounter < 100)
 	{
-		// If so, need to check for fail condition (no more shots allowed)
-		// TODO
+		// Is this a 1 player game? 
+		if (players == 1)
+		{
+			// If so, need to check for fail condition (no more shots allowed)
+			// TODO
 
-		// Update UI - tell it which player to update for and its stroke value
-		uiMgr.UpdateStrokeCounter(playerIndex, player.strokeCounter);
-	}
-	else if (players == 2)
-	{
+			// Update UI - tell it which player to update for and its stroke value
+			uiMgr.UpdateStrokeCounter(playerIndex, player.strokeCounter);
+		}
+		else if (players == 2)
+		{
 
-		// Update UI
-		uiMgr.UpdateStrokeCounter(playerIndex, player.strokeCounter);
+			// Update UI
+			uiMgr.UpdateStrokeCounter(playerIndex, player.strokeCounter);
+		}
 	}
+	
 
 }
 
@@ -67,6 +67,14 @@ void GameLogicMgr::Update()
 	// Only update the UI every second
 	if (elapsedTime > lastFrameTime)
 	{
+		if (players == 1)
+		{
+			uiMgr.UpdateHUDClock(elapsedTime);
+		}
+		else if (players == 2)
+		{
+			uiMgr.UpdateWorldClock(elapsedTime);
+		}
 		
 	}
 }
