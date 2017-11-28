@@ -162,7 +162,6 @@ void loadGameScene::Input(GLFWwindow* win)
 	// Where is the mouse? 
 	double xPos, yPos;
 	glfwGetCursorPos(win, &xPos, &yPos);
-	//cout << xPos << " : " << yPos << endl;
 
 	// B goes back to main menu screen
 	if (glfwGetKey(win, GLFW_KEY_B))

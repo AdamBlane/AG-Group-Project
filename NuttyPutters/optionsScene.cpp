@@ -14,32 +14,70 @@ void optionsScene::Track_Mouse(GLFWwindow *window)
 	if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
 		&& (windowMgr::getInstance()->mouse_y >= 59 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 456 * windowMgr::getInstance()->windowScale))
 	{
+		previousMenuItem = currentMenuItem;
 		if (windowMgr::getInstance()->mouse_y <= 200 * windowMgr::getInstance()->windowScale)
 		{
-			//highlights 1280x720 button
-			windowMgr::getInstance()->button_manager = 1;
+			currentMenuItem = 1;
 		}
 		else if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
 		{
-			//highlights 1600x900 button
-			windowMgr::getInstance()->button_manager = 2;
+			currentMenuItem = 2;
 		}
 		else
 		{
-			//highlights highscore button
-			windowMgr::getInstance()->button_manager = 3;
+			currentMenuItem = 3;
 		}
+		ChangeTexutes(window);
 	}
 	else if ((windowMgr::getInstance()->mouse_x >= 1039 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1429 * windowMgr::getInstance()->windowScale)
 		&& (windowMgr::getInstance()->mouse_y >= 711 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 839 * windowMgr::getInstance()->windowScale))
 	{
+		previousMenuItem = currentMenuItem;
 		//highlights the back button
-		windowMgr::getInstance()->button_manager = 4;
+		currentMenuItem = 4;
+		ChangeTexutes(window);
 	}
 }
 
-// TODO - rename action
-void optionsScene::Action(GLFWwindow *win)
+void optionsScene::ChangeTexutes(GLFWwindow * win)
+{
+	windowMgr::getInstance()->button_manager = currentMenuItem;
+	switch (previousMenuItem)
+	{
+		case 1:
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["smallwindowBtnUnselected"]);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+			break;
+	}
+	switch (currentMenuItem)
+	{
+		//cases for the buttons to switch to each screen
+		case 1:
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["smallwindowBtnSelected"]);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["windowBtnSelected"]);
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnSelected"]);
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnSelected"]);
+			break;
+	}
+
+}
+
+//for the 
+void optionsScene::Click_or_Enter_depending_on_which_key_was_pressed_but_that_was_why_this_function_was_created_ignoring_that_this_function_is_called_whenever_those_specific_keys_are_pressed(GLFWwindow *win)
 {
 	//get monitor 
 	GLFWmonitor* primary = glfwGetPrimaryMonitor();
@@ -90,8 +128,6 @@ void optionsScene::Action(GLFWwindow *win)
 
 void optionsScene::Init(GLFWwindow * win)
 {
-	//to reformat texutures
-	//glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	//resets the button manager
 	windowMgr::getInstance()->button_manager = 0;
 
@@ -120,6 +156,10 @@ void optionsScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(2.0f, -1.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(4)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0f, 0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["smallwindowBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
 
 }
 // Draw stuff
@@ -149,30 +189,6 @@ void optionsScene::Input(GLFWwindow* win)
 		windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
 		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
 		break;
-	case 1:
-		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["smallwindowBtnSelected"]);
-		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
-		windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
-		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
-		break;
-	case 2:
-		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["smallwindowBtnUnselected"]);
-		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["windowBtnSelected"]);
-		windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
-		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
-		break;
-	case 3:
-		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["smallwindowBtnUnselected"]);
-		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
-		windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnSelected"]);
-		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
-		break;
-	case 4:
-		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["smallwindowBtnUnselected"]);
-		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
-		windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
-		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["backBtnSelected"]);
-		break;
 	}
 	if (glfwGetKey(win, GLFW_KEY_ENTER))
 	{
@@ -182,7 +198,7 @@ void optionsScene::Input(GLFWwindow* win)
 	{
 		if (windowMgr::getInstance()->enterPressed)
 		{
-			Action(win);
+			Click_or_Enter_depending_on_which_key_was_pressed_but_that_was_why_this_function_was_created_ignoring_that_this_function_is_called_whenever_those_specific_keys_are_pressed(win);
 			windowMgr::getInstance()->enterPressed = false;
 		}
 	}
@@ -194,7 +210,7 @@ void optionsScene::Input(GLFWwindow* win)
 	{
 		if (windowMgr::getInstance()->mouseLpressed)
 		{
-			Action(win);
+			Click_or_Enter_depending_on_which_key_was_pressed_but_that_was_why_this_function_was_created_ignoring_that_this_function_is_called_whenever_those_specific_keys_are_pressed(win);
 			windowMgr::getInstance()->mouseLpressed = false;
 		}
 	}
@@ -207,15 +223,20 @@ void optionsScene::Input(GLFWwindow* win)
 	{
 		if (windowMgr::getInstance()->upPressed)
 		{
-			total_time = 0.0f;
-			if (windowMgr::getInstance()->button_manager == 1)
+			previousMenuItem = currentMenuItem;
+			if (currentMenuItem == 1)
 			{
-				windowMgr::getInstance()->button_manager = 4;
+				currentMenuItem = 4;
+			}
+			else if (currentMenuItem == 0)
+			{
+				currentMenuItem = 4;
 			}
 			else
 			{
-				windowMgr::getInstance()->button_manager--;
+				currentMenuItem--;
 			}
+			ChangeTexutes(win);
 			windowMgr::getInstance()->upPressed = false;
 		}
 	}
@@ -226,22 +247,20 @@ void optionsScene::Input(GLFWwindow* win)
 
 	if (!glfwGetKey(win, GLFW_KEY_DOWN))
 	{
+		previousMenuItem = currentMenuItem;
 		if (windowMgr::getInstance()->downPressed)
 		{
-			if (windowMgr::getInstance()->button_manager == 4)
+			if (currentMenuItem == 4)
 			{
-				windowMgr::getInstance()->button_manager = 1;
-			}
-			else if (windowMgr::getInstance()->button_manager == 0)
-			{
-				windowMgr::getInstance()->button_manager = 4;
+				currentMenuItem = 1;
 			}
 			else
 			{
-				windowMgr::getInstance()->button_manager++;
+				currentMenuItem++;
 			}
 
 			windowMgr::getInstance()->downPressed = false;
+			ChangeTexutes(win);
 		}
 	}
 

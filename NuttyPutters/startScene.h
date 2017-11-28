@@ -32,7 +32,7 @@ public:
 	// Used for navigating through menu options
 	float total_time = 5.0f;
 
-	
+	int previousMenuItem, currentMenuItem;
 
 	// Only need one transform (can be reused for each mesh)
 	Transform startSceneTransform;
@@ -54,5 +54,7 @@ public:
 	void Track_Mouse(GLFWwindow* win);
 	void Render(GLFWwindow* window);
 	// For mouse button actions
-	void Action(GLFWwindow* window);
+	void Click_or_Enter_depending_on_which_key_was_pressed_but_that_was_why_this_function_was_created_ignoring_that_this_function_is_called_whenever_those_specific_keys_are_pressed(GLFWwindow* window);
+	//to track and change textures
+	void ChangeTexutes(GLFWwindow* win);
 };
