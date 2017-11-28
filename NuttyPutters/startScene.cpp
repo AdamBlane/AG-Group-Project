@@ -171,7 +171,7 @@ void startScene::Loop(GLFWwindow* win)
 }
 
 // Acts on chosen menu item
-void startScene::Click_or_Enter_depending_on_which_key_was_pressed_but_that_was_why_this_function_was_created_ignoring_that_this_function_is_called_whenever_those_specific_keys_are_pressed(GLFWwindow* win)
+void startScene::Click_or_Enter(GLFWwindow* win)
 {
 	// If exit is hovered over
 	if (windowMgr::getInstance()->button_manager == 6)
@@ -202,7 +202,7 @@ void startScene::Input(GLFWwindow * win)
 	{
 		if (windowMgr::getInstance()->enterPressed)
 		{
-			Click_or_Enter_depending_on_which_key_was_pressed_but_that_was_why_this_function_was_created_ignoring_that_this_function_is_called_whenever_those_specific_keys_are_pressed(win);
+			Click_or_Enter(win);
 			windowMgr::getInstance()->enterPressed = false;
 		}
 	}
@@ -214,7 +214,7 @@ void startScene::Input(GLFWwindow * win)
 	{
 		if (windowMgr::getInstance()->mouseLpressed)
 		{
-			Click_or_Enter_depending_on_which_key_was_pressed_but_that_was_why_this_function_was_created_ignoring_that_this_function_is_called_whenever_those_specific_keys_are_pressed(win);
+			Click_or_Enter(win);
 			windowMgr::getInstance()->mouseLpressed = false;
 		}
 	}

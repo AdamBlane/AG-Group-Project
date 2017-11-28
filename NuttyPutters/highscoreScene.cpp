@@ -487,7 +487,16 @@ void highscoreScene::Loop(GLFWwindow * win)
 	// Render
 	Render(win);
 }
+//tracks mouse
+void highscoreScene::Track_Mouse(GLFWwindow * win) 
+{
 
+}
+//whenever a click occurs
+void highscoreScene::Click(GLFWwindow * win)
+{
+
+}
 // Input 
 void highscoreScene::Input(GLFWwindow* win)
 {

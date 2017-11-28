@@ -185,6 +185,10 @@ public:
 	void Init(GLFWwindow* win);
 	// Update
 	void Update(GLFWwindow* window);
-	// Render
+	//Tracks Mouse
+	void Track_Mouse(GLFWwindow* win);
+	//Render
 	void Render(GLFWwindow* window);
+	// For mouse button actions
+	void Click(GLFWwindow* window);
 };
