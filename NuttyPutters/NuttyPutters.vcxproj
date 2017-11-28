@@ -72,7 +72,6 @@
     <ClInclude Include="tileBuilder.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UI.h" />
-    <ClInclude Include="window.h" />
     <ClInclude Include="windowMgr.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

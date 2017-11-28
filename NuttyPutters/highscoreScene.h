@@ -35,7 +35,6 @@ public:
 	Transform backgroundTrans;
 
 	Transform optionSceneTransform;
-	int button_manager = 1;
 
 	float total_time = 2.0f;
 
@@ -47,6 +46,9 @@ public:
 	void Init(GLFWwindow* win);
 	// Update
 	void Update(GLFWwindow* window);
-	// Render
+	//Tracks Mouse
+	void Track_Mouse(GLFWwindow* win);
+	//Render
 	void Render(GLFWwindow* window);
+	void Action(GLFWwindow* window);
 };

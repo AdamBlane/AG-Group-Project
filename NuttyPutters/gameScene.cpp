@@ -1074,7 +1074,7 @@ void gameScene::Collisions()
 void gameScene::Render(GLFWwindow* window)
 {
 	// This draws stuff to left hand side of screen
-	glViewport(0, 0, 800, 900);
+	glViewport(0, 0, windowMgr::getInstance()->width/2.0, windowMgr::getInstance()->height);
 
 	// Calculate mvp matrix
 	mat4 mvp;
@@ -1189,7 +1189,9 @@ void gameScene::Render(GLFWwindow* window)
 	// ################### PLAYER 2 SCREEN ################### //
 
 		// Playe 2 has the right hand vertical half of the screen
-	glViewport(800, 0, 800, 900);
+	//glViewport(800, 0, 800, 900);
+
+	glViewport(windowMgr::getInstance()->width/2.0, 0, windowMgr::getInstance()->width / 2.0, windowMgr::getInstance()->height);
 
 	// model view projection matrix for p2 cam
 	mat4 mvp2;
