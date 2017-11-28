@@ -24,9 +24,9 @@ public:
 	~optionsScene();
 
 	// Create a target camera - used for HUD elements
-	AllCamera::target_camera* tarCam;
+	//AllCamera::target_camera* tarCam;
 
-	Shader* textureShader;
+	//Shader* textureShader;
 
 	Transform optionSceneTransform;
 	int button_manager = 1;

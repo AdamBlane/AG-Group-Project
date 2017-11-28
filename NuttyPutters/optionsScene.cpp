@@ -39,6 +39,7 @@ void optionsScene::Track_Mouse(GLFWwindow *window)
 	}
 }
 
+// Textures
 void optionsScene::ChangeTexutes(GLFWwindow * win)
 {
 	windowMgr::getInstance()->button_manager = currentMenuItem;

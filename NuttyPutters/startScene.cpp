@@ -288,7 +288,6 @@ void startScene::Render(GLFWwindow* win)
 	glDepthRange(0, 0.01);
 
 	// Bind, update and draw HUD elements
-
 	for (int a = 0; a < 7; a++)
 	{
 		windowMgr::getInstance()->meshes.at(a)->thisTexture.Bind(0);
