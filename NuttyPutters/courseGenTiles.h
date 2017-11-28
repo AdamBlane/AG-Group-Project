@@ -42,8 +42,6 @@ public:
 	int id;
 	// Tiles have a size (10x10 currently)
 	float size = 10;
-	// Golf ball radius
-	float radius = 0.5;
 	// Golf ball displacement after hitting boundary
 	float displace = 0.0f;
 	// Direction of travel once this tile is placed

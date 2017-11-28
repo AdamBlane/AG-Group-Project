@@ -38,29 +38,29 @@ bool BaseTile::isPlayerOnTile(vec3 playerPos)
 void StartTile::CheckCollisions(Player &player)
 {
 	// Check on X axis - boundaries either side
-	if (player.transform.getPos().x > thisCoords.x + (4 - radius))
+	if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x + (4 - radius);
+		player.transform.getPos().x = thisCoords.x + (4 - player.radius);
 		// Hit boundary, revert x axis
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
-	else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
+	else if (player.transform.getPos().x < thisCoords.x - (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x - (4 - radius);
+		player.transform.getPos().x = thisCoords.x - (4 - player.radius);
 		// Hit boundary, reflect on x
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check on z axis - just one boundary
-	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
+	if (player.transform.getPos().z < thisCoords.z - (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z - (4 - radius);
+		player.transform.getPos().z = thisCoords.z - (4 - player.radius);
 		// hit, revert z axis
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
@@ -73,19 +73,19 @@ void StartTile::CheckCollisions(Player &player)
 void StraightTile_V::CheckCollisions(Player &player)
 {
 	// Check on X axis - boundaries either side
-	if (player.transform.getPos().x > thisCoords.x + (4 - radius))
+	if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x + (4 - radius);
+		player.transform.getPos().x = thisCoords.x + (4 - player.radius);
 		// Hit boundary, revert x axis
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
-	else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
+	else if (player.transform.getPos().x < thisCoords.x - (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x - (4 - radius);
+		player.transform.getPos().x = thisCoords.x - (4 - player.radius);
 		// Hit boundary, revert x axis
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
@@ -99,21 +99,21 @@ void StraightTile_V::CheckCollisions(Player &player)
 void StraightTile_H::CheckCollisions(Player &player)
 {
 	// Check on X axis - boundaries either side
-	if (player.transform.getPos().z > thisCoords.z + (4 - radius))
+	if (player.transform.getPos().z > thisCoords.z + (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z + (4 - radius);
+		player.transform.getPos().z = thisCoords.z + (4 - player.radius);
 		// Hit boundary, revert x axis
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
-	else if (player.transform.getPos().z < thisCoords.z - (4 - radius))
+	else if (player.transform.getPos().z < thisCoords.z - (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z - (4 - radius);
+		player.transform.getPos().z = thisCoords.z - (4 - player.radius);
 		// Hit boundary, revert x axis
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
@@ -126,44 +126,44 @@ void StraightTile_H::CheckCollisions(Player &player)
 void CornerTile_BL::CheckCollisions(Player &player)
 {
 	// Check on X axis - left boundary
-	if (player.transform.getPos().x < thisCoords.x - (4 - radius))
+	if (player.transform.getPos().x < thisCoords.x - (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x - (4 - radius);
+		player.transform.getPos().x = thisCoords.x - (4 - player.radius);
 		// hit left boundary
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check x axis - left side of cube corner boundary
-	else if (player.transform.getPos().x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
+	else if (player.transform.getPos().x > thisCoords.x + (4 - player.radius) && // Far enough to the right on x to hit square
 		player.transform.getPos().z > thisCoords.z - 5 && // Between upper limit of tile/square
 		player.transform.getPos().z < thisCoords.z - 4) // and lower limit of square
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x + (4 - radius);
+		player.transform.getPos().x = thisCoords.x + (4 - player.radius);
 		// Hit going right, reflect on x
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower boundary
-	if (player.transform.getPos().z > thisCoords.z + (4 - radius))
+	if (player.transform.getPos().z > thisCoords.z + (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z + (4 - radius);
+		player.transform.getPos().z = thisCoords.z + (4 - player.radius);
 		// hit middle
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower side of cube corner boundary
-	else if (player.transform.getPos().z < thisCoords.z - (4 - radius) &&
+	else if (player.transform.getPos().z < thisCoords.z - (4 - player.radius) &&
 		player.transform.getPos().x > thisCoords.x + 4 &&
 		player.transform.getPos().x < thisCoords.x + 5)
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z - (4 - radius);
+		player.transform.getPos().z = thisCoords.z - (4 - player.radius);
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
@@ -177,44 +177,44 @@ void CornerTile_BR::CheckCollisions(Player &player)
 {
 	// Axis seems odd since tile has been rotated
 	// Check on X axis - left boundary
-	if (player.transform.getPos().x > thisCoords.x + (4 - radius))
+	if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x + (4 - radius);
+		player.transform.getPos().x = thisCoords.x + (4 - player.radius);
 		// hit left boundary
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check x axis - left side of cube corner boundary
-	else if (player.transform.getPos().x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
+	else if (player.transform.getPos().x < thisCoords.x - (4 - player.radius) && // Far enough to the right on x to hit square
 		player.transform.getPos().z > thisCoords.z - 5 && // Between upper limit of tile/square
 		player.transform.getPos().z < thisCoords.z - 4) // and lower limit of square
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x - (4 - radius);
+		player.transform.getPos().x = thisCoords.x - (4 - player.radius);
 		// Hit going right, reflect on x
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower boundary
-	if (player.transform.getPos().z  > thisCoords.z + (4 - radius))
+	if (player.transform.getPos().z  > thisCoords.z + (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z + (4 - radius);
+		player.transform.getPos().z = thisCoords.z + (4 - player.radius);
 		// hit middle
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower side of cube corner boundary
-	else if (player.transform.getPos().z < thisCoords.z - (4 - radius) &&
+	else if (player.transform.getPos().z < thisCoords.z - (4 - player.radius) &&
 		player.transform.getPos().x > thisCoords.x - 5 &&
 		player.transform.getPos().x < thisCoords.x - 4)
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z - (4 - radius);
+		player.transform.getPos().z = thisCoords.z - (4 - player.radius);
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
@@ -228,44 +228,44 @@ void CornerTile_TL::CheckCollisions(Player &player)
 {
 	// Axis seems odd since tile has been rotated
 	// Check on X axis - left boundary
-	if (player.transform.getPos().x < thisCoords.x - (4 - radius))
+	if (player.transform.getPos().x < thisCoords.x - (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x - (4 - radius);
+		player.transform.getPos().x = thisCoords.x - (4 - player.radius);
 		// hit left boundary
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check x axis - left side of cube corner boundary
-	else if (player.transform.getPos().x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
+	else if (player.transform.getPos().x > thisCoords.x + (4 - player.radius) && // Far enough to the right on x to hit square
 		player.transform.getPos().z > thisCoords.z + 4 && // Between upper limit of tile/square
 		player.transform.getPos().z < thisCoords.z + 5) // and lower limit of square
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x + (4 - radius);
+		player.transform.getPos().x = thisCoords.x + (4 - player.radius);
 		// Hit going right, reflect on x
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower boundary
-	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
+	if (player.transform.getPos().z < thisCoords.z - (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z - (4 - radius);
+		player.transform.getPos().z = thisCoords.z - (4 - player.radius);
 		// hit middle
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower side of cube corner boundary
-	else if (player.transform.getPos().z > thisCoords.z + (4 - radius) &&
+	else if (player.transform.getPos().z > thisCoords.z + (4 - player.radius) &&
 		player.transform.getPos().x > thisCoords.x + 4 &&
 		player.transform.getPos().x < thisCoords.x + 5)
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z + (4 - radius);
+		player.transform.getPos().z = thisCoords.z + (4 - player.radius);
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
@@ -279,44 +279,44 @@ void CornerTile_TR::CheckCollisions(Player &player)
 {
 	// Axis seems odd since tile has been rotated
 	// Check on X axis - right boundary
-	if (player.transform.getPos().x > thisCoords.x + (4 - radius))
+	if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x + (4 - radius);
+		player.transform.getPos().x = thisCoords.x + (4 - player.radius);
 		// hit left boundary
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check x axis - left side of cube corner boundary
-	else if (player.transform.getPos().x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
+	else if (player.transform.getPos().x < thisCoords.x - (4 - player.radius) && // Far enough to the right on x to hit square
 		player.transform.getPos().z > thisCoords.z + 4 && // Between upper limit of tile/square
 		player.transform.getPos().z < thisCoords.z + 5) // and lower limit of square
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().x = thisCoords.x - (4 - radius);
+		player.transform.getPos().x = thisCoords.x - (4 - player.radius);
 		// Hit going right, reflect on x
 		player.velocity.x = -player.velocity.x;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower boundary
-	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
+	if (player.transform.getPos().z < thisCoords.z - (4 - player.radius))
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z - (4 - radius);
+		player.transform.getPos().z = thisCoords.z - (4 - player.radius);
 		// hit middle
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower side of cube corner boundary
-	else if (player.transform.getPos().z > thisCoords.z + (4 - radius) &&
+	else if (player.transform.getPos().z > thisCoords.z + (4 - player.radius) &&
 		player.transform.getPos().x > thisCoords.x - 5 &&
 		player.transform.getPos().x < thisCoords.x - 4)
 	{
 		// Move away from boundary so as not to retrigger this
-		player.transform.getPos().z = thisCoords.z + (4 - radius);
+		player.transform.getPos().z = thisCoords.z + (4 - player.radius);
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
@@ -367,29 +367,29 @@ void EndTile::CheckCollisions(Player &player)
 	if (outDir.going_up)
 	{
 		// Check on X axis - boundaries either side
-		if (player.transform.getPos().x > thisCoords.x + (4 - radius))
+		if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().x = thisCoords.x + (4 - radius);
+			player.transform.getPos().x = thisCoords.x + (4 - player.radius);
 			// Hit boundary, revert x axis
 			player.velocity.x = -player.velocity.x;
 			// Play SFX
 			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
-		else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
+		else if (player.transform.getPos().x < thisCoords.x - (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().x = thisCoords.x - (4 - radius);
+			player.transform.getPos().x = thisCoords.x - (4 - player.radius);
 			// Hit boundary, revert x axis
 			player.velocity.x = -player.velocity.x;
 			// Play SFX
 			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		// Check on z axis - just one boundary
-		if (player.transform.getPos().z < thisCoords.z - (4 - radius))
+		if (player.transform.getPos().z < thisCoords.z - (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().z = thisCoords.z - (4 - radius);
+			player.transform.getPos().z = thisCoords.z - (4 - player.radius);
 			// hit, revert z axis
 			player.velocity.z = -player.velocity.z;
 			// Play SFX
@@ -399,29 +399,29 @@ void EndTile::CheckCollisions(Player &player)
 	else if (outDir.going_down)
 	{
 		// Check on X axis - boundaries either side
-		if (player.transform.getPos().x > thisCoords.x + (4 - radius)) 
+		if (player.transform.getPos().x > thisCoords.x + (4 - player.radius)) 
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().x = thisCoords.x + (4 - radius);
+			player.transform.getPos().x = thisCoords.x + (4 - player.radius);
 			// Hit boundary, revert x axis
 			player.velocity.x = -player.velocity.x;
 			// Play SFX
 			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
-		else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
+		else if (player.transform.getPos().x < thisCoords.x - (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().x = thisCoords.x - (4 - radius);
+			player.transform.getPos().x = thisCoords.x - (4 - player.radius);
 			// Hit boundary, revert x axis
 			player.velocity.x = -player.velocity.x;
 			// Play SFX
 			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		// Check on z axis - just one boundary
-		if (player.transform.getPos().z > thisCoords.z + (4 - radius))
+		if (player.transform.getPos().z > thisCoords.z + (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().z = thisCoords.z + (4 - radius);
+			player.transform.getPos().z = thisCoords.z + (4 - player.radius);
 			// hit, revert z axis
 			player.velocity.z = -player.velocity.z;
 			// Play SFX
@@ -431,29 +431,29 @@ void EndTile::CheckCollisions(Player &player)
 	else if (outDir.going_left)
 	{
 		// Check on z axis - boundaries either side
-		if (player.transform.getPos().z < thisCoords.z - (4 - radius))
+		if (player.transform.getPos().z < thisCoords.z - (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().z = thisCoords.z - (4 - radius);
+			player.transform.getPos().z = thisCoords.z - (4 - player.radius);
 			// hit, revert z axis
 			player.velocity.z = -player.velocity.z;
 			// Play SFX
 			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
-		else if (player.transform.getPos().z > thisCoords.z + (4 - radius))
+		else if (player.transform.getPos().z > thisCoords.z + (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().z = thisCoords.z + (4 - radius);
+			player.transform.getPos().z = thisCoords.z + (4 - player.radius);
 			// hit, revert z axis
 			player.velocity.z = -player.velocity.z;
 			// Play SFX
 			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		// Check on x - boundary to left
-		if (player.transform.getPos().x < thisCoords.x - (4 - radius))
+		if (player.transform.getPos().x < thisCoords.x - (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().x = thisCoords.x - (4 - radius);
+			player.transform.getPos().x = thisCoords.x - (4 - player.radius);
 			// hit, revert on x
 			player.velocity.x = -player.velocity.x;
 			// Play SFX
@@ -463,29 +463,29 @@ void EndTile::CheckCollisions(Player &player)
 	else if (outDir.going_right)
 	{
 		// Check on z axis - boundaries either side
-		if (player.transform.getPos().z < thisCoords.z - (4 - radius))
+		if (player.transform.getPos().z < thisCoords.z - (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().z = thisCoords.z - (4 - radius);
+			player.transform.getPos().z = thisCoords.z - (4 - player.radius);
 			// hit, revert on z
 			player.velocity.z = -player.velocity.z;
 			// Play SFX
 			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
-		else if (player.transform.getPos().z > thisCoords.z + (4 - radius))
+		else if (player.transform.getPos().z > thisCoords.z + (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().z = thisCoords.z + (4 - radius);
+			player.transform.getPos().z = thisCoords.z + (4 - player.radius);
 			// hit, revert on z
 			player.velocity.z = -player.velocity.z;
 			// Play SFX
 			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		// Check on x - boundary to right
-		if (player.transform.getPos().x > thisCoords.x + (4 - radius))
+		if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 		{
 			// Move away from boundary so as not to retrigger this
-			player.transform.getPos().x = thisCoords.x + (4 - radius);
+			player.transform.getPos().x = thisCoords.x + (4 - player.radius);
 			// hit, reflect on x
 			player.velocity.x = -player.velocity.x;
 			// Play SFX

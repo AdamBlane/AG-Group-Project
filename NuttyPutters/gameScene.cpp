@@ -987,8 +987,6 @@ void gameScene::Collisions()
 			// If less than two radii apart we have a collision
 			if (magnitude < players[0].radius * 2)
 			{
-				// 2 Cases - both players moving, one player stationary
-
 				// First normalize the distance vector; the collision normal
 				vec3 collisionNormal = players[0].transform.getPos() - players[1].transform.getPos();
 				collisionNormal = normalize(collisionNormal);
@@ -1005,7 +1003,6 @@ void gameScene::Collisions()
 				players[1].velocity = v2New;
 				// Both players are moving
 				players[0].isMoving = players[1].isMoving = true;
-
 			}
 
 		}

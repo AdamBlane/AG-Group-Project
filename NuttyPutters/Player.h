@@ -28,6 +28,7 @@ public:
 	bool camFollow = true;
 	float chaseCamAngle;
 	int strokeCounter = 0;
+	int currentPowerup = 0;
 
 	// Action isPressed flags
 	bool firePressed = false;
