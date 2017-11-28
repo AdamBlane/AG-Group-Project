@@ -3,11 +3,10 @@
 // Externals
 #include "glew_glfw.h"
 #include "include\inc\fmod.hpp"
-#include <thread>
+
 
 // Internals
 #include "sceneMgr.h"
-
 
 
 class windowMgr
@@ -39,12 +38,22 @@ class windowMgr
 		vector<Texture*> savesImages;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
-
+		// Skybox vars
+		Texture* skyboxTexture;
+		Mesh* skyboxMesh;
+		const string posXfileName = "..\\NuttyPutters\\skyboxes\\left.png";
+		const string negXfileName = "..\\NuttyPutters\\skyboxes\\right.png";
+		const string posYfileName = "..\\NuttyPutters\\skyboxes\\top.png";
+		const string negYfileName = "..\\NuttyPutters\\skyboxes\\bot.png";
+		const string posZfileName = "..\\NuttyPutters\\skyboxes\\back.png";
+		const string negZfileName = "..\\NuttyPutters\\skyboxes\\front.png";
 		// GAME SCENE UNIQUE MESHES
 		Mesh* player1Mesh;
 		Mesh* player2Mesh;
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
+		//Mesh* reboundEffectMesh;
+		//vector<Texture*> reboundEffectTextures;
 
 		// Cameras
 		target_camera* HUDtargetCam;
@@ -52,6 +61,7 @@ class windowMgr
 		free_camera* freeCam;
 		chase_camera* p1ChaseCam;
 		chase_camera* p2ChaseCam;
+		vector<chase_camera*> chaseCams;
 		// Shaders
 		Shader* textureShader;
 		Shader* skyboxShader;
@@ -60,6 +70,10 @@ class windowMgr
 		// AUDIO
 		FMOD::System *system;
 		FMOD::Sound *menuSelect;	
+		FMOD::Sound *golfBallPutt;
+		FMOD::Sound *golfBallHit;
+		FMOD::Sound *golfBallJump;
+		FMOD::Sound *golfBallWoodHit;
 		// Store all above declared sound effects here
 		map<std::string, FMOD::Sound*> soundEffects;
 
@@ -69,8 +83,13 @@ class windowMgr
 		vector<Mesh*> planeMeshes;
 		map<std::string, Texture*> tileTextures;
 
+
+		//mutex mut;
+
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
+		// Load textures thread
+		void LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* window);
 		// Populate savesImages vector with image files read from saves folder
 		void UpdateSavesImages(string savedImagePath);
 		// Ask winMgr to get thread to play given sound

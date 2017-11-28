@@ -33,6 +33,7 @@
     <ClCompile Include="obj_loader.cpp" />
     <ClCompile Include="optionsScene.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="playerSelectScene.cpp" />
     <ClCompile Include="sceneMgr.cpp" />
     <ClCompile Include="Shader.cpp" />

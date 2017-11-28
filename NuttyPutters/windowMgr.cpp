@@ -1,6 +1,10 @@
 // Externals
 #include <iostream>
 #include <fstream>
+#include <memory>
+#include <thread>
+#include <future>
+#include <mutex>
 // Internals
 #include "windowMgr.h"
 
@@ -64,7 +68,6 @@ GLFWwindow* windowMgr::Init()
 		std::cout << "Glew failed to initialise!" << std::endl;
 	}
 
-
 	// ############################ AUDIO ############################
 	// Init fmod system
 	FMOD::System_Create(&system);
@@ -72,8 +75,16 @@ GLFWwindow* windowMgr::Init()
 	// Load sounds
 	system->createSound("..\\NuttyPutters\\audio\\powerup.wav", FMOD_DEFAULT, 0, &menuSelect);
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("menuSelect", menuSelect));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-putt.wav", FMOD_DEFAULT, 0, &golfBallPutt);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallPutt", golfBallPutt));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-hit.wav", FMOD_DEFAULT, 0, &golfBallHit);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallHit", golfBallHit));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-jump.wav", FMOD_DEFAULT, 0, &golfBallJump);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallJump", golfBallJump));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-wood-hit.wav", FMOD_DEFAULT, 0, &golfBallWoodHit);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
 
-
+	
 	// ############################ SHADERS ############################
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
@@ -101,13 +112,14 @@ GLFWwindow* windowMgr::Init()
 	p1ChaseCam = new chase_camera();
 	p1ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p1ChaseCam->set_springiness(0.2f);
-	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width /2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width  / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	chaseCams.push_back(p1ChaseCam);
 	// p2 chase cam
 	p2ChaseCam = new chase_camera();
 	p2ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p2ChaseCam->set_springiness(0.2f);
 	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width /2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
-
+	chaseCams.push_back(p2ChaseCam);
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
 	for (int i = 0; i < 20; ++i)
@@ -122,7 +134,19 @@ GLFWwindow* windowMgr::Init()
 	player2Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
 	p1ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	p2ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
+	
+	//reboundEffectMesh = new Mesh(Mesh::CUBOID, vec3(1.0f, 10.0f, 10.0f), 1.0f, 1.0f, 1.0f);
+	//Texture* rbfx = new Texture("..\\NuttyPutters\\forcefield.png");
+	//reboundEffectTextures.push_back(rbfx)
 	// ############################ TEXTURES ############################
+
+	// TESTING
+	//auto f = async(&windowMgr::LoadTextures, this, tileTextures);
+//	f.get();
+
+//	thread t(&windowMgr::LoadTextures, this, std::ref(tileTextures), win);
+//	t.join();
+
 	// START SCENE TEXTURES 
 	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
@@ -221,6 +245,11 @@ GLFWwindow* windowMgr::Init()
 	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnSelected", fullscreenBtnSelected));
 	// GAME SCENE TEXTURES
+	// Skybox textures
+	skyboxTexture = new Texture(posXfileName, negXfileName, posYfileName, negYfileName, posZfileName, negZfileName);
+	// Skybox mesh must be created after
+	skyboxMesh = new Mesh(skyboxTexture);
+
 	Texture* playerRedTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
 	Texture* playerBlueTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
@@ -355,6 +384,33 @@ GLFWwindow* windowMgr::Init()
 
 	return win;
 }
+
+// Load texture thread function
+void windowMgr::LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* window)
+{
+	glfwMakeContextCurrent(window);
+
+	Texture* floorGrass = new Texture("..\\NuttyPutters\\grass.png");
+	tileTexs.insert(std::pair<std::string, Texture*>("floorGrass", floorGrass));
+
+	Texture* grassHole = new Texture("..\\NuttyPutters\\grassHole.png");
+	tileTexs.insert(std::pair<std::string, Texture*>("grassHole", grassHole));
+
+	Texture* grassScenery = new Texture("..\\NuttyPutters\\lava.jpg");
+	tileTexs.insert(std::pair<std::string, Texture*>("grassScenery", grassScenery));
+
+	Texture* tileWood = new Texture("..\\NuttyPutters\\box.jpg");
+	tileTexs.insert(std::pair<std::string, Texture*>("tileWood", tileWood));
+
+	Texture* waterBridge = new Texture("..\\NuttyPutters\\water.png");
+	tileTexs.insert(std::pair<std::string, Texture*>("waterBridge", waterBridge));
+
+	Texture* bottomBridge = new Texture("..\\NuttyPutters\\bridgeBottom.jpg");
+	tileTexs.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
+
+
+}
+
 
 // Called by gameScene.cpp whenever the user saves that level
 // Take the saved level seed and ask winMgr to grab the newly made image and add to list

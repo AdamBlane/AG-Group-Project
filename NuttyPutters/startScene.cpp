@@ -187,6 +187,7 @@ void startScene::Update(GLFWwindow* win)
 
 void startScene::Render(GLFWwindow* win)
 {
+	glViewport(0, 0, 1600, 900);
 	// If camera type is target camera - used for HUD elements - then
 	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 

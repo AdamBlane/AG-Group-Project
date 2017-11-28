@@ -80,7 +80,6 @@ void loadGameScene::Init(GLFWwindow* win)
 void loadGameScene::Loop(GLFWwindow* win)
 {
 	// Scene background
-	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Input
@@ -432,7 +431,11 @@ void loadGameScene::Input(GLFWwindow* win)
 		{
 			enterPressed = false; // Suspect this is unnecessary
 			// Current seed is index of seeds list, send as optional param
-			windowMgr::getInstance()->sceneManager.changeScene(6, 12, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)		
+			// 6 is game scene
+			// 12 is course length
+			// playerCount is number of players
+			// 1 is number of levels this game
+			windowMgr::getInstance()->sceneManager.changeScene(6, 12, playerCount, 1,seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)		
 		}
 	}
 	

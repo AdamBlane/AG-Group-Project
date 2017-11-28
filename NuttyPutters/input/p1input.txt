@@ -1,0 +1,8 @@
+fire,32
+jump,341
+up,87
+down,83
+left,65
+right,68
+zoomIn,81
+zoomOut,69

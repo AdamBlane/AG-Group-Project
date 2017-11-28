@@ -105,6 +105,9 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Source Files\Game Logic</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Game Logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="windowMgr.h">

@@ -42,8 +42,6 @@ public:
 	int id;
 	// Tiles have a size (10x10 currently)
 	float size = 10;
-	// Golf ball radius
-	float radius = 0.5;
 	// Golf ball displacement after hitting boundary
 	float displace = 0.0f;
 	// Direction of travel once this tile is placed
@@ -197,10 +195,6 @@ public:
 	EndTile() { id = 9; }
 	~EndTile() {};
 
-	bool ballInHole;
-
-	// Getters
-	inline bool getBallInHole() { return ballInHole; }
 
 	// Checks whether player has hit boundaries of this tile
 	virtual void CheckCollisions(Player &player);

@@ -39,20 +39,42 @@ public:
 	// Deconstructor
 	~gameScene();
 
-	//Player player1, player2;
+	//Players list
 	vector<Player> players;
+	// Number of players this game
+	int numPlayers = 1;
+	// Number of levels this game
+	int numLevels = 1;
+	// Current level 
+	int currentLevel = 0;
+	// For loading a new level
+	bool changedLevel = false;
+	// Total number of tiles per level
+	int courseSize;
+
+	// SYSTEMS USED
+	// Handles UI logic
 	UI uiMgr;
+	// Handles physics logic
 	Physics physicsSystem;
-	//Trying Skybox
-	Mesh* sky;
-	
-	// General game variables
-	vector<BaseTile*> algTiles; // Game tiles list; these tiles have position data (by M)
-	vector<Tile> tiles; // Tile meshes to be rendered, created by V
-	vector<Tile> sceneryTiles; // sceneryTiles to be rendered
-	vector<int> levelSeed; // This course seed; each tile has an int id
-	int courseSize; // Total number of tiles this level
-	vector<int> obstacles; // Record obstacle data ( tilePos, obType, tilePos, obType etc)
+
+	// GAME VARIABLES
+	// List of all level seeds, this is used to create algTiles list
+	vector<vector<int>> masterLevelSeeds;
+	// List of all level alg tiles, used to determine collisions and spatial partitioning
+	// Also used to create Tiles list, which makes up the geometry to be drawn
+	vector<vector<BaseTile*>> masterAlgTiles;
+	// List of all tile meshes which are rendered
+	vector<vector<Tile>> masterTiles;
+	// List of all scenery tile meshes which are rendered
+	vector<vector<Tile>> masterSceneryTiles;
+	// List of pause cam positions and targets for each level
+	vector<vec3> pauseCamLevelProperties;
+	// Record obstacle data ( tilePos, obType, tilePos, obType etc)
+	vector<int> obstacles; 
+
+	// Prevent saving same level more than once
+	bool levelSaved = false; 
 
 	// Gameplay variables
 	// TODO - set these in init to be safe (sometimes not reset in other scenes)
@@ -81,25 +103,22 @@ public:
 	double accumulator = 0.0;
 	float dt = 0.016;  // This is 60fps
 
-	// Fire action variables
-	bool p2firePressed = false; // Prevent shooting ball again whilst already moving
-	float fireCounter; // This is a force counter (TODO: rename)
-	float p2fireCounter;
-	bool levelSaved = false; // Prevent saving same level more than once
+	
 
 	// Camera variables
 	float camSpeed = 2.0f; 
-	float chaseCamAngle, p2ChaseCamAngle, cameraType = 1; // for switching between free/chase cam (default)
+	float  cameraType = 1;
+	// TODO - replace these for player members - float chaseCamAngle, p2ChaseCamAngle, // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)
 	double cursor_x, cursor_y = 0.0; 
-	vec3 pauseCamPos, pauseCamTarget;
+	
 
 
 
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)
-	void Init(GLFWwindow* window, int courseLength, string seed = "seed"); 
+	void Init(GLFWwindow* window, int courseLength, int playerCount, int levelCount, string seed = "seed"); 
 	// Loads level of given size; random if no optional seed given
 	void LoadGame(string seed);
 	// Fills space around level with scenery tiles
@@ -109,7 +128,11 @@ public:
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);
 	void Input(GLFWwindow* window);
+	void SpatialPartitioningUpdate();
+	void CheckLoadNextLevel();
+
 	void Update(GLFWwindow* window);
+	
 	void Collisions();
 	void Render(GLFWwindow* window);
 };

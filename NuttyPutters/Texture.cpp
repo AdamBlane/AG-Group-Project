@@ -11,7 +11,7 @@ Texture::Texture(const std::string& fileName)
 	// Store the width, height and number of components that make up a texture
 	// NumCoponents is rarely used but good to have incase using complex textures
 	int width, height, numComponents;
-
+	
 	// Load the texture data
 	unsigned char* imageData = stbi_load(fileName.c_str(), &width, &height, &numComponents, 4);
 

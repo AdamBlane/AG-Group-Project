@@ -33,6 +33,9 @@ public:
 	const int diff = 1; 
 	// Hold all seeds
 	vector<string> seeds;
+
+	// Player count - load game with 1 or 2 players
+	int playerCount = 1;
 	// Image viewer navigation
 	int lastImageSelected, currentImageSelected, maxImagetoSelect; // Index of image mesh
 	int savesImagesIndex; // Index to look up textures and seeds
