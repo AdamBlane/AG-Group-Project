@@ -10,6 +10,7 @@ gameScene::gameScene() { }
 // Deconstructor
 gameScene::~gameScene()
 {
+	
 	// Delete everything in alg tiles since it was declared on heap
 	for (auto &l : masterAlgTiles)
 	{
@@ -19,12 +20,26 @@ gameScene::~gameScene()
 		l.clear();
 	}
 
+	// Clear meshes in master tile
+	// For every list
+	for (auto &l : masterTiles)
+	{
+		// For every tile in list
+		for (auto &t : l)
+		{
+			t.tileContent.clear();
+			t.tileObstacle.clear();
+		}
+	}
+
 	// Clear all lists
+	masterAlgTiles.clear();
 	masterLevelSeeds.clear();
 	masterTiles.clear();
 	masterSceneryTiles.clear();
 	pauseCamLevelProperties.clear();
 	obstacles.clear();
+	players.clear();
 
 }
 

@@ -28,6 +28,9 @@ Tile::Tile(typeTile desiredType, vec3 newPosition, int obstacleID)
 
 Tile::~Tile()
 {
+	cout << "tile deconstructor called" << endl;
+
+
 }
 
 //returns position of the tile
