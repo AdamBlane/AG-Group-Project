@@ -16,13 +16,32 @@ public:
 	// Game logic controls HUD 
 	UI uiMgr;
 
-	
 	// Different gameplay logic for 1 and 2 player modes
 	int players;
+
+	// Game clock
+	int startTime;
+	int lastFrameTime;
+	int elapsedTime;
+
+
 
 	// Setup start of game HUD
 	void Setup(int numPlayers);
 
+	// Start game clock
+	void StartGameClock();
+
 	// Called when player stroke counter incremented
 	void PlayerFired(int playerIndex, Player &player);
+
+
+
+	// Keep clock ticking
+	void Update();
+
+
+
+
+
 };

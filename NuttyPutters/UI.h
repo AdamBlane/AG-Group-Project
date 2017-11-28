@@ -30,9 +30,9 @@ public:
 	UI() {}
 	~UI() {}
 
-	// Index value in winMgr list
-	int p1StrokeMeshIndex = 0;
-	int p2StrokeMeshIndex = 1;
+	// Index value in winMgr list - each player has 2 meshes 
+	int p1StrokeMeshIndex = 0; 
+	int p2StrokeMeshIndex = 2;
 
 	// Sets up basic HUD layout 
 	void Setup(int players);

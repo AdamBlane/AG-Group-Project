@@ -25,6 +25,13 @@ void GameLogicMgr::Setup(int numPlayers)
 	}
 }
 
+// Start tracking time for this game
+void GameLogicMgr::StartGameClock()
+{
+	// This marks the start time
+	startTime = glfwGetTime();
+}
+
 // Called after a player fired a shot
 // Checks against stroke limit if this is 1 player mode
 // Updates UI to refelct increase to strokeCounter
@@ -49,6 +56,19 @@ void GameLogicMgr::PlayerFired(int playerIndex, Player &player)
 }
 
 
-
+// Keep clocks ticking...
+void GameLogicMgr::Update()
+{
+	// Update elapsed timer clock
+	// Time from current subtract start time
+	lastFrameTime = elapsedTime;
+	elapsedTime = glfwGetTime() - startTime;
+	
+	// Only update the UI every second
+	if (elapsedTime > lastFrameTime)
+	{
+		
+	}
+}
 
 

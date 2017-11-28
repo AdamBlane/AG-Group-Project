@@ -9,14 +9,24 @@ void UI::Setup(int players)
 	// Stroke label
 	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex)->SetScale(0.5f, 0.5f);
 	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->strokeCountTextures.at(0));
+	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex + 1)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex + 1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex + 1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
 
 	// Is this for 2 players?
 	if (players == 2)
 	{
 		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex)->SetScale(0.5f, 0.5f);
 		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
-		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->strokeCountTextures.at(0));
+		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex + 1)->SetScale(0.5f, 0.5f);
+		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex + 1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
+		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex + 1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
 	}
 }
 
@@ -25,7 +35,41 @@ void UI::Setup(int players)
 void UI::UpdateStrokeCounter(int playerIndex, int strokeCounter)
 {
 	// Update texture for given player HUD element
-	windowMgr::getInstance()->meshes.at(playerIndex)->SetTexture(windowMgr::getInstance()->strokeCountTextures.at(strokeCounter));
+	// Split stroke counter into 10s and 1s
+	int tens, ones;
+	string scString = to_string(strokeCounter);
+	
+	// Deal with when stroke counter is below ten
+	if (strokeCounter < 10)
+	{
+		char num = scString[0];
+		ones = num - 48;
+		tens = 0;
+	}
+	else
+	{
+		char tensChar = scString[0];
+		tens = tensChar - 48;
+		char onesChar = scString[1];
+		ones = onesChar - 48;
+	}
+
+	// P1
+	if (playerIndex == 0)
+	{
+		// Update 10s
+		windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
+		// Update 1s
+		windowMgr::getInstance()->meshes.at(p1StrokeMeshIndex + 1)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
+	}
+	// P2
+	else if (playerIndex == 1)
+	{
+		// Update 10s
+		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
+		// Update 1s
+		windowMgr::getInstance()->meshes.at(p2StrokeMeshIndex + 1)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
+	}
 
 	
 }
@@ -33,6 +77,26 @@ void UI::UpdateStrokeCounter(int playerIndex, int strokeCounter)
 
 
 
+// Timer first unit
+////	windowMgr::getInstance()->meshes.at(5)->SetScale(0.25f, 0.25f);
+////	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(2.8f, 1.7f, 0.0f));
+////	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+////	// Timer second unit
+////	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
+////	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(2.95f, 1.7f, 0.0f));
+////	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+////	// Timer third unit
+////	windowMgr::getInstance()->meshes.at(7)->SetScale(0.25f, 0.25f);
+////	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.15f, 1.7f, 0.0f));
+////	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["zeroLbl"]);
+////	// Timer forth unit
+////	windowMgr::getInstance()->meshes.at(8)->SetScale(0.25f, 0.25f);
+////	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(3.3f, 1.7f, 0.0f));
+////	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["twoLbl"]);
+////	// Timer semi colon
+////	windowMgr::getInstance()->meshes.at(9)->SetScale(0.25f, 0.25f);
+////	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(3.05f, 1.725f, 0.0f));
+////	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["semiColonLbl"]);
 
 
 
@@ -130,67 +194,8 @@ void UI::UpdateStrokeCounter(int playerIndex, int strokeCounter)
 ////	windowMgr::getInstance()->meshes.at(19)->SetPos(vec3(0.0f, 0.0f, 0.0f));
 ////	windowMgr::getInstance()->meshes.at(19)->SetTexture(windowMgr::getInstance()->textures["gameSplashScreen"]);
 ////}
-//
-//
-//// Method which updates the users number of strokes
-//bool UI::updateStrokeMesh(int strokeCounter)
-//{
-//	// Switch statement which changes the stroke counter based on how many strokes the player has taken
-//	switch (strokeCounter)
-//	{
-//	case 0:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["zeroStrokeLbl"]);
-//		return false;
-//		break;
-//	case 1:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["oneStrokeLbl"]);
-//		return false;
-//		break;
-//	case 2:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["twoStrokeLbl"]);
-//		return false;
-//		break;
-//	case 3:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["threeStrokeLbl"]);
-//		return false;
-//		break;
-//	case 4:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["fourStrokeLbl"]);
-//		return false;
-//		break;
-//	case 5:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["fiveStrokeLbl"]);
-//		return false;
-//		break;
-//	case 6:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["sixStrokeLbl"]);
-//		return false;
-//		break;
-//	case 7:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["sevenStrokeLbl"]);
-//		return false;
-//		break;
-//	case 8:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["eightStrokeLbl"]);
-//		return false;
-//		break;
-//	case 9:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["nineStrokeLbl"]);
-//		return false;
-//		break;
-//	case 10:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["tenStrokeLbl"]);
-//		return false;
-//		break;
-//	case 11:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["elevenStrokeLbl"]);
-//		return false;
-//		break;
-//	case 12:
-//		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["twelveStrokeLbl"]);
-//		return false;
-//		break;
-//	case 13:
+
+	// Stroke counter end
 //		// If more than 13 strokes have been taken then update necessary textures and set boolean to true
 //		windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["outOfLbl"]);
 //		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["outOfStrokesLbl"]);

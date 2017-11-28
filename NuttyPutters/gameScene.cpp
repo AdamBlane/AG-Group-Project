@@ -552,6 +552,8 @@ void gameScene::Input(GLFWwindow* window)
 		if (glfwGetKey(window, GLFW_KEY_X))
 		{
 			continuePressed = true;
+			// Start game timer
+			gameLogicMgr.StartGameClock();
 		}
 
 		// FREE CAM controls
@@ -845,6 +847,9 @@ void gameScene::Update(GLFWwindow* window)
 	// Update spatial partitioning
 	SpatialPartitioningUpdate();
 	
+	// Update game clock
+	gameLogicMgr.Update();
+	
 
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
@@ -1029,6 +1034,9 @@ void gameScene::Render(GLFWwindow* window)
 	windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
 	windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 	windowMgr::getInstance()->meshes.at(0)->Draw();
+	windowMgr::getInstance()->meshes.at(1)->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+	windowMgr::getInstance()->meshes.at(1)->Draw();
 
 
 	// Reset the depth range to allow for objects at a distance to be rendered
@@ -1110,9 +1118,12 @@ void gameScene::Render(GLFWwindow* window)
 		glDepthRange(0, 0.01);
 
 		// TODO HUD stuff
-		windowMgr::getInstance()->meshes.at(1)->thisTexture.Bind(0);
+		windowMgr::getInstance()->meshes.at(2)->thisTexture.Bind(0);
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(1)->Draw();
+		windowMgr::getInstance()->meshes.at(2)->Draw();
+		windowMgr::getInstance()->meshes.at(3)->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(3)->Draw();
 
 
 		// Reset the depth range to allow for objects at a distance to be rendered
