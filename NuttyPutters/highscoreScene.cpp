@@ -483,23 +483,69 @@ void highscoreScene::Loop(GLFWwindow * win)
 
 	// Update
 	Update(win);
-
+	//Tracks Mouse 
+	Track_Mouse(win);
 	// Render
 	Render(win);
 }
 //tracks mouse
 void highscoreScene::Track_Mouse(GLFWwindow * win) 
 {
-
+	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
+	if ((windowMgr::getInstance()->mouse_y >= 13 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 94 * windowMgr::getInstance()->windowScale))
+	{
+		//this is to highlightplayer 1
+		if (windowMgr::getInstance()->mouse_x <= 524 && windowMgr::getInstance()->mouse_x >= 203) 
+		{
+			windowMgr::getInstance()->button_manager = 1;
+		}
+		//this is to highlight player 2
+		else if (windowMgr::getInstance()->mouse_x <= 965 && windowMgr::getInstance()->mouse_x >= 631)
+		{
+			windowMgr::getInstance()->button_manager = 2;
+		}
+	}
+	//this is for main menu button
+	else if ((windowMgr::getInstance()->mouse_x >= 1151 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1534 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 411 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 481 * windowMgr::getInstance()->windowScale))
+	{
+		windowMgr::getInstance()->button_manager = 3;
+	}
 }
 //whenever a click occurs
 void highscoreScene::Click(GLFWwindow * win)
 {
+	switch (windowMgr::getInstance()->button_manager) 
+	{
+		case 1:
+			//put in code here for player 1
+			break;
+		case 2:
+			//put in code here for player 2
+			break;
+		//to go back to main menu
+		case 3:
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+			break;
 
+	}
 }
 // Input 
 void highscoreScene::Input(GLFWwindow* win)
 {
+	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+	{
+		windowMgr::getInstance()->mouseLpressed = true;
+	}
+	if (!glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+	{
+		if (windowMgr::getInstance()->mouseLpressed)
+		{
+			Click(win);
+			windowMgr::getInstance()->mouseLpressed = false;
+		}
+	}
 	// If key is pressed and boolean equals false then set bool to true
 	if (glfwGetKey(win, GLFW_KEY_COMMA) && !keyboardButtonPressed[0])
 	{
