@@ -24,7 +24,7 @@
 #include "courseGenTiles.h"
 #include "UI.h"
 #include "Physics.h"
-
+#include "GameLogicMgr.h"
 
 
 using namespace AllCamera;
@@ -53,8 +53,8 @@ public:
 	int courseSize;
 
 	// SYSTEMS USED
-	// Handles UI logic
-	UI uiMgr;
+	// Handles gameplay logic
+	GameLogicMgr gameLogicMgr;
 	// Handles physics logic
 	Physics physicsSystem;
 

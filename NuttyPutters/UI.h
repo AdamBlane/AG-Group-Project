@@ -30,20 +30,13 @@ public:
 	UI() {}
 	~UI() {}
 
-	int tempInt = 0;
-	string temp;
-	string minutesAsString, tenthsAsString, secondsAsString, timeCombined;
-	int timeRemainingInSeconds = 0, timeRemainingInTenths = 0, timeRemainingInMinutes = 0;
-	//Player player; need this?
+	// Index value in winMgr list
+	int p1StrokeMeshIndex = 0;
+	int p2StrokeMeshIndex = 1;
 
-	bool updateStrokeMesh(int strokeCounter); // Method which updates the users stroke counter
-	bool updateTimer(int timeSinceContinueWasPressed, int timeToThisMethod, int holeTimer);
-	bool hasUserCompletedTheHole(Player &player);
+	// Sets up basic HUD layout 
+	void Setup(int players);
 
-	// Sets up meshes and texures stored in winMgr
-	// TODO - allow for 1 or 2 players
-	// Game loop and its functions
-	void Loop(GLFWwindow* window);
-	void Input(GLFWwindow* window);
-	void Update(GLFWwindow* window);
+	// Increment stroke counter for a player
+	void UpdateStrokeCounter(int playerIndex, int strokeCount);
 };

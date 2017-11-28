@@ -5,6 +5,7 @@
 #include "UI.h"
 
 
+
 // Default constructor
 gameScene::gameScene() { }
 // Deconstructor
@@ -125,9 +126,11 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[0]);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[1]);
 
-	// Initiate UI
-	uiMgr.Init();
 
+
+	// Start game logic mgr
+	gameLogicMgr.Setup(numPlayers);
+	
 
 
 	glEnable(GL_BLEND);
@@ -720,14 +723,11 @@ void gameScene::Input(GLFWwindow* window)
 				p.power = 0;
 				// Increment player stroke counter
 				p.strokeCounter++;
+				// Get game logic to call UI update to reflect updated stroke counter
+				gameLogicMgr.PlayerFired(thisPlayer, p);
 				// And we're off! 
 				p.isMoving = true;
 
-
-				// Increment stroke counter by one
-				p.strokeCounter += 1;
-				// Call update stroke mesh in UI.cpp to check if user is out of strokes
-				//isUserOutOfStrokes = uiMgr.updateStrokeMesh(strokeCounter);
 
 				// Flip
 				p.firePressed = false;
@@ -1026,8 +1026,11 @@ void gameScene::Render(GLFWwindow* window)
 	glDepthRange(0, 0.01);
 
 	// TODO HUD stuff
+	windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+	windowMgr::getInstance()->meshes.at(0)->Draw();
 
-	
+
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
@@ -1103,6 +1106,17 @@ void gameScene::Render(GLFWwindow* window)
 
 		// Render player 2's chase camera
 		mvp2 = windowMgr::getInstance()->chaseCams[1]->get_Projection() * windowMgr::getInstance()->chaseCams[1]->get_View();
+
+		glDepthRange(0, 0.01);
+
+		// TODO HUD stuff
+		windowMgr::getInstance()->meshes.at(1)->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(1)->Draw();
+
+
+		// Reset the depth range to allow for objects at a distance to be rendered
+		glDepthRange(0.01, 1.0);
 
 		// Skybox 
 		windowMgr::getInstance()->skyboxShader->Bind();

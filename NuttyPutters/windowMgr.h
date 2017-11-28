@@ -34,6 +34,8 @@ class windowMgr
 		
 		// All textures in the game stored here
 		map<std::string, Texture*> textures;
+		// Stroke label textures here
+		vector<Texture*> strokeCountTextures;
 		// This stores images of saved levels
 		vector<Texture*> savesImages;
 		// General use HUD meshes
