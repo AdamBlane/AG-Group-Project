@@ -1,6 +1,6 @@
 
 #include "courseGenTiles.h"
-
+#include "windowMgr.h"
 // THIS file includes collision check functions for each tile type
 // These tiles are used in the algorithm to generate a course
 
@@ -44,6 +44,8 @@ void StartTile::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// Hit boundary, revert x axis
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 	{
@@ -51,6 +53,8 @@ void StartTile::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// Hit boundary, reflect on x
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check on z axis - just one boundary
 	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
@@ -59,6 +63,8 @@ void StartTile::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// hit, revert z axis
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 
 	}
 }
@@ -73,6 +79,8 @@ void StraightTile_V::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// Hit boundary, revert x axis
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 	{
@@ -80,6 +88,8 @@ void StraightTile_V::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// Hit boundary, revert x axis
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 
 	}
 
@@ -96,6 +106,8 @@ void StraightTile_H::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// Hit boundary, revert x axis
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	else if (player.transform.getPos().z < thisCoords.z - (4 - radius))
 	{
@@ -104,6 +116,8 @@ void StraightTile_H::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// Hit boundary, revert x axis
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 
 }
@@ -118,6 +132,8 @@ void CornerTile_BL::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// hit left boundary
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check x axis - left side of cube corner boundary
 	else if (player.transform.getPos().x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
@@ -128,6 +144,8 @@ void CornerTile_BL::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// Hit going right, reflect on x
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower boundary
 	if (player.transform.getPos().z > thisCoords.z + (4 - radius))
@@ -136,6 +154,8 @@ void CornerTile_BL::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// hit middle
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower side of cube corner boundary
 	else if (player.transform.getPos().z < thisCoords.z - (4 - radius) &&
@@ -146,6 +166,8 @@ void CornerTile_BL::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 
 }
@@ -161,6 +183,8 @@ void CornerTile_BR::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// hit left boundary
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check x axis - left side of cube corner boundary
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
@@ -171,6 +195,8 @@ void CornerTile_BR::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// Hit going right, reflect on x
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower boundary
 	if (player.transform.getPos().z  > thisCoords.z + (4 - radius))
@@ -179,6 +205,8 @@ void CornerTile_BR::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// hit middle
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower side of cube corner boundary
 	else if (player.transform.getPos().z < thisCoords.z - (4 - radius) &&
@@ -189,6 +217,8 @@ void CornerTile_BR::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 
 }
@@ -204,6 +234,8 @@ void CornerTile_TL::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// hit left boundary
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check x axis - left side of cube corner boundary
 	else if (player.transform.getPos().x > thisCoords.x + (4 - radius) && // Far enough to the right on x to hit square
@@ -214,6 +246,8 @@ void CornerTile_TL::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// Hit going right, reflect on x
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower boundary
 	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
@@ -222,6 +256,8 @@ void CornerTile_TL::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// hit middle
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower side of cube corner boundary
 	else if (player.transform.getPos().z > thisCoords.z + (4 - radius) &&
@@ -232,6 +268,8 @@ void CornerTile_TL::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 
 }
@@ -247,6 +285,8 @@ void CornerTile_TR::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x + (4 - radius);
 		// hit left boundary
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check x axis - left side of cube corner boundary
 	else if (player.transform.getPos().x < thisCoords.x - (4 - radius) && // Far enough to the right on x to hit square
@@ -257,6 +297,8 @@ void CornerTile_TR::CheckCollisions(Player &player)
 		player.transform.getPos().x = thisCoords.x - (4 - radius);
 		// Hit going right, reflect on x
 		player.velocity.x = -player.velocity.x;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower boundary
 	if (player.transform.getPos().z < thisCoords.z - (4 - radius))
@@ -265,6 +307,8 @@ void CornerTile_TR::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z - (4 - radius);
 		// hit middle
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 	// Check z axis - lower side of cube corner boundary
 	else if (player.transform.getPos().z > thisCoords.z + (4 - radius) &&
@@ -275,6 +319,8 @@ void CornerTile_TR::CheckCollisions(Player &player)
 		player.transform.getPos().z = thisCoords.z + (4 - radius);
 		// Hit going up, reflect on z
 		player.velocity.z = -player.velocity.z;
+		// Play SFX
+		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 	}
 
 }
@@ -327,6 +373,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().x = thisCoords.x + (4 - radius);
 			// Hit boundary, revert x axis
 			player.velocity.x = -player.velocity.x;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 		{
@@ -334,6 +382,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().x = thisCoords.x - (4 - radius);
 			// Hit boundary, revert x axis
 			player.velocity.x = -player.velocity.x;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		// Check on z axis - just one boundary
 		if (player.transform.getPos().z < thisCoords.z - (4 - radius))
@@ -342,6 +392,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().z = thisCoords.z - (4 - radius);
 			// hit, revert z axis
 			player.velocity.z = -player.velocity.z;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 	}
 	else if (outDir.going_down)
@@ -353,6 +405,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().x = thisCoords.x + (4 - radius);
 			// Hit boundary, revert x axis
 			player.velocity.x = -player.velocity.x;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		else if (player.transform.getPos().x < thisCoords.x - (4 - radius))
 		{
@@ -360,6 +414,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().x = thisCoords.x - (4 - radius);
 			// Hit boundary, revert x axis
 			player.velocity.x = -player.velocity.x;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		// Check on z axis - just one boundary
 		if (player.transform.getPos().z > thisCoords.z + (4 - radius))
@@ -368,6 +424,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().z = thisCoords.z + (4 - radius);
 			// hit, revert z axis
 			player.velocity.z = -player.velocity.z;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 	}
 	else if (outDir.going_left)
@@ -379,6 +437,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().z = thisCoords.z - (4 - radius);
 			// hit, revert z axis
 			player.velocity.z = -player.velocity.z;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		else if (player.transform.getPos().z > thisCoords.z + (4 - radius))
 		{
@@ -386,6 +446,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().z = thisCoords.z + (4 - radius);
 			// hit, revert z axis
 			player.velocity.z = -player.velocity.z;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		// Check on x - boundary to left
 		if (player.transform.getPos().x < thisCoords.x - (4 - radius))
@@ -394,6 +456,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().x = thisCoords.x - (4 - radius);
 			// hit, revert on x
 			player.velocity.x = -player.velocity.x;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 	}
 	else if (outDir.going_right)
@@ -405,6 +469,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().z = thisCoords.z - (4 - radius);
 			// hit, revert on z
 			player.velocity.z = -player.velocity.z;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		else if (player.transform.getPos().z > thisCoords.z + (4 - radius))
 		{
@@ -412,6 +478,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().z = thisCoords.z + (4 - radius);
 			// hit, revert on z
 			player.velocity.z = -player.velocity.z;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 		// Check on x - boundary to right
 		if (player.transform.getPos().x > thisCoords.x + (4 - radius))
@@ -420,6 +488,8 @@ void EndTile::CheckCollisions(Player &player)
 			player.transform.getPos().x = thisCoords.x + (4 - radius);
 			// hit, reflect on x
 			player.velocity.x = -player.velocity.x;
+			// Play SFX
+			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 	}
 	// Check if over end hole

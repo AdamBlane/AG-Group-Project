@@ -51,7 +51,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// Record how many levels to load
 	//numLevels = levelCount;
-	numLevels = 1;
+	numLevels = 5;
 
 	// Save player count
 	numPlayers = playerCount;
@@ -400,6 +400,8 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			if (p.jumpPressed)
 			{
+				// SFX
+				windowMgr::getInstance()->PlayThisSound("golfBallJump");
 				physicsSystem.Jump(p, 5.0f); // Arbitrary jump value
 				p.isMoving = true;
 				// Flip
@@ -687,6 +689,15 @@ void gameScene::Input(GLFWwindow* window)
 			// Only work if fire button was just released
 			if (p.firePressed)
 			{
+				// Play SFX
+				if (p.power < 10.0f)
+				{
+					windowMgr::getInstance()->PlayThisSound("golfBallPutt");
+				}
+				else
+				{
+					windowMgr::getInstance()->PlayThisSound("golfBallHit");
+				}
 				// Power measure accumulated by holding space is impulse magnitude
 				// Normal of impulse is direction
 				physicsSystem.Fire(p, p.power);

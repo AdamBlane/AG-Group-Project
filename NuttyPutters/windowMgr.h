@@ -70,6 +70,10 @@ class windowMgr
 		// AUDIO
 		FMOD::System *system;
 		FMOD::Sound *menuSelect;	
+		FMOD::Sound *golfBallPutt;
+		FMOD::Sound *golfBallHit;
+		FMOD::Sound *golfBallJump;
+		FMOD::Sound *golfBallWoodHit;
 		// Store all above declared sound effects here
 		map<std::string, FMOD::Sound*> soundEffects;
 

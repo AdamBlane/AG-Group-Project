@@ -75,8 +75,16 @@ GLFWwindow* windowMgr::Init()
 	// Load sounds
 	system->createSound("..\\NuttyPutters\\audio\\powerup.wav", FMOD_DEFAULT, 0, &menuSelect);
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("menuSelect", menuSelect));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-putt.wav", FMOD_DEFAULT, 0, &golfBallPutt);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallPutt", golfBallPutt));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-hit.wav", FMOD_DEFAULT, 0, &golfBallHit);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallHit", golfBallHit));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-jump.wav", FMOD_DEFAULT, 0, &golfBallJump);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallJump", golfBallJump));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-wood-hit.wav", FMOD_DEFAULT, 0, &golfBallWoodHit);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
 
-
+	
 	// ############################ SHADERS ############################
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
