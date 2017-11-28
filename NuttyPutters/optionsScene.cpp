@@ -132,15 +132,10 @@ void optionsScene::Init(GLFWwindow * win)
 	//resets the button manager
 	windowMgr::getInstance()->button_manager = 0;
 
-	// TODO - Use winMgr stuffy for this and camera
-	// Setup texture shader
-	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-
 	// Setup target camera
-	tarCam = new target_camera();
-	tarCam->set_Posistion(vec3(0, 0, 5.0f));
-	tarCam->set_Target(vec3(0, 0, 0));
-	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	windowMgr::getInstance()->HUDtargetCam->set_Posistion(vec3(0, 0, 5.0f));
+	windowMgr::getInstance()->HUDtargetCam->set_Target(vec3(0, 0, 0));
+	windowMgr::getInstance()->HUDtargetCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
 	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
@@ -275,19 +270,19 @@ void optionsScene::Input(GLFWwindow* win)
 void optionsScene::Update(GLFWwindow* win)
 {
 	// Update target camera
-	tarCam->update(0.00001);
+	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 }
 
 void optionsScene::Render(GLFWwindow* win)
 {
 	// If camera type is target camera - used for HUD elements - then
-	glm::mat4 hudVP = tarCam->get_Projection() * tarCam->get_View();
+	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 	glDepthRange(0, 0.01);
 
 	for (int a = 0; a < 5; a++)
 	{
 		windowMgr::getInstance()->meshes.at(a)->thisTexture.Bind(0);
-		textureShader->Update(optionSceneTransform, hudVP);
+		windowMgr::getInstance()->textureShader->Update(optionSceneTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(a)->Draw();
 	}
 
@@ -299,7 +294,7 @@ void optionsScene::Render(GLFWwindow* win)
 	glDepthRange(0, 1.0);
 
 	// Bind texture shader
-	textureShader->Bind();
+	windowMgr::getInstance()->textureShader->Bind();
 
 	glfwSwapBuffers(win);
 	glfwPollEvents();
