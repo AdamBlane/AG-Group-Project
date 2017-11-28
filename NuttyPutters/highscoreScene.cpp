@@ -499,7 +499,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	// If key is no longer pressed and bool is true then
 	if (!glfwGetKey(win, GLFW_KEY_COMMA) && keyboardButtonPressed[0])
 	{
-		updateKeyboardFunctionsList(0);
+		updateKeyboardFunctionsList(0, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_MINUS) && !keyboardButtonPressed[1])
@@ -508,7 +508,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_MINUS) && keyboardButtonPressed[1])
 	{
-		updateKeyboardFunctionsList(1);
+		updateKeyboardFunctionsList(1, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_PERIOD) && !keyboardButtonPressed[2])
@@ -517,7 +517,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_PERIOD) && keyboardButtonPressed[2])
 	{
-		updateKeyboardFunctionsList(2);
+		updateKeyboardFunctionsList(2, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_SLASH) && !keyboardButtonPressed[3])
@@ -526,7 +526,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_SLASH) && keyboardButtonPressed[3])
 	{
-		updateKeyboardFunctionsList(3);
+		updateKeyboardFunctionsList(3, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_0) && !keyboardButtonPressed[4])
@@ -535,7 +535,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_0) && keyboardButtonPressed[4])
 	{
-		updateKeyboardFunctionsList(4);
+		updateKeyboardFunctionsList(4, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_1) && !keyboardButtonPressed[5])
@@ -544,7 +544,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_1) && keyboardButtonPressed[5])
 	{
-		updateKeyboardFunctionsList(5);
+		updateKeyboardFunctionsList(5, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_2) && !keyboardButtonPressed[6])
@@ -553,7 +553,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_2) && keyboardButtonPressed[6])
 	{
-		updateKeyboardFunctionsList(6);
+		updateKeyboardFunctionsList(6, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_3) && !keyboardButtonPressed[7])
@@ -562,7 +562,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_3) && keyboardButtonPressed[7])
 	{
-		updateKeyboardFunctionsList(7);
+		updateKeyboardFunctionsList(7, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_4) && !keyboardButtonPressed[8])
@@ -571,7 +571,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_4) && keyboardButtonPressed[8])
 	{
-		updateKeyboardFunctionsList(8);
+		updateKeyboardFunctionsList(8, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_5) && !keyboardButtonPressed[9])
@@ -580,7 +580,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_5) && keyboardButtonPressed[9])
 	{
-		updateKeyboardFunctionsList(9);
+		updateKeyboardFunctionsList(9, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_6) && !keyboardButtonPressed[10])
@@ -589,7 +589,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_6) && keyboardButtonPressed[10])
 	{
-		updateKeyboardFunctionsList(10);
+		updateKeyboardFunctionsList(10, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_7) && !keyboardButtonPressed[11])
@@ -598,7 +598,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_7) && keyboardButtonPressed[11])
 	{
-		updateKeyboardFunctionsList(11);
+		updateKeyboardFunctionsList(11, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_8) && !keyboardButtonPressed[12])
@@ -607,7 +607,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_8) && keyboardButtonPressed[12])
 	{
-		updateKeyboardFunctionsList(12);
+		updateKeyboardFunctionsList(12, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_9) && !keyboardButtonPressed[13])
@@ -616,7 +616,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_9) && keyboardButtonPressed[13])
 	{
-		updateKeyboardFunctionsList(13);
+		updateKeyboardFunctionsList(13, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_SEMICOLON) && !keyboardButtonPressed[14])
@@ -625,7 +625,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_SEMICOLON) && keyboardButtonPressed[14])
 	{
-		updateKeyboardFunctionsList(14);
+		updateKeyboardFunctionsList(14, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_EQUAL) && !keyboardButtonPressed[15])
@@ -634,7 +634,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_EQUAL) && keyboardButtonPressed[15])
 	{
-		updateKeyboardFunctionsList(15);
+		updateKeyboardFunctionsList(15, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_A) && !keyboardButtonPressed[16])
@@ -643,7 +643,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_A) && keyboardButtonPressed[16])
 	{
-		updateKeyboardFunctionsList(16);
+		updateKeyboardFunctionsList(16, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_B) && !keyboardButtonPressed[17])
@@ -652,7 +652,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_B) && keyboardButtonPressed[17])
 	{
-		updateKeyboardFunctionsList(17);
+		updateKeyboardFunctionsList(17, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_C) && !keyboardButtonPressed[18])
@@ -661,7 +661,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_C) && keyboardButtonPressed[18])
 	{
-		updateKeyboardFunctionsList(18);
+		updateKeyboardFunctionsList(18, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_D) && !keyboardButtonPressed[19])
@@ -670,7 +670,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_D) && keyboardButtonPressed[19])
 	{
-		updateKeyboardFunctionsList(19);
+		updateKeyboardFunctionsList(19, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_E) && !keyboardButtonPressed[20])
@@ -679,7 +679,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_E) && keyboardButtonPressed[20])
 	{
-		updateKeyboardFunctionsList(20);
+		updateKeyboardFunctionsList(20, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_F) && !keyboardButtonPressed[21])
@@ -688,7 +688,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_F) && keyboardButtonPressed[21])
 	{
-		updateKeyboardFunctionsList(21);
+		updateKeyboardFunctionsList(21, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_G) && !keyboardButtonPressed[22])
@@ -697,7 +697,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_G) && keyboardButtonPressed[22])
 	{
-		updateKeyboardFunctionsList(22);
+		updateKeyboardFunctionsList(22, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_H) && !keyboardButtonPressed[23])
@@ -706,7 +706,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_H) && keyboardButtonPressed[23])
 	{
-		updateKeyboardFunctionsList(23);
+		updateKeyboardFunctionsList(23, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_I) && !keyboardButtonPressed[24])
@@ -715,7 +715,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_I) && keyboardButtonPressed[24])
 	{
-		updateKeyboardFunctionsList(24);
+		updateKeyboardFunctionsList(24, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_J) && !keyboardButtonPressed[25])
@@ -724,7 +724,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_J) && keyboardButtonPressed[25])
 	{
-		updateKeyboardFunctionsList(25);
+		updateKeyboardFunctionsList(25, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_K) && !keyboardButtonPressed[26])
@@ -733,7 +733,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_K) && keyboardButtonPressed[26])
 	{
-		updateKeyboardFunctionsList(26);
+		updateKeyboardFunctionsList(26, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_L) && !keyboardButtonPressed[27])
@@ -742,7 +742,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_L) && keyboardButtonPressed[27])
 	{
-		updateKeyboardFunctionsList(27);
+		updateKeyboardFunctionsList(27, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_M) && !keyboardButtonPressed[28])
@@ -751,7 +751,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_M) && keyboardButtonPressed[28])
 	{
-		updateKeyboardFunctionsList(28);
+		updateKeyboardFunctionsList(28, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_N) && !keyboardButtonPressed[29])
@@ -760,7 +760,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_N) && keyboardButtonPressed[29])
 	{
-		updateKeyboardFunctionsList(29);
+		updateKeyboardFunctionsList(29, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_O) && !keyboardButtonPressed[30])
@@ -769,7 +769,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_O) && keyboardButtonPressed[30])
 	{
-		updateKeyboardFunctionsList(30);
+		updateKeyboardFunctionsList(30, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_P) && !keyboardButtonPressed[31])
@@ -778,7 +778,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_P) && keyboardButtonPressed[31])
 	{
-		updateKeyboardFunctionsList(31);
+		updateKeyboardFunctionsList(31, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_Q) && !keyboardButtonPressed[32])
@@ -787,7 +787,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_Q) && keyboardButtonPressed[32])
 	{
-		updateKeyboardFunctionsList(32);
+		updateKeyboardFunctionsList(32, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_R) && !keyboardButtonPressed[33])
@@ -796,7 +796,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_R) && keyboardButtonPressed[33])
 	{
-		updateKeyboardFunctionsList(33);
+		updateKeyboardFunctionsList(33, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_S) && !keyboardButtonPressed[34])
@@ -805,7 +805,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_S) && keyboardButtonPressed[34])
 	{
-		updateKeyboardFunctionsList(34);
+		updateKeyboardFunctionsList(34, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_T) && !keyboardButtonPressed[35])
@@ -814,7 +814,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_T) && keyboardButtonPressed[35])
 	{
-		updateKeyboardFunctionsList(35);
+		updateKeyboardFunctionsList(35, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_U) && !keyboardButtonPressed[36])
@@ -823,7 +823,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_U) && keyboardButtonPressed[36])
 	{
-		updateKeyboardFunctionsList(36);
+		updateKeyboardFunctionsList(36, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_V) && !keyboardButtonPressed[37])
@@ -832,7 +832,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_V) && keyboardButtonPressed[37])
 	{
-		updateKeyboardFunctionsList(37);
+		updateKeyboardFunctionsList(37, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_W) && !keyboardButtonPressed[38])
@@ -841,7 +841,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_W) && keyboardButtonPressed[38])
 	{
-		updateKeyboardFunctionsList(38);
+		updateKeyboardFunctionsList(38, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_X) && !keyboardButtonPressed[39])
@@ -850,7 +850,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_X) && keyboardButtonPressed[39])
 	{
-		updateKeyboardFunctionsList(39);
+		updateKeyboardFunctionsList(39, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_Y) && !keyboardButtonPressed[40])
@@ -859,7 +859,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_Y) && keyboardButtonPressed[40])
 	{
-		updateKeyboardFunctionsList(40);
+		updateKeyboardFunctionsList(40, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_Z) && !keyboardButtonPressed[41])
@@ -868,7 +868,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_Z) && keyboardButtonPressed[41])
 	{
-		updateKeyboardFunctionsList(41);
+		updateKeyboardFunctionsList(41, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_LEFT_BRACKET) && !keyboardButtonPressed[42])
@@ -877,7 +877,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_LEFT_BRACKET) && keyboardButtonPressed[42])
 	{
-		updateKeyboardFunctionsList(42);
+		updateKeyboardFunctionsList(42, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_BACKSLASH) && !keyboardButtonPressed[43])
@@ -886,7 +886,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_BACKSLASH) && keyboardButtonPressed[43])
 	{
-		updateKeyboardFunctionsList(43);
+		updateKeyboardFunctionsList(43, 49);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_RIGHT_BRACKET) && !keyboardButtonPressed[44])
@@ -895,7 +895,493 @@ void highscoreScene::Input(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_RIGHT_BRACKET) && keyboardButtonPressed[44])
 	{
-		updateKeyboardFunctionsList(44);
+		updateKeyboardFunctionsList(44, 49);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_ESCAPE) && !keyboardButtonPressed[45])
+	{
+		keyboardButtonPressed[45] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_ESCAPE) && keyboardButtonPressed[45])
+	{
+		updateKeyboardFunctionsList(45, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_ENTER) && !keyboardButtonPressed[46])
+	{
+		keyboardButtonPressed[46] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_ENTER) && keyboardButtonPressed[46])
+	{
+		updateKeyboardFunctionsList(46, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_TAB) && !keyboardButtonPressed[47])
+	{
+		keyboardButtonPressed[47] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_TAB) && keyboardButtonPressed[47])
+	{
+		updateKeyboardFunctionsList(47, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_BACKSPACE) && !keyboardButtonPressed[48])
+	{
+		keyboardButtonPressed[48] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_BACKSPACE) && keyboardButtonPressed[48])
+	{
+		updateKeyboardFunctionsList(48, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_INSERT) && !keyboardButtonPressed[49])
+	{
+		keyboardButtonPressed[49] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_INSERT) && keyboardButtonPressed[49])
+	{
+		updateKeyboardFunctionsList(49, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_DELETE) && !keyboardButtonPressed[50])
+	{
+		keyboardButtonPressed[50] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_DELETE) && keyboardButtonPressed[50])
+	{
+		updateKeyboardFunctionsList(50, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_RIGHT) && !keyboardButtonPressed[51])
+	{
+		keyboardButtonPressed[51] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_RIGHT) && keyboardButtonPressed[51])
+	{
+		updateKeyboardFunctionsList(51, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_LEFT) && !keyboardButtonPressed[52])
+	{
+		keyboardButtonPressed[52] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_LEFT) && keyboardButtonPressed[52])
+	{
+		updateKeyboardFunctionsList(52, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_DOWN) && !keyboardButtonPressed[53])
+	{
+		keyboardButtonPressed[53] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_DOWN) && keyboardButtonPressed[53])
+	{
+		updateKeyboardFunctionsList(53, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_UP) && !keyboardButtonPressed[54])
+	{
+		keyboardButtonPressed[54] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_UP) && keyboardButtonPressed[54])
+	{
+		updateKeyboardFunctionsList(54, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_PAGE_UP) && !keyboardButtonPressed[55])
+	{
+		keyboardButtonPressed[55] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_PAGE_UP) && keyboardButtonPressed[55])
+	{
+		updateKeyboardFunctionsList(55, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_PAGE_DOWN) && !keyboardButtonPressed[56])
+	{
+		keyboardButtonPressed[56] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_PAGE_DOWN) && keyboardButtonPressed[56])
+	{
+		updateKeyboardFunctionsList(56, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_HOME) && !keyboardButtonPressed[57])
+	{
+		keyboardButtonPressed[57] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_HOME) && keyboardButtonPressed[57])
+	{
+		updateKeyboardFunctionsList(57, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_END) && !keyboardButtonPressed[58])
+	{
+		keyboardButtonPressed[58] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_END) && keyboardButtonPressed[58])
+	{
+		updateKeyboardFunctionsList(58, 211);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_CAPS_LOCK) && !keyboardButtonPressed[59])
+	{
+		keyboardButtonPressed[59] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_CAPS_LOCK) && keyboardButtonPressed[59])
+	{
+		updateKeyboardFunctionsList(59, 221);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_SCROLL_LOCK) && !keyboardButtonPressed[60])
+	{
+		keyboardButtonPressed[60] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_SCROLL_LOCK) && keyboardButtonPressed[60])
+	{
+		updateKeyboardFunctionsList(60, 221);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_NUM_LOCK) && !keyboardButtonPressed[61])
+	{
+		keyboardButtonPressed[61] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_NUM_LOCK) && keyboardButtonPressed[61])
+	{
+		updateKeyboardFunctionsList(61, 221);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_NUM_LOCK) && !keyboardButtonPressed[62])
+	{
+		keyboardButtonPressed[62] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_NUM_LOCK) && keyboardButtonPressed[62])
+	{
+		updateKeyboardFunctionsList(62, 221);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_PAUSE) && !keyboardButtonPressed[63])
+	{
+		keyboardButtonPressed[63] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_PAUSE) && keyboardButtonPressed[63])
+	{
+		updateKeyboardFunctionsList(63, 221);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F1) && !keyboardButtonPressed[64])
+	{
+		keyboardButtonPressed[64] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F1) && keyboardButtonPressed[64])
+	{
+		updateKeyboardFunctionsList(64, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F2) && !keyboardButtonPressed[65])
+	{
+		keyboardButtonPressed[65] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F2) && keyboardButtonPressed[65])
+	{
+		updateKeyboardFunctionsList(65, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F3) && !keyboardButtonPressed[66])
+	{
+		keyboardButtonPressed[66] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F3) && keyboardButtonPressed[66])
+	{
+		updateKeyboardFunctionsList(66, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F4) && !keyboardButtonPressed[67])
+	{
+		keyboardButtonPressed[67] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F4) && keyboardButtonPressed[67])
+	{
+		updateKeyboardFunctionsList(67, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F5) && !keyboardButtonPressed[68])
+	{
+		keyboardButtonPressed[68] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F5) && keyboardButtonPressed[68])
+	{
+		updateKeyboardFunctionsList(68, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F6) && !keyboardButtonPressed[69])
+	{
+		keyboardButtonPressed[69] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F6) && keyboardButtonPressed[69])
+	{
+		updateKeyboardFunctionsList(69, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F7) && !keyboardButtonPressed[70])
+	{
+		keyboardButtonPressed[70] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F7) && keyboardButtonPressed[70])
+	{
+		updateKeyboardFunctionsList(70, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F8) && !keyboardButtonPressed[71])
+	{
+		keyboardButtonPressed[71] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F8) && keyboardButtonPressed[71])
+	{
+		updateKeyboardFunctionsList(71, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F9) && !keyboardButtonPressed[72])
+	{
+		keyboardButtonPressed[72] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F9) && keyboardButtonPressed[72])
+	{
+		updateKeyboardFunctionsList(72, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F10) && !keyboardButtonPressed[73])
+	{
+		keyboardButtonPressed[73] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F10) && keyboardButtonPressed[73])
+	{
+		updateKeyboardFunctionsList(73, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F11) && !keyboardButtonPressed[74])
+	{
+		keyboardButtonPressed[74] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F11) && keyboardButtonPressed[74])
+	{
+		updateKeyboardFunctionsList(74, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_F12) && !keyboardButtonPressed[75])
+	{
+		keyboardButtonPressed[75] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_F12) && keyboardButtonPressed[75])
+	{
+		updateKeyboardFunctionsList(75, 226);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_0) && !keyboardButtonPressed[76])
+	{
+		keyboardButtonPressed[76] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_0) && keyboardButtonPressed[76])
+	{
+		updateKeyboardFunctionsList(76, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_1) && !keyboardButtonPressed[77])
+	{
+		keyboardButtonPressed[77] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_1) && keyboardButtonPressed[77])
+	{
+		updateKeyboardFunctionsList(77, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_2) && !keyboardButtonPressed[78])
+	{
+		keyboardButtonPressed[78] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_2) && keyboardButtonPressed[78])
+	{
+		updateKeyboardFunctionsList(78, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_3) && !keyboardButtonPressed[79])
+	{
+		keyboardButtonPressed[79] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_3) && keyboardButtonPressed[79])
+	{
+		updateKeyboardFunctionsList(79, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_4) && !keyboardButtonPressed[80])
+	{
+		keyboardButtonPressed[80] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_4) && keyboardButtonPressed[80])
+	{
+		updateKeyboardFunctionsList(80, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_5) && !keyboardButtonPressed[81])
+	{
+		keyboardButtonPressed[81] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_5) && keyboardButtonPressed[81])
+	{
+		updateKeyboardFunctionsList(81, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_6) && !keyboardButtonPressed[82])
+	{
+		keyboardButtonPressed[82] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_6) && keyboardButtonPressed[82])
+	{
+		updateKeyboardFunctionsList(82, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_7) && !keyboardButtonPressed[83])
+	{
+		keyboardButtonPressed[83] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_7) && keyboardButtonPressed[83])
+	{
+		updateKeyboardFunctionsList(83, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_8) && !keyboardButtonPressed[84])
+	{
+		keyboardButtonPressed[84] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_8) && keyboardButtonPressed[84])
+	{
+		updateKeyboardFunctionsList(84, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_9) && !keyboardButtonPressed[85])
+	{
+		keyboardButtonPressed[85] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_9) && keyboardButtonPressed[85])
+	{
+		updateKeyboardFunctionsList(85, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_DECIMAL) && !keyboardButtonPressed[86])
+	{
+		keyboardButtonPressed[86] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_DECIMAL) && keyboardButtonPressed[86])
+	{
+		updateKeyboardFunctionsList(86, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_DIVIDE) && !keyboardButtonPressed[87])
+	{
+		keyboardButtonPressed[87] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_DIVIDE) && keyboardButtonPressed[87])
+	{
+		updateKeyboardFunctionsList(87, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_MULTIPLY) && !keyboardButtonPressed[88])
+	{
+		keyboardButtonPressed[88] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_MULTIPLY) && keyboardButtonPressed[88])
+	{
+		updateKeyboardFunctionsList(88, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_SUBTRACT) && !keyboardButtonPressed[89])
+	{
+		keyboardButtonPressed[89] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_SUBTRACT) && keyboardButtonPressed[89])
+	{
+		updateKeyboardFunctionsList(89, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_ADD) && !keyboardButtonPressed[90])
+	{
+		keyboardButtonPressed[90] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_ADD) && keyboardButtonPressed[90])
+	{
+		updateKeyboardFunctionsList(90, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_ENTER) && !keyboardButtonPressed[91])
+	{
+		keyboardButtonPressed[91] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_ENTER) && keyboardButtonPressed[91])
+	{
+		updateKeyboardFunctionsList(91, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_KP_EQUAL) && !keyboardButtonPressed[92])
+	{
+		keyboardButtonPressed[92] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_KP_EQUAL) && keyboardButtonPressed[92])
+	{
+		updateKeyboardFunctionsList(92, 244);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) && !keyboardButtonPressed[93])
+	{
+		keyboardButtonPressed[93] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) && keyboardButtonPressed[93])
+	{
+		updateKeyboardFunctionsList(93, 230);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) && !keyboardButtonPressed[94])
+	{
+		keyboardButtonPressed[94] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) && keyboardButtonPressed[94])
+	{
+		updateKeyboardFunctionsList(94, 230);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_LEFT_ALT) && !keyboardButtonPressed[95])
+	{
+		keyboardButtonPressed[95] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_LEFT_ALT) && keyboardButtonPressed[95])
+	{
+		updateKeyboardFunctionsList(95, 230);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_RIGHT_SHIFT) && !keyboardButtonPressed[96])
+	{
+		keyboardButtonPressed[96] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_RIGHT_SHIFT) && keyboardButtonPressed[96])
+	{
+		updateKeyboardFunctionsList(96, 230);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_RIGHT_CONTROL) && !keyboardButtonPressed[97])
+	{
+		keyboardButtonPressed[97] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_RIGHT_CONTROL) && keyboardButtonPressed[97])
+	{
+		updateKeyboardFunctionsList(97, 230);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_RIGHT_ALT) && !keyboardButtonPressed[98])
+	{
+		keyboardButtonPressed[98] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_RIGHT_ALT) && keyboardButtonPressed[98])
+	{
+		updateKeyboardFunctionsList(98, 230);
 	}
 
 	// Create a variable to check if the joy stick is present - 1 means true
@@ -1045,16 +1531,16 @@ void highscoreScene::Input(GLFWwindow* win)
 }
 
 // Updates the keyboard function array
-void highscoreScene::updateKeyboardFunctionsList(int keyboardButtonNumber)
+void highscoreScene::updateKeyboardFunctionsList(int keyboardButtonNumber, int additionalNumber)
 {
 	if (isFunctionEmptyKeyboard) // Check if there is an empty keyboard function
 	{
 		// Find the index of the gameKeyboardFunctions which has a value of 999
 		indexAt99 = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, 999));
 		// Find the index of the gameKeyboardFunctions which is assigned to the button that has just been pressed
-		indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, keyboardButtonNumber + 49));
+		indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, keyboardButtonNumber + additionalNumber));
 		// Check if button just pressed has a function assigned to it
-		if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == keyboardButtonNumber + 49)
+		if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == keyboardButtonNumber + additionalNumber)
 		{
 			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
 			windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
@@ -1062,7 +1548,7 @@ void highscoreScene::updateKeyboardFunctionsList(int keyboardButtonNumber)
 		}
 
 		// Make the original empty function equal to the button
-		windowMgr::getInstance()->gameKeyboardFunctions[indexAt99] = keyboardButtonNumber + 49;
+		windowMgr::getInstance()->gameKeyboardFunctions[indexAt99] = keyboardButtonNumber + additionalNumber;
 		windowMgr::getInstance()->meshes.at(27 + indexAt99)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[keyboardButtonNumber]);
 
 		// Check if a function is equal to 99
@@ -1081,9 +1567,9 @@ void highscoreScene::updateKeyboardFunctionsList(int keyboardButtonNumber)
 	else
 	{
 		// Find the function index where the button has been pressed
-		indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, keyboardButtonNumber + 49));
+		indexAtKey = std::distance(windowMgr::getInstance()->gameKeyboardFunctions, std::find(windowMgr::getInstance()->gameKeyboardFunctions, windowMgr::getInstance()->gameKeyboardFunctions + 10, keyboardButtonNumber + additionalNumber));
 		// If function is assigned to a button then
-		if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == keyboardButtonNumber + 49)
+		if (windowMgr::getInstance()->gameKeyboardFunctions[indexAtKey] == keyboardButtonNumber + additionalNumber)
 		{
 			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
 			windowMgr::getInstance()->meshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);

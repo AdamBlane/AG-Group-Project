@@ -49,7 +49,7 @@ class windowMgr
 		// All contorller related textures are stored in here
 		Texture* buttonsPS[18];
 		Texture* buttonsXB[14];
-		Texture* buttonsKeyboardOne[45];
+		Texture* buttonsKeyboardOne[99];
 
 		Texture* buttonsKey[99];
 		// All the game functions are stored here with the index being the function and the value being the button number
@@ -103,7 +103,63 @@ class windowMgr
 		// Back slash = 43
 		// Right bracket ] = 44
 
+		// ESC = 45
+		// ENTER = 46
+		// TAB = 47
+		// BACKSPACE = 48
+		// INSERT = 49
+		// DELETE = 50
+		// RIGHT = 51
+		// LEFT = 52
+		// DOWN = 53
+		// UP = 54
+		// PAGEUP = 55
+		// PAGEDOWN = 56
+		// HOME = 57
+		// END = 58
+		// CAPS = 59
+		// SCROLL = 60
+		// NUM LOCK = 61
+		// PRINT SCREEN = 62 
+		// PAUSE = 63
+		// F1 = 64
+		// F2 = 65
+		// F3 = 66
+		// F4 = 67
+		// F5 = 68
+		// F6 = 69
+		// F7 = 70 
+		// F8 = 71
+		// F9 = 72
+		// F10 = 73
+		// F11 = 74
+		// F12 = 75
 
+		// PAD 0 = 76
+		// PAD 1 = 77
+		// PAD 2 = 78
+		// PAD 3 = 79 
+		// PAD 4 = 80
+		// PAD 5 = 81
+		// PAD 6 = 82
+		// PAD 7 = 83
+		// PAD 8 = 84
+		// PAD 9 = 85
+		// DECIMAL = 86
+		// DIVIDE = 87
+		// MULTIPLY = 88
+		// SUBTRACT = 89
+		// ADD = 90
+		// ENTER = 91
+		// EQUAL = 92
+
+		// LEFT SHIFT = 93
+		// LEFT CONTROL = 94
+		// LEFT ALT = 95
+		// RIGHT SHIFT = 96
+		// RIGHT CONTROL = 97
+		// RIGHT ALT = 98
+		
 		// BUTTONS
 		// A/Sqaure = 0
 		// B/X(PS) = 1
