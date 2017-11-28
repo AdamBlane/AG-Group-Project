@@ -28,10 +28,21 @@ class windowMgr
 		// Track gamestate
 		sceneMgr sceneManager;
 
+		//for mouse movement when the resoloution changes
+		double windowScale = 1.0;
+		//sets the window scalon the x axise by dividing by the orignal value
+		void setWindowScale(int value) { windowScale = value / 1600.0; }
+		// For button navigation across all menu scenes
+		int button_manager = 0;
+		//track mouse
+		double mouse_x, mouse_y;
 		// Window width and height values
 		int width, height;
 		// Window offset from top left point of monitor
 		int PosX, PosY;
+		// Input - prevent input code from reocurring every frame button is held
+		bool upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+		bool mouseLpressed;
 		
 		// All textures in the game stored here
 		map<std::string, Texture*> textures;
