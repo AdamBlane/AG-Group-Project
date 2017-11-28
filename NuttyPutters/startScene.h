@@ -7,7 +7,7 @@
 #include <sstream>
 #include <chrono>
 #include <random>
-#include <sstream>
+
 // Internals
 #include "Mesh.h"
 #include "Transform.h"
@@ -31,7 +31,8 @@ public:
 	
 	// Used for navigating through menu options
 	float total_time = 5.0f;
-	// SPIKE - save last button index visited; that's the button to make tex = unselected
+
+	
 
 	// Only need one transform (can be reused for each mesh)
 	Transform startSceneTransform;

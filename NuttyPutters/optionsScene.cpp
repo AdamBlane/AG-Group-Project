@@ -37,6 +37,8 @@ void optionsScene::Track_Mouse(GLFWwindow *window)
 		windowMgr::getInstance()->button_manager = 4;
 	}
 }
+
+// TODO - rename action
 void optionsScene::Action(GLFWwindow *win)
 {
 	//get monitor 
@@ -89,9 +91,11 @@ void optionsScene::Action(GLFWwindow *win)
 void optionsScene::Init(GLFWwindow * win)
 {
 	//to reformat texutures
-	glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+	//glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	//resets the button manager
 	windowMgr::getInstance()->button_manager = 0;
+
+	// TODO - Use winMgr stuffy for this and camera
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
 
@@ -101,7 +105,6 @@ void optionsScene::Init(GLFWwindow * win)
 	tarCam->set_Target(vec3(0, 0, 0));
 	tarCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 
-	cout << "Textures before all: " << windowMgr::getInstance()->textures.size() << endl;
 	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
@@ -117,13 +120,12 @@ void optionsScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(2.0f, -1.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(4)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0f, 0.3f, 0.0f));
-	cout << "Textures after start: " << windowMgr::getInstance()->textures.size() << endl;
+
 }
 // Draw stuff
 void optionsScene::Loop(GLFWwindow * win)
 {
 	// Scene background
-	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Input
@@ -138,6 +140,7 @@ void optionsScene::Loop(GLFWwindow * win)
 
 void optionsScene::Input(GLFWwindow* win)
 {
+	// TODO - set textures based on current and last (loadGameScene has this)
 	switch (windowMgr::getInstance()->button_manager)
 	{
 	case 0:
@@ -242,7 +245,8 @@ void optionsScene::Input(GLFWwindow* win)
 		}
 	}
 
-	while (total_time <= 5.0f)
+	// Increase time delay tracker (prevents enter/Lclick reoccuring from last scene)
+	if (total_time <= 5.0f)
 	{
 		total_time += 1.0f;
 	}

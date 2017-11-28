@@ -37,10 +37,10 @@ GLFWwindow* windowMgr::Init()
 		exit(EXIT_FAILURE);
 
 	// Set default values for window res
-	width = 1600, height = 900;
+	width = 1920, height = 1080;
 	// This is x and y offset for window creation on monitor (from top left corner)
 	// TODO - determine center of screen
-	PosX = 100, PosY = 100;
+	PosX = 0, PosY = 0;
 	// Create window
 	win = glfwCreateWindow(width, height, "Nutty Putters", NULL, NULL);
 	// Center it

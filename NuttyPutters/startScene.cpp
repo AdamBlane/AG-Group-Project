@@ -15,6 +15,7 @@ startScene::~startScene() { }
 void startScene::Track_Mouse(GLFWwindow *window)
 {
 	glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
 	//this mess plots out where the buttons are for start scene
 	if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
 		&& (windowMgr::getInstance()->mouse_y >= 59 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 840 * windowMgr::getInstance()->windowScale))
@@ -78,7 +79,7 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(6)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -1.5f, 0.0f));
 
-	cout << "Textures after start: " << windowMgr::getInstance()->textures.size() << endl;
+	glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	
 }
 
@@ -90,7 +91,6 @@ void startScene::Loop(GLFWwindow* win)
 	dt = (float)(thisFrame - lastFrame);
 
 	// Scene background
-	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//tracks mouse
@@ -106,25 +106,32 @@ void startScene::Loop(GLFWwindow* win)
 	Render(win);
 }
 
+// Acts on chosen menu item
+// TODO - rename to something more obvious
 void startScene::Action(GLFWwindow* win) 
 {
+	// If exit is hovered over
 	if (windowMgr::getInstance()->button_manager == 6)
 	{
 		windowMgr::getInstance()->sceneManager.changeScene(0);
 
 	}
+	// If internet button is hovered over
 	else if (windowMgr::getInstance()->button_manager == 5)
 	{
 		ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
 	}
+	// Otherwise load scene for this button
 	else
 	{
+		// + 1 since button manager starts from 0, but scene 0 is exit (1 is start etc)
 		windowMgr::getInstance()->sceneManager.changeScene(windowMgr::getInstance()->button_manager + 1);
 	}
 }
 // Act on input
 void startScene::Input(GLFWwindow * win)
-{
+{ 
+	// TODO - change this so it only retextures on button change (see loadGameScene.cpp)
 	switch (windowMgr::getInstance()->button_manager)
 	{
 		//cases for the buttons to switch to each screen
@@ -262,7 +269,8 @@ void startScene::Input(GLFWwindow * win)
 		}
 	}
 
-	while (total_time <= 5.0f) 
+	// Increase time delay tracker (prevents enter/Lclick reoccuring from last scene)
+	if (total_time <= 5.0f) 
 	{
 		total_time += 1.0f;
 	}
