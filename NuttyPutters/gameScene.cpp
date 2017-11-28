@@ -18,6 +18,7 @@ gameScene::~gameScene()
 
 		l.clear();
 	}
+
 	// Clear all lists
 	masterLevelSeeds.clear();
 	masterTiles.clear();
@@ -975,17 +976,19 @@ void gameScene::Collisions()
 
 
 	// TODO Determine if this can be done more cheapply, and less hardcoded
-	// If players are on the same tile, check for collisions with each other
+	
 	if (numPlayers == 2)
-	{
+	{   // If players are on the same tile, check for collisions with each other
 		if (players[0].currentTile == players[1].currentTile)
 		{
 			// Find distance between players
 			vec3 distance = abs(players[0].transform.getPos() - players[1].transform.getPos());
 			float magnitude = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
-			// If less than two radii apart
+			// If less than two radii apart we have a collision
 			if (magnitude < players[0].radius * 2)
 			{
+				// 2 Cases - both players moving, one player stationary
+
 				// First normalize the distance vector; the collision normal
 				vec3 collisionNormal = players[0].transform.getPos() - players[1].transform.getPos();
 				collisionNormal = normalize(collisionNormal);
@@ -1000,6 +1003,9 @@ void gameScene::Collisions()
 				// Set players velocity to 0, then assign new velocities
 				players[0].velocity = v1New;
 				players[1].velocity = v2New;
+				// Both players are moving
+				players[0].isMoving = players[1].isMoving = true;
+
 			}
 
 		}
