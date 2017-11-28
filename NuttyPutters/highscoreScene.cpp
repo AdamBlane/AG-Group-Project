@@ -10,6 +10,7 @@ highscoreScene::~highscoreScene() { }
 
 void highscoreScene::Init(GLFWwindow * win)
 {
+	windowMgr::getInstance()->button_manager = 0;
 	// Set scale, position and size of various meshes - all unique
 	// Set background
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
