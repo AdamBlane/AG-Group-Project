@@ -34,10 +34,14 @@ class windowMgr
 		
 		// All textures in the game stored here
 		map<std::string, Texture*> textures;
+		// All number textures stored here
+		vector<Texture*> numberTextures;
 		// This stores images of saved levels
 		vector<Texture*> savesImages;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
+		// 2P variant world clock meshes
+		vector<Mesh*> worldClock;
 		// Skybox vars
 		Texture* skyboxTexture;
 		Mesh* skyboxMesh;

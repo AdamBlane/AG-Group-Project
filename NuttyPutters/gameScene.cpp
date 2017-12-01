@@ -5,6 +5,7 @@
 #include "UI.h"
 
 
+
 // Default constructor
 gameScene::gameScene() { }
 // Deconstructor
@@ -125,11 +126,13 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[0]);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[1]);
 
-	// Initiate UI
-	uiMgr.Init();
 
-	// Set the amount of time the user has to complete the hole
-	holeTimer = 80;
+
+	// Start game logic mgr
+	// Pass in end hole position for two player mode
+	gameLogicMgr.Setup(numPlayers, masterAlgTiles[0].back()->thisCoords);
+	
+
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -550,6 +553,8 @@ void gameScene::Input(GLFWwindow* window)
 		if (glfwGetKey(window, GLFW_KEY_X))
 		{
 			continuePressed = true;
+			// Start game timer
+			gameLogicMgr.StartGameClock();
 		}
 
 		// FREE CAM controls
@@ -721,28 +726,11 @@ void gameScene::Input(GLFWwindow* window)
 				p.power = 0;
 				// Increment player stroke counter
 				p.strokeCounter++;
+				// Get game logic to call UI update to reflect updated stroke counter
+				gameLogicMgr.PlayerFired(thisPlayer, p);
 				// And we're off! 
 				p.isMoving = true;
 
-
-
-				// M - update power bar hud stuff here (invoke UI class method)
-				//repeat until fireCounter is reset to 0
-	// M - This essentially blocks all other code!
-		/*		while (fireCounter > 0.0)
-				{
-					//This just inverts the increasing in size and positions done before when P was pressed
-					//powerBarTrans.getPos().x += (fireCounter / 5.0f) * powerBarMesh->getGeomPos().x;
-					//powerBarTrans.getPos().x -= fireCounter / 100.0f;
-					//powerBarTrans.getScale().x -= fireCounter / 5.0f;
-					//Decrease fireCounter until reaches 0
-					fireCounter -= 0.5;
-				} */
-
-				// Increment stroke counter by one
-				strokeCounter += 1;
-				// Call update stroke mesh in UI.cpp to check if user is out of strokes
-				isUserOutOfStrokes = uiMgr.updateStrokeMesh(strokeCounter);
 
 				// Flip
 				p.firePressed = false;
@@ -860,6 +848,9 @@ void gameScene::Update(GLFWwindow* window)
 	// Update spatial partitioning
 	SpatialPartitioningUpdate();
 	
+	// Update game clock
+	gameLogicMgr.Update();
+	
 
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
@@ -950,32 +941,6 @@ void gameScene::Update(GLFWwindow* window)
 		
 
 
-	// HUD TIMER RELATED INFORMATION
-	// If the time been in scene is equal to zero then
-	if (timeBeenInScene == 0)
-	{
-		// Get the amount of time been in scene
-		timeBeenInScene = glfwGetTime();
-	}
-	// Increment time Counter - used for splash screen
-	timeCounter++;
-
-	// If the continue button is pressed 
-	if (continuePressed)
-	{
-		// If the time taken to reach this method is zero then
-		if (timeToThisMethod == 0)
-		{
-			// Get the time to this method
-			timeToThisMethod = glfwGetTime();
-		}
-
-		// If at least a second has passed
-		if (timeSinceContinueWasPressed < glfwGetTime() - timeToThisMethod)
-		{
-			isUserOutOfTime = uiMgr.updateTimer(timeSinceContinueWasPressed, timeToThisMethod, holeTimer);
-		}
-	}
 }
 
 // Tracks current tile player is on 
@@ -1066,41 +1031,35 @@ void gameScene::Render(GLFWwindow* window)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	// If timeCounter - which is a variable that increases as of when the scene has loaded is less than the time been in scene + a value that can be changed then
-	if (timeCounter < timeBeenInScene + 300)
+
+	// Display HUD (exact meshes to draw depend on player count)
+	if (numPlayers == 1)
 	{
-		// Display splash screen
-		windowMgr::getInstance()->meshes.at(19)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(19)->Draw();
+		for (int i = 0; i < 7; i++)
+		{
+			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->meshes.at(i)->Draw();
+		}
+	}
+	else // its 2 player
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->meshes.at(i)->Draw();
+		}
 	}
 
-	// If user has completed the hole or if the continue button hasnt been pressed of if the user has run out of time or if the user has run out of strokes
-	if (players[0].ballInHole || !continuePressed || isUserOutOfTime || isUserOutOfStrokes)
-	{
-		// For loop which goes through all the information elements and binds, updates and draws them.
-		for (int i = 10; i < 14; i++)
-		{
-			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(i)->Draw();
-		}
-	}
-	// Else then display remaining gameplay HUDs
-	else
-	{
-		// For loop which goes through all 10 HUD elements and binds, updates anbd draws the meshes.
-		for (int i = 0; i < 10; i++)
-		{
-			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(i)->Draw();
-		}
-	}
+
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
+
+	
+	
 
 	// Skybox 
 	windowMgr::getInstance()->skyboxShader->Bind();
@@ -1109,6 +1068,13 @@ void gameScene::Render(GLFWwindow* window)
 	// Bind texture shader
 	windowMgr::getInstance()->textureShader->Bind();
 
+	// DRAW WORLD CLOCK
+	for (auto &m : windowMgr::getInstance()->worldClock)
+	{
+		m->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
+		m->Draw();
+	}
 
 	// DRAW all level tiles
 	for (auto &t : masterTiles[currentLevel])
@@ -1130,6 +1096,14 @@ void gameScene::Render(GLFWwindow* window)
 		windowMgr::getInstance()->player1Mesh->Draw();
 		// Putting the above code below the arrow rendering gives odd behaviour of arrow
 		// Perhaps due to reuse of texture being rebound?
+
+		// Draw world clock
+		for (auto &m : windowMgr::getInstance()->worldClock)
+		{
+			m->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
+			m->Draw();
+		}
 	}
 
 
@@ -1163,6 +1137,10 @@ void gameScene::Render(GLFWwindow* window)
 
 
 	// ################### PLAYER 2 SCREEN ################### //
+	// ################### PLAYER 2 SCREEN ################### //
+	// ################### PLAYER 2 SCREEN ################### //
+
+
 	if (numPlayers == 2)
 	{
 		// Player 2 has the right hand vertical half of the screen
@@ -1174,6 +1152,22 @@ void gameScene::Render(GLFWwindow* window)
 		// Render player 2's chase camera
 		mvp2 = windowMgr::getInstance()->chaseCams[1]->get_Projection() * windowMgr::getInstance()->chaseCams[1]->get_View();
 
+		glDepthRange(0, 0.01);
+
+		// TODO HUD stuff
+		windowMgr::getInstance()->meshes.at(2)->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(2)->Draw();
+		windowMgr::getInstance()->meshes.at(3)->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(3)->Draw();
+
+
+		// Reset the depth range to allow for objects at a distance to be rendered
+		glDepthRange(0.01, 1.0);
+
+
+
 		// Skybox 
 		windowMgr::getInstance()->skyboxShader->Bind();
 		windowMgr::getInstance()->skyboxShader->Update(windowMgr::getInstance()->texShaderTransform, mvp2);
@@ -1181,6 +1175,15 @@ void gameScene::Render(GLFWwindow* window)
 
 		// Bind texture shader
 		windowMgr::getInstance()->textureShader->Bind();
+
+		// DRAW WORLD CLOCK
+		for (auto &m : windowMgr::getInstance()->worldClock)
+		{
+			m->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp2);
+			m->Draw();
+		}
+
 		// DRAW all level tiles
 		for (auto &t : masterTiles[currentLevel])
 		{

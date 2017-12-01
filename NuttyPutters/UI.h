@@ -30,20 +30,15 @@ public:
 	UI() {}
 	~UI() {}
 
-	int tempInt = 0;
-	string temp;
-	string minutesAsString, tenthsAsString, secondsAsString, timeCombined;
-	int timeRemainingInSeconds = 0, timeRemainingInTenths = 0, timeRemainingInMinutes = 0;
-	//Player player; need this?
 
-	bool updateStrokeMesh(int strokeCounter); // Method which updates the users stroke counter
-	bool updateTimer(int timeSinceContinueWasPressed, int timeToThisMethod, int holeTimer);
-	bool hasUserCompletedTheHole(Player &player);
 
-	// Sets up meshes and texures stored in winMgr
-	void Init();
-	// Game loop and its functions
-	void Loop(GLFWwindow* window);
-	void Input(GLFWwindow* window);
-	void Update(GLFWwindow* window);
+	// Sets up basic HUD layout 
+	void p1Setup();
+	void p2Setup(vec3 endHolePos);
+	// Update game clock
+	void UpdateHUDClock(int time);
+	// Update world clock
+	void UpdateWorldClock(int time);
+	// Increment stroke counter for a player
+	void UpdateStrokeCounter(int playerIndex, int strokeCount);
 };

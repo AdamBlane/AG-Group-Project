@@ -134,7 +134,11 @@ GLFWwindow* windowMgr::Init()
 	player2Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
 	p1ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	p2ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
-	
+	for (int i = 0; i < 5; i++)
+	{
+		Mesh* mesh = new Mesh(Mesh::CUBOID, vec3(-5.0f + (i * 2.5), 8.0f, 0.0f), 5.0f, 5.0f, 5.0f);
+		worldClock.push_back(mesh);
+	}
 	//reboundEffectMesh = new Mesh(Mesh::CUBOID, vec3(1.0f, 10.0f, 10.0f), 1.0f, 1.0f, 1.0f);
 	//Texture* rbfx = new Texture("..\\NuttyPutters\\forcefield.png");
 	//reboundEffectTextures.push_back(rbfx)
@@ -254,32 +258,8 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
 	Texture* playerBlueTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerBlueTexture", playerBlueTexture));
-	Texture* zeroStrokeLbl = new Texture("..\\NuttyPutters\\zero.png");
-	textures.insert(std::pair<std::string, Texture*>("zeroStrokeLbl", zeroStrokeLbl));
-	Texture* oneStrokeLbl = new Texture("..\\NuttyPutters\\one.png");
-	textures.insert(std::pair<std::string, Texture*>("oneStrokeLbl", oneStrokeLbl));
-	Texture* twoStrokeLbl = new Texture("..\\NuttyPutters\\two.png");
-	textures.insert(std::pair<std::string, Texture*>("twoStrokeLbl", twoStrokeLbl));
-	Texture* threeStrokeLbl = new Texture("..\\NuttyPutters\\three.png");
-	textures.insert(std::pair<std::string, Texture*>("threeStrokeLbl", threeStrokeLbl));
-	Texture* fourStrokeLbl = new Texture("..\\NuttyPutters\\four.png");
-	textures.insert(std::pair<std::string, Texture*>("fourStrokeLbl", fourStrokeLbl));
-	Texture* fiveStrokeLbl = new Texture("..\\NuttyPutters\\five.png");
-	textures.insert(std::pair<std::string, Texture*>("fiveStrokeLbl", fiveStrokeLbl));
-	Texture* sixStrokeLbl = new Texture("..\\NuttyPutters\\six.png");
-	textures.insert(std::pair<std::string, Texture*>("sixStrokeLbl", sixStrokeLbl));
-	Texture* sevenStrokeLbl = new Texture("..\\NuttyPutters\\seven.png");
-	textures.insert(std::pair<std::string, Texture*>("sevenStrokeLbl", sevenStrokeLbl));
-	Texture* eightStrokeLbl = new Texture("..\\NuttyPutters\\eight.png");
-	textures.insert(std::pair<std::string, Texture*>("eightStrokeLbl", eightStrokeLbl));
-	Texture* nineStrokeLbl = new Texture("..\\NuttyPutters\\nine.png");
-	textures.insert(std::pair<std::string, Texture*>("nineStrokeLbl", nineStrokeLbl));
-	Texture* tenStrokeLbl = new Texture("..\\NuttyPutters\\ten.png");
-	textures.insert(std::pair<std::string, Texture*>("tenStrokeLbl", tenStrokeLbl));
-	Texture* elevenStrokeLbl = new Texture("..\\NuttyPutters\\eleven.png");
-	textures.insert(std::pair<std::string, Texture*>("elevenStrokeLbl", elevenStrokeLbl));
-	Texture* twelveStrokeLbl = new Texture("..\\NuttyPutters\\twelve.png");
-	textures.insert(std::pair<std::string, Texture*>("twelveStrokeLbl", twelveStrokeLbl));
+	
+	
 	Texture* xStrokeLbl = new Texture("..\\NuttyPutters\\x.png");
 	textures.insert(std::pair<std::string, Texture*>("xStrokeLbl", xStrokeLbl));
 	Texture* playerOneLbl = new Texture("..\\NuttyPutters\\playerone.png");
@@ -294,27 +274,39 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("gameSplashScreen", gameSplashScreen));
 	// Timer numbers
 	Texture* zeroLbl = new Texture("..\\NuttyPutters\\nzero.png");
-	textures.insert(std::pair<std::string, Texture*>("zeroLbl", zeroLbl));
+	//textures.insert(std::pair<std::string, Texture*>("zeroLbl", zeroLbl));
+	numberTextures.push_back(zeroLbl);
 	Texture* oneLbl = new Texture("..\\NuttyPutters\\none.png");
-	textures.insert(std::pair<std::string, Texture*>("oneLbl", oneLbl));
+	//textures.insert(std::pair<std::string, Texture*>("oneLbl", oneLbl));
+	numberTextures.push_back(oneLbl);
 	Texture* twoLbl = new Texture("..\\NuttyPutters\\ntwo.png");
-	textures.insert(std::pair<std::string, Texture*>("twoLbl", twoLbl));
+	//textures.insert(std::pair<std::string, Texture*>("twoLbl", twoLbl));
+	numberTextures.push_back(twoLbl);
 	Texture* threeLbl = new Texture("..\\NuttyPutters\\nthree.png");
-	textures.insert(std::pair<std::string, Texture*>("threeLbl", threeLbl));
+	//textures.insert(std::pair<std::string, Texture*>("threeLbl", threeLbl));
+	numberTextures.push_back(threeLbl);
 	Texture* fourLbl = new Texture("..\\NuttyPutters\\nfour.png");
-	textures.insert(std::pair<std::string, Texture*>("fourLbl", fourLbl));
+	//textures.insert(std::pair<std::string, Texture*>("fourLbl", fourLbl));
+	numberTextures.push_back(fourLbl);
 	Texture* fiveLbl = new Texture("..\\NuttyPutters\\nfive.png");
-	textures.insert(std::pair<std::string, Texture*>("fiveLbl", fiveLbl));
+	//textures.insert(std::pair<std::string, Texture*>("fiveLbl", fiveLbl));
+	numberTextures.push_back(fiveLbl);
 	Texture* sixLbl = new Texture("..\\NuttyPutters\\nsix.png");
-	textures.insert(std::pair<std::string, Texture*>("sixLbl", sixLbl));
+	//textures.insert(std::pair<std::string, Texture*>("sixLbl", sixLbl));
+	numberTextures.push_back(sixLbl);
 	Texture* sevenLbl = new Texture("..\\NuttyPutters\\nseven.png");
-	textures.insert(std::pair<std::string, Texture*>("sevenLbl", sevenLbl));
+	//textures.insert(std::pair<std::string, Texture*>("sevenLbl", sevenLbl));
+	numberTextures.push_back(sevenLbl);
 	Texture* eightLbl = new Texture("..\\NuttyPutters\\neight.png");
-	textures.insert(std::pair<std::string, Texture*>("eightLbl", eightLbl));
+	//textures.insert(std::pair<std::string, Texture*>("eightLbl", eightLbl));
+	numberTextures.push_back(eightLbl);
 	Texture* nineLbl = new Texture("..\\NuttyPutters\\nnine.png");
-	textures.insert(std::pair<std::string, Texture*>("nineLbl", nineLbl));
+	//textures.insert(std::pair<std::string, Texture*>("nineLbl", nineLbl));
+	numberTextures.push_back(nineLbl);
 	Texture* semiColonLbl = new Texture("..\\NuttyPutters\\semicolon.png");
-	textures.insert(std::pair<std::string, Texture*>("semiColonLbl", semiColonLbl));
+	//textures.insert(std::pair<std::string, Texture*>("semiColonLbl", semiColonLbl));
+	numberTextures.push_back(semiColonLbl);
+	
 	// Game information
 	Texture* parFourLbl = new Texture("..\\NuttyPutters\\par4.png");
 	textures.insert(std::pair<std::string, Texture*>("parFourLbl", parFourLbl));

@@ -108,6 +108,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Game Logic</Filter>
     </ClCompile>
+    <ClCompile Include="GameLogicMgr.cpp">
+      <Filter>Source Files\Game Logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="windowMgr.h">
@@ -195,6 +198,9 @@
       <Filter>Header Files\Game Logic</Filter>
     </ClInclude>
     <ClInclude Include="Physics.h">
+      <Filter>Header Files\Game Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogicMgr.h">
       <Filter>Header Files\Game Logic</Filter>
     </ClInclude>
   </ItemGroup>

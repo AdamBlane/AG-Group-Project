@@ -21,15 +21,19 @@ public:
 	float mass = 1;
 	float radius = 0.5f;
 
+	// Movement
 	int currentTile = 0; // For spatial partitioning
 	bool isMoving = false; // Physics is only applied when moving
 	bool ballInHole = false; // Has the player reached end hole
 	bool isFalling = false;
 	bool camFollow = true;
 	float chaseCamAngle;
+
+	// Gameplay
 	int strokeCounter = 0;
 	int currentPowerup = 0;
 
+	// Input
 	// Action isPressed flags
 	bool firePressed = false;
 	bool jumpPressed = false;

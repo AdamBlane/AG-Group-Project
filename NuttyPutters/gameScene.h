@@ -24,7 +24,7 @@
 #include "courseGenTiles.h"
 #include "UI.h"
 #include "Physics.h"
-
+#include "GameLogicMgr.h"
 
 
 using namespace AllCamera;
@@ -51,10 +51,12 @@ public:
 	bool changedLevel = false;
 	// Total number of tiles per level
 	int courseSize;
+	// Best position of world clock
+
 
 	// SYSTEMS USED
-	// Handles UI logic
-	UI uiMgr;
+	// Handles gameplay logic
+	GameLogicMgr gameLogicMgr;
 	// Handles physics logic
 	Physics physicsSystem;
 
@@ -75,28 +77,7 @@ public:
 
 	// Prevent saving same level more than once
 	bool levelSaved = false; 
-
-	// Gameplay variables
-	// TODO - set these in init to be safe (sometimes not reset in other scenes)
-	int timeBeenInScene = 0; // Time from when the scene is fully loaded
-	int timeCounter = 0;
-	int strokeCounter = 0; // Counts the amount of strokes the player takes
-	bool continuePressed = false; // Variable used to see if the user has pressed a key - used for HUDs
-	int holeTimer = 0; // The amount time the user to get the ball in the hole
-	int timeSinceContinueWasPressed;  // The time since the user has pressed the continue button
-	bool hasUserCompletedHole = false; // Boolean which tells the game if the user has completed the hole
-	bool hasUserCompletedHoleTextures = false; // Boolean which tells the game to update the textures based on if the user has completed the hole
-	bool isUserOutOfTime = false; // Boolean which tells the game if they are out of time
-	bool isUserOutOfStrokes = false; // Boolean which tells the game if they are out of strokes
-	int timeToThisMethod = 0; // Time to this method - used for countdown HUD
-	
-
-	// Player information
-	int selectedDifficulty = 1; // The selected difficulty on the player select screen
-	int selectedPlayers = 1; // The amount of players selected on the player select screen
-	int playerOneShots = 0; // The amount of shots users one has taken
-	int playerTwoShots = 0; // The amount of shots uer two has taken
-
+	bool continuePressed = false;
 
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
@@ -104,7 +85,6 @@ public:
 	float dt = 0.016;  // This is 60fps
 
 	
-
 	// Camera variables
 	float camSpeed = 2.0f; 
 	float  cameraType = 1;
@@ -112,9 +92,6 @@ public:
     // For finding cursor pos on screen (used for free cam)
 	double cursor_x, cursor_y = 0.0; 
 	
-
-
-
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)
