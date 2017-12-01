@@ -51,6 +51,8 @@ class windowMgr
 		vector<Texture*> savesImages;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
+		// Unique mesh for the game loading screen
+		Mesh* meshSplash;
 		// 2P variant world clock meshes
 		vector<Mesh*> worldClock;
 		// Skybox vars
@@ -258,5 +260,7 @@ class windowMgr
 		void Update();
 		// On window close
 		void CleanUp();
+		// Special render loop for rendiering start scene
+		void RenderSplashScreen(GLFWwindow* window);
 };
 

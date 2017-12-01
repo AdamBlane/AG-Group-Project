@@ -68,23 +68,6 @@ GLFWwindow* windowMgr::Init()
 		std::cout << "Glew failed to initialise!" << std::endl;
 	}
 
-	// ############################ AUDIO ############################
-	// Init fmod system
-	FMOD::System_Create(&system);
-	system->init(32, FMOD_INIT_NORMAL, 0);
-	// Load sounds
-	system->createSound("..\\NuttyPutters\\audio\\powerup.wav", FMOD_DEFAULT, 0, &menuSelect);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("menuSelect", menuSelect));
-	system->createSound("..\\NuttyPutters\\audio\\golf-ball-putt.wav", FMOD_DEFAULT, 0, &golfBallPutt);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallPutt", golfBallPutt));
-	system->createSound("..\\NuttyPutters\\audio\\golf-ball-hit.wav", FMOD_DEFAULT, 0, &golfBallHit);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallHit", golfBallHit));
-	system->createSound("..\\NuttyPutters\\audio\\golf-ball-jump.wav", FMOD_DEFAULT, 0, &golfBallJump);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallJump", golfBallJump));
-	system->createSound("..\\NuttyPutters\\audio\\golf-ball-wood-hit.wav", FMOD_DEFAULT, 0, &golfBallWoodHit);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
-
-	
 	// ############################ SHADERS ############################
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
@@ -112,14 +95,43 @@ GLFWwindow* windowMgr::Init()
 	p1ChaseCam = new chase_camera();
 	p1ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p1ChaseCam->set_springiness(0.2f);
-	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width  / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 	chaseCams.push_back(p1ChaseCam);
 	// p2 chase cam
 	p2ChaseCam = new chase_camera();
 	p2ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p2ChaseCam->set_springiness(0.2f);
-	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width /2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 	chaseCams.push_back(p2ChaseCam);
+
+	// ############################ SPLASH SCREEN ############################
+	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\background.jpg");
+	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
+
+	meshSplash = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+
+	// Load game splash screen
+	RenderSplashScreen(win);
+	// Update hud target camera
+	HUDtargetCam->update(0.00001);
+
+
+	// ############################ AUDIO ############################
+	// Init fmod system
+	FMOD::System_Create(&system);
+	system->init(32, FMOD_INIT_NORMAL, 0);
+	// Load sounds
+	system->createSound("..\\NuttyPutters\\audio\\powerup.wav", FMOD_DEFAULT, 0, &menuSelect);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("menuSelect", menuSelect));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-putt.wav", FMOD_DEFAULT, 0, &golfBallPutt);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallPutt", golfBallPutt));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-hit.wav", FMOD_DEFAULT, 0, &golfBallHit);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallHit", golfBallHit));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-jump.wav", FMOD_DEFAULT, 0, &golfBallJump);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallJump", golfBallJump));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-wood-hit.wav", FMOD_DEFAULT, 0, &golfBallWoodHit);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
+
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
 	for (int i = 0; i < 37; ++i)
@@ -127,6 +139,7 @@ GLFWwindow* windowMgr::Init()
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
 	}
+
 
 	// Initialise unique meshes
 	// Player meshes
@@ -152,8 +165,6 @@ GLFWwindow* windowMgr::Init()
 //	t.join();
 
 	// START SCENE TEXTURES 
-	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\background.jpg");
-	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
 	Texture* startGameBtnSelected = new Texture("..\\NuttyPutters\\Mainmenu\\startSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("startGameBtnSelected", startGameBtnSelected));
 	Texture* startGameBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\startUnselected.png");
@@ -567,8 +578,6 @@ void windowMgr::LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* w
 
 	Texture* bottomBridge = new Texture("..\\NuttyPutters\\bridgeBottom.jpg");
 	tileTexs.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
-
-
 }
 
 
@@ -658,4 +667,40 @@ void windowMgr::CleanUp()
 	glfwDestroyWindow(win); // Runs when commented out - why?
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
+}
+
+void windowMgr::RenderSplashScreen(GLFWwindow* win)
+{
+	glfwMakeContextCurrent(win);
+	cout << "Render splash screen" << endl;
+
+	windowMgr::getInstance()->meshSplash->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->meshSplash->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->meshSplash->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
+
+	// If camera type is target camera - used for HUD elements - then
+	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
+
+	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
+	// Set depth range to near to allow for HUD elements to be rendered and drawn
+	glDepthRange(0, 0.01);
+
+	windowMgr::getInstance()->meshSplash->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(texShaderTransform, hudVP);
+	windowMgr::getInstance()->meshSplash->Draw();
+
+	// Reset the depth range to allow for objects at a distance to be rendered
+	glDepthRange(0.01, 1.0);
+	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
+
+	// Render any background stuff if required here
+
+	// Fully reset depth range for next frame - REQUIRED
+	glDepthRange(0, 1.0);
+
+	// Bind texture shader
+	windowMgr::getInstance()->textureShader->Bind();
+
+	glfwSwapBuffers(win);
+	glfwPollEvents();
 }

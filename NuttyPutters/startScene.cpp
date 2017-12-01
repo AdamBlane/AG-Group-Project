@@ -275,11 +275,13 @@ void startScene::Input(GLFWwindow * win)
 	}
 
 }
+
 void startScene::Update(GLFWwindow* win)
 {
 	// Update target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 }
+
 void startScene::Render(GLFWwindow* win)
 {
 	// If camera type is target camera - used for HUD elements - then
@@ -296,8 +298,6 @@ void startScene::Render(GLFWwindow* win)
 		windowMgr::getInstance()->textureShader->Update(startSceneTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(a)->Draw();
 	}
-
-
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
