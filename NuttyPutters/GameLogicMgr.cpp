@@ -128,6 +128,8 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 			cout << "Final score: " << p1Score << endl;
 			// Set bool for this player to finished 
 			p1Finished = true;
+			if (players == 1)
+				cout << "To return to main menu, pause game (P) then hit C!" << endl;
 		}
 		break;
 	}
@@ -159,6 +161,10 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 		else if (p1Score == p2Score)
 			cout << "Both players draw!" << endl;
 
+		cout << "To return to main menu, pause game (P) then hit C!" << endl;
 		gameEnded = true;
 	}
+
+
+	
 }

@@ -58,6 +58,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 
+	// DEMO ON MONDAY PRINT STATEMENTS
+	cout << "Pause - P" << endl;
+	cout << "While paused: Save level - S, Quit - B, Main menu - C, Unpause - U" << endl;
 
 	// LEVEL GEN
 	//courseGenV2 cg(12);
@@ -68,7 +71,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// Record how many levels to load
 	//numLevels = levelCount;
-	numLevels = 2;
+	numLevels = 5;
 	// TODO - above will only go to 3 levels - FIX
 
 	// Save player count
