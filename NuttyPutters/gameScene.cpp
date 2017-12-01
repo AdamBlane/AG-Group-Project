@@ -68,7 +68,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// Record how many levels to load
 	//numLevels = levelCount;
-	numLevels = 5;
+	numLevels = 2;
+	// TODO - above will only go to 3 levels - FIX
 
 	// Save player count
 	numPlayers = playerCount;
@@ -107,6 +108,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2  / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 		else
 			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+		// Set this player's id
+		player.id = p + 1;
 		// Add to players list
 		players.push_back(player);
 	}
@@ -130,10 +133,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// Start game logic mgr
 	// Pass in end hole position for two player mode
-	gameLogicMgr.Setup(numPlayers, masterAlgTiles[0].back()->thisCoords);
+	gameLogicMgr.Setup(numPlayers, courseSize);
 	
-
-
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -415,6 +416,7 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			p.jumpPressed = true;
 		}
+
 		if (!glfwGetKey(window, p.jumpButton))
 		{
 			if (p.jumpPressed)
@@ -775,6 +777,19 @@ void gameScene::CheckLoadNextLevel()
 			// Check if player is falling through end hole...
 			if (players[i].ballInHole && players[i].transform.getPos().y < -450.0f) // Abritrary time period before tp
 			{	
+				// If finished last level
+				if (currentLevel == numLevels - 1)
+				{
+					// TODO - quit, pause, ask for next level etc
+					// currently just replays the last level played
+
+					// Stop camera from following player
+					players[i].camFollow = false;
+					// Update the total time count for this player 
+					gameLogicMgr.SetEndTime(players[i]);
+					// Print game score for this player
+					gameLogicMgr.PrintPlayerScore(players[i]);
+				}
 				// If there is another level to go...
 				if (currentLevel < numLevels - 1)
 				{
@@ -788,8 +803,8 @@ void gameScene::CheckLoadNextLevel()
 							// If this is players[0] it needs to check players[1], and visa versa
 							// Need a key to make a 0 always 1, and a 1 always 0
 							// i = (i * -1) + 1 is key
-							// i0 -> (0 * -1) + 1 = 1
-							// i1 -> (1 * -1) + 1 = 0 
+							// i=0 -> (0 * -1) + 1 = 1
+							// i=1 -> (1 * -1) + 1 = 0 
 							// If other player isn't through end hole, tp him
 							if (!players[(i  * -1) + 1].ballInHole)
 							{
@@ -797,8 +812,7 @@ void gameScene::CheckLoadNextLevel()
 								players[(i  * -1) + 1].transform.setPos(vec3(2.0f, 1.0f, 0.0f));
 							}
 						}
-						
-
+					
 						// Increase level index
 						currentLevel++;
 						// Prevent further increments
@@ -806,18 +820,8 @@ void gameScene::CheckLoadNextLevel()
 					}
 				}
 				
-				// If finished last level
-				if (currentLevel == numLevels - 1)
-				{
-					// TODO - quit, pause, ask for next level etc
-					// currently just replays the last level played
 
-					// Stop camera from following player
-					players[i].camFollow = false;
-					// Print player scores
-					cout << "P" << i << " : " << players[i].strokeCounter << endl;
-				}
-			}
+			} // end check if player is falling through hole
 		}
 
 		// Otherwise check if player is falling from top of skybox onto next level
@@ -848,6 +852,7 @@ void gameScene::Update(GLFWwindow* window)
 	// Update spatial partitioning
 	SpatialPartitioningUpdate();
 	
+
 	// Update game clock
 	gameLogicMgr.Update();
 	
@@ -1068,13 +1073,18 @@ void gameScene::Render(GLFWwindow* window)
 	// Bind texture shader
 	windowMgr::getInstance()->textureShader->Bind();
 
-	// DRAW WORLD CLOCK
-	for (auto &m : windowMgr::getInstance()->worldClock)
+
+	// DRAW WORLD CLOCK IN 2 PLAYER
+	if (numPlayers == 2)
 	{
-		m->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
-		m->Draw();
+		for (auto &m : windowMgr::getInstance()->worldClock)
+		{
+			m->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
+			m->Draw();
+		}
 	}
+
 
 	// DRAW all level tiles
 	for (auto &t : masterTiles[currentLevel])

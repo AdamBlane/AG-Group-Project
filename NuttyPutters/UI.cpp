@@ -40,7 +40,7 @@ void UI::p1Setup()
 }
 
 // Sets up basic HUD layout for 2 player game
-void UI::p2Setup(vec3 endHolePos)
+void UI::p2Setup()
 {
 	// P1 Stroke labels
 	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);
@@ -76,10 +76,12 @@ void UI::p2Setup(vec3 endHolePos)
 	
 }
 
-
 // Update game clock - only applies to 1 player mode
+// Input: total elapsed time this game
 void UI::UpdateHUDClock(int time)
 {
+
+
 	// Time given is elapsed time since start in seconds
 	//	// Get the time in minutes, tenths and seconds - 0M:TS
 	int	minutes = time / 60;
@@ -87,6 +89,7 @@ void UI::UpdateHUDClock(int time)
 	int	seconds = time - (minutes * 60) - (tensSeconds * 10);
 	
 	// Update HUD meshes accordingly
+
 	// Minutes
 	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(minutes));
 	// Tens of seconds
@@ -108,6 +111,7 @@ void UI::UpdateWorldClock(int time)
 	windowMgr::getInstance()->worldClock.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(tensSeconds));
 	windowMgr::getInstance()->worldClock.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(minutes));
 }
+
 // Update ui to reflect increase to stroke counter
 void UI::UpdateStrokeCounter(int playerIndex, int strokeCounter)
 {
