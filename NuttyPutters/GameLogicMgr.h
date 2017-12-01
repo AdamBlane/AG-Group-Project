@@ -18,7 +18,10 @@ public:
 
 	// Different gameplay logic for 1 and 2 player modes
 	int players;
-
+	int timeLimit;
+	bool p1Finished, p2Finished;
+	int p1Score, p2Score;
+	bool gameEnded = false;
 	// Game clock
 	int startTime;
 	int lastFrameTime;
@@ -27,7 +30,7 @@ public:
 
 
 	// Setup start of game HUD
-	void Setup(int numPlayers, vec3 endHolePos);
+	void Setup(int numPlayers, int diff);
 
 	// Start game clock
 	void StartGameClock();
@@ -35,13 +38,13 @@ public:
 	// Called when player stroke counter incremented
 	void PlayerFired(int playerIndex, Player &player);
 
-
-
 	// Keep clock ticking
 	void Update();
 
-
-
-
+	// When a player finishes, mark their total time
+	void SetEndTime(Player &player);
+	
+	// Used for demo on 4th
+	void PrintPlayerScore(Player player);
 
 };

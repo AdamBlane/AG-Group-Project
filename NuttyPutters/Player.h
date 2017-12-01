@@ -30,8 +30,10 @@ public:
 	float chaseCamAngle;
 
 	// Gameplay
+	int id;
 	int strokeCounter = 0;
 	int currentPowerup = 0;
+	int totalTime = 0;
 
 	// Input
 	// Action isPressed flags
@@ -48,5 +50,5 @@ public:
 	int fireButtton, jumpButton, upButton,
 		downButton, leftButton, rightButton,
 		zoomInButton, zoomOutButton;
-	
+	int fireButtonC;
 };

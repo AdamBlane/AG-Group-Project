@@ -29,7 +29,7 @@
 
 using namespace AllCamera;
 using namespace std::chrono;
-
+using namespace std;
 
 class gameScene
 {
@@ -53,7 +53,7 @@ public:
 	int courseSize;
 	// Best position of world clock
 
-
+	const unsigned char *buttons;
 	// SYSTEMS USED
 	// Handles gameplay logic
 	GameLogicMgr gameLogicMgr;
