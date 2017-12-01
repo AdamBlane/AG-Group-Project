@@ -124,7 +124,6 @@ void changeDirection(Player &player, vec3 rectCenter, vec3 rectSize)
 	float speed = length(player.velocity);
 
 	player.velocity = p * speed;
-	//player.velocity = -player.velocity;
 
 	player.velocity.y = 0.0f;
 }
@@ -282,16 +281,16 @@ void gameScene::SetupTilesToBeDrawn()
 		}
 		else if (t->id == 1) // Straight V
 		{
-			//hasObstacle = Tile::randomNumber(0, 1);
-			//if (hasObstacle)
-			//{
-			obstacleID = 0 /*Tile::randomNumber(1, 2)*/;
-			//save this tile position in algTiles
-			obstacles.push_back(index);
-			obstacles.push_back(obstacleID);
-			//}
+			hasObstacle = Tile::randomNumber(0, 1);
+			if (hasObstacle)
+			{
+				obstacleID = Tile::randomNumber(1, 2);
+				//save this tile position in algTiles
+				obstacles.push_back(index);
+				obstacles.push_back(obstacleID);
+			}
 			// Create straight tile
-			Tile tile(Tile::BRIDGE, t->thisCoords, obstacleID);
+			Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 			// Add to list of tiles to be rendered
 			tiles.push_back(tile);
 		}
@@ -300,10 +299,10 @@ void gameScene::SetupTilesToBeDrawn()
 			hasObstacle = Tile::randomNumber(0, 1);
 			if (hasObstacle)
 			{
-				obstacleID = Tile::randomNumber(1, 2);
+			obstacleID = Tile::randomNumber(1, 2);
 				//save this tile position in algTiles
-				obstacles.push_back(index);
-				obstacles.push_back(obstacleID);
+			obstacles.push_back(index);
+			obstacles.push_back(obstacleID);
 			}
 			// Create straight tile
 			Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
@@ -954,6 +953,9 @@ void gameScene::Update(GLFWwindow* window)
 		float ballSize = p.radius * 3;
 		float heightTile = 1.0f;
 
+		bool onObstacle = false;
+		physicsSystem.epsilon = 0.5f;
+
 		// Only apply physics if it's moving
 		if (p.isMoving)
 		{
@@ -963,56 +965,145 @@ void gameScene::Update(GLFWwindow* window)
 				// TODO
 			//}
 
-			// Ensure correct slowdown/stop margin
-			physicsSystem.epsilon = 0.5f;
-
-			if (algTiles.at(p.currentTile)->id == 1)
+			for (unsigned int i = 0; i < obstacles.size(); i += 2)
 			{
-				bool intersect = SphereRectCollision(p, algTiles.at(p.currentTile)->thisCoords, vec3((ballSize / 2.0f) - p.radius, heightTile * 3, algTiles.at(p.currentTile)->size / 2.0f));
-
-				if (!intersect)
+				if (p.currentTile == obstacles.at(i))
 				{
-					// Work out whether to apply gravity or not (is player on the floor/in air)
-					physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 0.0001f); // 1 is floor gap
-
-					if (accumulator >= dt)
+					switch (obstacles.at(i + 1))
 					{
-						// Update position
-						p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 0.0001f);
-						accumulator -= dt;
-					}
-				}
-				else
-				{
-					// Work out whether to apply gravity or not (is player on the floor/in air)
-					physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-																							 // If time to perform another physics step																						 // Perform physics step	
-					if (accumulator >= dt)
+					case 1:
 					{
-						// Update position
-						p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1.0f);
-						accumulator -= dt;
-					}
+						vec3 box1Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x - ((ballSize / 2) + (heightTile / 2)), algTiles.at(p.currentTile)->thisCoords.y + 3.0f, algTiles.at(p.currentTile)->thisCoords.z + ballSize * 2);
+						vec3 box2Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x + ((ballSize / 2) + (heightTile / 2)), algTiles.at(p.currentTile)->thisCoords.y + 3.0f, algTiles.at(p.currentTile)->thisCoords.z - ballSize * 2);
 
+						vec3 boxSize = vec3(((algTiles.at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2) - 0.001f, 0.99f, (heightTile / 2) - 0.001f);
+
+						if (algTiles.at(p.currentTile)->id == 2)
+						{
+							box1Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x - ballSize * 2, algTiles.at(p.currentTile)->thisCoords.y + 3.0f, algTiles.at(p.currentTile)->thisCoords.z - ((ballSize / 2) + (heightTile / 2)));
+							box2Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x + ballSize * 2, algTiles.at(p.currentTile)->thisCoords.y + 3.0f, algTiles.at(p.currentTile)->thisCoords.z + ((ballSize / 2) + (heightTile / 2)));
+
+							boxSize = vec3((heightTile / 2) - 0.001f, 0.99f, ((algTiles.at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2) - 0.001f);
+						}
+
+
+						bool intersect = SphereRectCollision(p, box1Pos, boxSize);
+						if (intersect)
+						{
+							onObstacle = true;
+
+							physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 2.001f);
+
+							if (accumulator >= dt)
+							{
+								// Update position
+								p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 2.001f);
+								accumulator -= dt;
+							}
+						}
+						else
+						{
+							onObstacle = false;
+						}
+
+						bool intersect2 = SphereRectCollision(p, box2Pos, boxSize);
+						if (intersect2)
+						{
+							onObstacle = true;
+
+							physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 2.001f);
+
+							if (accumulator >= dt)
+							{
+								// Update position
+								p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 2.001f);
+								accumulator -= dt;
+							}
+						}
+						else
+						{
+							onObstacle = false;
+						}
+					}
+					break;
+					case 2:
+					{
+						bool intersect = SphereRectCollision(p, vec3(algTiles.at(p.currentTile)->thisCoords.x, algTiles.at(p.currentTile)->thisCoords.y + 3, algTiles.at(p.currentTile)->thisCoords.z), vec3(0.99f, 0.99f, 0.99f));
+						if (intersect)
+						{
+							onObstacle = true;
+							physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 2.001f);
+
+							if (accumulator >= dt)
+							{
+								// Update position
+								p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 2.001f);
+								accumulator -= dt;
+							}
+						}
+						else
+						{
+							onObstacle = false;
+						}
+					}
+					break;
+					}
 				}
 			}
 
-			else
+			// Ensure correct slowdown/stop margin
+
+			/////////// ------------ BRIDGE TILE STUFF
+
+			//if (algTiles.at(p.currentTile)->id == 1)
+			//{
+			//	bool intersect = SphereRectCollision(p, algTiles.at(p.currentTile)->thisCoords, vec3((ballSize / 2.0f) - p.radius, heightTile * 3, algTiles.at(p.currentTile)->size / 2.0f));
+
+			//	if (!intersect)
+			//	{
+			//		// Work out whether to apply gravity or not (is player on the floor/in air)
+			//		physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 0.0001f); // 1 is floor gap
+
+			//		if (accumulator >= dt)
+			//		{
+			//			// Update position
+			//			p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 0.0001f);
+			//			accumulator -= dt;
+			//		}
+			//	}
+			//	else
+			//	{
+			//		// Work out whether to apply gravity or not (is player on the floor/in air)
+			//		physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
+			//																				 // If time to perform another physics step																						 // Perform physics step	
+			//		if (accumulator >= dt)
+			//		{
+			//			// Update position
+			//			p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1.0f);
+			//			accumulator -= dt;
+			//		}
+
+			//	}
+			//}
+
+			//else
+			//{
+
+			if (!onObstacle)
 			{
 				// Work out whether to apply gravity or not (is player on the floor/in air)
 				physicsSystem.ApplyGravity(p, algTiles.at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
-				// If time to perform another physics step																						 
-				// Perform physics step	
+																								// If time to perform another physics step																						 
+																								// Perform physics step	
 				if (accumulator >= dt)
 				{
 					// Update position
 					p = physicsSystem.Integrate(p, dt, algTiles.at(p.currentTile)->thisCoords.y + 1);
-					cout << "Delta Time ------------------------------------>>>> " << dt << endl;
 					accumulator -= dt;
-					cout << "Accumulator ------------------------------------>>>> " << accumulator << endl;
 				}
 			}
 		}
+		//}
 
 		// Update p1 arrow mesh position to follow player
 		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
@@ -1174,17 +1265,17 @@ void gameScene::Collisions()
 				{
 					//cout << "TILE ID ------------------> " << algTiles.at(p.currentTile)->id << endl;
 
-					vec3 box1Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x - ((ballSize / 2) + (heightTile / 2)), algTiles.at(p.currentTile)->thisCoords.y + heightTile, algTiles.at(p.currentTile)->thisCoords.z + ballSize * 2);
-					vec3 box2Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x + ((ballSize / 2) + (heightTile / 2)), algTiles.at(p.currentTile)->thisCoords.y + heightTile, algTiles.at(p.currentTile)->thisCoords.z - ballSize * 2);
+					vec3 box1Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x - ((ballSize / 2) + (heightTile / 2)), algTiles.at(p.currentTile)->thisCoords.y, algTiles.at(p.currentTile)->thisCoords.z + ballSize * 2);
+					vec3 box2Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x + ((ballSize / 2) + (heightTile / 2)), algTiles.at(p.currentTile)->thisCoords.y, algTiles.at(p.currentTile)->thisCoords.z - ballSize * 2);
 
-					vec3 boxSize = vec3((algTiles.at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2, 2.0f, heightTile / 2);
+					vec3 boxSize = vec3((algTiles.at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2, 1.0f, heightTile / 2);
 
 					if (algTiles.at(p.currentTile)->id == 2)
 					{
-						box1Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x - ballSize * 2, heightTile, algTiles.at(p.currentTile)->thisCoords.z - ((ballSize / 2) + (heightTile / 2)));
-						box2Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x + ballSize * 2, heightTile, algTiles.at(p.currentTile)->thisCoords.z + ((ballSize / 2) + (heightTile / 2)));
+						box1Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x - ballSize * 2, algTiles.at(p.currentTile)->thisCoords.y, algTiles.at(p.currentTile)->thisCoords.z - ((ballSize / 2) + (heightTile / 2)));
+						box2Pos = vec3(algTiles.at(p.currentTile)->thisCoords.x + ballSize * 2, algTiles.at(p.currentTile)->thisCoords.y, algTiles.at(p.currentTile)->thisCoords.z + ((ballSize / 2) + (heightTile / 2)));
 
-						boxSize = vec3(heightTile / 2, 2.0f, (algTiles.at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2);
+						boxSize = vec3(heightTile / 2, 1.0f, (algTiles.at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2);
 					}
 
 					bool intersect = SphereRectCollision(p, box1Pos, boxSize);
@@ -1202,10 +1293,10 @@ void gameScene::Collisions()
 				break;
 				case 2:
 				{
-					bool intersect = SphereRectCollision(p, algTiles.at(p.currentTile)->thisCoords, vec3(1.0f, 2.0f, 1.0f));
+					bool intersect = SphereRectCollision(p, algTiles.at(p.currentTile)->thisCoords, vec3(1.0f, 1.0f, 1.0f));
 					if (intersect)
 					{
-						changeDirection(p, algTiles.at(p.currentTile)->thisCoords, vec3(1.0f, 2.0f, 1.0f));
+						changeDirection(p, algTiles.at(p.currentTile)->thisCoords, vec3(1.0f, 1.0f, 1.0f));
 					}
 				}
 				break;
