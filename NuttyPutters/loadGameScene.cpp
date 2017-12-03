@@ -11,6 +11,13 @@ loadGameScene::~loadGameScene() { }
 // Setup scene; display choice saved games
 void loadGameScene::Init(GLFWwindow* win)
 {
+	// MONDAY DEMO PRINT COMMANDS
+	cout << "\nLOAD GAME SCREEN CONTROLS:" << endl;
+	cout << "Up & Down arrows move through images" << endl;
+	cout << "Left & Right arrows move through pages of images" << endl;
+	cout << "Enter loads selected level" << endl;
+	cout << "B goes back to main menu" << endl;
+
 	// Set initial button press bools to false
 	upPressed = downPressed = leftPressed = rightPressed = enterPressed = mouseLpressed = false;
 	// Set initial values for navigation variables
@@ -173,7 +180,7 @@ void loadGameScene::Input(GLFWwindow* win)
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
 
-	// TESTING MOUSE
+	// Mouse input
 	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
 	{
 		mouseLpressed = true;
@@ -197,7 +204,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 0;
 					savesImagesIndex = (currentPage - 1) * 9;
-					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 					// Resize this and last choice
 					ResizeCurLastSelected();
 				}
@@ -207,7 +214,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 1;
 					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 					// Resize this and last choice
 					ResizeCurLastSelected();
 				}
@@ -217,7 +224,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 2;
 					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 					// Resize this and last choice
 					ResizeCurLastSelected();
 				}
@@ -231,7 +238,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 3;
 					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 					// Resize this and last choice
 					ResizeCurLastSelected();
 				}
@@ -241,7 +248,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 4;
 					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 					// Resize this and last choice
 					ResizeCurLastSelected();
 				}
@@ -251,7 +258,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 5;
 					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 					// Resize this and last choice
 					ResizeCurLastSelected();
 				}
@@ -265,7 +272,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 6;
 					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 					// Resize this and last choice
 					ResizeCurLastSelected();
 				}
@@ -275,7 +282,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 7;
 					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 					// Resize this and last choice
 					ResizeCurLastSelected();
 				}
@@ -285,7 +292,7 @@ void loadGameScene::Input(GLFWwindow* win)
 					lastImageSelected = currentImageSelected;
 					currentImageSelected = 8;
 					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 					// Resize this and last choice
 					ResizeCurLastSelected();
 				}
@@ -295,12 +302,6 @@ void loadGameScene::Input(GLFWwindow* win)
 
 	}
 
-
-	// TESTING SOUND
-	if (glfwGetKey(win, GLFW_KEY_S))
-	{
-		//windowMgr::getInstance()->PlayThisSound("menuSelect");
-	}
 
 	// IMAGE MESH NAVIGATION
 	// Go back/up an image mesh
@@ -331,7 +332,7 @@ void loadGameScene::Input(GLFWwindow* win)
 				lastImageSelected = currentImageSelected;
 				currentImageSelected--;
 				savesImagesIndex--;
-				cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+				//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 				// Resize this and last choice
 				ResizeCurLastSelected();
 			}
@@ -368,7 +369,7 @@ void loadGameScene::Input(GLFWwindow* win)
 				lastImageSelected = currentImageSelected;
 				currentImageSelected++;
 				savesImagesIndex++;
-				cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+				//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
 				// Resize this and last choice
 				ResizeCurLastSelected();
 			}

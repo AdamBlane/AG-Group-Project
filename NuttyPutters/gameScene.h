@@ -77,16 +77,16 @@ public:
 
 	// Prevent saving same level more than once
 	bool levelSaved = false; 
-	bool continuePressed = false;
+	bool continuePressed;
 
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
 	double accumulator = 0.0;
-	float dt = 0.016;  // This is 60fps
+	double dt = 0.01;  // This is 60fps
 
 	
 	// Camera variables
-	float camSpeed = 2.0f; 
+	double camSpeed = 4.0; 
 	float  cameraType = 1;
 	// TODO - replace these for player members - float chaseCamAngle, p2ChaseCamAngle, // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)

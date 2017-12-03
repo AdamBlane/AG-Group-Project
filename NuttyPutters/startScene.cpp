@@ -8,6 +8,11 @@
 // Setup start scene meshes and textures, set navigation member vars
 void startScene::Init(GLFWwindow* win)
 {
+	// MONDAY DEMO PRINT COMMANDS
+	cout << "\nMAIN MENU CONTROLS:" << endl;
+	cout << "Up & Down arrows to highlight button" << endl;
+	cout << "Enter to select" << endl;
+
 	// Reset navigation member variables
 	upPressed = downPressed = selectPressed = false;
 	// Reset select delay counter

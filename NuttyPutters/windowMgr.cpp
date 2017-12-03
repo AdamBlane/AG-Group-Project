@@ -144,13 +144,6 @@ GLFWwindow* windowMgr::Init()
 	//reboundEffectTextures.push_back(rbfx)
 	// ############################ TEXTURES ############################
 
-	// TESTING
-	//auto f = async(&windowMgr::LoadTextures, this, tileTextures);
-//	f.get();
-
-//	thread t(&windowMgr::LoadTextures, this, std::ref(tileTextures), win);
-//	t.join();
-
 	// START SCENE TEXTURES 
 	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
@@ -195,7 +188,7 @@ GLFWwindow* windowMgr::Init()
 			Texture* texture = new Texture(texturePath);
 			// Add to saves images list
 			savesImages.push_back(texture);
-			cout << "Tex added to list: " << texturePath << endl;
+			//cout << "Tex added to list: " << texturePath << endl;
 		}
 	}
 	// PLAYER SELECT SCENE TEXTURES

@@ -47,6 +47,9 @@ gameScene::~gameScene()
 // Setup scene; seed is an optional param passed in by loadGameScene
 void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int levelCount, string seed)
 {
+	// MONDAY DEMO 
+	continuePressed = true;
+
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -59,9 +62,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 
 	// DEMO ON MONDAY PRINT STATEMENTS
+	cout << "\nGAME CONTROLS:" << endl;
 	cout << "Pause - P" << endl;
-	cout << "While paused: Save level - S, Quit - B, Main menu - C, Unpause - U" << endl;
-
+	
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
@@ -70,8 +73,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	courseSize = courseLength;
 
 	// Record how many levels to load
-	//numLevels = levelCount;
-	numLevels = 5;
+	numLevels = levelCount;
+	numLevels *= 2;
+	//numLevels = 5;
 	// TODO - above will only go to 3 levels - FIX
 
 	// Save player count
@@ -446,8 +450,14 @@ void gameScene::Input(GLFWwindow* window)
 			keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
 			keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 
-			cout << "game paused" << endl;
+			// MONDAY DEMO PRINT COMMANDS
+			cout << "\nPAUSE CONTROLS:" << endl;
+			cout << "Save level - S\n Exit game - B\n Main menu - C\n Unpause - U" << endl;
+
+
+			// Flip paused bool
 			bool paused = true;
+			// Pause input...
 			while (paused)
 			{
 				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -534,6 +544,7 @@ void gameScene::Input(GLFWwindow* window)
 
 			} // end while paused
 			cout << "Unpaused" << endl;
+			
 		} // end pause
 
 		// If button one is pressed change to free camera
@@ -670,7 +681,7 @@ void gameScene::Input(GLFWwindow* window)
 				if (!p.isMoving)
 				{
 					// Increment power counter as long as fire is held
-					p.power += 0.2f;
+					p.power += 0.4;
 
 					// Update the power bar based on the the fireCounter value 
 					//powerBarTrans.getPos().x -= (fireCounter/5.0f) * powerBarMesh->getGeomPos().x;
@@ -716,7 +727,7 @@ void gameScene::Input(GLFWwindow* window)
 			if (p.firePressed)
 			{
 				// Play SFX
-				if (p.power < 10.0f)
+				if (p.power < 20.0f)
 				{
 					windowMgr::getInstance()->PlayThisSound("golfBallPutt");
 				}
@@ -772,19 +783,17 @@ void gameScene::SpatialPartitioningUpdate()
 // Acts on whether to load the next level or not
 void gameScene::CheckLoadNextLevel()
 {
+	// For each player
 	for (int i = 0; i < players.size(); ++i)
 	{
-		// Was player last on end tile for this level
-		//if (masterAlgTiles[currentLevel].at(player.currentTile)->id == 9)
 		{
 			// Check if player is falling through end hole...
 			if (players[i].ballInHole && players[i].transform.getPos().y < -450.0f) // Abritrary time period before tp
 			{	
 				// If finished last level
-				if (currentLevel == numLevels - 1)
+				if (currentLevel == numLevels - 1 && !changedLevel)
 				{
 					// TODO - quit, pause, ask for next level etc
-					// currently just replays the last level played
 
 					// Stop camera from following player
 					players[i].camFollow = false;
@@ -794,7 +803,7 @@ void gameScene::CheckLoadNextLevel()
 					gameLogicMgr.PrintPlayerScore(players[i]);
 				}
 				// If there is another level to go...
-				if (currentLevel < numLevels - 1)
+				else if (currentLevel < numLevels - 1)
 				{
 					// Move onto next level; draws behind player while falling
 					// Only do this once (will trigger multiple frames)
@@ -843,7 +852,6 @@ void gameScene::CheckLoadNextLevel()
 	}
 
 }
-
 
 // Update player positions, spatitial partitioning, check for level changeover
 void gameScene::Update(GLFWwindow* window)
@@ -919,11 +927,11 @@ void gameScene::Update(GLFWwindow* window)
 
 	accumulator += frameTime;
 	// Calculate fps
-	double fps = 1.0 / frameTime;
-	if (accumulator > 1.0f)
+	//double fps = 1.0 / frameTime;
+	//if (accumulator > dt)
 		//cout << "FPS:" << fps << endl;
 
-
+	
 	
 	// Update each player
 	for (auto &p : players)
@@ -938,8 +946,11 @@ void gameScene::Update(GLFWwindow* window)
 																							// If time to perform another physics step																						 // Perform physics step	
 			if (accumulator >= dt)
 			{
-				// Update position
+				
 				physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 1);
+
+				// Update position
+				//physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 1);
 				accumulator -= dt;
 			}
 		}
@@ -970,13 +981,13 @@ void gameScene::Collisions()
 		if (players[0].currentTile == players[1].currentTile)
 		{
 			// Find distance between players
-			vec3 distance = abs(players[0].transform.getPos() - players[1].transform.getPos());
-			float magnitude = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
+			dvec3 distance = abs(players[0].transform.getPos() - players[1].transform.getPos());
+			double magnitude = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
 			// If less than two radii apart we have a collision
 			if (magnitude < players[0].radius * 2)
 			{
 				// First normalize the distance vector; the collision normal
-				vec3 collisionNormal = players[0].transform.getPos() - players[1].transform.getPos();
+				dvec3 collisionNormal = players[0].transform.getPos() - players[1].transform.getPos();
 				collisionNormal = normalize(collisionNormal);
 				// Find the length of the component of each movement vector on collision normal
 				float a1 = dot(players[0].velocity, collisionNormal);

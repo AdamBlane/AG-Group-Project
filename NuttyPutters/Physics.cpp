@@ -3,7 +3,7 @@
 
 // Impulse vector needs player direction, and magnitude is gained from
 // accumulated float value from holding space
-void Physics::Fire(Player &player, float magnitude)
+void Physics::Fire(Player &player, double magnitude)
 {
 	// Impulse normal is direction. The impulse is scaled by magnitude
 	player.impulse = player.direction * magnitude;
@@ -20,7 +20,7 @@ void Physics::Fire(Player &player, float magnitude)
 
 
 // Impulse vector responsible for pushing player back down ramp
-void Physics::RampResistance(Player &player, float magnitude)
+void Physics::RampResistance(Player &player, double magnitude)
 {
 	// Manually set direction to -z for going back down ramps (they're always going up +z!)
 	player.impulse.z += magnitude;
@@ -37,7 +37,7 @@ void Physics::RampResistance(Player &player, float magnitude)
 
 
 // Jump
-void Physics::Jump(Player &player, float magnitude)
+void Physics::Jump(Player &player, double magnitude)
 {
 	// Manually set direction to y for jumping up
 	player.impulse.y += magnitude;
@@ -72,30 +72,32 @@ void Physics::ApplyGravity(Player &player, float floorLevel)
 
 
 // Using semi-implicit Euler integration method
-void Physics::Integrate(Player &player, float dt, float floorLevel)
+void Physics::Integrate(Player &player, double dt, float floorLevel)
 {
 	// Work out friction first
 	friction = normalize(player.velocity) * frictionScalar;
 	// Don't apply to y
-	friction.y = 0.0f;
+	friction.y = 0.0;
 	
 	// If the player has reached end hole, set new lower floor level
 	if (player.ballInHole)
 	{
 		// Set lower floot limit
-		floorLevel = -500.0f;
+		floorLevel = -490.0f;
 		// Apply and set gravity
 		gravFlag = 1;
-		gravity.y = -9.8f;
+		gravity.y = -9.8;
 	}
 	// If the player has since fallen through the hole and is near bottom of skybox
-	if (player.transform.getPos().y < -490.0f)
+	if (player.transform.getPos().y < -480.0f)
 	{
 		// Teleport playyer to top of skybox
 		player.transform.getPos().y = 480.0f;
+		// Reduce accrued gravity
+		//player.velocity.y = -1.0;
 		// clear vel and reset position
-		player.velocity.x = player.velocity.z = 0.0f;
-		player.transform.getPos().x = player.transform.getPos().z = 0.0f;
+		player.velocity.x = player.velocity.z = 0.0;
+		player.transform.getPos().x = player.transform.getPos().z = 0.0;
 		// reset ball in hole
 		player.ballInHole = false;
 		// player is now falling
@@ -103,7 +105,7 @@ void Physics::Integrate(Player &player, float dt, float floorLevel)
 	}
 	
 	// If the goes below the ground, reset its position to floor level and clear any accrued gravity
-	if (player.transform.getPos().y < floorLevel) // This 1.0f should be (floor level)
+	if (player.transform.getPos().y < floorLevel) 
 	{
 		// Move to floor level
 		player.transform.getPos().y = floorLevel;
@@ -116,18 +118,18 @@ void Physics::Integrate(Player &player, float dt, float floorLevel)
 			// Remove some velocity from damping
 			if (player.isFalling)
 			{
-				player.velocity.y = 0.0f;
+				player.velocity.y = 0.0;
 				player.isFalling = false;
 			}
 				
 			else
-				player.velocity.y *= 0.5f;
+				player.velocity.y *= 0.5;
 			//player.velocity.y /= player.mass;
 		}
 		// Not enough downwards force; stop bouncing
 		else
 		{
-			player.velocity.y = 0.0f;		
+			player.velocity.y = 0.0;		
 		}
 
 		
@@ -144,10 +146,10 @@ void Physics::Integrate(Player &player, float dt, float floorLevel)
 	// Check for when speed (magnitude of velocity) is below epsilon and just stop it
 	float magnitude = (player.velocity.x * player.velocity.x) + (player.velocity.z * player.velocity.z);
 	if (magnitude < epsilon * epsilon)
-		player.velocity.x = player.velocity.z = 0.0f;
+		player.velocity.x = player.velocity.z = 0.0;
 		
 	// Flip switch if stationary
-	if (player.velocity == vec3(0, 0, 0))
+	if (player.velocity == dvec3(0, 0, 0))
 		player.isMoving = false;
 	
 

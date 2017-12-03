@@ -14,12 +14,12 @@ public:
 	// Physics related properties
 	Transform transform;
 	Transform arrowTransform;
-	glm::vec3 velocity; // added to position in transform each frame
-	glm::vec3 impulse; // direction * power 
-	glm::vec3 direction; // dir camera is facing
-	float power; // accumulated counter from holding fire
-	float mass = 1;
-	float radius = 0.5f;
+	glm::dvec3 velocity; // added to position in transform each frame
+	glm::dvec3 impulse; // direction * power 
+	glm::dvec3 direction; // dir camera is facing
+	double power; // accumulated counter from holding fire
+	double mass = 1;
+	double radius = 0.5;
 
 	// Movement
 	int currentTile = 0; // For spatial partitioning
@@ -27,7 +27,7 @@ public:
 	bool ballInHole = false; // Has the player reached end hole
 	bool isFalling = false;
 	bool camFollow = true;
-	float chaseCamAngle;
+	double chaseCamAngle;
 
 	// Gameplay
 	int id;
