@@ -18,7 +18,7 @@ public:
 	glm::dvec3 impulse; // direction * power 
 	glm::dvec3 direction; // dir camera is facing
 	double power; // accumulated counter from holding fire
-	double mass = 1;
+	double mass = 1.2;
 	double radius = 0.5;
 
 	// Movement

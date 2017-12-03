@@ -15,7 +15,7 @@ public:
 	double epsilon = 0.5;
 	// friction
 	glm::dvec3 friction;
-	double frictionScalar = -10.9;
+	double frictionScalar = -15.9;
 	// account for aerodynamic drag
 	//float drag = 0.9f;
 

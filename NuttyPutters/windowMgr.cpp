@@ -134,14 +134,21 @@ GLFWwindow* windowMgr::Init()
 	player2Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
 	p1ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	p2ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
+	// Pickup crate meshes - no more than 5 in any given level
+	for (int i = 0; i < 5; i++)
+	{
+		Transform trans;		
+		pickupCrateTransforms.push_back(trans);
+		pickupCrateMeshes.push_back(new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f, 1.0f));
+	}
+	
+	// World clock meshes
 	for (int i = 0; i < 5; i++)
 	{
 		Mesh* mesh = new Mesh(Mesh::CUBOID, vec3(-5.0f + (i * 2.5), 8.0f, 0.0f), 5.0f, 5.0f, 5.0f);
 		worldClock.push_back(mesh);
 	}
-	//reboundEffectMesh = new Mesh(Mesh::CUBOID, vec3(1.0f, 10.0f, 10.0f), 1.0f, 1.0f, 1.0f);
-	//Texture* rbfx = new Texture("..\\NuttyPutters\\forcefield.png");
-	//reboundEffectTextures.push_back(rbfx)
+
 	// ############################ TEXTURES ############################
 
 	// START SCENE TEXTURES 
@@ -246,13 +253,14 @@ GLFWwindow* windowMgr::Init()
 	skyboxTexture = new Texture(posXfileName, negXfileName, posYfileName, negYfileName, posZfileName, negZfileName);
 	// Skybox mesh must be created after
 	skyboxMesh = new Mesh(skyboxTexture);
-
+	// Player textures
 	Texture* playerRedTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
 	Texture* playerBlueTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerBlueTexture", playerBlueTexture));
-	
-	
+	// Pickup crate texture
+	pickupCrateTexture = new Texture("..\\NuttyPutters\\box.jpg");
+	// HUD label textures
 	Texture* xStrokeLbl = new Texture("..\\NuttyPutters\\x.png");
 	textures.insert(std::pair<std::string, Texture*>("xStrokeLbl", xStrokeLbl));
 	Texture* playerOneLbl = new Texture("..\\NuttyPutters\\playerone.png");

@@ -32,7 +32,7 @@ public:
 	// 6 - Exit
 	int button_manager = 1;
 	// Enforce time delay before select may be pressed upon loading this scene
-	int selectCooldown, selectCooldownMax = 300;
+	int selectCooldown, selectCooldownMax = 250;
 	// Flags for button presses; logic occurs on release after being pressed
 	bool upPressed, downPressed, selectPressed;
 

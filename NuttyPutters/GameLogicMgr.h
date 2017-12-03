@@ -22,6 +22,8 @@ public:
 	bool p1Finished, p2Finished;
 	int p1Score, p2Score;
 	bool gameEnded = false;
+
+
 	// Game clock
 	int startTime;
 	int lastFrameTime;
@@ -46,5 +48,8 @@ public:
 	
 	// Used for demo on 4th
 	void PrintPlayerScore(Player player);
+
+	// Choose a random powerup
+	void RandomPowerup(Player &player);
 
 };

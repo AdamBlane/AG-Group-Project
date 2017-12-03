@@ -74,6 +74,8 @@ public:
 	vector<vec3> pauseCamLevelProperties;
 	// Record obstacle data ( tilePos, obType, tilePos, obType etc)
 	vector<int> obstacles; 
+	// List of pickup crate locations for each level
+	vector<int> pickupPositionIndices;
 
 	// Prevent saving same level more than once
 	bool levelSaved = false; 
@@ -82,7 +84,7 @@ public:
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
 	double accumulator = 0.0;
-	double dt = 0.01;  // This is 60fps
+	double dt;  // This is 60fps
 
 	
 	// Camera variables
@@ -102,14 +104,21 @@ public:
 	void FillScenery();
 	// Translates list of alg tiles (M) into mesh tiles (V)
 	void SetupTilesToBeDrawn();
+	// Sets up pickup crates for a level
+	void SetupPickupCrates();
+
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);
+	// Act on controller/keyboard input
 	void Input(GLFWwindow* window);
+	// Tiles are treated as partitions
 	void SpatialPartitioningUpdate();
+	// Will load next level if conditions are met
 	void CheckLoadNextLevel();
-
+	// Keep clocks ticking, update cameras and positions
 	void Update(GLFWwindow* window);
-	
+	// Check for player collisions
 	void Collisions();
+	// Draw stuff
 	void Render(GLFWwindow* window);
 };
