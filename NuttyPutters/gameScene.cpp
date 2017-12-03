@@ -3,7 +3,7 @@
 #include "windowMgr.h" // to access singleton
 #include "courseGenV2.h"
 #include "UI.h"
-
+#include <thread>
 
 
 // Default constructor
@@ -141,7 +141,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	SetupPickupCrates();
 	
 	// Set dt based on player count
-	dt = playerCount * 0.01;
+	dt = (playerCount * 0.01) - 0.002;
 
 	// Start game logic mgr
 	// Pass in end hole position for two player mode
@@ -1026,10 +1026,18 @@ void gameScene::Update(GLFWwindow* window)
 void gameScene::Collisions()
 {
 	// Check collisions for the tile each player is on only
+	vector<thread> threads;
 	for (auto &p : players)
 	{
-		masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
-
+		if (p.isMoving)
+			threads.push_back(thread(&gameScene::ThreadCol, this, std::ref(p)));
+	}
+	for (auto &t : threads)
+		t.join();
+	for (auto &p : players)
+	{
+		//masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
+		
 		// 2 player only collisions (crates, other players)
 		if (numPlayers == 2)
 		{
@@ -1354,4 +1362,10 @@ void gameScene::Render(GLFWwindow* window)
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+}
+
+
+void gameScene::ThreadCol(Player &player)
+{
+	masterAlgTiles[currentLevel].at(player.currentTile)->CheckCollisions(player);
 }
