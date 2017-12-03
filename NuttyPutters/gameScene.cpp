@@ -64,7 +64,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// DEMO ON MONDAY PRINT STATEMENTS
 	cout << "\nGAME CONTROLS:" << endl;
 	cout << "Pause - P" << endl;
-	
+	cout << "Reset Player 1 position - R" << endl;
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
@@ -444,6 +444,27 @@ void gameScene::Input(GLFWwindow* window)
 {
 	// Loop around players and their inputs for both keyboard and controller
 	int thisPlayer = 0;
+
+	// REST POSITION FUNCTION
+	if (glfwGetKey(window, GLFW_KEY_R))
+	{
+		resetPressed = true;
+	}
+	if (!glfwGetKey(window, GLFW_KEY_R))
+	{
+		if (resetPressed)
+		{
+			cout << "Player 1 position reset" << endl;
+			// Move player 1 to center of tile
+			players[0].transform.getPos() = (vec3(masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.x, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.y + 0.5 + players[0].radius, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.z));
+			// Consider setting velocity to 0 
+
+			// Flip flag
+			resetPressed = false;
+		}
+	}
+
+
 	for (auto &p : players)
 	{
 		// Jump
@@ -571,7 +592,8 @@ void gameScene::Input(GLFWwindow* window)
 				}
 
 			} // end while paused
-			cout << "Unpaused" << endl;
+			
+			cout << "\nUnpaused" << endl;
 			
 		} // end pause
 

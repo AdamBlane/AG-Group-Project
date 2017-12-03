@@ -79,7 +79,7 @@ public:
 
 	// Prevent saving same level more than once
 	bool levelSaved = false; 
-	bool continuePressed;
+	bool continuePressed, resetPressed = false;;
 
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
