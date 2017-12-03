@@ -420,6 +420,7 @@ void loadGameScene::Input(GLFWwindow* win)
 		}
 		leftPressed = false;
 	}
+	
 	// Select this level to load
 	if (glfwGetKey(win, GLFW_KEY_ENTER) && enterCooldown > enterCooldownMax)
 	{
@@ -448,7 +449,7 @@ void loadGameScene::Update(GLFWwindow* win)
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 	
 	// To ensure enter doesn't trigger just after loading this scene
-	if (enterCooldown < enterCooldownMax + 5) // 5 is epsilon
+	if (enterCooldown < enterCooldownMax + 5) // 5 is epsilon 
 	{
 		enterCooldown++;
 	}

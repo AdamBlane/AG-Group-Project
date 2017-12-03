@@ -4,15 +4,15 @@
 
 
 
-// Default constructor
-startScene::startScene() { }
 
-// Deconstructor
-startScene::~startScene() { }
-
-// Setup; does nothing atm
+// Setup start scene meshes and textures, set navigation member vars
 void startScene::Init(GLFWwindow* win)
 {
+	// Reset navigation member variables
+	upPressed = downPressed = selectPressed = false;
+	// Reset select delay counter
+	selectCooldown = 0;
+
 	// Background image will never change so setup here
 	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
@@ -33,22 +33,13 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(0.0f, -0.9f, 0.0f));
 	windowMgr::getInstance()->meshes.at(6)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -1.5f, 0.0f));
-
-
-
-	cout << "Textures after start: " << windowMgr::getInstance()->textures.size() << endl;
 	
 }
 
+// Main loop for this scene
 void startScene::Loop(GLFWwindow* win)
 {
-	// Calculate dt
-	lastFrame = thisFrame;
-	thisFrame = glfwGetTime();
-	dt = (float)(thisFrame - lastFrame);
-
-	// Scene background
-	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
+	// Clear buffers every frame
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Input
@@ -64,6 +55,7 @@ void startScene::Loop(GLFWwindow* win)
 // Act on input
 void startScene::Input(GLFWwindow * win)
 {
+	// TODO - refactor to avoid using brute force
 	switch (button_manager)
 	{
 		//cases for the buttons to switch to each screen
@@ -122,72 +114,118 @@ void startScene::Input(GLFWwindow * win)
 			break;
 
 	}
-	if (glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
+
+	// On select press
+	if (glfwGetKey(win, GLFW_KEY_ENTER) && selectCooldown > selectCooldownMax)
 	{
-		total_time = 0.0f;
-		if (button_manager == 6)
-		{
-			windowMgr::getInstance()->sceneManager.changeScene(0);
-
-		}
-		else if (button_manager == 5)
-		{
-			ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
-		}
-		else
-		{
-			windowMgr::getInstance()->sceneManager.changeScene(button_manager + 1);
-		}
-
-	}
-
-
-	if (glfwGetKey(win, GLFW_KEY_UP) && total_time >= 3.0f)
+		// Flip flag
+		selectPressed = true;
+	} 
+	// On select release
+	if (!glfwGetKey(win, GLFW_KEY_ENTER))
 	{
-		total_time = 0.0f;
-		if (button_manager == 1)
+		// If recently pressed (this is a release action)
+		if (selectPressed)
 		{
-			button_manager = 6;
-		}
-		else
+			// If exit button selected
+			if (button_manager == 6)
+			{
+				// Change to exit scene
+				windowMgr::getInstance()->sceneManager.changeScene(0);
+			}
+			// If internet button selected
+			else if (button_manager == 5)
+			{
+				// This opens a browser window at the given url
+				ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
+			}
+			// If another button selected
+			else
+			{
+				// Go to that scene
+				windowMgr::getInstance()->sceneManager.changeScene(button_manager + 1);
+			}
+
+			// Flip flag
+			selectPressed = false;
+		} // end if select pressed
+	} // end on select release
+
+	// On up press
+	if (glfwGetKey(win, GLFW_KEY_UP))
+	{
+		// Flip flag
+		upPressed = true;
+	}
+	// On up release
+	if (!glfwGetKey(win, GLFW_KEY_UP))
+	{
+		// If recently pressed
+		if (upPressed)
 		{
-			button_manager--;
+			// If at top button
+			if (button_manager == 1)
+			{
+				// Go to bottom button
+				button_manager = 6;
+			}
+			else
+			{
+				// Otherwise decrease current button id
+				button_manager--;
+			}
+			// Flip flag
+			upPressed = false;
 		}
 	}
+	
+	// On down press
 	if (glfwGetKey(win, GLFW_KEY_DOWN))
 	{
 		downPressed = true;
 	}
-
-	if (!glfwGetKey(win, GLFW_KEY_DOWN) && total_time >= 3.0f)
+	// On down release
+	if (!glfwGetKey(win, GLFW_KEY_DOWN))
 	{
+		// If recently pressed
 		if (downPressed)
 		{
+			// If on last button
 			if (button_manager == 6)
 			{
+				// Move to first
 				button_manager = 1;
 			}
 			else
 			{
+				// Otherwise increase current selected button id
 				button_manager++;
 			}
-
+			// Flip flag
 			downPressed = false;
 		}
 	}
 
-	total_time += 1.0f;
 }
 
+// Update camera, select cooldown 
 void startScene::Update(GLFWwindow* win)
 {
 	// Update target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
+
+	// To ensure enter doesn't trigger just after loading this scene
+	if (selectCooldown < selectCooldownMax + 5) // 5 is epsilon
+	{
+		selectCooldown++;
+	}
 }
 
+// Draw stuff
 void startScene::Render(GLFWwindow* win)
 {
-	glViewport(0, 0, 1600, 900);
+	// Ensure correct viewport size (in case coming from 2P game)
+	glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	// If camera type is target camera - used for HUD elements - then
 	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 
@@ -196,11 +234,10 @@ void startScene::Render(GLFWwindow* win)
 	glDepthRange(0, 0.01);
 
 	// Bind, update and draw HUD elements
-
 	for (int a = 0; a < 7; a++)
 	{
 		windowMgr::getInstance()->meshes.at(a)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(startSceneTransform, hudVP);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(a)->Draw();
 	}
 	
