@@ -24,15 +24,15 @@ public:
 	~optionsScene();
 
 	// Create a target camera - used for HUD elements
-	AllCamera::target_camera* tarCam;
+	//AllCamera::target_camera* tarCam;
 
-	Shader* textureShader;
+	//Shader* textureShader;
 
 	Transform optionSceneTransform;
 	int button_manager = 1;
 
-	float total_time = 2.0f;
-
+	float total_time = 0.0f;
+	int previousMenuItem, currentMenuItem;
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);
@@ -40,8 +40,14 @@ public:
 	void Input(GLFWwindow* win);
 
 	void Init(GLFWwindow* win);
+
+	void Track_Mouse(GLFWwindow* win);
 	// Update
 	void Update(GLFWwindow* window);
 	// Render
 	void Render(GLFWwindow* window);
+	//to track and change textures
+	void ChangeTexutes(GLFWwindow* win);
+	//for action keys
+	void Click_or_Enter(GLFWwindow* window);
 };

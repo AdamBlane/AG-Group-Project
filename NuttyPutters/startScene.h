@@ -21,6 +21,16 @@ public:
 	startScene() {}
 	// Deconstructor
 	~startScene() {}
+  
+	// Used to lock framerate
+	double lastFrame = 0;
+	double thisFrame = glfwGetTime();
+	float dt = 0.016; // Lock to 60fps for first frame
+
+					  // Used for navigating through menu options
+	float total_time = 5.0f;
+
+	int previousMenuItem, currentMenuItem;
 
 	// Used for navigating through menu options
 	// ID number determines which button should be highlighted
@@ -36,9 +46,6 @@ public:
 	// Flags for button presses; logic occurs on release after being pressed
 	bool upPressed, downPressed, selectPressed;
 
-
-
-
 	// Main logic loop for this scene
 	void Loop(GLFWwindow* win);
 	// Input 
@@ -48,5 +55,11 @@ public:
 	// Update
 	void Update(GLFWwindow* window);
 	// Render
+	//Tracks Mouse
+	void Track_Mouse(GLFWwindow* win);
 	void Render(GLFWwindow* window);
+	// For mouse button actions
+	void Click_or_Enter(GLFWwindow* window);
+	//to track and change textures
+	void ChangeTexutes(GLFWwindow* win);
 };

@@ -2,16 +2,113 @@
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
 
+// Deconstructor
+startScene::~startScene() { }
 
+// Function which gets mouse position, sets button manager value based on which 
+// button is hovered over
+void startScene::Track_Mouse(GLFWwindow *window)
+{
+	glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
+	//this mess plots out where the buttons are for start scene
+	if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 59 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 840 * windowMgr::getInstance()->windowScale))
+	{
+		previousMenuItem = currentMenuItem;
+		if (windowMgr::getInstance()->mouse_y <= 200 * windowMgr::getInstance()->windowScale)
+		{
+			//highlights start game button
+			currentMenuItem = 1;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
+		{
+			//highlights load game button
+			currentMenuItem = 2;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 456 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 3;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 580 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 4;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 5;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 840 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 6;
+		}
+		ChangeTexutes(window);
+	}
+}
+void startScene::ChangeTexutes(GLFWwindow * win)
+{
+	windowMgr::getInstance()->button_manager = currentMenuItem;
+	switch (previousMenuItem)
+	{
+		//cases for the buttons to switch to each screen
+	case 1:
+		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+		break;
 
+	case 2:
+		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+		break;
 
-// Setup start scene meshes and textures, set navigation member vars
+	case 3:
+		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+		break;
+
+	case 4:
+		windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+		break;
+
+	case 5:
+		windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+		break;
+
+	case 6:
+		windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
+		break;
+	}
+	switch (currentMenuItem)
+	{
+		//cases for the buttons to switch to each screen
+	case 1:
+		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
+		break;
+
+	case 2:
+		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnSelected"]);
+		break;
+
+	case 3:
+		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnSelected"]);
+		break;
+
+	case 4:
+		windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnSelected"]);
+		break;
+
+	case 5:
+		windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnSelected"]);
+		break;
+
+	case 6:
+		windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnSelected"]);
+		break;
+	}
+
+}
+
 void startScene::Init(GLFWwindow* win)
 {
-	// MONDAY DEMO PRINT COMMANDS
-	cout << "\nMAIN MENU CONTROLS:" << endl;
-	cout << "Up & Down arrows to highlight button" << endl;
-	cout << "Enter to select" << endl;
+	// Set initial button press bools to false
+	windowMgr::getInstance()->upPressed = windowMgr::getInstance()->downPressed = windowMgr::getInstance()->leftPressed = windowMgr::getInstance()->rightPressed = windowMgr::getInstance()->enterPressed = windowMgr::getInstance()->mouseLpressed = false;
 
 	// Reset navigation member variables
 	upPressed = downPressed = selectPressed = false;
@@ -23,6 +120,7 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
 	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
+	currentMenuItem = 3;
 
 	// Perform setup of initial button configs - (un)selected textures
 	// Pick next item in meshes list (increment the number by 1 each time)
@@ -38,14 +136,35 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(0.0f, -0.9f, 0.0f));
 	windowMgr::getInstance()->meshes.at(6)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -1.5f, 0.0f));
-	
+
+
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
+
+	ChangeTexutes(win);
 }
 
 // Main loop for this scene
 void startScene::Loop(GLFWwindow* win)
 {
+
+	// Calculate dt
+	lastFrame = thisFrame;
+	thisFrame = glfwGetTime();
+	dt = (float)(thisFrame - lastFrame);
+
+	// Scene background
+
 	// Clear buffers every frame
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//tracks mouse
+	Track_Mouse(win);
 
 	// Input
 	Input(win);
@@ -57,160 +176,111 @@ void startScene::Loop(GLFWwindow* win)
 	Render(win);
 }
 
+// Acts on chosen menu item
+void startScene::Click_or_Enter(GLFWwindow* win)
+{
+	// If exit is hovered over
+	if (windowMgr::getInstance()->button_manager == 6)
+	{
+		windowMgr::getInstance()->sceneManager.changeScene(0);
+
+	}
+	// If internet button is hovered over
+	else if (windowMgr::getInstance()->button_manager == 5)
+	{
+		ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
+	}
+	// Otherwise load scene for this button
+	else
+	{
+		// + 1 since button manager starts from 0, but scene 0 is exit (1 is start etc)
+		windowMgr::getInstance()->sceneManager.changeScene(windowMgr::getInstance()->button_manager + 1);
+	}
+}
 // Act on input
 void startScene::Input(GLFWwindow * win)
 {
-	// TODO - refactor to avoid using brute force
-	switch (button_manager)
+	if (glfwGetKey(win, GLFW_KEY_ENTER))
 	{
-		//cases for the buttons to switch to each screen
-		case 1:
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
-			break;
-
-		case 2:
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnSelected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
-			break;
-
-		case 3:
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnSelected"]);
-			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
-			break;
-
-		case 4:
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnSelected"]);
-			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
-			break;
-
-		case 5:
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnSelected"]);
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
-			break;
-
-		case 6:
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnSelected"]);	
-			break;
-
+		windowMgr::getInstance()->enterPressed = true;
 	}
-
-	// On select press
-	if (glfwGetKey(win, GLFW_KEY_ENTER) && selectCooldown > selectCooldownMax)
+	if (!glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
 	{
-		// Flip flag
-		selectPressed = true;
-	} 
-	// On select release
-	if (!glfwGetKey(win, GLFW_KEY_ENTER))
-	{
-		// If recently pressed (this is a release action)
-		if (selectPressed)
+		if (windowMgr::getInstance()->enterPressed)
 		{
-			// If exit button selected
-			if (button_manager == 6)
-			{
-				// Change to exit scene
-				windowMgr::getInstance()->sceneManager.changeScene(0);
-			}
-			// If internet button selected
-			else if (button_manager == 5)
-			{
-				// This opens a browser window at the given url
-				ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
-			}
-			// If another button selected
-			else
-			{
-				// Go to that scene
-				windowMgr::getInstance()->sceneManager.changeScene(button_manager + 1);
-			}
-
-			// Flip flag
-			selectPressed = false;
-		} // end if select pressed
-	} // end on select release
-
-	// On up press
+			Click_or_Enter(win);
+			windowMgr::getInstance()->enterPressed = false;
+		}
+	}
+	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) && total_time >= 5.0f)
+	{
+		windowMgr::getInstance()->mouseLpressed = true;
+	}
+	if (!glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+	{
+		if (windowMgr::getInstance()->mouseLpressed)
+		{
+			Click_or_Enter(win);
+			windowMgr::getInstance()->mouseLpressed = false;
+		}
+	}
 	if (glfwGetKey(win, GLFW_KEY_UP))
 	{
-		// Flip flag
-		upPressed = true;
+		windowMgr::getInstance()->upPressed = true;
 	}
-	// On up release
+
 	if (!glfwGetKey(win, GLFW_KEY_UP))
 	{
-		// If recently pressed
-		if (upPressed)
+		if (windowMgr::getInstance()->upPressed)
 		{
-			// If at top button
-			if (button_manager == 1)
+			previousMenuItem = currentMenuItem;
+			if (currentMenuItem == 1)
 			{
-				// Go to bottom button
-				button_manager = 6;
+				currentMenuItem = 6;
+			}
+			else if (currentMenuItem == 0)
+			{
+				currentMenuItem = 6;
 			}
 			else
 			{
-				// Otherwise decrease current button id
-				button_manager--;
+				currentMenuItem--;
 			}
-			// Flip flag
-			upPressed = false;
+			ChangeTexutes(win);
+			windowMgr::getInstance()->upPressed = false;
 		}
 	}
 	
 	// On down press
 	if (glfwGetKey(win, GLFW_KEY_DOWN))
 	{
-		downPressed = true;
+		windowMgr::getInstance()->downPressed = true;
 	}
-	// On down release
+
 	if (!glfwGetKey(win, GLFW_KEY_DOWN))
 	{
-		// If recently pressed
-		if (downPressed)
+		previousMenuItem = currentMenuItem;
+		if (windowMgr::getInstance()->downPressed)
 		{
-			// If on last button
-			if (button_manager == 6)
+			if (currentMenuItem == 6)
 			{
-				// Move to first
-				button_manager = 1;
+				currentMenuItem = 1;
 			}
 			else
 			{
-				// Otherwise increase current selected button id
-				button_manager++;
+				currentMenuItem++;
 			}
-			// Flip flag
-			downPressed = false;
+
+			windowMgr::getInstance()->downPressed = false;
+			ChangeTexutes(win);
 		}
 	}
 
+	// Increase time delay tracker (prevents enter/Lclick reoccuring from last scene)
+	if (total_time <= 5.0f)
+	{
+		total_time += 1.0f;
+	}
 }
 
 // Update camera, select cooldown 
@@ -231,6 +301,7 @@ void startScene::Render(GLFWwindow* win)
 {
 	// Ensure correct viewport size (in case coming from 2P game)
 	glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+
 	// If camera type is target camera - used for HUD elements - then
 	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 
@@ -245,8 +316,6 @@ void startScene::Render(GLFWwindow* win)
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(a)->Draw();
 	}
-	
-
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);

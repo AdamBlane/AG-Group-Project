@@ -68,23 +68,6 @@ GLFWwindow* windowMgr::Init()
 		std::cout << "Glew failed to initialise!" << std::endl;
 	}
 
-	// ############################ AUDIO ############################
-	// Init fmod system
-	FMOD::System_Create(&system);
-	system->init(32, FMOD_INIT_NORMAL, 0);
-	// Load sounds
-	system->createSound("..\\NuttyPutters\\audio\\powerup.wav", FMOD_DEFAULT, 0, &menuSelect);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("menuSelect", menuSelect));
-	system->createSound("..\\NuttyPutters\\audio\\golf-ball-putt.wav", FMOD_DEFAULT, 0, &golfBallPutt);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallPutt", golfBallPutt));
-	system->createSound("..\\NuttyPutters\\audio\\golf-ball-hit.wav", FMOD_DEFAULT, 0, &golfBallHit);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallHit", golfBallHit));
-	system->createSound("..\\NuttyPutters\\audio\\golf-ball-jump.wav", FMOD_DEFAULT, 0, &golfBallJump);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallJump", golfBallJump));
-	system->createSound("..\\NuttyPutters\\audio\\golf-ball-wood-hit.wav", FMOD_DEFAULT, 0, &golfBallWoodHit);
-	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
-
-	
 	// ############################ SHADERS ############################
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
@@ -112,21 +95,51 @@ GLFWwindow* windowMgr::Init()
 	p1ChaseCam = new chase_camera();
 	p1ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p1ChaseCam->set_springiness(0.2f);
-	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width  / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 	chaseCams.push_back(p1ChaseCam);
 	// p2 chase cam
 	p2ChaseCam = new chase_camera();
 	p2ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p2ChaseCam->set_springiness(0.2f);
-	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width /2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 	chaseCams.push_back(p2ChaseCam);
+
+	// ############################ SPLASH SCREEN ############################
+	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\background.jpg");
+	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
+
+	meshSplash = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+
+	// Load game splash screen
+	RenderSplashScreen(win);
+	// Update hud target camera
+	HUDtargetCam->update(0.00001);
+
+
+	// ############################ AUDIO ############################
+	// Init fmod system
+	FMOD::System_Create(&system);
+	system->init(32, FMOD_INIT_NORMAL, 0);
+	// Load sounds
+	system->createSound("..\\NuttyPutters\\audio\\powerup.wav", FMOD_DEFAULT, 0, &menuSelect);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("menuSelect", menuSelect));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-putt.wav", FMOD_DEFAULT, 0, &golfBallPutt);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallPutt", golfBallPutt));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-hit.wav", FMOD_DEFAULT, 0, &golfBallHit);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallHit", golfBallHit));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-jump.wav", FMOD_DEFAULT, 0, &golfBallJump);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallJump", golfBallJump));
+	system->createSound("..\\NuttyPutters\\audio\\golf-ball-wood-hit.wav", FMOD_DEFAULT, 0, &golfBallWoodHit);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
+
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < 37; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
 	}
+
 
 	// Initialise unique meshes
 	// Player meshes
@@ -152,8 +165,6 @@ GLFWwindow* windowMgr::Init()
 	// ############################ TEXTURES ############################
 
 	// START SCENE TEXTURES 
-	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
-	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
 	Texture* startGameBtnSelected = new Texture("..\\NuttyPutters\\Mainmenu\\startSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("startGameBtnSelected", startGameBtnSelected));
 	Texture* startGameBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\startUnselected.png");
@@ -178,9 +189,6 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("exitBtnSelected", exitBtnSelected));
 	Texture* exitBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\exitUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("exitBtnUnselected", exitBtnUnselected));
-	// LOAD GAME SCENE TEXTURES
-	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\highscore\\optbackground.png");
-	textures.insert(std::pair<std::string, Texture*>("loadGameBackground", loadGameBackground));
 	// Read saves file for file names of saves images
 	ifstream saves("saves.csv");
 	while (!saves.eof())
@@ -244,10 +252,14 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("windowBtnUnselected", windowBtnUnselected));
 	Texture* windowBtnSelected = new Texture("..\\NuttyPutters\\highscore\\wiw(1).png");
 	textures.insert(std::pair<std::string, Texture*>("windowBtnSelected", windowBtnSelected));
-	Texture* fullscreenBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\full.png");
+	Texture* fullscreenBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\doesitmatter.png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnUnselected", fullscreenBtnUnselected));
-	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
+	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\highscore\\no.png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnSelected", fullscreenBtnSelected));
+	Texture* smallwindowBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\full.png");
+	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnUnselected", smallwindowBtnUnselected));
+	Texture* smallwindowBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
+	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnSelected", smallwindowBtnSelected));;
 	// GAME SCENE TEXTURES
 	// Skybox textures
 	skyboxTexture = new Texture(posXfileName, negXfileName, posYfileName, negYfileName, posZfileName, negZfileName);
@@ -328,6 +340,199 @@ GLFWwindow* windowMgr::Init()
 	Texture* completeLbl = new Texture("..\\NuttyPutters\\complete.png");
 	textures.insert(std::pair<std::string, Texture*>("completeLbl", completeLbl));
 
+	// LOAD KEYBOARD KEYS
+	buttonsKeyboardOne[0] = new Texture("..\\NuttyPutters\\controller\\comma.png");
+	buttonsKeyboardOne[1] = new Texture("..\\NuttyPutters\\controller\\minus.png");
+	buttonsKeyboardOne[2] = new Texture("..\\NuttyPutters\\controller\\fullstop.png");
+	buttonsKeyboardOne[3] = new Texture("..\\NuttyPutters\\controller\\forwardslash.png");
+	buttonsKeyboardOne[4] = new Texture("..\\NuttyPutters\\nzero.png");
+	buttonsKeyboardOne[5] = new Texture("..\\NuttyPutters\\none.png");
+	buttonsKeyboardOne[6] = new Texture("..\\NuttyPutters\\ntwo.png");
+	buttonsKeyboardOne[7] = new Texture("..\\NuttyPutters\\nthree.png");
+	buttonsKeyboardOne[8] = new Texture("..\\NuttyPutters\\nfour.png");
+	buttonsKeyboardOne[9] = new Texture("..\\NuttyPutters\\nfive.png");
+	buttonsKeyboardOne[10] = new Texture("..\\NuttyPutters\\nsix.png");
+	buttonsKeyboardOne[11] = new Texture("..\\NuttyPutters\\nseven.png");
+	buttonsKeyboardOne[12] = new Texture("..\\NuttyPutters\\neight.png");
+	buttonsKeyboardOne[13] = new Texture("..\\NuttyPutters\\nnine.png");
+	buttonsKeyboardOne[14] = new Texture("..\\NuttyPutters\\controller\\semicolon.png");
+	buttonsKeyboardOne[15] = new Texture("..\\NuttyPutters\\controller\\equals.png");
+	buttonsKeyboardOne[16] = new Texture("..\\NuttyPutters\\controller\\A.png");
+	buttonsKeyboardOne[17] = new Texture("..\\NuttyPutters\\controller\\B.png");
+	buttonsKeyboardOne[18] = new Texture("..\\NuttyPutters\\controller\\C.png");
+	buttonsKeyboardOne[19] = new Texture("..\\NuttyPutters\\controller\\D.png");
+	buttonsKeyboardOne[20] = new Texture("..\\NuttyPutters\\controller\\E.png");
+	buttonsKeyboardOne[21] = new Texture("..\\NuttyPutters\\controller\\F.png");
+	buttonsKeyboardOne[22] = new Texture("..\\NuttyPutters\\controller\\G.png");
+	buttonsKeyboardOne[23] = new Texture("..\\NuttyPutters\\controller\\H.png");
+	buttonsKeyboardOne[24] = new Texture("..\\NuttyPutters\\controller\\I.png");
+	buttonsKeyboardOne[25] = new Texture("..\\NuttyPutters\\controller\\J.png");
+	buttonsKeyboardOne[26] = new Texture("..\\NuttyPutters\\controller\\K.png");
+	buttonsKeyboardOne[27] = new Texture("..\\NuttyPutters\\controller\\L.png");
+	buttonsKeyboardOne[28] = new Texture("..\\NuttyPutters\\controller\\M.png");
+	buttonsKeyboardOne[29] = new Texture("..\\NuttyPutters\\controller\\N.png");
+	buttonsKeyboardOne[30] = new Texture("..\\NuttyPutters\\controller\\O.png");
+	buttonsKeyboardOne[31] = new Texture("..\\NuttyPutters\\controller\\P.png");
+	buttonsKeyboardOne[32] = new Texture("..\\NuttyPutters\\controller\\Q.png");
+	buttonsKeyboardOne[33] = new Texture("..\\NuttyPutters\\controller\\R.png");
+	buttonsKeyboardOne[34] = new Texture("..\\NuttyPutters\\controller\\S.png");
+	buttonsKeyboardOne[35] = new Texture("..\\NuttyPutters\\controller\\T.png");
+	buttonsKeyboardOne[36] = new Texture("..\\NuttyPutters\\controller\\U.png");
+	buttonsKeyboardOne[37] = new Texture("..\\NuttyPutters\\controller\\V.png");
+	buttonsKeyboardOne[38] = new Texture("..\\NuttyPutters\\controller\\W.png");
+	buttonsKeyboardOne[39] = new Texture("..\\NuttyPutters\\controller\\X.png");
+	buttonsKeyboardOne[40] = new Texture("..\\NuttyPutters\\controller\\Y.png");
+	buttonsKeyboardOne[41] = new Texture("..\\NuttyPutters\\controller\\Z.png");
+	buttonsKeyboardOne[42] = new Texture("..\\NuttyPutters\\controller\\leftbracket.png");
+	buttonsKeyboardOne[43] = new Texture("..\\NuttyPutters\\controller\\backslash.png");
+	buttonsKeyboardOne[44] = new Texture("..\\NuttyPutters\\controller\\rightbracket.png");
+	buttonsKeyboardOne[45] = new Texture("..\\NuttyPutters\\controller\\esc.png");
+	buttonsKeyboardOne[46] = new Texture("..\\NuttyPutters\\controller\\enter.png");
+	buttonsKeyboardOne[47] = new Texture("..\\NuttyPutters\\controller\\tab.png");
+	buttonsKeyboardOne[48] = new Texture("..\\NuttyPutters\\controller\\backspace.png");
+	buttonsKeyboardOne[49] = new Texture("..\\NuttyPutters\\controller\\insert.png");
+	buttonsKeyboardOne[50] = new Texture("..\\NuttyPutters\\controller\\delete.png");
+	buttonsKeyboardOne[51] = new Texture("..\\NuttyPutters\\controller\\rightButton.png");
+	buttonsKeyboardOne[52] = new Texture("..\\NuttyPutters\\controller\\leftButton.png");
+	buttonsKeyboardOne[53] = new Texture("..\\NuttyPutters\\controller\\downButton.png");
+	buttonsKeyboardOne[54] = new Texture("..\\NuttyPutters\\controller\\upButton.png");
+	buttonsKeyboardOne[55] = new Texture("..\\NuttyPutters\\controller\\pageup.png");
+	buttonsKeyboardOne[56] = new Texture("..\\NuttyPutters\\controller\\pagedown.png");
+	buttonsKeyboardOne[57] = new Texture("..\\NuttyPutters\\controller\\home.png");
+	buttonsKeyboardOne[58] = new Texture("..\\NuttyPutters\\controller\\end.png");
+	buttonsKeyboardOne[59] = new Texture("..\\NuttyPutters\\controller\\caps.png");
+	buttonsKeyboardOne[60] = new Texture("..\\NuttyPutters\\controller\\scroll.png");
+	buttonsKeyboardOne[61] = new Texture("..\\NuttyPutters\\controller\\numlock.png");
+	buttonsKeyboardOne[62] = new Texture("..\\NuttyPutters\\controller\\printscreen.png");
+	buttonsKeyboardOne[63] = new Texture("..\\NuttyPutters\\controller\\pause.png");
+	buttonsKeyboardOne[64] = new Texture("..\\NuttyPutters\\controller\\f1.png");
+	buttonsKeyboardOne[65] = new Texture("..\\NuttyPutters\\controller\\f2.png");
+	buttonsKeyboardOne[66] = new Texture("..\\NuttyPutters\\controller\\f3.png");
+	buttonsKeyboardOne[67] = new Texture("..\\NuttyPutters\\controller\\f4.png");
+	buttonsKeyboardOne[68] = new Texture("..\\NuttyPutters\\controller\\f5.png");
+	buttonsKeyboardOne[69] = new Texture("..\\NuttyPutters\\controller\\f6.png");
+	buttonsKeyboardOne[70] = new Texture("..\\NuttyPutters\\controller\\f7.png");
+	buttonsKeyboardOne[71] = new Texture("..\\NuttyPutters\\controller\\f8.png");
+	buttonsKeyboardOne[72] = new Texture("..\\NuttyPutters\\controller\\f9.png");
+	buttonsKeyboardOne[73] = new Texture("..\\NuttyPutters\\controller\\f10.png");
+	buttonsKeyboardOne[74] = new Texture("..\\NuttyPutters\\controller\\f11.png");
+	buttonsKeyboardOne[75] = new Texture("..\\NuttyPutters\\controller\\f12.png");
+	buttonsKeyboardOne[76] = new Texture("..\\NuttyPutters\\controller\\padzero.png");
+	buttonsKeyboardOne[77] = new Texture("..\\NuttyPutters\\controller\\padone.png");
+	buttonsKeyboardOne[78] = new Texture("..\\NuttyPutters\\controller\\padtwo.png");
+	buttonsKeyboardOne[79] = new Texture("..\\NuttyPutters\\controller\\padthree.png");
+	buttonsKeyboardOne[80] = new Texture("..\\NuttyPutters\\controller\\padfour.png");
+	buttonsKeyboardOne[81] = new Texture("..\\NuttyPutters\\controller\\padfive.png");
+	buttonsKeyboardOne[82] = new Texture("..\\NuttyPutters\\controller\\padsix.png");
+	buttonsKeyboardOne[83] = new Texture("..\\NuttyPutters\\controller\\padseven.png");
+	buttonsKeyboardOne[84] = new Texture("..\\NuttyPutters\\controller\\padeight.png");
+	buttonsKeyboardOne[85] = new Texture("..\\NuttyPutters\\controller\\padnine.png");
+	buttonsKeyboardOne[86] = new Texture("..\\NuttyPutters\\controller\\decimal.png");
+	buttonsKeyboardOne[87] = new Texture("..\\NuttyPutters\\controller\\divide.png");
+	buttonsKeyboardOne[88] = new Texture("..\\NuttyPutters\\controller\\multiply.png");
+	buttonsKeyboardOne[89] = new Texture("..\\NuttyPutters\\controller\\subtract.png");
+	buttonsKeyboardOne[90] = new Texture("..\\NuttyPutters\\controller\\add.png");
+	buttonsKeyboardOne[91] = new Texture("..\\NuttyPutters\\controller\\enter.png");
+	buttonsKeyboardOne[92] = new Texture("..\\NuttyPutters\\controller\\equals.png");
+	buttonsKeyboardOne[93] = new Texture("..\\NuttyPutters\\controller\\leftshift.png");
+	buttonsKeyboardOne[94] = new Texture("..\\NuttyPutters\\controller\\leftcontrol.png");
+	buttonsKeyboardOne[95] = new Texture("..\\NuttyPutters\\controller\\leftalt.png");
+	buttonsKeyboardOne[96] = new Texture("..\\NuttyPutters\\controller\\rightshift.png");
+	buttonsKeyboardOne[97] = new Texture("..\\NuttyPutters\\controller\\rightcontrol.png");
+	buttonsKeyboardOne[98] = new Texture("..\\NuttyPutters\\controller\\rightalt.png");
+
+	//// LOAD GAME XBOX BUTTON TEXTURES
+	buttonsXB[0] = new Texture("..\\NuttyPutters\\Controller\\aButton.png");
+	buttonsXB[1] = new Texture("..\\NuttyPutters\\Controller\\bButton.png");
+	buttonsXB[2] = new Texture("..\\NuttyPutters\\Controller\\xButton.png");
+	buttonsXB[3] = new Texture("..\\NuttyPutters\\Controller\\yButton.png");
+	buttonsXB[4] = new Texture("..\\NuttyPutters\\Controller\\lb.png");
+	buttonsXB[5] = new Texture("..\\NuttyPutters\\Controller\\rb.png");
+	buttonsXB[6] = new Texture("..\\NuttyPutters\\Controller\\xbback.png");
+	buttonsXB[7] = new Texture("..\\NuttyPutters\\Controller\\xbstart.png");
+	buttonsXB[8] = new Texture("..\\NuttyPutters\\Controller\\psstickleft.png");
+	buttonsXB[9] = new Texture("..\\NuttyPutters\\Controller\\psstickright.png");
+	buttonsXB[10] = new Texture("..\\NuttyPutters\\Controller\\psup.png");
+	buttonsXB[11] = new Texture("..\\NuttyPutters\\Controller\\psleft.png");
+	buttonsXB[12] = new Texture("..\\NuttyPutters\\Controller\\psdown.png");
+	buttonsXB[13] = new Texture("..\\NuttyPutters\\Controller\\psright.png");
+	//// LOAD GAME PLAYSTATION BUTTON TEXTURES
+	buttonsPS[0] = new Texture("..\\NuttyPutters\\Controller\\PSSQUARE.png");
+	buttonsPS[1] = new Texture("..\\NuttyPutters\\Controller\\psx.png");
+	buttonsPS[2] = new Texture("..\\NuttyPutters\\Controller\\pscircle.png");
+	buttonsPS[3] = new Texture("..\\NuttyPutters\\Controller\\pstriangle.png");
+	buttonsPS[4] = new Texture("..\\NuttyPutters\\Controller\\pslone.png");
+	buttonsPS[5] = new Texture("..\\NuttyPutters\\Controller\\psrone.png");
+	buttonsPS[6] = new Texture("..\\NuttyPutters\\Controller\\psltwo.png");
+	buttonsPS[7] = new Texture("..\\NuttyPutters\\Controller\\psrtwo.png");
+	buttonsPS[8] = new Texture("..\\NuttyPutters\\Controller\\psselect.png");
+	buttonsPS[9] = new Texture("..\\NuttyPutters\\Controller\\psstart.png");
+	buttonsPS[10] = new Texture("..\\NuttyPutters\\Controller\\psstickleft.png");
+	buttonsPS[11] = new Texture("..\\NuttyPutters\\Controller\\psstickright.png");
+	buttonsPS[12] = new Texture("..\\NuttyPutters\\Controller\\psbutton.png");
+	buttonsPS[13] = new Texture("..\\NuttyPutters\\Controller\\pspad.png");
+	buttonsPS[14] = new Texture("..\\NuttyPutters\\Controller\\psup.png");
+	buttonsPS[15] = new Texture("..\\NuttyPutters\\Controller\\psleft.png");
+	buttonsPS[16] = new Texture("..\\NuttyPutters\\Controller\\psdown.png");
+	buttonsPS[17] = new Texture("..\\NuttyPutters\\Controller\\psright.png");
+
+	// Setup the functions/buttons for ps4 controller - the function being the index and button being the equal value
+	// FUNCTION/BUTTONS
+	//windowMgr::getInstance()->gameFunctions[0] = 2;
+	//windowMgr::getInstance()->gameFunctions[1] = 3;
+	//windowMgr::getInstance()->gameFunctions[2] = 0;
+	//windowMgr::getInstance()->gameFunctions[3] = 14;
+	//windowMgr::getInstance()->gameFunctions[4] = 15;
+	//windowMgr::getInstance()->gameFunctions[5] = 16;
+	//windowMgr::getInstance()->gameFunctions[6] = 17;
+	//windowMgr::getInstance()->gameFunctions[7] = 1;
+	//windowMgr::getInstance()->gameFunctions[8] = 4;
+	//windowMgr::getInstance()->gameFunctions[9] = 5;
+
+	// xbox
+	// FUNCTION/BUTTONS
+	windowMgr::getInstance()->gameFunctions[0] = 2;
+	windowMgr::getInstance()->gameFunctions[1] = 3;
+	windowMgr::getInstance()->gameFunctions[2] = 7;
+	windowMgr::getInstance()->gameFunctions[3] = 10;
+	windowMgr::getInstance()->gameFunctions[4] = 11;
+	windowMgr::getInstance()->gameFunctions[5] = 12;
+	windowMgr::getInstance()->gameFunctions[6] = 13;
+	windowMgr::getInstance()->gameFunctions[7] = 1;
+	windowMgr::getInstance()->gameFunctions[8] = 4;
+	windowMgr::getInstance()->gameFunctions[9] = 5;
+
+	// LOAD HIGHSCORE SCENE TEXTURES
+	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\grass.png");
+	textures.insert(std::pair<std::string, Texture*>("loadGameBackground", loadGameBackground));
+	Texture* actionLbl = new Texture("..\\NuttyPutters\\Controller\\action.png");
+	textures.insert(std::pair<std::string, Texture*>("actionLbl", actionLbl));
+	Texture* buttonLbl = new Texture("..\\NuttyPutters\\Controller\\buttonLbl.png");
+	textures.insert(std::pair<std::string, Texture*>("buttonLbl", buttonLbl));
+	Texture* selectfireLbl = new Texture("..\\NuttyPutters\\Controller\\selectfire.png");
+	textures.insert(std::pair<std::string, Texture*>("selectfireLbl", selectfireLbl));
+	Texture* backresetLbl = new Texture("..\\NuttyPutters\\Controller\\backreset.png");
+	textures.insert(std::pair<std::string, Texture*>("backresetLbl", backresetLbl));
+	Texture* pauseLbl = new Texture("..\\NuttyPutters\\Controller\\pause.png");
+	textures.insert(std::pair<std::string, Texture*>("pauseLbl", pauseLbl));
+	Texture* questionMarkLbl = new Texture("..\\NuttyPutters\\questionmarks.png");
+	textures.insert(std::pair<std::string, Texture*>("questionMarkLbl", questionMarkLbl));
+	Texture* upLbl = new Texture("..\\NuttyPutters\\Controller\\up.png");
+	textures.insert(std::pair<std::string, Texture*>("upLbl", upLbl));
+	Texture* leftLbl = new Texture("..\\NuttyPutters\\Controller\\left.png");
+	textures.insert(std::pair<std::string, Texture*>("leftLbl", leftLbl));
+	Texture* downLbl = new Texture("..\\NuttyPutters\\Controller\\down.png");
+	textures.insert(std::pair<std::string, Texture*>("downLbl", downLbl));
+	Texture* rightLbl = new Texture("..\\NuttyPutters\\Controller\\right.png");
+	textures.insert(std::pair<std::string, Texture*>("rightLbl", rightLbl));
+	Texture* jumpLbl = new Texture("..\\NuttyPutters\\Controller\\jump.png");
+	textures.insert(std::pair<std::string, Texture*>("jumpLbl", jumpLbl));
+	Texture* zoomInLbl = new Texture("..\\NuttyPutters\\Controller\\zoomin.png");
+	textures.insert(std::pair<std::string, Texture*>("zoomInLbl", zoomInLbl));
+	Texture* zoomOutLbl = new Texture("..\\NuttyPutters\\Controller\\zoomout.png");
+	textures.insert(std::pair<std::string, Texture*>("zoomOutLbl", zoomOutLbl));
+	Texture* keyLbl = new Texture("..\\NuttyPutters\\Controller\\key.png");
+	textures.insert(std::pair<std::string, Texture*>("keyLbl", keyLbl));
 
 	//Tiles stuff initialized here
 	for (int i = 0; i < 15; ++i)
@@ -400,8 +605,6 @@ void windowMgr::LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* w
 
 	Texture* bottomBridge = new Texture("..\\NuttyPutters\\bridgeBottom.jpg");
 	tileTexs.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
-
-
 }
 
 
@@ -491,4 +694,40 @@ void windowMgr::CleanUp()
 	glfwDestroyWindow(win); // Runs when commented out - why?
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
+}
+
+void windowMgr::RenderSplashScreen(GLFWwindow* win)
+{
+	glfwMakeContextCurrent(win);
+	cout << "Render splash screen" << endl;
+
+	windowMgr::getInstance()->meshSplash->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->meshSplash->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->meshSplash->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
+
+	// If camera type is target camera - used for HUD elements - then
+	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
+
+	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
+	// Set depth range to near to allow for HUD elements to be rendered and drawn
+	glDepthRange(0, 0.01);
+
+	windowMgr::getInstance()->meshSplash->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(texShaderTransform, hudVP);
+	windowMgr::getInstance()->meshSplash->Draw();
+
+	// Reset the depth range to allow for objects at a distance to be rendered
+	glDepthRange(0.01, 1.0);
+	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
+
+	// Render any background stuff if required here
+
+	// Fully reset depth range for next frame - REQUIRED
+	glDepthRange(0, 1.0);
+
+	// Bind texture shader
+	windowMgr::getInstance()->textureShader->Bind();
+
+	glfwSwapBuffers(win);
+	glfwPollEvents();
 }

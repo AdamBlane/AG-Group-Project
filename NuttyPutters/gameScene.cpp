@@ -442,6 +442,7 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
+
 	// Loop around players and their inputs for both keyboard and controller
 	int thisPlayer = 0;
 
@@ -970,7 +971,6 @@ void gameScene::Update(GLFWwindow* window)
 		}
 		windowMgr::getInstance()->chaseCams[1]->update(0.00001);
 	}
-
 
 	// Update hud target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
