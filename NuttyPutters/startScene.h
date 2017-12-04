@@ -18,12 +18,10 @@ class startScene
 {
 public:
 	// Default constructor
-	startScene();
+	startScene() {}
 	// Deconstructor
-	~startScene();
-
-
-
+	~startScene() {}
+  
 	// Used to lock framerate
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
@@ -34,14 +32,21 @@ public:
 
 	int previousMenuItem, currentMenuItem;
 
-	// Only need one transform (can be reused for each mesh)
-	Transform startSceneTransform;
+	// Used for navigating through menu options
+	// ID number determines which button should be highlighted
+	// 1 - Play
+	// 2 - Load
+	// 3 - Highscore
+	// 4 - Options
+	// 5 - Internet
+	// 6 - Exit
+	int button_manager = 1;
+	// Enforce time delay before select may be pressed upon loading this scene
+	int selectCooldown, selectCooldownMax = 250;
+	// Flags for button presses; logic occurs on release after being pressed
+	bool upPressed, downPressed, selectPressed;
 
-	// Background Mesh   0
-	// StartGameBtn      1
-	// LoadGameBtn		 2
-
-	// Draw stuff
+	// Main logic loop for this scene
 	void Loop(GLFWwindow* win);
 	// Input 
 	void Input(GLFWwindow* win);

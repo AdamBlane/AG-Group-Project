@@ -44,6 +44,7 @@ public:
 	// Input - prevent input code from reocurring every frame button is held
 	bool upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 	bool mouseLpressed;
+	// Enforce delay perdio before enter action may be undertaken on press/release
 	int enterCooldown, enterCooldownMax = 300;
 	// Width and height of image meshes
 	float w = 1.8f, h = 1.0f;	

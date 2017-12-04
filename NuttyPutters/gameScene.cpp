@@ -3,7 +3,7 @@
 #include "windowMgr.h" // to access singleton
 #include "courseGenV2.h"
 #include "UI.h"
-
+#include <thread>
 
 
 // Default constructor
@@ -47,6 +47,9 @@ gameScene::~gameScene()
 // Setup scene; seed is an optional param passed in by loadGameScene
 void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int levelCount, string seed)
 {
+	// MONDAY DEMO 
+	continuePressed = true;
+
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -58,7 +61,10 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Scene background
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 
-
+	// DEMO ON MONDAY PRINT STATEMENTS
+	cout << "\nGAME CONTROLS:" << endl;
+	cout << "Pause - P" << endl;
+	cout << "Reset Player 1 position - R" << endl;
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
@@ -67,8 +73,10 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	courseSize = courseLength;
 
 	// Record how many levels to load
-	//numLevels = levelCount;
-	numLevels = 5;
+	numLevels = levelCount;
+	numLevels *= 2;
+	//numLevels = 5;
+	// TODO - above will only go to 3 levels - FIX
 
 	// Save player count
 	numPlayers = playerCount;
@@ -107,6 +115,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2  / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 		else
 			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+		// Set this player's id
+		player.id = p + 1;
 		// Add to players list
 		players.push_back(player);
 	}
@@ -126,14 +136,19 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[0]);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[1]);
 
-
+	
+	// Set pickup crate properties
+	SetupPickupCrates();
+	
+	// Set dt based on player count
+	dt = (playerCount * 0.01) - 0.002;
 
 	// Start game logic mgr
 	// Pass in end hole position for two player mode
-	gameLogicMgr.Setup(numPlayers, masterAlgTiles[0].back()->thisCoords);
+	gameLogicMgr.Setup(numPlayers, courseSize);
+
+
 	
-
-
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -384,6 +399,27 @@ void gameScene::SetupTilesToBeDrawn()
 	} // end for every list in master list
 }
 
+// Sets up pickup crates for a level
+void gameScene::SetupPickupCrates()
+{
+	// Clear from any previous level
+	pickupPositionIndices.clear();
+	// Setup the 5 crates
+	// TODO - scale with difficulty
+	for (int i = 0; i < (int)windowMgr::getInstance()->pickupCrateMeshes.size(); i++)
+	{
+		// Set texture of each crate
+		// TODO - move this to init so we only do it once
+		windowMgr::getInstance()->pickupCrateMeshes[i]->SetTexture(windowMgr::getInstance()->pickupCrateTexture);
+		// Set position via pickup transforms list
+		// Currently spaced 2 tiles apart, from start tile (index pos of 0)
+		windowMgr::getInstance()->pickupCrateTransforms[i].setPos(vec3(masterAlgTiles[currentLevel].at(i * 2)->thisCoords.x, masterAlgTiles[currentLevel].at(i * 2)->thisCoords.y + 3.0f, masterAlgTiles[currentLevel].at(i * 2)->thisCoords.z));
+
+		// Store tile position of algTiles for this level (to be matched with player.currentTile in collisions)
+		pickupPositionIndices.push_back(i * 2);
+	}
+}
+
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
@@ -409,6 +445,27 @@ void gameScene::Input(GLFWwindow* window)
 
 	// Loop around players and their inputs for both keyboard and controller
 	int thisPlayer = 0;
+
+	// REST POSITION FUNCTION
+	if (glfwGetKey(window, GLFW_KEY_R))
+	{
+		resetPressed = true;
+	}
+	if (!glfwGetKey(window, GLFW_KEY_R))
+	{
+		if (resetPressed)
+		{
+			cout << "Player 1 position reset" << endl;
+			// Move player 1 to center of tile
+			players[0].transform.getPos() = (vec3(masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.x, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.y + 0.5 + players[0].radius, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.z));
+			// Consider setting velocity to 0 
+
+			// Flip flag
+			resetPressed = false;
+		}
+	}
+
+
 	for (auto &p : players)
 	{
 		// Jump
@@ -416,6 +473,7 @@ void gameScene::Input(GLFWwindow* window)
 		{
 			p.jumpPressed = true;
 		}
+
 		if (!glfwGetKey(window, p.jumpButton))
 		{
 			if (p.jumpPressed)
@@ -442,8 +500,14 @@ void gameScene::Input(GLFWwindow* window)
 			keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
 			keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 
-			cout << "game paused" << endl;
+			// MONDAY DEMO PRINT COMMANDS
+			cout << "\nPAUSE CONTROLS:" << endl;
+			cout << "Save level - S\n Exit game - B\n Main menu - C\n Unpause - U" << endl;
+
+
+			// Flip paused bool
 			bool paused = true;
+			// Pause input...
 			while (paused)
 			{
 				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -529,7 +593,9 @@ void gameScene::Input(GLFWwindow* window)
 				}
 
 			} // end while paused
-			cout << "Unpaused" << endl;
+			
+			cout << "\nUnpaused" << endl;
+			
 		} // end pause
 
 		// If button one is pressed change to free camera
@@ -666,7 +732,7 @@ void gameScene::Input(GLFWwindow* window)
 				if (!p.isMoving)
 				{
 					// Increment power counter as long as fire is held
-					p.power += 0.2f;
+					p.power += 0.4;
 
 					// Update the power bar based on the the fireCounter value 
 					//powerBarTrans.getPos().x -= (fireCounter/5.0f) * powerBarMesh->getGeomPos().x;
@@ -712,7 +778,7 @@ void gameScene::Input(GLFWwindow* window)
 			if (p.firePressed)
 			{
 				// Play SFX
-				if (p.power < 10.0f)
+				if (p.power < 20.0f)
 				{
 					windowMgr::getInstance()->PlayThisSound("golfBallPutt");
 				}
@@ -768,16 +834,27 @@ void gameScene::SpatialPartitioningUpdate()
 // Acts on whether to load the next level or not
 void gameScene::CheckLoadNextLevel()
 {
+	// For each player
 	for (int i = 0; i < players.size(); ++i)
 	{
-		// Was player last on end tile for this level
-		//if (masterAlgTiles[currentLevel].at(player.currentTile)->id == 9)
 		{
 			// Check if player is falling through end hole...
 			if (players[i].ballInHole && players[i].transform.getPos().y < -450.0f) // Abritrary time period before tp
 			{	
+				// If finished last level
+				if (currentLevel == numLevels - 1 && !changedLevel)
+				{
+					// TODO - quit, pause, ask for next level etc
+
+					// Stop camera from following player
+					players[i].camFollow = false;
+					// Update the total time count for this player 
+					gameLogicMgr.SetEndTime(players[i]);
+					// Print game score for this player
+					gameLogicMgr.PrintPlayerScore(players[i]);
+				}
 				// If there is another level to go...
-				if (currentLevel < numLevels - 1)
+				else if (currentLevel < numLevels - 1)
 				{
 					// Move onto next level; draws behind player while falling
 					// Only do this once (will trigger multiple frames)
@@ -789,8 +866,8 @@ void gameScene::CheckLoadNextLevel()
 							// If this is players[0] it needs to check players[1], and visa versa
 							// Need a key to make a 0 always 1, and a 1 always 0
 							// i = (i * -1) + 1 is key
-							// i0 -> (0 * -1) + 1 = 1
-							// i1 -> (1 * -1) + 1 = 0 
+							// i=0 -> (0 * -1) + 1 = 1
+							// i=1 -> (1 * -1) + 1 = 0 
 							// If other player isn't through end hole, tp him
 							if (!players[(i  * -1) + 1].ballInHole)
 							{
@@ -798,27 +875,18 @@ void gameScene::CheckLoadNextLevel()
 								players[(i  * -1) + 1].transform.setPos(vec3(2.0f, 1.0f, 0.0f));
 							}
 						}
-						
-
+					
 						// Increase level index
 						currentLevel++;
 						// Prevent further increments
 						changedLevel = true;
+						// Respawn pickup crates
+						SetupPickupCrates();
 					}
 				}
 				
-				// If finished last level
-				if (currentLevel == numLevels - 1)
-				{
-					// TODO - quit, pause, ask for next level etc
-					// currently just replays the last level played
 
-					// Stop camera from following player
-					players[i].camFollow = false;
-					// Print player scores
-					cout << "P" << i << " : " << players[i].strokeCounter << endl;
-				}
-			}
+			} // end check if player is falling through hole
 		}
 
 		// Otherwise check if player is falling from top of skybox onto next level
@@ -838,10 +906,16 @@ void gameScene::CheckLoadNextLevel()
 
 }
 
-
 // Update player positions, spatitial partitioning, check for level changeover
 void gameScene::Update(GLFWwindow* window)
 {
+	// Rotate pickup crates
+	for (auto &t : windowMgr::getInstance()->pickupCrateTransforms)
+	{
+		float yRot = t.getRot().y + 1.0f * dt;
+		t.setRot(vec3(0.0f, yRot, 0.0f));
+	}
+
 	// Check whether to load next level, pass in player
 	CheckLoadNextLevel();
 	
@@ -849,6 +923,7 @@ void gameScene::Update(GLFWwindow* window)
 	// Update spatial partitioning
 	SpatialPartitioningUpdate();
 	
+
 	// Update game clock
 	gameLogicMgr.Update();
 	
@@ -911,11 +986,11 @@ void gameScene::Update(GLFWwindow* window)
 
 	accumulator += frameTime;
 	// Calculate fps
-	double fps = 1.0 / frameTime;
-	if (accumulator > 1.0f)
+	//double fps = 1.0 / frameTime;
+	//if (accumulator > dt)
 		//cout << "FPS:" << fps << endl;
 
-
+	
 	
 	// Update each player
 	for (auto &p : players)
@@ -926,12 +1001,15 @@ void gameScene::Update(GLFWwindow* window)
 			// Ensure correct slowdown/stop margin
 			physicsSystem.epsilon = 0.5f;
 			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 1.0f); // 1 is floor gap
+			physicsSystem.ApplyGravity(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 0.5 + p.radius); // 1 is floor gap
 																							// If time to perform another physics step																						 // Perform physics step	
 			if (accumulator >= dt)
 			{
+				
+				physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 0.5 + p.radius);
+
 				// Update position
-				physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 1);
+				//physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 1);
 				accumulator -= dt;
 			}
 		}
@@ -947,45 +1025,89 @@ void gameScene::Update(GLFWwindow* window)
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-
 	// Check collisions for the tile each player is on only
+	vector<thread> threads;
 	for (auto &p : players)
 	{
-		masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
+		if (p.isMoving)
+			threads.push_back(thread(&gameScene::ThreadCol, this, std::ref(p)));
 	}
+	for (auto &t : threads)
+		t.join();
+	for (auto &p : players)
+	{
+		//masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
+		
+		// 2 player only collisions (crates, other players)
+		if (numPlayers == 2)
+		{
+			// Only check for collisions with pickup crates when player shares a tile with one		
+			for (int i = 0; i < pickupPositionIndices.size(); i++)
+			{
+				// Check if player.currentTile is equal to any found in pickupPositionIndices
+				if (p.currentTile == pickupPositionIndices[i])
+				{
+					// Look for pickup crate collision
+					// if distance between pickup crate position and player position is < 1
+					dvec3 distance = abs((windowMgr::getInstance()->pickupCrateTransforms[pickupPositionIndices[i] / 2].getPos() - p.transform.getPos()));
+					double magnitude = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
+					if (magnitude < 1.0)
+					{
+						// Pickup crate, don't render anymore; remove ppi from list
+						if (i != pickupPositionIndices.size() - 1)
+						{
+							pickupPositionIndices[i] = std::move(pickupPositionIndices.back());
+
+						}
+						pickupPositionIndices.pop_back();
+
+						// Give player a powerup
+						gameLogicMgr.RandomPowerup(p);
+					} // end if players intersect crates
+				} // end if player is on same tile as pickup crate
+			} // end for each pickup
+
+			 // If players are on the same tile, check for collisions with each other
+			if (players[p.id - 1].currentTile == players[(p.id - 1) *-1 + 1].currentTile)
+			{
+				// Find distance between players
+				dvec3 distance = abs(players[p.id - 1].transform.getPos() - players[(p.id - 1) *-1 + 1].transform.getPos());
+				double magnitude = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
+				// If less than two radii apart we have a collision
+				if (magnitude < players[p.id - 1].radius + players[(p.id - 1) *-1 + 1].radius)
+				{
+					// First normalize the distance vector; the collision normal
+					dvec3 collisionNormal = players[p.id - 1].transform.getPos() - players[(p.id - 1) *-1 + 1].transform.getPos();
+					collisionNormal = normalize(collisionNormal);
+					// Find the length of the component of each movement vector on collision normal
+					float a1 = dot(players[p.id - 1].velocity, collisionNormal);
+					float a2 = dot(players[(p.id - 1) *-1 + 1].velocity, collisionNormal);
+					// Using optimized version according to https://www.gamasutra.com/view/feature/131424/pool_hall_lessons_fast_accurate_.php?page=3
+					float optimizedP = (2.0 * (a1 - a2)) / (players[p.id - 1].mass + players[(p.id - 1) *-1 + 1].mass);
+					// Calculate new veloctiy for each player
+					vec3 v1New = players[p.id - 1].velocity - optimizedP * players[(p.id - 1) *-1 + 1].mass * collisionNormal;
+					vec3 v2New = players[(p.id - 1) *-1 + 1].velocity + optimizedP * players[p.id - 1].mass * collisionNormal;
+					// Set players velocity to 0, then assign new velocities
+					players[p.id - 1].velocity = v1New;
+					players[(p.id - 1) *-1 + 1].velocity = v2New;
+					// Both players are moving
+					players[p.id - 1].isMoving = players[(p.id - 1) *-1 + 1].isMoving = true;
+					break;
+				}
+
+			}
+		
+		} // end 2 player collisions code
+				
+	} // end for each player collisions code
 
 
 	// TODO Determine if this can be done more cheapply, and less hardcoded
 	
 	if (numPlayers == 2)
-	{   // If players are on the same tile, check for collisions with each other
-		if (players[0].currentTile == players[1].currentTile)
-		{
-			// Find distance between players
-			vec3 distance = abs(players[0].transform.getPos() - players[1].transform.getPos());
-			float magnitude = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
-			// If less than two radii apart we have a collision
-			if (magnitude < players[0].radius * 2)
-			{
-				// First normalize the distance vector; the collision normal
-				vec3 collisionNormal = players[0].transform.getPos() - players[1].transform.getPos();
-				collisionNormal = normalize(collisionNormal);
-				// Find the length of the component of each movement vector on collision normal
-				float a1 = dot(players[0].velocity, collisionNormal);
-				float a2 = dot(players[1].velocity, collisionNormal);
-				// Using optimized version according to https://www.gamasutra.com/view/feature/131424/pool_hall_lessons_fast_accurate_.php?page=3
-				float optimizedP = (2.0 * (a1 - a2)) / (players[0].mass + players[1].mass);
-				// Calculate new veloctiy for each player
-				vec3 v1New = players[0].velocity - optimizedP * players[1].mass * collisionNormal;
-				vec3 v2New = players[1].velocity + optimizedP * players[0].mass * collisionNormal;
-				// Set players velocity to 0, then assign new velocities
-				players[0].velocity = v1New;
-				players[1].velocity = v2New;
-				// Both players are moving
-				players[0].isMoving = players[1].isMoving = true;
-			}
+	{  
+		
 
-		}
 
 	}
 
@@ -1068,13 +1190,6 @@ void gameScene::Render(GLFWwindow* window)
 	// Bind texture shader
 	windowMgr::getInstance()->textureShader->Bind();
 
-	// DRAW WORLD CLOCK
-	for (auto &m : windowMgr::getInstance()->worldClock)
-	{
-		m->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
-		m->Draw();
-	}
 
 	// DRAW all level tiles
 	for (auto &t : masterTiles[currentLevel])
@@ -1087,7 +1202,7 @@ void gameScene::Render(GLFWwindow* window)
 		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	}
 
-	// If there are two players...
+	// Draw 2 Player stuff
 	if (numPlayers == 2)
 	{
 		// Render player 2
@@ -1104,6 +1219,16 @@ void gameScene::Render(GLFWwindow* window)
 			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
 			m->Draw();
 		}
+
+		// Draw pickup crates
+		for (auto &ppi : pickupPositionIndices)
+		{
+			windowMgr::getInstance()->pickupCrateTexture->Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->pickupCrateTransforms[ppi / 2], mvp);
+			// Corresponding pickup mesh is half index value 
+			windowMgr::getInstance()->pickupCrateMeshes[ppi / 2]->Draw();
+		}
+
 	}
 
 
@@ -1184,6 +1309,16 @@ void gameScene::Render(GLFWwindow* window)
 			m->Draw();
 		}
 
+		// Draw pickup crates
+		for (auto &ppi : pickupPositionIndices)
+		{
+			windowMgr::getInstance()->pickupCrateTexture->Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->pickupCrateTransforms[ppi / 2], mvp2);
+			// Corresponding pickup mesh is half index value 
+			windowMgr::getInstance()->pickupCrateMeshes[ppi / 2]->Draw();
+		}
+
+
 		// DRAW all level tiles
 		for (auto &t : masterTiles[currentLevel])
 		{
@@ -1227,4 +1362,10 @@ void gameScene::Render(GLFWwindow* window)
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+}
+
+
+void gameScene::ThreadCol(Player &player)
+{
+	masterAlgTiles[currentLevel].at(player.currentTile)->CheckCollisions(player);
 }

@@ -69,8 +69,9 @@ class windowMgr
 		Mesh* player2Mesh;
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
-		//Mesh* reboundEffectMesh;
-		//vector<Texture*> reboundEffectTextures;
+		vector<Mesh*> pickupCrateMeshes;
+		Texture* pickupCrateTexture;
+		vector<Transform> pickupCrateTransforms;
 
 		// All contorller related textures are stored in here
 		Texture* buttonsPS[18];

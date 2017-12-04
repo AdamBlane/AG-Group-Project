@@ -2,11 +2,6 @@
 #include "gameScene.h"
 #include "windowMgr.h" // to access singleton
 
-
-
-// Default constructor
-startScene::startScene() { }
-
 // Deconstructor
 startScene::~startScene() { }
 
@@ -114,6 +109,12 @@ void startScene::Init(GLFWwindow* win)
 {
 	// Set initial button press bools to false
 	windowMgr::getInstance()->upPressed = windowMgr::getInstance()->downPressed = windowMgr::getInstance()->leftPressed = windowMgr::getInstance()->rightPressed = windowMgr::getInstance()->enterPressed = windowMgr::getInstance()->mouseLpressed = false;
+
+	// Reset navigation member variables
+	upPressed = downPressed = selectPressed = false;
+	// Reset select delay counter
+	selectCooldown = 0;
+
 	// Background image will never change so setup here
 	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
@@ -136,6 +137,7 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(6)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -1.5f, 0.0f));
 
+
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
@@ -144,17 +146,21 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
 
 	ChangeTexutes(win);
-
 }
 
+// Main loop for this scene
 void startScene::Loop(GLFWwindow* win)
 {
+
 	// Calculate dt
 	lastFrame = thisFrame;
 	thisFrame = glfwGetTime();
 	dt = (float)(thisFrame - lastFrame);
 
 	// Scene background
+
+	// Clear buffers every frame
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//tracks mouse
@@ -244,6 +250,8 @@ void startScene::Input(GLFWwindow * win)
 			windowMgr::getInstance()->upPressed = false;
 		}
 	}
+	
+	// On down press
 	if (glfwGetKey(win, GLFW_KEY_DOWN))
 	{
 		windowMgr::getInstance()->downPressed = true;
@@ -273,17 +281,27 @@ void startScene::Input(GLFWwindow * win)
 	{
 		total_time += 1.0f;
 	}
-
 }
 
+// Update camera, select cooldown 
 void startScene::Update(GLFWwindow* win)
 {
 	// Update target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
+
+	// To ensure enter doesn't trigger just after loading this scene
+	if (selectCooldown < selectCooldownMax + 5) // 5 is epsilon
+	{
+		selectCooldown++;
+	}
 }
 
+// Draw stuff
 void startScene::Render(GLFWwindow* win)
 {
+	// Ensure correct viewport size (in case coming from 2P game)
+	glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+
 	// If camera type is target camera - used for HUD elements - then
 	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
 
@@ -295,7 +313,7 @@ void startScene::Render(GLFWwindow* win)
 	for (int a = 0; a < 7; a++)
 	{
 		windowMgr::getInstance()->meshes.at(a)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(startSceneTransform, hudVP);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(a)->Draw();
 	}
 

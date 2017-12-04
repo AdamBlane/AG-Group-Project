@@ -29,13 +29,6 @@ public:
 	inline bool selectedAmountOfPlayers() { return selectedPlayers; }
 	inline bool selectedChosenDifficulty() { return selectedDifficulty; }
 
-	// Used to lock framerate
-	double lastFrame = 0;
-	double thisFrame = glfwGetTime();
-	float dt = 0.016; // Lock to 60fps
-
-	// Only need one transform (can be reused for each mesh)
-	Transform playerSelectTransform;
 
 	// Booleans for key pressing - used to make sure players cant change options rapidly
 	bool keyDown = false;

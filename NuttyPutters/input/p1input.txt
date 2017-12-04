@@ -6,3 +6,4 @@ left,65
 right,68
 zoomIn,81
 zoomOut,69
+fireC,1

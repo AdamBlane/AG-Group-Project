@@ -29,7 +29,7 @@
 
 using namespace AllCamera;
 using namespace std::chrono;
-
+using namespace std;
 
 class gameScene
 {
@@ -53,7 +53,7 @@ public:
 	int courseSize;
 	// Best position of world clock
 
-
+	const unsigned char *buttons;
 	// SYSTEMS USED
 	// Handles gameplay logic
 	GameLogicMgr gameLogicMgr;
@@ -74,19 +74,21 @@ public:
 	vector<vec3> pauseCamLevelProperties;
 	// Record obstacle data ( tilePos, obType, tilePos, obType etc)
 	vector<int> obstacles; 
+	// List of pickup crate locations for each level
+	vector<int> pickupPositionIndices;
 
 	// Prevent saving same level more than once
 	bool levelSaved = false; 
-	bool continuePressed = false;
+	bool continuePressed, resetPressed = false;;
 
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
 	double accumulator = 0.0;
-	float dt = 0.016;  // This is 60fps
+	double dt;  // This is 60fps
 
 	
 	// Camera variables
-	float camSpeed = 2.0f; 
+	double camSpeed = 4.0; 
 	float  cameraType = 1;
 	// TODO - replace these for player members - float chaseCamAngle, p2ChaseCamAngle, // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)
@@ -102,14 +104,23 @@ public:
 	void FillScenery();
 	// Translates list of alg tiles (M) into mesh tiles (V)
 	void SetupTilesToBeDrawn();
+	// Sets up pickup crates for a level
+	void SetupPickupCrates();
+
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);
+	// Act on controller/keyboard input
 	void Input(GLFWwindow* window);
+	// Tiles are treated as partitions
 	void SpatialPartitioningUpdate();
+	// Will load next level if conditions are met
 	void CheckLoadNextLevel();
-
+	// Keep clocks ticking, update cameras and positions
 	void Update(GLFWwindow* window);
-	
+	// Check for player collisions
 	void Collisions();
+	// Threads test
+	void ThreadCol(Player &player);
+	// Draw stuff
 	void Render(GLFWwindow* window);
 };

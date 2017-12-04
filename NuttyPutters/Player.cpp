@@ -74,6 +74,11 @@ Player::Player(string inputConfigFilePath)
 			zoomOutButton = stoi(button_value);
 			continue;
 		}
+		else if (function == "fireC")
+		{
+			fireButtonC = stoi(button_value);
+			continue;
+		}
 		
 	}
 

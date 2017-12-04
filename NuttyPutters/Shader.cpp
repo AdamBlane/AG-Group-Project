@@ -87,7 +87,8 @@ static std::string LoadShader(const std::string& fileName)
 
 	if (file.is_open())
 	{
-		std::cout << "Shader loaded successfully! " << fileName << "\n" << std::endl;
+		// Print disabled for Monday demo
+		//std::cout << "Shader loaded successfully! " << fileName << "\n" << std::endl;
 
 		while (file.good())
 		{

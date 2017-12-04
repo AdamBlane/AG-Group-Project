@@ -34,7 +34,7 @@ public:
 
 	// Sets up basic HUD layout 
 	void p1Setup();
-	void p2Setup(vec3 endHolePos);
+	void p2Setup();
 	// Update game clock
 	void UpdateHUDClock(int time);
 	// Update world clock
