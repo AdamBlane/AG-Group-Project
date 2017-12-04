@@ -475,6 +475,32 @@ GLFWwindow* windowMgr::Init()
 	buttonsPS[16] = new Texture("..\\NuttyPutters\\Controller\\psdown.png");
 	buttonsPS[17] = new Texture("..\\NuttyPutters\\Controller\\psright.png");
 
+	// Setup the functions/buttons for ps4 controller - the function being the index and button being the equal value
+	// FUNCTION/BUTTONS
+	//windowMgr::getInstance()->gameFunctions[0] = 2;
+	//windowMgr::getInstance()->gameFunctions[1] = 3;
+	//windowMgr::getInstance()->gameFunctions[2] = 0;
+	//windowMgr::getInstance()->gameFunctions[3] = 14;
+	//windowMgr::getInstance()->gameFunctions[4] = 15;
+	//windowMgr::getInstance()->gameFunctions[5] = 16;
+	//windowMgr::getInstance()->gameFunctions[6] = 17;
+	//windowMgr::getInstance()->gameFunctions[7] = 1;
+	//windowMgr::getInstance()->gameFunctions[8] = 4;
+	//windowMgr::getInstance()->gameFunctions[9] = 5;
+
+	// xbox
+	// FUNCTION/BUTTONS
+	windowMgr::getInstance()->gameFunctions[0] = 2;
+	windowMgr::getInstance()->gameFunctions[1] = 3;
+	windowMgr::getInstance()->gameFunctions[2] = 7;
+	windowMgr::getInstance()->gameFunctions[3] = 10;
+	windowMgr::getInstance()->gameFunctions[4] = 11;
+	windowMgr::getInstance()->gameFunctions[5] = 12;
+	windowMgr::getInstance()->gameFunctions[6] = 13;
+	windowMgr::getInstance()->gameFunctions[7] = 1;
+	windowMgr::getInstance()->gameFunctions[8] = 4;
+	windowMgr::getInstance()->gameFunctions[9] = 5;
+
 	// LOAD HIGHSCORE SCENE TEXTURES
 	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\grass.png");
 	textures.insert(std::pair<std::string, Texture*>("loadGameBackground", loadGameBackground));

@@ -300,18 +300,6 @@ void highscoreScene::Init(GLFWwindow * win)
 		if (buttonCount == 18)
 		{
 			cout << "Controller type = PS4! " << endl;
-			// Setup the functions/buttons for ps4 controller - the function being the index and button being the equal value
-			// FUNCTION/BUTTONS
-			windowMgr::getInstance()->gameFunctions[0] = 2;
-			windowMgr::getInstance()->gameFunctions[1] = 3;
-			windowMgr::getInstance()->gameFunctions[2] = 0;
-			windowMgr::getInstance()->gameFunctions[3] = 14;
-			windowMgr::getInstance()->gameFunctions[4] = 15;
-			windowMgr::getInstance()->gameFunctions[5] = 16;
-			windowMgr::getInstance()->gameFunctions[6] = 17;
-			windowMgr::getInstance()->gameFunctions[7] = 1;
-			windowMgr::getInstance()->gameFunctions[8] = 4;
-			windowMgr::getInstance()->gameFunctions[9] = 5;
 			// For all the fucntions 
 			for (int allFunctions = 0; allFunctions < 10; allFunctions++)
 			{
