@@ -186,6 +186,7 @@ void GameLogicMgr::RandomPowerup(Player &player)
 	// Player gets big!
 	case 1:
 	{
+		windowMgr::getInstance()->PlayThisSound("bigger_powerup");
 		player.transform.getScale() = vec3(0.7);
 		player.radius = 0.7;
 		player.mass = 1.4;
@@ -194,6 +195,7 @@ void GameLogicMgr::RandomPowerup(Player &player)
 	// Player gets small!
 	case 2:
 	{
+		windowMgr::getInstance()->PlayThisSound("smaller_powerup");
 		player.transform.getScale() = vec3(0.3);
 		player.radius = 0.3;
 		player.mass = 1.0;

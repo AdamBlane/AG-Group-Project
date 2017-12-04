@@ -83,6 +83,10 @@ GLFWwindow* windowMgr::Init()
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallJump", golfBallJump));
 	system->createSound("..\\NuttyPutters\\audio\\golf-ball-wood-hit.wav", FMOD_DEFAULT, 0, &golfBallWoodHit);
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
+	system->createSound("..\\NuttyPutters\\audio\\bigger_powerup.wav", FMOD_DEFAULT, 0, &getBiggerPowerUp);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("bigger_powerup", getBiggerPowerUp));
+	system->createSound("..\\NuttyPutters\\audio\\smaller_powerup.wav", FMOD_DEFAULT, 0, &getSmallerPowerUp);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("smaller_powerup", getSmallerPowerUp));
 
 	
 	// ############################ SHADERS ############################
@@ -112,13 +116,13 @@ GLFWwindow* windowMgr::Init()
 	p1ChaseCam = new chase_camera();
 	p1ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p1ChaseCam->set_springiness(0.2f);
-	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width  / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width  / (float)windowMgr::getInstance()->height, 0.414f, 10000.0f);
 	chaseCams.push_back(p1ChaseCam);
 	// p2 chase cam
 	p2ChaseCam = new chase_camera();
 	p2ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p2ChaseCam->set_springiness(0.2f);
-	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width /2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width /2 / (float)windowMgr::getInstance()->height, 0.414f, 10000.0f);
 	chaseCams.push_back(p2ChaseCam);
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
@@ -152,7 +156,7 @@ GLFWwindow* windowMgr::Init()
 	// ############################ TEXTURES ############################
 
 	// START SCENE TEXTURES 
-	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
+	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.jpg");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
 	Texture* startGameBtnSelected = new Texture("..\\NuttyPutters\\Mainmenu\\startSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("startGameBtnSelected", startGameBtnSelected));
@@ -259,7 +263,7 @@ GLFWwindow* windowMgr::Init()
 	Texture* playerBlueTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerBlueTexture", playerBlueTexture));
 	// Pickup crate texture
-	pickupCrateTexture = new Texture("..\\NuttyPutters\\box.jpg");
+	pickupCrateTexture = new Texture("..\\NuttyPutters\\powerUpTex.png");
 	// HUD label textures
 	Texture* xStrokeLbl = new Texture("..\\NuttyPutters\\x.png");
 	textures.insert(std::pair<std::string, Texture*>("xStrokeLbl", xStrokeLbl));

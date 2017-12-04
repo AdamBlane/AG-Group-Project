@@ -1234,6 +1234,7 @@ void gameScene::Collisions()
 
 						// Give player a powerup
 						gameLogicMgr.RandomPowerup(p);
+
 					} // end if players intersect crates
 				} // end if player is on same tile as pickup crate
 			} // end for each pickup

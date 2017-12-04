@@ -79,6 +79,8 @@ class windowMgr
 		FMOD::Sound *golfBallHit;
 		FMOD::Sound *golfBallJump;
 		FMOD::Sound *golfBallWoodHit;
+		FMOD::Sound *getBiggerPowerUp;
+		FMOD::Sound *getSmallerPowerUp;
 		// Store all above declared sound effects here
 		map<std::string, FMOD::Sound*> soundEffects;
 
