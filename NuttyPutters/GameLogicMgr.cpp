@@ -1,5 +1,7 @@
+#include <random>
 #include "glew_glfw.h"
 #include "GameLogicMgr.h"
+#include "windowMgr.h"
 
 // Setup start of game HUD
 void GameLogicMgr::Setup(int numPlayers, int diff)
@@ -39,6 +41,7 @@ void GameLogicMgr::Setup(int numPlayers, int diff)
 	else if (players == 2)
 	{
 		uiMgr.p2Setup();
+	
 	}
 
 
@@ -128,6 +131,8 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 			cout << "Final score: " << p1Score << endl;
 			// Set bool for this player to finished 
 			p1Finished = true;
+			if (players == 1)
+				cout << "To return to main menu, pause game (P) then hit C!" << endl;
 		}
 		break;
 	}
@@ -159,6 +164,41 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 		else if (p1Score == p2Score)
 			cout << "Both players draw!" << endl;
 
+		cout << "To return to main menu, pause game (P) then hit C!" << endl;
 		gameEnded = true;
+	}
+
+
+	
+}
+
+// Randomly choose and assign a power to player
+void GameLogicMgr::RandomPowerup(Player &player)
+{
+	// Pick random number between 1 and number of available pickups 
+	default_random_engine rng(random_device{}());
+	uniform_int_distribution<int> distribution(1, 2);
+	int choice = distribution(rng);
+	
+	// Enact powerup 
+	switch (choice)
+	{
+	// Player gets big!
+	case 1:
+	{
+		player.transform.getScale() = vec3(0.7);
+		player.radius = 0.7;
+		player.mass = 1.4;
+	}
+		break;
+	// Player gets small!
+	case 2:
+	{
+		player.transform.getScale() = vec3(0.3);
+		player.radius = 0.3;
+		player.mass = 1.0;
+	}
+		break;
+	default: break;
 	}
 }

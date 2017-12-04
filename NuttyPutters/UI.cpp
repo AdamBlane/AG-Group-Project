@@ -90,12 +90,13 @@ void UI::UpdateHUDClock(int time)
 	
 	// Update HUD meshes accordingly
 
-	// Minutes
-	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(minutes));
+
+	// Minutes 
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(minutes)));
 	// Tens of seconds
-	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(tensSeconds));
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(tensSeconds)));
 	// Seconds
-	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(seconds));
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(seconds)));
 }
 
 // Update world clock - only applied in 2 player mode

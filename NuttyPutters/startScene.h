@@ -7,7 +7,7 @@
 #include <sstream>
 #include <chrono>
 #include <random>
-#include <sstream>
+
 // Internals
 #include "Mesh.h"
 #include "Transform.h"
@@ -18,32 +18,28 @@ class startScene
 {
 public:
 	// Default constructor
-	startScene();
+	startScene() {}
 	// Deconstructor
-	~startScene();
+	~startScene() {}
 
-
-
-	// Used to lock framerate
-	double lastFrame = 0;
-	double thisFrame = glfwGetTime();
-	float dt = 0.016; // Lock to 60fps for first frame
-	
 	// Used for navigating through menu options
-	// This determines which button should be highlighted
+	// ID number determines which button should be highlighted
+	// 1 - Play
+	// 2 - Load
+	// 3 - Highscore
+	// 4 - Options
+	// 5 - Internet
+	// 6 - Exit
 	int button_manager = 1;
-	float total_time = 5.0f;
-	bool downPressed = false;
-	// SPIKE - save last button index visited; that's the button to make tex = unselected
+	// Enforce time delay before select may be pressed upon loading this scene
+	int selectCooldown, selectCooldownMax = 250;
+	// Flags for button presses; logic occurs on release after being pressed
+	bool upPressed, downPressed, selectPressed;
 
-	// Only need one transform (can be reused for each mesh)
-	Transform startSceneTransform;
 
-	// Background Mesh   0
-	// StartGameBtn      1
-	// LoadGameBtn		 2
 
-	// Draw stuff
+
+	// Main logic loop for this scene
 	void Loop(GLFWwindow* win);
 	// Input 
 	void Input(GLFWwindow* win);

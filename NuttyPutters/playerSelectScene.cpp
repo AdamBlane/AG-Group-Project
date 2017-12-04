@@ -6,9 +6,17 @@ playerSelectScene::playerSelectScene() { }
 // Deconstructor
 playerSelectScene::~playerSelectScene() { }
 
-// Setup scene; does nothing atm
+// Setup meshes, textures, member vars
 void playerSelectScene::Init(GLFWwindow * win)
 {
+	// MONDAY DEMO PRINT COMMANDS
+	cout << "\nPLAYER SELECT SCREEN CONTROLS:" << endl;
+	cout << "Up/Down arrows moves to last/next row of buttons" << endl;
+	cout << "Left/Right arrows changes that rows options (player count/difficulty)" << endl;
+	cout << "Easy/Med/Hard chooses to play 2/4/6 levels" << endl;
+	cout << "Enter selects highlighted button" << endl;
+
+	// Reset button navigation to first item
 	buttonSelect = 1;
 	// Set the HUDs and labels - all have unique positions and scales so all lines below are required
 	// Set the background
@@ -65,13 +73,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 // Draw stuff for this scene
 void playerSelectScene::Loop(GLFWwindow * win)
 {
-	// Calculate dt
-	lastFrame = thisFrame;
-	thisFrame = glfwGetTime();
-	dt = (float)(thisFrame - lastFrame);
-
 	// Scene background
-	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Input
@@ -258,7 +260,7 @@ void playerSelectScene::Input(GLFWwindow* win)
 		// If button select is 3 then start the game
 		if (buttonSelect == 3)
 		{
-			windowMgr::getInstance()->sceneManager.changeScene(6, courseLength, playerSelect);
+			windowMgr::getInstance()->sceneManager.changeScene(6, courseLength, playerSelect, difficultySelect);
 		}
 		// If button select is 4 then return to main menu
 		if (buttonSelect == 4)
@@ -316,12 +318,14 @@ void playerSelectScene::Input(GLFWwindow* win)
 	}
 }
 
+// Update cameras
 void playerSelectScene::Update(GLFWwindow* win)
 {
 	// Update target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 }
 
+// Draw scene
 void playerSelectScene::Render(GLFWwindow* win)
 {
 	// Calculate hud view*projection
