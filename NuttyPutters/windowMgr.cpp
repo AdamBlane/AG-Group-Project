@@ -489,18 +489,37 @@ GLFWwindow* windowMgr::Init()
 	//windowMgr::getInstance()->gameFunctions[8] = 4;
 	//windowMgr::getInstance()->gameFunctions[9] = 5;
 
-	// xbox
-	// FUNCTION/BUTTONS
-	windowMgr::getInstance()->gameFunctions[0] = 2;
-	windowMgr::getInstance()->gameFunctions[1] = 3;
-	windowMgr::getInstance()->gameFunctions[2] = 7;
-	windowMgr::getInstance()->gameFunctions[3] = 10;
-	windowMgr::getInstance()->gameFunctions[4] = 11;
-	windowMgr::getInstance()->gameFunctions[5] = 12;
-	windowMgr::getInstance()->gameFunctions[6] = 13;
-	windowMgr::getInstance()->gameFunctions[7] = 1;
-	windowMgr::getInstance()->gameFunctions[8] = 4;
-	windowMgr::getInstance()->gameFunctions[9] = 5;
+	// Create an input file object
+	ifstream inputFile;
+	// Open the desired file
+	inputFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+
+	// Check for error when loading the file
+	if (inputFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening file";
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		windowMgr::getInstance()->gameFunctions[0] = 2;
+		windowMgr::getInstance()->gameFunctions[1] = 3;
+		windowMgr::getInstance()->gameFunctions[2] = 7;
+		windowMgr::getInstance()->gameFunctions[3] = 10;
+		windowMgr::getInstance()->gameFunctions[4] = 11;
+		windowMgr::getInstance()->gameFunctions[5] = 12;
+		windowMgr::getInstance()->gameFunctions[6] = 13;
+		windowMgr::getInstance()->gameFunctions[7] = 1;
+		windowMgr::getInstance()->gameFunctions[8] = 4;
+		windowMgr::getInstance()->gameFunctions[9] = 5;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		inputFile >> windowMgr::getInstance()->gameFunctions[l];
+		// Output them to the screen
+		cout << windowMgr::getInstance()->gameFunctions[l] << endl;
+	}
 
 	// LOAD HIGHSCORE SCENE TEXTURES
 	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\grass.png");
@@ -574,8 +593,6 @@ GLFWwindow* windowMgr::Init()
 
 	Texture* bottomBridge = new Texture("..\\NuttyPutters\\bridgeBottom.jpg");
 	tileTextures.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
-
-
 
 	// Setup start scene
 	sceneManager.startScene.Init(win);

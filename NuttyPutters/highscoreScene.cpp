@@ -126,43 +126,33 @@ void highscoreScene::Init(GLFWwindow * win)
 	// Select fire keyboard 
 	windowMgr::getInstance()->meshes.at(27)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(27)->SetPos(vec3(0.5f, 1.07f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(27)->SetTexture(windowMgr::getInstance()->textures["aLbl"]);
 	// Back reset keyboard
 	windowMgr::getInstance()->meshes.at(28)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(28)->SetPos(vec3(0.5f, 0.75f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(28)->SetTexture(windowMgr::getInstance()->textures["bLbl"]);
 	// Pause keyboard
 	windowMgr::getInstance()->meshes.at(29)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(29)->SetPos(vec3(0.5f, 0.43f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(29)->SetTexture(windowMgr::getInstance()->textures["cLbl"]);
 	// Up keyboard
 	windowMgr::getInstance()->meshes.at(30)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(30)->SetPos(vec3(0.5f, 0.11f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(30)->SetTexture(windowMgr::getInstance()->textures["dLbl"]);
 	// Left keyboard
 	windowMgr::getInstance()->meshes.at(31)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(31)->SetPos(vec3(0.5f, -0.21f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(31)->SetTexture(windowMgr::getInstance()->textures["eLbl"]);
 	// Down keyboard
 	windowMgr::getInstance()->meshes.at(32)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(32)->SetPos(vec3(0.5f, -0.53f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(32)->SetTexture(windowMgr::getInstance()->textures["fLbl"]);
 	// Right keyboard
 	windowMgr::getInstance()->meshes.at(33)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(33)->SetPos(vec3(0.5f, -0.85f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(33)->SetTexture(windowMgr::getInstance()->textures["gLbl"]);
 	// Jump keyboard
 	windowMgr::getInstance()->meshes.at(34)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(34)->SetPos(vec3(0.5f, -1.17f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(34)->SetTexture(windowMgr::getInstance()->textures["hLbl"]);
 	// Zoom in keyboard
 	windowMgr::getInstance()->meshes.at(35)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(35)->SetPos(vec3(0.5f, -1.49, 0.0f));
-	//windowMgr::getInstance()->meshes.at(35)->SetTexture(windowMgr::getInstance()->textures["iLbl"]);
 	// Zoom out keyboard
 	windowMgr::getInstance()->meshes.at(36)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(36)->SetPos(vec3(0.5f, -1.81, 0.0f));
-	//windowMgr::getInstance()->meshes.at(36)->SetTexture(windowMgr::getInstance()->textures["jLbl"]);
 
 	//**********KEYBOARD SETUP**************//
 	windowMgr::getInstance()->gameKeyboardFunctions[0] = 81;
@@ -500,6 +490,7 @@ void highscoreScene::Track_Mouse(GLFWwindow * win)
 		windowMgr::getInstance()->button_manager = 3;
 	}
 }
+
 //whenever a click occurs
 void highscoreScene::Click(GLFWwindow * win)
 {
@@ -511,13 +502,24 @@ void highscoreScene::Click(GLFWwindow * win)
 	case 2:
 		//put in code here for player 2
 		break;
-		//to go back to main menu
+	//to go back to main menu
 	case 3:
+		// Create the outputFile object
+		ofstream outputFile;
+		// Set the output file
+		outputFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+		// Loop through total number of entries 
+		for (int l = 0; l < 10; l++)
+		{
+			// Output the values to the output file
+			outputFile << windowMgr::getInstance()->gameFunctions[l] << endl;
+		}
+		
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 		break;
-
 	}
 }
+
 // Input 
 void highscoreScene::Input(GLFWwindow* win)
 {
@@ -525,6 +527,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	{
 		windowMgr::getInstance()->mouseLpressed = true;
 	}
+
 	if (!glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
 	{
 		if (windowMgr::getInstance()->mouseLpressed)
@@ -533,11 +536,13 @@ void highscoreScene::Input(GLFWwindow* win)
 			windowMgr::getInstance()->mouseLpressed = false;
 		}
 	}
+
 	// If key is pressed and boolean equals false then set bool to true
 	if (glfwGetKey(win, GLFW_KEY_COMMA) && !keyboardButtonPressed[0])
 	{
 		keyboardButtonPressed[0] = true;
 	}
+
 	// If key is no longer pressed and bool is true then
 	if (!glfwGetKey(win, GLFW_KEY_COMMA) && keyboardButtonPressed[0])
 	{

@@ -8,6 +8,7 @@
 #include <chrono>
 #include <random>
 #include <sstream>
+#include <fstream>
 // Internals
 #include "Mesh.h"
 #include "Transform.h"

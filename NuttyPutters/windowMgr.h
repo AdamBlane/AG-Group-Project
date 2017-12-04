@@ -78,10 +78,10 @@ class windowMgr
 		Texture* buttonsXB[14];
 		Texture* buttonsKeyboardOne[99];
 
-		Texture* buttonsKey[99];
 		// All the game functions are stored here with the index being the function and the value being the button number
 		int gameFunctions[10];
 		int gameKeyboardFunctions[10];
+		int gameKeyboardFunctionsPOne[10];
 
 		// KEYBOARD - One
 		// Comma = 0
