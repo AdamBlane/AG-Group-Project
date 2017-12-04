@@ -141,7 +141,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	SetupPickupCrates();
 	
 	// Set dt based on player count
-	dt = (playerCount * 0.01) - 0.002;
+	//dt = (playerCount * 0.01) - 0.002;
+	dt = 0.012;
 
 	// Start game logic mgr
 	// Pass in end hole position for two player mode
@@ -442,15 +443,24 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
+	int buttonCount;
+	const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
+
+	int axesCount;
+	const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
+
+	//cout << "X " << axes[0] << endl;
+	//cout << "Y " << axes[1] << endl;
+
 	// Loop around players and their inputs for both keyboard and controller
 	int thisPlayer = 0;
 
 	// REST POSITION FUNCTION
-	if (glfwGetKey(window, GLFW_KEY_R))
+	if (glfwGetKey(window, GLFW_KEY_R) || GLFW_PRESS == buttons[3])
 	{
 		resetPressed = true;
 	}
-	if (!glfwGetKey(window, GLFW_KEY_R))
+	if (!glfwGetKey(window, GLFW_KEY_R) || GLFW_RELEASE == buttons[3])
 	{
 		if (resetPressed)
 		{
@@ -464,9 +474,170 @@ void gameScene::Input(GLFWwindow* window)
 		}
 	}
 
+	
 
 	for (auto &p : players)
 	{
+		// MONDAY DEMO HACKY P2 CONTROLS
+		if (p.id == 2)
+		{
+			// Jump
+			if (GLFW_PRESS == buttons[1])
+			{
+				p.jumpPressed = true;
+			}
+
+			if (GLFW_RELEASE == buttons[1])
+			{
+				if (p.jumpPressed)
+				{
+					// SFX
+					windowMgr::getInstance()->PlayThisSound("golfBallJump");
+					physicsSystem.Jump(p, 5.0f); // Arbitrary jump value
+					p.isMoving = true;
+					// Flip
+					p.jumpPressed = false;
+				}
+			}
+
+			// If ball is not moving then allow for angle on chase camera to be changed
+			if (!p.isMoving)
+			{
+				// controls in the chase camera 
+				if (axes[1] > -0.5 && axes[1] < 0.5 && axes[0] < -0.7)
+				{
+					//function to rotate 
+					windowMgr::getInstance()->chaseCams[thisPlayer]->yaw_it(camSpeed * dt * 0.5); // TODO - make camSpeed a variable to allow sensitivity settings
+																								  // Decrease chase camera angle (out of 360 degrees)
+					p.chaseCamAngle -= (camSpeed * dt * 0.5);
+				}
+				if (axes[1] > -0.5 && axes[1] < 0.5 && axes[0] > 0.7)
+				{
+					windowMgr::getInstance()->chaseCams[thisPlayer]->neg_yaw_it(camSpeed * dt * 0.5);
+					// Increase chase camera angle (out of 360 degrees)
+					p.chaseCamAngle += (camSpeed * dt * 0.5);
+				}
+			}
+
+
+
+			// Camera movement
+			if (axes[0] > -0.5 && axes[0] < 0.5 && axes[1] > 0.7)
+			{
+				windowMgr::getInstance()->chaseCams[thisPlayer]->neg_pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_Posistion(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_pos_offset().y);
+			}
+			if (axes[0] > -0.5 && axes[0] < 0.5 && axes[1] < -0.7)
+			{
+				windowMgr::getInstance()->chaseCams[thisPlayer]->pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_Posistion(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_pos_offset().y);
+			}
+			if (glfwGetKey(window, p.zoomOutButton))
+			{
+				//function to rotate 
+				windowMgr::getInstance()->chaseCams[thisPlayer]->zoom_out(camSpeed * dt * 0.5);
+			}
+			if (glfwGetKey(window, p.zoomInButton))
+			{
+				windowMgr::getInstance()->chaseCams[thisPlayer]->zoom_in(camSpeed * dt * 0.5);
+			}
+
+
+			// If chase camera angle is greater than 360 reset to 0
+			if (p.chaseCamAngle > 6.28319)
+			{
+				p.chaseCamAngle = 0.0;
+			}
+			// If chase camera angle is less than 0 then reset to 360
+			else if (p.chaseCamAngle < 0)
+			{
+				p.chaseCamAngle = 6.28319;
+			}
+
+			// Player fire
+			if (continuePressed)
+			{
+				// If Fire is pressed 
+				if (GLFW_PRESS == buttons[0])
+				{
+					if (!p.isMoving)
+					{
+						// Increment power counter as long as fire is held
+						p.power += 0.4;
+
+						// Update the power bar based on the the fireCounter value 
+						//powerBarTrans.getPos().x -= (fireCounter/5.0f) * powerBarMesh->getGeomPos().x;
+
+						//powerBarTrans.getPos().x += fireCounter /100.0f; // This value has has to be 20 times the dividing value as the scale extends both ways not just in a positive direction
+						//powerBarTrans.getScale().x += fireCounter/5.0f; // Update the scale based on the fireCounter value
+
+						//############################### CODE FOR POWER BAR WILL GO HERE ########################
+
+						// SET DIRECTION BASED ON CHASE CAM ANGLE
+						// If camera angle is between 0 and 90
+						if (p.chaseCamAngle >= 0 && p.chaseCamAngle < 1.5708)
+						{
+							// x = -sin(theta), z = cos(theta)
+							p.direction = normalize(vec3(-sin(p.chaseCamAngle), 0.0, cos(p.chaseCamAngle)));
+						}
+						// If camera angle is between 90 and 180
+						else if (p.chaseCamAngle > 1.5709 && p.chaseCamAngle < 3.14159)
+						{
+							// x = -cos(theta - 90), z = -sin(theta - 90)
+							p.direction = normalize(vec3(-cos(p.chaseCamAngle - 1.5708), 0.0, -sin(p.chaseCamAngle - 1.5708)));
+						}
+						// If camera angle is between 180 and 270
+						else if (p.chaseCamAngle > 3.1416 && p.chaseCamAngle < 4.71239)
+						{
+							// x = sin(theta - 180), z = -cos(theta - 180)
+							p.direction = normalize(vec3(sin(p.chaseCamAngle - 3.1416), 0.0, -cos(p.chaseCamAngle - 3.1416)));
+						}
+						// If camera angle is anything else
+						else if (p.chaseCamAngle > 4.724 && p.chaseCamAngle <= 6.28319)
+						{
+							// x = cos(theta - 270), z = sin(theta- 270)
+							p.direction = normalize(vec3(cos(p.chaseCamAngle - 4.71239), 0.0, sin(p.chaseCamAngle - 4.71239)));
+						}
+						p.firePressed = true;
+					}
+				}
+			}
+			// When Fire is realesed
+			if (GLFW_RELEASE == buttons[0])
+			{
+				// Only work if fire button was just released
+				if (p.firePressed)
+				{
+					// Play SFX
+					if (p.power < 20.0f)
+					{
+						windowMgr::getInstance()->PlayThisSound("golfBallPutt");
+					}
+					else
+					{
+						windowMgr::getInstance()->PlayThisSound("golfBallHit");
+					}
+					// Power measure accumulated by holding space is impulse magnitude
+					// Normal of impulse is direction
+					physicsSystem.Fire(p, p.power);
+					// Reset fire power counter
+					p.power = 0;
+					// Increment player stroke counter
+					p.strokeCounter++;
+					// Get game logic to call UI update to reflect updated stroke counter
+					gameLogicMgr.PlayerFired(1, p);
+					// And we're off! 
+					p.isMoving = true;
+
+
+					// Flip
+					p.firePressed = false;
+				}
+			} // E
+			break;
+		} // end of hacky p2 controller code
+
+
+
+
 		// Jump
 		if (glfwGetKey(window, p.jumpButton))
 		{
@@ -487,7 +658,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// Pause
-		if (glfwGetKey(window, GLFW_KEY_P))
+		if (glfwGetKey(window, GLFW_KEY_P) || GLFW_PRESS == buttons[7])
 		{
 			// Change to pause target cam
 			cameraType = 2;
@@ -1026,17 +1197,17 @@ void gameScene::Update(GLFWwindow* window)
 void gameScene::Collisions()
 {
 	// Check collisions for the tile each player is on only
-	vector<thread> threads;
+	//vector<thread> threads;
+	//for (auto &p : players)
+	//{
+	//	if (p.isMoving)
+	//		threads.push_back(thread(&gameScene::ThreadCol, this, std::ref(p)));
+	//}
+	//for (auto &t : threads)
+	//	t.join();
 	for (auto &p : players)
 	{
-		if (p.isMoving)
-			threads.push_back(thread(&gameScene::ThreadCol, this, std::ref(p)));
-	}
-	for (auto &t : threads)
-		t.join();
-	for (auto &p : players)
-	{
-		//masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
+		masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
 		
 		// 2 player only collisions (crates, other players)
 		if (numPlayers == 2)
