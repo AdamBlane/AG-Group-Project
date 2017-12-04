@@ -406,8 +406,6 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
-	int buttonCount;
-	const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
 
 	// Loop around players and their inputs for both keyboard and controller
 	int thisPlayer = 0;
@@ -553,7 +551,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// If the X button is pressed then continue on with game -used for HUD elements
-		if (glfwGetKey(window, GLFW_KEY_X) || GLFW_PRESS == buttons[windowMgr::getInstance()->gameFunctions[0]])
+		if (glfwGetKey(window, GLFW_KEY_X))
 		{
 			continuePressed = true;
 			// Start game timer
@@ -708,10 +706,10 @@ void gameScene::Input(GLFWwindow* window)
 			}
 		}
 		// When Fire is realesed
-		if (!glfwGetKey(window, p.fireButtton) || GLFW_PRESS == buttons[windowMgr::getInstance()->gameFunctions[7]])
+		if (!glfwGetKey(window, p.fireButtton))
 		{
 			// Only work if fire button was just released
-			if (p.firePressed || GLFW_RELEASE == buttons[windowMgr::getInstance()->gameFunctions[7]])
+			if (p.firePressed)
 			{
 				// Play SFX
 				if (p.power < 10.0f)
