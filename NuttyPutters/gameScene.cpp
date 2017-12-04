@@ -456,11 +456,11 @@ void gameScene::Input(GLFWwindow* window)
 	int thisPlayer = 0;
 
 	// REST POSITION FUNCTION
-	if (glfwGetKey(window, GLFW_KEY_R) || GLFW_PRESS == buttons[3])
+	if (glfwGetKey(window, GLFW_KEY_R))
 	{
 		resetPressed = true;
 	}
-	if (!glfwGetKey(window, GLFW_KEY_R) || GLFW_RELEASE == buttons[3])
+	if (!glfwGetKey(window, GLFW_KEY_R))
 	{
 		if (resetPressed)
 		{
