@@ -63,10 +63,17 @@ void Physics::ApplyGravity(Player &player, float floorLevel)
 	float f = 1; // Floor gap
 	// This will equate to either 0 or 1, thus applying gravity when required 
 	gravFlag = ceil((Py - (Ty + f)) / Py);
+	// If it's a 1, player is in the air
 	if (gravFlag == 1)
+		// Ensure gravity is correct 
 		gravity.y = -9.8f;
+	// Otherwise, player is at floor level
 	else
-		gravFlag = 0; // Got -1 before :(
+	{
+		gravFlag = 0; // In case of -1
+		player.jumpCounter = 0;
+	}
+	
 
 }
 

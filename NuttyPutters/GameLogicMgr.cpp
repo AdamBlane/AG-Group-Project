@@ -187,7 +187,7 @@ void GameLogicMgr::RandomPowerup(Player &player)
 	case 1:
 	{
 		player.transform.getScale() = vec3(0.7);
-		player.radius = 0.7;
+		player.radius = 0.75;
 		player.mass = 1.4;
 	}
 		break;
@@ -199,6 +199,7 @@ void GameLogicMgr::RandomPowerup(Player &player)
 		player.mass = 1.0;
 	}
 		break;
+	
 	default: break;
 	}
 }

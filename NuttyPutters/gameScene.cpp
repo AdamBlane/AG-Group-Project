@@ -65,6 +65,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	cout << "\nGAME CONTROLS:" << endl;
 	cout << "Pause - P" << endl;
 	cout << "Reset Player 1 position - R" << endl;
+	
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
@@ -124,9 +125,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
 
-	// TESTING
-	//windowMgr::getInstance()->reboundEffectMesh->SetTexture(windowMgr::getInstance()->reboundEffectTextures[0]);
-	//windowMgr::getInstance()->reboundEffectMesh->SetPos(vec3(-4.0f, 2.0f, 2.0f));
 
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
@@ -141,7 +139,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	SetupPickupCrates();
 	
 	// Set dt based on player count
-	dt = (playerCount * 0.01) - 0.002;
+	//dt = (playerCount * 0.01) - 0.002;
+	dt = 0.016;
+
 
 	// Start game logic mgr
 	// Pass in end hole position for two player mode
@@ -212,6 +212,7 @@ void gameScene::FillScenery()
 		pauseCamLevelProperties.push_back(pauseCamPos);
 		pauseCamLevelProperties.push_back(pauseCamTarget);
 
+		/*
 		// Resulting scenery tiles list
 		vector<Tile> sceneryTiles;
 		// Starting in corner, fill with scenery tile if not already filled by level tile
@@ -246,6 +247,8 @@ void gameScene::FillScenery()
 
 		// Add fininshed scenery tiles list to master list
 		masterSceneryTiles.push_back(sceneryTiles);
+	
+		*/
 	}
 
 }
@@ -475,12 +478,17 @@ void gameScene::Input(GLFWwindow* window)
 
 		if (!glfwGetKey(window, p.jumpButton))
 		{
-			if (p.jumpPressed)
+			// If jump button recently pressed AND player hasn't jumped thrice
+			if (p.jumpPressed && p.jumpCounter < 2)
 			{
 				// SFX
 				windowMgr::getInstance()->PlayThisSound("golfBallJump");
+				// Tell physics system to add upwards impulse
 				physicsSystem.Jump(p, 5.0f); // Arbitrary jump value
+				// Ball is moving!
 				p.isMoving = true;
+				// Increase player jump count
+				p.jumpCounter++;
 				// Flip
 				p.jumpPressed = false;
 			}
@@ -870,8 +878,11 @@ void gameScene::CheckLoadNextLevel()
 							// If other player isn't through end hole, tp him
 							if (!players[(i  * -1) + 1].ballInHole)
 							{
+								// Incur time penalty for not finishing course
+								players[(i  * -1) + 1].totalTime += 20;
 								// Move him to new start tile
 								players[(i  * -1) + 1].transform.setPos(vec3(2.0f, 1.0f, 0.0f));
+								
 							}
 						}
 					
@@ -985,35 +996,33 @@ void gameScene::Update(GLFWwindow* window)
 	currentTime = newTime;
 
 	accumulator += frameTime;
+	
 	// Calculate fps
 	//double fps = 1.0 / frameTime;
 	//if (accumulator > dt)
 		//cout << "FPS:" << fps << endl;
 
-	
-	
+		
 	// Update each player
 	for (auto &p : players)
 	{
 		// Only apply physics if it's moving
 		if (p.isMoving)
 		{
-			// Ensure correct slowdown/stop margin
-			physicsSystem.epsilon = 0.5f;
 			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 0.5 + p.radius); // 1 is floor gap
-																							// If time to perform another physics step																						 // Perform physics step	
-			if (accumulator >= dt)
+			physicsSystem.ApplyGravity(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 0.5 + p.radius); 
+			
+			// If time to perform another physics step																						 // Perform physics step	
+			//if (accumulator >= dt)
 			{
-				
-				physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 0.5 + p.radius);
-
 				// Update position
-				//physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 1);
-				accumulator -= dt;
+				physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 0.5 + p.radius);
+				
+				// Remove dt from accumulator
+				//accumulator -= dt;
 			}
 		}
-		// Update p1 arrow mesh position to follow player
+		// Update p arrow mesh position to follow player
 		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
 	}
 		
@@ -1025,18 +1034,11 @@ void gameScene::Update(GLFWwindow* window)
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-	// Check collisions for the tile each player is on only
-	vector<thread> threads;
+	
 	for (auto &p : players)
 	{
-		if (p.isMoving)
-			threads.push_back(thread(&gameScene::ThreadCol, this, std::ref(p)));
-	}
-	for (auto &t : threads)
-		t.join();
-	for (auto &p : players)
-	{
-		//masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
+		// Check collisions for the tile each player is on only
+		masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
 		
 		// 2 player only collisions (crates, other players)
 		if (numPlayers == 2)
@@ -1197,10 +1199,10 @@ void gameScene::Render(GLFWwindow* window)
 		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	}
 	// DRAW all scenery tiles
-	for (auto &t : masterSceneryTiles[currentLevel])
-	{
-		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
-	}
+	//for (auto &t : masterSceneryTiles[currentLevel])
+	//{
+	//	t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+	//}
 
 	// Draw 2 Player stuff
 	if (numPlayers == 2)
@@ -1324,11 +1326,11 @@ void gameScene::Render(GLFWwindow* window)
 		{
 			t.drawTile(windowMgr::getInstance()->textureShader, mvp2);
 		}
-		// DRAW all scenery tiles
-		for (auto &t : masterSceneryTiles[currentLevel])
-		{
-			t.drawTile(windowMgr::getInstance()->textureShader, mvp2);
-		}
+		//// DRAW all scenery tiles
+		//for (auto &t : masterSceneryTiles[currentLevel])
+		//{
+		//	t.drawTile(windowMgr::getInstance()->textureShader, mvp2);
+		//}
 
 
 		// Render player 1
@@ -1365,7 +1367,3 @@ void gameScene::Render(GLFWwindow* window)
 }
 
 
-void gameScene::ThreadCol(Player &player)
-{
-	masterAlgTiles[currentLevel].at(player.currentTile)->CheckCollisions(player);
-}
