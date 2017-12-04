@@ -105,7 +105,7 @@ GLFWwindow* windowMgr::Init()
 	chaseCams.push_back(p2ChaseCam);
 
 	// ############################ SPLASH SCREEN ############################
-	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\background.jpg");
+	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.jpg");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
 
 	meshSplash = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
@@ -271,7 +271,7 @@ GLFWwindow* windowMgr::Init()
 	Texture* playerBlueTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
 	textures.insert(std::pair<std::string, Texture*>("playerBlueTexture", playerBlueTexture));
 	// Pickup crate texture
-	pickupCrateTexture = new Texture("..\\NuttyPutters\\box.jpg");
+	pickupCrateTexture = new Texture("..\\NuttyPutters\\powerUpBox.png");
 	// HUD label textures
 	Texture* xStrokeLbl = new Texture("..\\NuttyPutters\\x.png");
 	textures.insert(std::pair<std::string, Texture*>("xStrokeLbl", xStrokeLbl));

@@ -3,7 +3,7 @@
 #include "windowMgr.h" // to access singleton
 
 // Deconstructor
-startScene::~startScene() { }
+//startScene::~startScene() { }
 
 // Function which gets mouse position, sets button manager value based on which 
 // button is hovered over
@@ -45,6 +45,7 @@ void startScene::Track_Mouse(GLFWwindow *window)
 		ChangeTexutes(window);
 	}
 }
+
 void startScene::ChangeTexutes(GLFWwindow * win)
 {
 	windowMgr::getInstance()->button_manager = currentMenuItem;
@@ -197,6 +198,7 @@ void startScene::Click_or_Enter(GLFWwindow* win)
 		windowMgr::getInstance()->sceneManager.changeScene(windowMgr::getInstance()->button_manager + 1);
 	}
 }
+
 // Act on input
 void startScene::Input(GLFWwindow * win)
 {

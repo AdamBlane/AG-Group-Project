@@ -27,7 +27,7 @@ public:
 	double thisFrame = glfwGetTime();
 	float dt = 0.016; // Lock to 60fps for first frame
 
-					  // Used for navigating through menu options
+	// Used for navigating through menu options
 	float total_time = 5.0f;
 
 	int previousMenuItem, currentMenuItem;
