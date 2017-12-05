@@ -1124,14 +1124,13 @@ void gameScene::Render(GLFWwindow* window)
 	// Check whether to render for 1 or 2 players
 	if (numPlayers == 1)
 	{
-		glViewport(0, 0, 1600, 900); // TODO - remove hardcoded values, use winMgr members
+		glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	}
 	else if (numPlayers == 2)
 	{
 		// Player 1 has left hand side of screen
-		glViewport(0, 0, 800, 900);
+		glViewport(0, 0, windowMgr::getInstance()->width / 2, windowMgr::getInstance()->height);
 	}
-
 
 	// Calculate mvp matrix
 	mat4 mvp;
@@ -1274,7 +1273,7 @@ void gameScene::Render(GLFWwindow* window)
 	if (numPlayers == 2)
 	{
 		// Player 2 has the right hand vertical half of the screen
-		glViewport(800, 0, 800, 900);
+		glViewport(windowMgr::getInstance()->width / 2, 0, windowMgr::getInstance()->width / 2, windowMgr::getInstance()->height);
 
 		// model view projection matrix for p2 cam
 		mat4 mvp2;

@@ -259,7 +259,15 @@ GLFWwindow* windowMgr::Init()
 	Texture* smallwindowBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\full.png");
 	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnUnselected", smallwindowBtnUnselected));
 	Texture* smallwindowBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
-	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnSelected", smallwindowBtnSelected));;
+	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnSelected", smallwindowBtnSelected));
+	Texture* halfBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\half.png");
+	textures.insert(std::pair<std::string, Texture*>("halfBtnUnselected", halfBtnUnselected));
+	Texture* halfBtnSelected = new Texture("..\\NuttyPutters\\highscore\\half(1).png");
+	textures.insert(std::pair<std::string, Texture*>("halfBtnSelected", halfBtnSelected));
+	Texture* thirdBtnSelected = new Texture("..\\NuttyPutters\\highscore\\third(1).png");
+	textures.insert(std::pair<std::string, Texture*>("thirdBtnSelected", thirdBtnSelected));
+	Texture* thirdBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\third.png");
+	textures.insert(std::pair<std::string, Texture*>("thirdBtnUnselected", thirdBtnUnselected));
 	// GAME SCENE TEXTURES
 	// Skybox textures
 	skyboxTexture = new Texture(posXfileName, negXfileName, posYfileName, negYfileName, posZfileName, negZfileName);
