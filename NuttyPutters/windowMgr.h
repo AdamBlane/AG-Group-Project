@@ -88,6 +88,7 @@ class windowMgr
 		int controllerPSPTwo[10];
 		int keyboardFunctionsPOne[10];
 		int keyboardFunctionsPTwo[10];
+		int playerUsingControllerOne = 1;
 
 		// KEYBOARD - One
 		// Comma = 0

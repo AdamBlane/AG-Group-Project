@@ -807,13 +807,14 @@ void highscoreScene::Click(GLFWwindow * win)
 		//to go back to main menu
 		case 3:
 			// Set the output file
-			outputFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+			//outputFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
 			// Loop through total number of entries 
-			for (int l = 0; l < 10; l++)
+			//for (int l = 0; l < 10; l++)
 			{
 				// Output the values to the output file
-				outputFile << windowMgr::getInstance()->gameFunctions[l] << endl;
+				//outputFile << windowMgr::getInstance()->gameFunctions[l] << endl;
 			}
+			windowMgr::getInstance()->playerUsingControllerOne = playerForController;
 			windowMgr::getInstance()->sceneManager.changeScene(1);
 			break;
 		//left arrow function
