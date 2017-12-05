@@ -134,7 +134,7 @@ GLFWwindow* windowMgr::Init()
 
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
-	for (int i = 0; i < 37; ++i)
+	for (int i = 0; i < 42; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -277,10 +277,6 @@ GLFWwindow* windowMgr::Init()
 	// HUD label textures
 	Texture* xStrokeLbl = new Texture("..\\NuttyPutters\\x.png");
 	textures.insert(std::pair<std::string, Texture*>("xStrokeLbl", xStrokeLbl));
-	Texture* playerOneLbl = new Texture("..\\NuttyPutters\\playerone.png");
-	textures.insert(std::pair<std::string, Texture*>("playerOneLbl", playerOneLbl));
-	Texture* playerTwoLbl = new Texture("..\\NuttyPutters\\playertwo.png");
-	textures.insert(std::pair<std::string, Texture*>("playerTwoLbl", playerTwoLbl));
 	Texture* powerLbl = new Texture("..\\NuttyPutters\\power.png");
 	textures.insert(std::pair<std::string, Texture*>("powerLbl", powerLbl));
 	Texture* powerOutlineLbl = new Texture("..\\NuttyPutters\\powerbar.jpg");
@@ -528,7 +524,7 @@ GLFWwindow* windowMgr::Init()
 	// Create an input file object for player one keyboard controls
 	ifstream playerTwoXboxFile;
 	// Open the desired file
-	playerTwoXboxFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+	playerTwoXboxFile.open("..\\NuttyPutters\\input\\p2XboxController.txt");
 
 	// Check for error when loading the file
 	if (playerTwoXboxFile.fail())
@@ -654,6 +650,19 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("zoomOutLbl", zoomOutLbl));
 	Texture* keyLbl = new Texture("..\\NuttyPutters\\Controller\\key.png");
 	textures.insert(std::pair<std::string, Texture*>("keyLbl", keyLbl));
+	Texture* playerOneLblGreen = new Texture("..\\NuttyPutters\\controller\\playeronegreen.png");
+	textures.insert(std::pair<std::string, Texture*>("playerOneLblGreen", playerOneLblGreen));
+	Texture* playerTwoLblGreen = new Texture("..\\NuttyPutters\\Controller\\playertwogreen.png");
+	textures.insert(std::pair<std::string, Texture*>("playerTwoLblGreen", playerTwoLblGreen));
+	Texture* playerOneLblRed = new Texture("..\\NuttyPutters\\Controller\\playeronered.png");
+	textures.insert(std::pair<std::string, Texture*>("playerOneLblRed", playerOneLblRed));
+	Texture* playerTwoLblRed = new Texture("..\\NuttyPutters\\Controller\\playertwoRed.png");
+	textures.insert(std::pair<std::string, Texture*>("playerTwoLblRed", playerTwoLblRed));
+	Texture* playerUsingLbl = new Texture("..\\NuttyPutters\\Controller\\playerusing.png");
+	textures.insert(std::pair<std::string, Texture*>("playerUsingLbl", playerUsingLbl));
+	Texture* selectOptionLbl = new Texture("..\\NuttyPutters\\Controller\\selectoption.png");
+	textures.insert(std::pair<std::string, Texture*>("selectOptionLbl", selectOptionLbl));
+
 
 	//Tiles stuff initialized here
 	for (int i = 0; i < 15; ++i)

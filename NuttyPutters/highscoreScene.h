@@ -34,7 +34,7 @@ public:
 	bool buttonPressed[18] = { false };
 	bool isFunctionEmpty = false;
 	bool isFunctionEmptyKeyboard = false;
-	int meshesInScene = 37; // Used so everytime a mesh is added the number doesnt need updating
+	int meshesInScene = 42; // Used so everytime a mesh is added the number doesnt need updating
 	int indexAt99 = 0;
 	int indexAtButton = 0;
 	int indexAtKey = 0;
