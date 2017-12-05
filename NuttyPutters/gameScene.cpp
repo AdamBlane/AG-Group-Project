@@ -442,6 +442,8 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
+	// Put this into player.h/cpp
+	// The array should be a member of a player object
 	// Setup GLFW joystick button input - required for doing anything with buttons
 	int buttonCount;
 	const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
@@ -451,7 +453,7 @@ void gameScene::Input(GLFWwindow* window)
 	// If the player using contoller one is player one then
 	if (windowMgr::getInstance()->playerUsingControllerOne == 1)
 	{
-		// Loop through all the buttons player one has assigned to there controller and make them equal to arr[]
+		// Loop through all the buttons player one has assigned to their controller and make them equal to arr[]
 		for (int i = 0; i < 10; i++)
 		{
 			arr[i] = windowMgr::getInstance()->controllerXboxPOne[i];
@@ -481,7 +483,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 	}
 
-
+	// For every player
 	for (auto &p : players)
 	{
 		// Jump if keyboard key pressed or if control button arr[7] - 7 being jump has been pressed. 7 equals B for player one currently

@@ -27,7 +27,7 @@ class windowMgr
 		// Track gamestate
 		sceneMgr sceneManager;
 
-		//for mouse movement when the resoloution changes
+		//for mouse movement when the resolution changes
 		double windowScale = 1.0;
 		//sets the window scalon the x axise by dividing by the orignal value
 		void setWindowScale(int value) { windowScale = value / 1600.0; }
