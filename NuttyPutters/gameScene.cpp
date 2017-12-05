@@ -313,7 +313,7 @@ void gameScene::SetupTilesToBeDrawn()
 					obstacles.push_back(obstacleID);
 				}
 				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				Tile tile(Tile::BRIDGE, t->thisCoords, 0);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
