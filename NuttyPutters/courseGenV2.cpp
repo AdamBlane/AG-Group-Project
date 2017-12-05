@@ -547,30 +547,43 @@ vector<BaseTile*> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 			algTiles.push_back(cornerTR);
 			break;
 		}
-		// UpRampDown
+		// Bridge tile
 		case 7:
 		{
-			// Create tile
-			UpRampDown* upRamp = new UpRampDown();
-			upRamp->SetCoords(curCoords);
-			// Find next pos (always know dir is down when 7 is placed)
-			vec3 nextPos = vec3(curCoords.x, curCoords.y + 3.8, curCoords.z + size); //usually + 3.8
-			upRamp->SetNextCoords(nextPos);
-			upRamp->outDir.going_down = true;
-			algTiles.push_back(upRamp);
+			
 			break;
 		}
-		// DownRampDown
+		// Gap tile
 		case 8:
 		{
 			// Create tile
-			//DownRampDown* downRamp;
-			//downRamp.SetCoords(curCoords);
-			//// Find next pos (always know dir is up with tile 8)
-			//vec3 nextPos = vec3(curCoords.x, curCoords.y - 3.8, curCoords.z - size);
-			//downRamp.SetNextCoords(nextPos);
-			//downRamp.outDir.going_up = true;
-			//algTiles.push_back(downRamp);
+			GapTile* gapTile = new GapTile();
+			// Set pos
+			gapTile->SetCoords(curCoords);
+			// Keep same direction as last tile
+			gapTile->outDir = algTiles.back()->outDir;
+			// Determine next position based on last tile's direction
+			if (algTiles.back()->outDir.going_right)
+			{
+
+
+			}
+			else if (algTiles.back()->outDir.going_left)
+			{
+
+
+			}
+			else if (algTiles.back()->outDir.going_up)
+			{
+
+
+			}
+			else if (algTiles.back()->outDir.going_down)
+			{
+
+
+			}
+
 			break;
 		}
 		// End tile
