@@ -3,6 +3,7 @@
 #include "windowMgr.h" // to access singleton
 #include "courseGenV2.h"
 #include "UI.h"
+#include "PauseScreen.h"
 #include <thread>
 
 
