@@ -38,6 +38,7 @@ public:
 	int indexAt99 = 0;
 	int indexAtButton = 0;
 	int indexAtKey = 0;
+	int playerForController = 1;
 
 	bool keyboardButtonPressed[99] = { false };
 

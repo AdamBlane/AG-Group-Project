@@ -818,17 +818,31 @@ void highscoreScene::Click(GLFWwindow * win)
 			break;
 		//left arrow function
 		case 4:
-			///
-			cout << "oui" << endl;
-			///put stuff here 
-			///
+			cout << "left" << endl;
+			if (playerForController == 1)
+			{
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+				playerForController = 2;
+			}
+			else if (playerForController == 2)
+			{
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+				playerForController = 1;
+			}
 			break;
 		//right arrow functio
 		case 5:
-			///
-			cout << "si" << endl;
-			///put stuff here 
-			///
+			cout << "right" << endl;
+			if (playerForController == 1)
+			{
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+				playerForController = 2;
+			}
+			else if (playerForController == 2)
+			{
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+				playerForController = 1;
+			}
 			break;
 	}
 }
