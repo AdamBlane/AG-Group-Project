@@ -303,6 +303,9 @@ void gameScene::SetupTilesToBeDrawn()
 	// Go through each alg tile list
 	for (auto &l : masterAlgTiles)
 	{
+		int obstacleID = 0;
+		bool hasObstacle = false;
+
 		// The list that will be generated, and added to master list at end
 		vector<Tile> tiles;
 		// Index of the current tile in current alg tiles list
@@ -319,7 +322,7 @@ void gameScene::SetupTilesToBeDrawn()
 			// Ramp up when dir is down
 			if (t->id == 7)
 			{
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 				// Rotate on x
 				tile.transform.getRot().x = -0.349066;
 				tile.transform.getPos().y += 1.8;
@@ -357,7 +360,7 @@ void gameScene::SetupTilesToBeDrawn()
 					obstacles.push_back(obstacleID);
 				}
 				// Create straight tile
-				Tile tile(Tile::BRIDGE, t->thisCoords, 0);
+				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
@@ -372,7 +375,7 @@ void gameScene::SetupTilesToBeDrawn()
 					obstacles.push_back(obstacleID);
 				}
 				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 				// Straight needs rotating by 90, since it's vertical by default
 				tile.transform.getRot().y = 1.5708;
 				// Add to list of tiles to be rendered
@@ -1053,12 +1056,80 @@ void gameScene::Update(GLFWwindow* window)
 	{
 		float ballSize = p.radius * 3;
 		float heightTile = 1.0f;
-
+		bool onObstacle = false;
 
 		// Only apply physics if it's moving
 		if (p.isMoving)
 		{
-			if (masterAlgTiles[currentLevel].at(p.currentTile)->id == 1)
+
+			for (unsigned int i = 0; i < obstacles.size(); i += 2)
+			{
+				if (p.currentTile == obstacles.at(i))
+				{
+					switch (obstacles.at(i + 1))
+					{
+					case 1:
+					{
+						vec3 box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 3.0f, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z + ballSize * 2);
+						vec3 box2Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x + ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 3.0f, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ballSize * 2);
+
+						vec3 boxSize = vec3(((masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2) - 0.001f, 0.99f, (heightTile / 2) - 0.001f);
+
+						if (masterAlgTiles[currentLevel].at(p.currentTile)->id == 2)
+						{
+							box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ballSize * 2, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 3.0f, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ((ballSize / 2) + (heightTile / 2)));
+							box2Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x + ballSize * 2, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 3.0f, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z + ((ballSize / 2) + (heightTile / 2)));
+
+							boxSize = vec3((heightTile / 2) - 0.001f, 0.99f, ((masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2) - 0.001f);
+						}
+
+
+						bool intersect = SphereRectCollision(p, box1Pos, boxSize);
+						if (intersect)
+						{
+							onObstacle = true;
+							p.floorLevel = 2.01f;
+						}
+						else
+						{
+							onObstacle = false;
+							p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
+						}
+
+						bool intersect2 = SphereRectCollision(p, box2Pos, boxSize);
+						if (intersect2)
+						{
+							onObstacle = true;
+							p.floorLevel = 2.01f;
+						}
+						else
+						{
+							onObstacle = false;
+							p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
+						}
+					}
+					break;
+					case 2:
+					{
+						bool intersect = SphereRectCollision(p, vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 3, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z), vec3(0.99f, 0.99f, 0.99f));
+						if (intersect)
+						{
+							onObstacle = true;
+							p.floorLevel = 2.01f;
+						}
+						else
+						{
+							onObstacle = false;
+							p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
+						}
+					}
+					break;
+					}
+				}
+			}
+
+
+			if (masterAlgTiles[currentLevel].at(p.currentTile)->id == 7)
 			{
 				bool intersect = SphereRectCollision(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords, vec3((ballSize / 2.0f) - p.radius, heightTile * 3, masterAlgTiles[currentLevel].at(p.currentTile)->size / 2.0f));
 
@@ -1066,18 +1137,24 @@ void gameScene::Update(GLFWwindow* window)
 				{
 					p.floorLevel = -490.0f;
 				}
-				else 
+				else
 				{
 					p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
 				}
 			}
 			else
-			{			
+			{
 				// Work out whether to apply gravity or not (is player on the floor/in air)
 				// Update player's floor level for this tile - this tile floor level + 0.5 (half tile thickness) + player radius
 				p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
 
 			}
+
+			if (!onObstacle)
+			{
+				p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
+			}
+
 
 			physicsSystem.ApplyGravity(p, p.floorLevel);
 
@@ -1106,6 +1183,59 @@ void gameScene::Collisions()
 
 	for (auto &p : players)
 	{
+		float ballSize = p.radius * 3;
+		float heightTile = 1.0f;
+
+		for (unsigned int i = 0; i < obstacles.size(); i += 2)
+		{
+			if (p.currentTile == obstacles.at(i))
+			{
+				switch (obstacles.at(i + 1))
+				{
+				case 1:
+				{
+					
+					vec3 box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z + ballSize * 2);
+					vec3 box2Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x + ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ballSize * 2);
+
+					vec3 boxSize = vec3((masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2, 1.0f, heightTile / 2);
+
+					if (masterAlgTiles[currentLevel].at(p.currentTile)->id == 2)
+					{
+						box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ballSize * 2, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ((ballSize / 2) + (heightTile / 2)));
+						box2Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x + ballSize * 2, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z + ((ballSize / 2) + (heightTile / 2)));
+
+						boxSize = vec3(heightTile / 2, 1.0f, (masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2);
+					}
+
+					bool intersect = SphereRectCollision(p, box1Pos, boxSize);
+					if (intersect)
+					{
+						changeDirection(p, box1Pos, boxSize);
+					}
+
+					bool intersect2 = SphereRectCollision(p, box2Pos, boxSize);
+					if (intersect2)
+					{
+						changeDirection(p, box2Pos, boxSize);
+					}
+					
+				}
+				break;
+				case 2:
+				{
+					bool intersect = SphereRectCollision(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords, vec3(1.0f, 1.0f, 1.0f));
+					if (intersect)
+					{
+						changeDirection(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords, vec3(1.0f, 1.0f, 1.0f));
+					}
+				}
+				break;
+				}
+			}
+		}
+
+
 		// Check collisions for the tile each player is on only
 		masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
 
