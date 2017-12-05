@@ -186,6 +186,7 @@ void changeDirection(Player &player, vec3 rectCenter, vec3 rectSize)
 }
 
 // This should eventually be moved into courseGenTiles.cpp, along with all other collision code
+// From: https://stackoverflow.com/questions/27517250/sphere-cube-collision-detection-in-opengl
 bool SphereRectCollision(Player player, vec3 rectCenter, vec3 rectSize)
 {
 	// Get distance from player to center of rectangle being tested for intersection
@@ -212,12 +213,10 @@ bool SphereRectCollision(Player player, vec3 rectCenter, vec3 rectSize)
 		return true;
 	}
 
-	// what's this doing exactly? s
-	float cornerDistance_sq = ((sphereXDistance - rectSize.x) * (sphereXDistance - rectSize.x)) +
-		((sphereYDistance - rectSize.y) * (sphereYDistance - rectSize.y) +
-		((sphereYDistance - rectSize.z) * (sphereYDistance - rectSize.z)));
+	// calculating squared magnitude for sphere - rectangle vector
+	float cornerDistance_sq = ((sphereXDistance - rectSize.x) * (sphereXDistance - rectSize.x)) + ((sphereYDistance - rectSize.y) * (sphereYDistance - rectSize.y) + ((sphereYDistance - rectSize.z) * (sphereYDistance - rectSize.z)));
 
-	// 
+	// if the squared distance is less than the squared radius, return true
 	return (cornerDistance_sq < (player.radius * player.radius));
 }
 
@@ -1070,20 +1069,28 @@ void gameScene::Update(GLFWwindow* window)
 		// Only apply physics if it's moving
 		if (p.isMoving)
 		{
-
+			//looping through obstacles vector
 			for (unsigned int i = 0; i < obstacles.size(); i += 2)
 			{
+				// if tile is contained in obstacles vector, then it has an obstacle
 				if (p.currentTile == obstacles.at(i))
 				{
+					// All the obstacles considered here are only for top collision purpose
+					// Therefore, the bounding boxes created here are on top of the actual obstacle, to dectect if the player is on the obstacle, and apply gravity accordingly
+
+					//switching obstacle id
 					switch (obstacles.at(i + 1))
 					{
+						// slalom obstacle
 					case 1:
 					{
+						//setting size and position of boxes that will be passed to collision detection
 						vec3 box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 3.0f, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z + ballSize * 2);
 						vec3 box2Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x + ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 3.0f, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ballSize * 2);
 
 						vec3 boxSize = vec3(((masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2) - 0.001f, 0.99f, (heightTile / 2) - 0.001f);
 
+						// if the tile is rotated straigns, different size and position for the obstacle should be set
 						if (masterAlgTiles[currentLevel].at(p.currentTile)->id == 2)
 						{
 							box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ballSize * 2, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 3.0f, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ((ballSize / 2) + (heightTile / 2)));
@@ -1092,19 +1099,27 @@ void gameScene::Update(GLFWwindow* window)
 							boxSize = vec3((heightTile / 2) - 0.001f, 0.99f, ((masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2) - 0.001f);
 						}
 
-
+						// verifying intersection passing position and size
 						bool intersect = SphereRectCollision(p, box1Pos, boxSize);
+
+						// if intersect, then set floor level to top of the obstacle
 						if (intersect)
 						{
+							// onObstacle is used to determine if the player is over an obstacle
+							// this is true if intersection is true
 							onObstacle = true;
+							//trying to set new floor level
 							p.floorLevel = 2.01f;
 						}
+						//if it doesn't intersect with invisible bounding box, then player is not on the obstacle
 						else
 						{
 							onObstacle = false;
+							//trying to reset the floor level to normal one
 							p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
 						}
 
+						//this is for the secon cuboid for the slalom obstacle
 						bool intersect2 = SphereRectCollision(p, box2Pos, boxSize);
 						if (intersect2)
 						{
@@ -1118,6 +1133,8 @@ void gameScene::Update(GLFWwindow* window)
 						}
 					}
 					break;
+					//box obstacle
+					// essentialy the same as the slalom obstacle
 					case 2:
 					{
 						bool intersect = SphereRectCollision(p, vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 3, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z), vec3(0.99f, 0.99f, 0.99f));
@@ -1137,17 +1154,20 @@ void gameScene::Update(GLFWwindow* window)
 				}
 			}
 
-
+			//Applying gravity for bridge tile, when player is not on bridge, it falls down
 			if (masterAlgTiles[currentLevel].at(p.currentTile)->id == 7)
 			{
 				bool intersect = SphereRectCollision(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords, vec3((ballSize / 2.0f) - p.radius, heightTile * 3, masterAlgTiles[currentLevel].at(p.currentTile)->size / 2.0f));
 
+				//if player is not intersecting with invisible box on bridge, then it's not on the bridge...
 				if (!intersect)
 				{
+					//....and it falls down
 					p.floorLevel = -490.0f;
 				}
 				else
 				{
+					// otherwise, the floor level is set to normal while on bridge
 					p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
 				}
 			}
@@ -1159,12 +1179,13 @@ void gameScene::Update(GLFWwindow* window)
 
 			}
 
+			//trying to reset floor level to normal if player is not on top of an obstacle
 			if (!onObstacle)
 			{
 				p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
 			}
 
-
+			//applying gravity according to set floor level
 			physicsSystem.ApplyGravity(p, p.floorLevel);
 
 			// If time to perform another physics step																						 // Perform physics step	
@@ -1205,41 +1226,39 @@ void gameScene::Collisions()
 			// If this player shares a tile with an obstacle
 			if (p.currentTile == obstacles.at(i))
 			{
+				// This code is for the actual collision detection, with the collision resolution to bounce back (not for top collision) --> not related with bridge tile or gravity!
 				// Act based on obstacle type
 				switch (obstacles.at(i + 1))
 				{
 				// obstacle 1: 
 				case 1:
 				{
-					// This box is the area the player cannot enter?
-					//
+					// getting size and position of bot boxed for slalom obstacle
 					vec3 box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z + ballSize * 2);
-					//
+					
 					vec3 box2Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x + ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ballSize * 2);
-					//
+					
 					vec3 boxSize = vec3((masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2, 1.0f, heightTile / 2);
 
-					// If player is on a straight horizontal tile - was this because you set bridge tile id to 2 for testing? 
+					// if player is on rotated straigth tile, the collisions need to be inverted as the obstacles would be rotated too
 					if (masterAlgTiles[currentLevel].at(p.currentTile)->id == 2)
 					{
-						// Is this the bridge tile center piece?
-						//
+
 						box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ballSize * 2, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ((ballSize / 2) + (heightTile / 2)));
-						//
 						box2Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x + ballSize * 2, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z + ((ballSize / 2) + (heightTile / 2)));
-						//
 						boxSize = vec3(heightTile / 2, 1.0f, (masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2);
 					}
 
-					// Does player intersect above boxes - which box is which?
+					// checking if player collides on side of box
 					bool intersect = SphereRectCollision(p, box1Pos, boxSize);
 					if (intersect)
 					{
+						//collision resolution to bounce back
 						changeDirection(p, box1Pos, boxSize);
 					}
 
 
-					//
+					// Same as above, but for second box the slalom obstacle is made of
 					bool intersect2 = SphereRectCollision(p, box2Pos, boxSize);
 					if (intersect2)
 					{
@@ -1251,6 +1270,7 @@ void gameScene::Collisions()
 				// obstacle 2: 
 				case 2:
 				{
+					// same as slalom obstacle
 					bool intersect = SphereRectCollision(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords, vec3(1.0f, 1.0f, 1.0f));
 					if (intersect)
 					{
