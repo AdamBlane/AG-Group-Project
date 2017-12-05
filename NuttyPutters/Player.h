@@ -1,6 +1,7 @@
 #pragma once
 #include "Transform.h"
 #include <string>
+#include "glew_glfw.h"
 
 using namespace std;
 
@@ -51,4 +52,10 @@ public:
 		downButton, leftButton, rightButton,
 		zoomInButton, zoomOutButton;
 	int fireButtonC;
+
+	// Setup GLFW joystick button input - required for doing anything with buttons
+	int buttonCount;
+	const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
+	// Create a array of 10 values
+	int arr[10];
 };

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include "windowMgr.h" // to access singleton
 
 // Constructor - loads key config from file
 Player::Player(string inputConfigFilePath)
@@ -79,7 +80,16 @@ Player::Player(string inputConfigFilePath)
 			fireButtonC = stoi(button_value);
 			continue;
 		}
-		
 	}
-
+	// If the player using contoller one is player one then
+	if (windowMgr::getInstance()->playerUsingControllerOne == 1)
+	{
+		// Loop through all the buttons player one has assigned to their controller and make them equal to arr[]
+		for (int i = 0; i < 10; i++)
+		{
+			arr[i] = windowMgr::getInstance()->controllerXboxPOne[i]; // works
+			//buttons[arr[i]] = windowMgr::getInstance()->controllerXboxPOne[i]; // want but wrong
+			cout << "Functon " << i << " Equals " << windowMgr::getInstance()->controllerXboxPOne[i] << endl;
+		}
+	}
 }
