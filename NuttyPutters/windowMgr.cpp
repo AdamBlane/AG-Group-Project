@@ -211,6 +211,8 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("playerSelectBackground", playerSelectBackground));
 	Texture* playersLabel = new Texture("..\\NuttyPutters\\players.png");
 	textures.insert(std::pair<std::string, Texture*>("playersLabel", playersLabel));
+	Texture* numberOfLevels = new Texture("..\\NuttyPutters\\numberoflevels.png");
+	textures.insert(std::pair<std::string, Texture*>("numberOfLevels", numberOfLevels));
 	Texture* oneBtnUnselected = new Texture("..\\NuttyPutters\\none.png");
 	textures.insert(std::pair<std::string, Texture*>("oneBtnUnselected", oneBtnUnselected));
 	Texture* oneBtnSelected = new Texture("..\\NuttyPutters\\noneUnderlined.png");
@@ -489,36 +491,136 @@ GLFWwindow* windowMgr::Init()
 	//windowMgr::getInstance()->gameFunctions[8] = 4;
 	//windowMgr::getInstance()->gameFunctions[9] = 5;
 
-	// Create an input file object
-	ifstream inputFile;
+	//*************XBOX PLAYER ONE *****************//
+	// Create an input file object for player one keyboard controls
+	ifstream playerOneXboxFile;
 	// Open the desired file
-	inputFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+	playerOneXboxFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
 
 	// Check for error when loading the file
-	if (inputFile.fail())
+	if (playerOneXboxFile.fail())
 	{
 		// Print to screen
-		cout << "Error in opening file";
+		cout << "Error in opening player one xbox file";
 		// Set default values for xbox controller - FUNCTION/BUTTONS
-		windowMgr::getInstance()->gameFunctions[0] = 2;
-		windowMgr::getInstance()->gameFunctions[1] = 3;
-		windowMgr::getInstance()->gameFunctions[2] = 7;
-		windowMgr::getInstance()->gameFunctions[3] = 10;
-		windowMgr::getInstance()->gameFunctions[4] = 11;
-		windowMgr::getInstance()->gameFunctions[5] = 12;
-		windowMgr::getInstance()->gameFunctions[6] = 13;
-		windowMgr::getInstance()->gameFunctions[7] = 1;
-		windowMgr::getInstance()->gameFunctions[8] = 4;
-		windowMgr::getInstance()->gameFunctions[9] = 5;
+		windowMgr::getInstance()->controllerXboxPOne[0] = 2;
+		windowMgr::getInstance()->controllerXboxPOne[1] = 3;
+		windowMgr::getInstance()->controllerXboxPOne[2] = 7;
+		windowMgr::getInstance()->controllerXboxPOne[3] = 10;
+		windowMgr::getInstance()->controllerXboxPOne[4] = 11;
+		windowMgr::getInstance()->controllerXboxPOne[5] = 12;
+		windowMgr::getInstance()->controllerXboxPOne[6] = 13;
+		windowMgr::getInstance()->controllerXboxPOne[7] = 1;
+		windowMgr::getInstance()->controllerXboxPOne[8] = 4;
+		windowMgr::getInstance()->controllerXboxPOne[9] = 5;
 	}
 
 	// For the number of lines in the input file 
 	for (int l = 0; l < 10; l++)
 	{
 		// Assign the psoition, score and name to the arrays from the file
-		inputFile >> windowMgr::getInstance()->gameFunctions[l];
+		playerOneXboxFile >> windowMgr::getInstance()->controllerXboxPOne[l];
 		// Output them to the screen
-		cout << windowMgr::getInstance()->gameFunctions[l] << endl;
+		cout << windowMgr::getInstance()->controllerXboxPOne[l] << endl;
+	}
+
+	//*************XBOX PLAYER TWO *****************//
+	// Create an input file object for player one keyboard controls
+	ifstream playerTwoXboxFile;
+	// Open the desired file
+	playerTwoXboxFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+
+	// Check for error when loading the file
+	if (playerTwoXboxFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one xbox file";
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		windowMgr::getInstance()->controllerXboxPTwo[0] = 2;
+		windowMgr::getInstance()->controllerXboxPTwo[1] = 3;
+		windowMgr::getInstance()->controllerXboxPTwo[2] = 7;
+		windowMgr::getInstance()->controllerXboxPTwo[3] = 10;
+		windowMgr::getInstance()->controllerXboxPTwo[4] = 11;
+		windowMgr::getInstance()->controllerXboxPTwo[5] = 12;
+		windowMgr::getInstance()->controllerXboxPTwo[6] = 13;
+		windowMgr::getInstance()->controllerXboxPTwo[7] = 1;
+		windowMgr::getInstance()->controllerXboxPTwo[8] = 4;
+		windowMgr::getInstance()->controllerXboxPTwo[9] = 5;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerTwoXboxFile >> windowMgr::getInstance()->controllerXboxPTwo[l];
+		// Output them to the screen
+		cout << windowMgr::getInstance()->controllerXboxPTwo[l] << endl;
+	}
+
+	//*************KEYBOARD PLAYER ONE *****************//
+	// Create an input file object for player one keyboard controls
+	ifstream playerOneKeyboardFile;
+	// Open the desired file
+	playerOneKeyboardFile.open("..\\NuttyPutters\\input\\p1Keyboard.txt");
+
+	// Check for error when loading the file
+	if (playerOneKeyboardFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one keyboard file";
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		windowMgr::getInstance()->keyboardFunctionsPOne[0] = 81;
+		windowMgr::getInstance()->keyboardFunctionsPOne[1] = 69;
+		windowMgr::getInstance()->keyboardFunctionsPOne[2] = 80;
+		windowMgr::getInstance()->keyboardFunctionsPOne[3] = 87;
+		windowMgr::getInstance()->keyboardFunctionsPOne[4] = 68;
+		windowMgr::getInstance()->keyboardFunctionsPOne[5] = 83;
+		windowMgr::getInstance()->keyboardFunctionsPOne[6] = 65;
+		windowMgr::getInstance()->keyboardFunctionsPOne[7] = 90;
+		windowMgr::getInstance()->keyboardFunctionsPOne[8] = 82;
+		windowMgr::getInstance()->keyboardFunctionsPOne[9] = 70;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerOneKeyboardFile >> windowMgr::getInstance()->keyboardFunctionsPOne[l];
+		// Output them to the screen
+		cout << windowMgr::getInstance()->keyboardFunctionsPOne[l] << endl;
+	}
+
+	//*************KEYBOARD PLAYER TWO *****************//
+	// Create an input file object for player two keyboard controls
+	ifstream playerTwoKeyboardFile;
+	// Open the desired file
+	playerTwoKeyboardFile.open("..\\NuttyPutters\\input\\p2Keyboard.txt");
+
+	// Check for error when loading the file
+	if (playerTwoKeyboardFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one keyboard file";
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		windowMgr::getInstance()->keyboardFunctionsPTwo[0] = 72;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[1] = 71;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[2] = 89;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[3] = 73;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[4] = 76;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[5] = 75;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[6] = 74;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[7] = 77;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[8] = 78;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[9] = 79;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerTwoKeyboardFile >> windowMgr::getInstance()->keyboardFunctionsPTwo[l];
+		// Output them to the screen
+		cout << windowMgr::getInstance()->keyboardFunctionsPTwo[l] << endl;
 	}
 
 	// LOAD HIGHSCORE SCENE TEXTURES

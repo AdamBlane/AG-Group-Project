@@ -81,7 +81,13 @@ class windowMgr
 		// All the game functions are stored here with the index being the function and the value being the button number
 		int gameFunctions[10];
 		int gameKeyboardFunctions[10];
-		int gameKeyboardFunctionsPOne[10];
+
+		int controllerXboxPOne[10];
+		int controllerXboxPTwo[10];
+		int controllerPSPOne[10];
+		int controllerPSPTwo[10];
+		int keyboardFunctionsPOne[10];
+		int keyboardFunctionsPTwo[10];
 
 		// KEYBOARD - One
 		// Comma = 0

@@ -193,4 +193,8 @@ public:
 	void Render(GLFWwindow* window);
 	// For mouse button actions
 	void Click(GLFWwindow* window);
+	// Load unqiue player buttons
+	void InitPlayerButtonsPlayerOne(GLFWwindow* window);
+	// Load unqiue player buttons
+	void InitPlayerButtonsPlayerTwo(GLFWwindow* window);
 };
