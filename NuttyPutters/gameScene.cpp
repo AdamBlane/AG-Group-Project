@@ -169,46 +169,55 @@ void gameScene::LoadGame(string seed)
 
 }
 
+//
 void changeDirection(Player &player, vec3 rectCenter, vec3 rectSize)
 {
+	// Get reverse direction of player 
 	vec3 p = player.transform.getPos() - rectCenter;
+	// Direction is given by normalizing
 	p = normalize(p);
-
+	// Find player curret speed
 	float speed = length(player.velocity);
 
-	player.velocity = p * speed;
-
+	player.velocity = p * speed; // (/ p.mass); - apply damping based on mass
+	
+	// Don't affect height of player
 	player.velocity.y = 0.0f;
 }
 
+// This should eventually be moved into courseGenTiles.cpp, along with all other collision code
 bool SphereRectCollision(Player player, vec3 rectCenter, vec3 rectSize)
 {
-
+	// Get distance from player to center of rectangle being tested for intersection
 	float sphereXDistance = abs(player.transform.getPos().x - rectCenter.x);
 	float sphereYDistance = abs(player.transform.getPos().y - rectCenter.y);
 	float sphereZDistance = abs(player.transform.getPos().z - rectCenter.z);
 
+	// If player distance is greater than half player + half box (not intersecting)
 	if (sphereXDistance >= (rectSize.x + player.radius)) { return false; }
 	if (sphereYDistance >= (rectSize.y + player.radius)) { return false; }
 	if (sphereZDistance >= (rectSize.z + player.radius)) { return false; }
 
+	// If player distance is less; intersection
 	if (sphereXDistance < (rectSize.x))
 	{
 		return true;
 	}
-	if (sphereYDistance < (rectSize.y))
+	else if (sphereZDistance < (rectSize.z))
 	{
 		return true;
 	}
-	if (sphereZDistance < (rectSize.z))
+	else if (sphereYDistance < (rectSize.y))
 	{
 		return true;
 	}
 
+	// what's this doing exactly? s
 	float cornerDistance_sq = ((sphereXDistance - rectSize.x) * (sphereXDistance - rectSize.x)) +
 		((sphereYDistance - rectSize.y) * (sphereYDistance - rectSize.y) +
 		((sphereYDistance - rectSize.z) * (sphereYDistance - rectSize.z)));
 
+	// 
 	return (cornerDistance_sq < (player.radius * player.radius));
 }
 
@@ -1180,40 +1189,57 @@ void gameScene::Update(GLFWwindow* window)
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-
+	// For each player
 	for (auto &p : players)
 	{
+		//
 		float ballSize = p.radius * 3;
+		//
 		float heightTile = 1.0f;
 
-		for (unsigned int i = 0; i < obstacles.size(); i += 2)
+		// For each obstacle (2n, n = obstacles.size())
+		// i is index of tile obstacle appears (to be compared with player.currentTile)
+		// i+1 is obstacle type
+		for (unsigned int i = 0; i < obstacles.size(); i += 2) 
 		{
+			// If this player shares a tile with an obstacle
 			if (p.currentTile == obstacles.at(i))
 			{
+				// Act based on obstacle type
 				switch (obstacles.at(i + 1))
 				{
+				// obstacle 1: 
 				case 1:
 				{
-					
+					// This box is the area the player cannot enter?
+					//
 					vec3 box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z + ballSize * 2);
+					//
 					vec3 box2Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x + ((ballSize / 2) + (heightTile / 2)), masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ballSize * 2);
-
+					//
 					vec3 boxSize = vec3((masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2, 1.0f, heightTile / 2);
 
+					// If player is on a straight horizontal tile - was this because you set bridge tile id to 2 for testing? 
 					if (masterAlgTiles[currentLevel].at(p.currentTile)->id == 2)
 					{
+						// Is this the bridge tile center piece?
+						//
 						box1Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x - ballSize * 2, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z - ((ballSize / 2) + (heightTile / 2)));
+						//
 						box2Pos = vec3(masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.x + ballSize * 2, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.z + ((ballSize / 2) + (heightTile / 2)));
-
+						//
 						boxSize = vec3(heightTile / 2, 1.0f, (masterAlgTiles[currentLevel].at(p.currentTile)->size - (heightTile * 3) - ballSize) / 2);
 					}
 
+					// Does player intersect above boxes - which box is which?
 					bool intersect = SphereRectCollision(p, box1Pos, boxSize);
 					if (intersect)
 					{
 						changeDirection(p, box1Pos, boxSize);
 					}
 
+
+					//
 					bool intersect2 = SphereRectCollision(p, box2Pos, boxSize);
 					if (intersect2)
 					{
@@ -1222,6 +1248,7 @@ void gameScene::Collisions()
 					
 				}
 				break;
+				// obstacle 2: 
 				case 2:
 				{
 					bool intersect = SphereRectCollision(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords, vec3(1.0f, 1.0f, 1.0f));
