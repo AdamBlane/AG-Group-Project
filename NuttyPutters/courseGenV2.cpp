@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <fstream>
 #include <string>
+#include <iostream>
 
 using namespace std::chrono;
 
@@ -323,6 +324,7 @@ vector<int> courseGenV2::SetupSeed(string seed)
 		default_random_engine rng(random_device{}());
 		uniform_int_distribution<int> distribution(1, seedsCount);
 		int choice = distribution(rng);
+		cout << choice << endl;
 		// read that line
 		string line;
 		for (int l = 0; l < choice; ++l)

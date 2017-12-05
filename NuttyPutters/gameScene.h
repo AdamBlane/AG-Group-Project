@@ -119,8 +119,6 @@ public:
 	void Update(GLFWwindow* window);
 	// Check for player collisions
 	void Collisions();
-	// Threads test
-	void ThreadCol(Player &player);
 	// Draw stuff
 	void Render(GLFWwindow* window);
 };

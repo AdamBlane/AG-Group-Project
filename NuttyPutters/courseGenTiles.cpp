@@ -342,7 +342,7 @@ float UpRampDown::SetPlayerHeight(Player player)
 	// this is the alternate; forcibly pushing the player upwards to appear level
 	return y + 1; // was return player
 }
-
+// Ramp - set y position of player on ramp accordingly
 float DownRampDown::SetPlayerHeight(Player player)
 {
 	// First find how much to increment y for every 1 in z
@@ -358,6 +358,14 @@ float DownRampDown::SetPlayerHeight(Player player)
 	// This is also dy, which needs to be scaled by dt to add an impulse in y direction
 	// this is the alternate; forcibly pushing the player upwards to appear level
 	return y + 1; // was return player
+}
+
+// Affect floor level when player is on this tile
+void GapTile::CheckCollisions(Player &player)
+{
+	// Player keeps track of floor level of tile its on
+	// So set floor level to bottom of skybox! 
+	player.floorLevel = -490.0f;
 }
 
 // Collisions check for end tile
@@ -492,16 +500,23 @@ void EndTile::CheckCollisions(Player &player)
 			windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
 		}
 	}
+	
+	
 	// Check if over end hole
 	if (player.transform.getPos().x > thisCoords.x - 0.75 && player.transform.getPos().x < thisCoords.x + 0.75 &&
 		player.transform.getPos().z > thisCoords.z - 0.75 && player.transform.getPos().z < thisCoords.z + 0.75)
 	{
-		if(length(player.velocity) < 2.0f)
+		// If not moving so fast, allow to fall into hole
+		if (length(player.velocity) < 2.0f)
 		{
-			// Apply gravity
-			//player.velocity.y -= 0.2f;
+			// Flip flag
 			player.ballInHole = true;
+			// Set floor level to bottom of skybox
+			floorLevel = -490.0f;
 		}
+
 	}
+	else if (!player.ballInHole)
+		floorLevel = 0.0f;
 
 }
