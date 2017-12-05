@@ -778,7 +778,7 @@ void highscoreScene::Track_Mouse(GLFWwindow * win)
 			windowMgr::getInstance()->button_manager = 4;
 		}
 		//this is to highlight right arrow
-		else if (windowMgr::getInstance()->mouse_x <= 1351 && windowMgr::getInstance()->mouse_x >= 1429)
+		else if (windowMgr::getInstance()->mouse_x >= 1351 && windowMgr::getInstance()->mouse_x <= 1429)
 		{
 			windowMgr::getInstance()->button_manager = 5;
 		}
