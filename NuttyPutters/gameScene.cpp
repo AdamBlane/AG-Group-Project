@@ -471,15 +471,17 @@ void gameScene::Input(GLFWwindow* window)
 	for (auto &p : players)
 	{
 		// Jump
-		if (glfwGetKey(window, p.jumpButton))
+		if (glfwGetKey(window, p.jumpButton) && p.jumpCounter < 3) //AND player hasn't jumped thrice
 		{
+			// Increase player jump count
+			p.jumpCounter++;
 			p.jumpPressed = true;
 		}
 
 		if (!glfwGetKey(window, p.jumpButton))
 		{
-			// If jump button recently pressed AND player hasn't jumped thrice
-			if (p.jumpPressed && p.jumpCounter < 2)
+			// If jump button recently pressed 
+			if (p.jumpPressed)
 			{
 				// SFX
 				windowMgr::getInstance()->PlayThisSound("golfBallJump");
@@ -487,8 +489,7 @@ void gameScene::Input(GLFWwindow* window)
 				physicsSystem.Jump(p, 5.0f); // Arbitrary jump value
 				// Ball is moving!
 				p.isMoving = true;
-				// Increase player jump count
-				p.jumpCounter++;
+
 				// Flip
 				p.jumpPressed = false;
 			}
@@ -1010,13 +1011,15 @@ void gameScene::Update(GLFWwindow* window)
 		if (p.isMoving)
 		{
 			// Work out whether to apply gravity or not (is player on the floor/in air)
-			physicsSystem.ApplyGravity(p, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 0.5 + p.radius); 
+			// Update player's floor level for this tile - this tile floor level + 0.5 (half tile thickness) + player radius
+			p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
+			physicsSystem.ApplyGravity(p, p.floorLevel); 
 			
 			// If time to perform another physics step																						 // Perform physics step	
 			//if (accumulator >= dt)
 			{
 				// Update position
-				physicsSystem.Integrate(p, dt, masterAlgTiles[currentLevel].at(p.currentTile)->thisCoords.y + 0.5 + p.radius);
+				physicsSystem.Integrate(p, dt, p.floorLevel);
 				
 				// Remove dt from accumulator
 				//accumulator -= dt;

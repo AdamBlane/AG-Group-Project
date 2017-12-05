@@ -59,21 +59,53 @@ void Physics::ApplyGravity(Player &player, float floorLevel)
 {
 	// Vars used for grav formula
 	float Py = player.transform.getPos().y; 
-	float Ty = floorLevel - 1; // Player position on floor subtract floor gap
-	float f = 1; // Floor gap
+	//float Ty = floorLevel - 1; // Player position on floor subtract floor gap
+//	float f = 1; // Floor gap
 	// This will equate to either 0 or 1, thus applying gravity when required 
-	gravFlag = ceil((Py - (Ty + f)) / Py);
-	// If it's a 1, player is in the air
-	if (gravFlag == 1)
-		// Ensure gravity is correct 
-		gravity.y = -9.8f;
-	// Otherwise, player is at floor level
+	//gravFlag = ceil((Py - abs(Ty + f)) / Py);
+	
+	// If player position subtract floor level is 0, player is on/under floor
+	if (Py - floorLevel <= 0)
+	{
+
+		gravFlag = 0;
+		player.jumpCounter = 0; // Or this function returns 1/0 which is always * by jC
+	}
 	else
 	{
-		gravFlag = 0; // In case of -1
-		player.jumpCounter = 0;
+		gravFlag = 1;
+		gravity.y = -9.8f;
+		//cout << "In air: " << Py - floorLevel << endl;
 	}
 	
+	// If the player has since fallen through the hole and is near bottom of skybox
+	if (Py < -480.0f)
+	{
+		// Tp to side
+		player.transform.getPos().x = 480.0f;
+		// Teleport player to top of skybox
+		player.transform.getPos().y = 480.0f;
+		// Reduce accrued gravity
+		//player.velocity.y = -1.0;
+		// clear vel and reset position
+		player.velocity.x = player.velocity.z = 0.0;
+		player.transform.getPos().x = player.transform.getPos().z = 0.0;
+		// reset ball in hole
+		player.ballInHole = false;
+		// player is now falling
+		player.isFalling = true;
+	}
+	// If it's a 1, player is in the air
+	//if (gravFlag == 1)
+	//	// Ensure gravity is correct 
+	//	gravity.y = -9.8f;
+	//// Otherwise, player is at floor level
+	//else
+	//{
+	//	gravFlag = 0; // In case of -1
+	//	
+	//}
+
 
 }
 
@@ -87,60 +119,52 @@ void Physics::Integrate(Player &player, double dt, float floorLevel)
 	friction.y = 0.0;
 	
 	// If the player has reached end hole, set new lower floor level
-	if (player.ballInHole)
-	{
-		// Set lower floot limit
-		floorLevel = -490.0f;
-		// Apply and set gravity
-		gravFlag = 1;
-		gravity.y = -9.8;
-	}
-	// If the player has since fallen through the hole and is near bottom of skybox
-	if (player.transform.getPos().y < -480.0f)
-	{
-		// Teleport playyer to top of skybox
-		player.transform.getPos().y = 480.0f;
-		// Reduce accrued gravity
-		//player.velocity.y = -1.0;
-		// clear vel and reset position
-		player.velocity.x = player.velocity.z = 0.0;
-		player.transform.getPos().x = player.transform.getPos().z = 0.0;
-		// reset ball in hole
-		player.ballInHole = false;
-		// player is now falling
-		player.isFalling = true;
-	}
-	
-	// If the goes below the ground, reset its position to floor level and clear any accrued gravity
-	if (player.transform.getPos().y < floorLevel) 
+	// THIS ISN'T PHYSICS YO
+	//if (player.ballInHole)
+	//{
+	//	// Set lower floot limit
+	//	floorLevel = -490.0f;
+	//	// Apply and set gravity
+	//	// TODO REMOVE THIS SHIT
+	//	gravFlag = 1;
+	//	gravity.y = -9.8;
+	//}
+
+
+	// MORE NOT PHYSICS
+	if (player.transform.getPos().y < floorLevel && !player.ballInHole)
 	{
 		// Move to floor level
 		player.transform.getPos().y = floorLevel;
-		
+
 		// Bounce with enough downwards force
 		if (abs(player.velocity.y) > epsilon)
 		{
-			// Reverse y direction; bounce
-			player.velocity.y = -player.velocity.y;
-			// Remove some velocity from damping
+			// Don't bounce if falling onto new level
 			if (player.isFalling)
 			{
+				// Just stop!
 				player.velocity.y = 0.0;
 				player.isFalling = false;
 			}
-				
+			// Remove some velocity from damping
 			else
+			{
 				player.velocity.y *= 0.5;
-			//player.velocity.y /= player.mass;
+				player.velocity.y /= player.mass;
+			}
+			// Reverse y direction; bounce
+			player.velocity.y = -player.velocity.y;
 		}
 		// Not enough downwards force; stop bouncing
 		else
 		{
-			player.velocity.y = 0.0;		
+			player.velocity.y = 0.0;
 		}
-
-		
 	}
+	
+	// If the goes below the ground, reset its position to floor level and clear any accrued gravity
+	
 
 	// Multiply gravity by flag to determine whether or not it should affect vel
 	gravity *= gravFlag;

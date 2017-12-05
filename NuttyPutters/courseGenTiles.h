@@ -38,6 +38,7 @@ public:
 	// This tile's position, the next tile's position
 	vec3 thisCoords;
 	vec3 nextCoords;
+	float floorLevel = 0.0f;
 	// Each tile is identified by a number
 	int id;
 	// Tiles have a size (10x10 currently)
@@ -91,6 +92,7 @@ public:
 	virtual void CheckCollisions(Player &player);
 	
 };
+
 // Straight horizontal tile
 class StraightTile_H : public BaseTile
 {
@@ -182,11 +184,22 @@ public:
 class Bridge_V : public BaseTile
 {
 public:
-	Bridge_V() { id = 10; }
+	Bridge_V() { id = 7; }
 	~Bridge_V() {};
 
 	virtual void CheckCollisions(Player &player) {}
 };
+
+// NO TILE!
+class GapTile : public BaseTile
+{
+public:
+	GapTile() { id = 8; }
+	~GapTile() {}
+
+	virtual void CheckCollisions(Player &player);
+};
+
 
 // End tile
 class EndTile : public BaseTile
