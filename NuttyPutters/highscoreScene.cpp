@@ -764,45 +764,72 @@ void highscoreScene::Track_Mouse(GLFWwindow * win)
 		}
 	}
 	//this is for main menu button
-	else if ((windowMgr::getInstance()->mouse_x >= 1151 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1534 * windowMgr::getInstance()->windowScale)
-		&& (windowMgr::getInstance()->mouse_y >= 411 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 481 * windowMgr::getInstance()->windowScale))
+	else if ((windowMgr::getInstance()->mouse_x >= 1086 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1469 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 809 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 877 * windowMgr::getInstance()->windowScale))
 	{
 		windowMgr::getInstance()->button_manager = 3;
+	}
+	//this is for main menu button
+	else if ((windowMgr::getInstance()->mouse_y >= 703 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 758 * windowMgr::getInstance()->windowScale))
+	{	
+		//this is to highlights left arrow
+		if (windowMgr::getInstance()->mouse_x >= 1127 && windowMgr::getInstance()->mouse_x <= 1203)
+		{
+			windowMgr::getInstance()->button_manager = 4;
+		}
+		//this is to highlight right arrow
+		else if (windowMgr::getInstance()->mouse_x <= 1351 && windowMgr::getInstance()->mouse_x >= 1429)
+		{
+			windowMgr::getInstance()->button_manager = 5;
+		}
 	}
 }
 
 //whenever a click occurs
 void highscoreScene::Click(GLFWwindow * win)
 {
+	// Create the outputFile object
+	ofstream outputFile;
 	switch (windowMgr::getInstance()->button_manager)
 	{
-	case 1:
-		windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLblGreen"]);
-		windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblRed"]);
-		//put in code here for player 1
-		InitPlayerButtonsPlayerOne(win);
-		break;
-	case 2:
-		windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLblRed"]);
-		windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblGreen"]);
-		//put in code here for player 2
-		InitPlayerButtonsPlayerTwo(win);
-		break;
-	//to go back to main menu
-	case 3:
-		// Create the outputFile object
-		ofstream outputFile;
-		// Set the output file
-		outputFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
-		// Loop through total number of entries 
-		for (int l = 0; l < 10; l++)
-		{
-			// Output the values to the output file
-			outputFile << windowMgr::getInstance()->gameFunctions[l] << endl;
-		}
-		
-		windowMgr::getInstance()->sceneManager.changeScene(1);
-		break;
+		case 1:
+			windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLblGreen"]);
+			windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblRed"]);
+			//put in code here for player 1
+			InitPlayerButtonsPlayerOne(win);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLblRed"]);
+			windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblGreen"]);
+			//put in code here for player 2
+			InitPlayerButtonsPlayerTwo(win);
+			break;
+		//to go back to main menu
+		case 3:
+			// Set the output file
+			outputFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+			// Loop through total number of entries 
+			for (int l = 0; l < 10; l++)
+			{
+				// Output the values to the output file
+				outputFile << windowMgr::getInstance()->gameFunctions[l] << endl;
+			}
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+			break;
+		//left arrow function
+		case 4:
+			///
+			cout << "oui" << endl;
+			///put stuff here 
+			///
+			break;
+		//right arrow functio
+		case 5:
+			///
+			cout << "si" << endl;
+			///put stuff here 
+			///
+			break;
 	}
 }
 
