@@ -146,6 +146,7 @@ void optionsScene::Click_or_Enter(GLFWwindow *win)
 			break;
 		// Case 3 - Back button
 		case 6:
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
 			windowMgr::getInstance()->sceneManager.changeScene(1);
 			break;
 	}
@@ -290,7 +291,7 @@ void optionsScene::Input(GLFWwindow* win)
 		previousMenuItem = currentMenuItem;
 		if (windowMgr::getInstance()->downPressed)
 		{
-			if (currentMenuItem == 4)
+			if (currentMenuItem == 6)
 			{
 				currentMenuItem = 1;
 			}
