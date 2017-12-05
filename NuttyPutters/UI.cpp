@@ -17,21 +17,21 @@ void UI::p1Setup()
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
 	// Timer seconds digit
-	windowMgr::getInstance()->meshes.at(2)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(2.8f, 1.7f, 0.0f));
-	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	// Timer tens digit
-	windowMgr::getInstance()->meshes.at(3)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(2.95f, 1.7f, 0.0f));
-	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	// Timer minutes digit
-	windowMgr::getInstance()->meshes.at(4)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(3.15f, 1.7f, 0.0f));
-	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	// Timer tens of minutes digit
 	windowMgr::getInstance()->meshes.at(5)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(3.3f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(2.8f, 1.7f, 0.0f));
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Timer tens digit
+	windowMgr::getInstance()->meshes.at(4)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(2.95f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Timer minutes digit
+	windowMgr::getInstance()->meshes.at(3)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(3.15f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Timer tens of minutes digit
+	windowMgr::getInstance()->meshes.at(2)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(3.3f, 1.7f, 0.0f));
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 	// Timer semi colon
 	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(3.05f, 1.7f, 0.0f));
