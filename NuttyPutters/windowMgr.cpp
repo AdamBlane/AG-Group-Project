@@ -493,6 +493,7 @@ GLFWwindow* windowMgr::Init()
 	// Open the desired file
 	playerOneXboxFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
 
+	// This is window manager - don't need the get instance stuff here!
 	// Check for error when loading the file
 	if (playerOneXboxFile.fail())
 	{
