@@ -39,7 +39,8 @@ public:
 	// Deconstructor
 	~gameScene();
 
-	Transform ufoTransform;
+	
+
 	//Players list
 	vector<Player> players;
 	// Number of players this game
@@ -77,6 +78,9 @@ public:
 	vector<vector<int>> masterObstacles; 
 	// List of pickup crate locations for each level
 	vector<int> pickupPositionIndices;
+	// Holds two wormhole transforms
+	vector<Transform> wormholeTransforms;
+
 
 	vec3 prevPos = vec3(0);
 

@@ -78,11 +78,11 @@ void Physics::ApplyGravity(Player &player, float floorLevel)
 		//cout << "In air: " << Py - floorLevel << endl;
 	}
 	
-	// If the player has since fallen through the hole and is near bottom of skybox
-	if (Py < -480.0f)
+	// If the player has since fallen through the hole and is near bottom of skybox 
+	if (Py < -489.0f)
 	{
 		// Tp to side
-		player.transform.getPos().x = 480.0f;
+		//player.transform.getPos().x = 480.0f;
 		// Teleport player to top of skybox
 		player.transform.getPos().y = 480.0f;
 		// Reduce accrued gravity
@@ -95,6 +95,7 @@ void Physics::ApplyGravity(Player &player, float floorLevel)
 		// player is now falling
 		player.isFalling = true;
 	}
+
 	// If it's a 1, player is in the air
 	//if (gravFlag == 1)
 	//	// Ensure gravity is correct 

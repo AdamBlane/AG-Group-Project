@@ -115,7 +115,9 @@ GLFWwindow* windowMgr::Init()
 	// Update hud target camera
 	HUDtargetCam->update(0.00001);
 
-
+	wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+	wormholeTexture = new Texture("..\\NuttyPutters\\wormhole.jpg");
+	wormholeMesh->SetTexture(wormholeTexture);
 	// ############################ AUDIO ############################
 	// Init fmod system
 	FMOD::System_Create(&system);
