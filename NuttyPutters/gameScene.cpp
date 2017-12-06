@@ -138,7 +138,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[0]);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[1]);
 
-	
+
+	ufoTransform.getPos() = vec3(0, 10, 0);
 	// Set pickup crate properties
 	SetupPickupCrates();
 	
@@ -1258,6 +1259,8 @@ void gameScene::Render(GLFWwindow* window)
 	windowMgr::getInstance()->textureShader->Update(players[0].arrowTransform, mvp);
 	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
 	players[0].arrowTransform.setRot(glm::vec3(0, -players[0].chaseCamAngle - 1.5708, 0));
+
+
 
 
 	// TEST

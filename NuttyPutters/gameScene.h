@@ -39,6 +39,7 @@ public:
 	// Deconstructor
 	~gameScene();
 
+	Transform ufoTransform;
 	//Players list
 	vector<Player> players;
 	// Number of players this game
