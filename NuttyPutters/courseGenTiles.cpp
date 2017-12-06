@@ -520,3 +520,16 @@ void EndTile::CheckCollisions(Player &player)
 		floorLevel = 0.0f;
 
 }
+
+void Bridge_V::CheckCollisions(Player &player)
+{
+	if (player.transform.getPos().x > thisCoords.x + (0.75f + (player.radius / 2.0f)) ||
+		player.transform.getPos().x < thisCoords.x - (0.75f - (player.radius / 2.0f)))
+	{
+		floorLevel = -490.0f;
+	}
+	else
+	{
+		floorLevel = 0.0f;
+	}
+}
