@@ -493,32 +493,32 @@ GLFWwindow* windowMgr::Init()
 	// Open the desired file
 	playerOneXboxFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
 
-	// This is window manager - don't need the get instance stuff here!
 	// Check for error when loading the file
 	if (playerOneXboxFile.fail())
 	{
 		// Print to screen
 		cout << "Error in opening player one xbox file";
 		// Set default values for xbox controller - FUNCTION/BUTTONS
-		windowMgr::getInstance()->controllerXboxPOne[0] = 2;
-		windowMgr::getInstance()->controllerXboxPOne[1] = 3;
-		windowMgr::getInstance()->controllerXboxPOne[2] = 7;
-		windowMgr::getInstance()->controllerXboxPOne[3] = 10;
-		windowMgr::getInstance()->controllerXboxPOne[4] = 11;
-		windowMgr::getInstance()->controllerXboxPOne[5] = 12;
-		windowMgr::getInstance()->controllerXboxPOne[6] = 13;
-		windowMgr::getInstance()->controllerXboxPOne[7] = 1;
-		windowMgr::getInstance()->controllerXboxPOne[8] = 4;
-		windowMgr::getInstance()->controllerXboxPOne[9] = 5;
+		controllerXboxPOne[0] = 2;
+		controllerXboxPOne[1] = 3;
+		controllerXboxPOne[2] = 7;
+		controllerXboxPOne[3] = 10;
+		controllerXboxPOne[4] = 11;
+		controllerXboxPOne[5] = 12;
+		controllerXboxPOne[6] = 13;
+		controllerXboxPOne[7] = 1;
+		controllerXboxPOne[8] = 4;
+		controllerXboxPOne[9] = 5;
 	}
 
 	// For the number of lines in the input file 
 	for (int l = 0; l < 10; l++)
 	{
 		// Assign the psoition, score and name to the arrays from the file
-		playerOneXboxFile >> windowMgr::getInstance()->controllerXboxPOne[l];
-		// Output them to the screen
-		cout << windowMgr::getInstance()->controllerXboxPOne[l] << endl;
+		playerOneXboxFile >> playerXboxControls[0][l];
+		cout << "C1 pl " << playerXboxControls[0][l] << endl; 	
+		controllerXboxPOne[l] = playerXboxControls[0][l];
+		cout << "C1 co " << controllerXboxPOne[l] << endl;
 	}
 
 	//*************XBOX PLAYER TWO *****************//
@@ -531,27 +531,28 @@ GLFWwindow* windowMgr::Init()
 	if (playerTwoXboxFile.fail())
 	{
 		// Print to screen
-		cout << "Error in opening player one xbox file";
+		cout << "Error in opening player one xbox file" << endl;
 		// Set default values for xbox controller - FUNCTION/BUTTONS
-		windowMgr::getInstance()->controllerXboxPTwo[0] = 2;
-		windowMgr::getInstance()->controllerXboxPTwo[1] = 3;
-		windowMgr::getInstance()->controllerXboxPTwo[2] = 7;
-		windowMgr::getInstance()->controllerXboxPTwo[3] = 10;
-		windowMgr::getInstance()->controllerXboxPTwo[4] = 11;
-		windowMgr::getInstance()->controllerXboxPTwo[5] = 12;
-		windowMgr::getInstance()->controllerXboxPTwo[6] = 13;
-		windowMgr::getInstance()->controllerXboxPTwo[7] = 1;
-		windowMgr::getInstance()->controllerXboxPTwo[8] = 4;
-		windowMgr::getInstance()->controllerXboxPTwo[9] = 5;
+		controllerXboxPTwo[0] = 2;
+		controllerXboxPTwo[1] = 3;
+		controllerXboxPTwo[2] = 7;
+		controllerXboxPTwo[3] = 10;
+		controllerXboxPTwo[4] = 11;
+		controllerXboxPTwo[5] = 12;
+		controllerXboxPTwo[6] = 13;
+		controllerXboxPTwo[7] = 1;
+		controllerXboxPTwo[8] = 4;
+		controllerXboxPTwo[9] = 5;
 	}
 
 	// For the number of lines in the input file 
 	for (int l = 0; l < 10; l++)
 	{
 		// Assign the psoition, score and name to the arrays from the file
-		playerTwoXboxFile >> windowMgr::getInstance()->controllerXboxPTwo[l];
-		// Output them to the screen
-		cout << windowMgr::getInstance()->controllerXboxPTwo[l] << endl;
+		playerTwoXboxFile >> playerXboxControls[1][l];
+		cout << "C1 pl " << playerXboxControls[1][l] << endl;
+		controllerXboxPTwo[l] = playerXboxControls[1][l];
+		cout << "C1 co " << controllerXboxPTwo[l] << endl;
 	}
 
 	//*************KEYBOARD PLAYER ONE *****************//
@@ -564,7 +565,7 @@ GLFWwindow* windowMgr::Init()
 	if (playerOneKeyboardFile.fail())
 	{
 		// Print to screen
-		cout << "Error in opening player one keyboard file";
+		cout << "Error in opening player one keyboard file" << endl;
 		// Set default values for xbox controller - FUNCTION/BUTTONS
 		windowMgr::getInstance()->keyboardFunctionsPOne[0] = 81;
 		windowMgr::getInstance()->keyboardFunctionsPOne[1] = 69;

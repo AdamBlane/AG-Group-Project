@@ -53,7 +53,6 @@ public:
 	int courseSize;
 	// Best position of world clock
 
-	const unsigned char *buttons;
 	// SYSTEMS USED
 	// Handles gameplay logic
 	GameLogicMgr gameLogicMgr;
@@ -80,6 +79,17 @@ public:
 	// Prevent saving same level more than once
 	bool levelSaved = false; 
 	bool continuePressed, resetPressed = false;;
+
+	// Setup GLFW joystick button input - required for doing anything with buttons
+	int controllerOneButtonCount;
+	const unsigned char *controllerOne;
+	int controllerTwoButtonCount;
+	const unsigned char *controllerTwo;
+	vector<const unsigned char*> controllers;
+	int controllerOneAxisCount;
+	const float *controllerOneAxis; 
+	int controllerTwoAxisCount;
+	const float *controllerTwoAxis;
 
 	// Track fps to give dt
 	double currentTime = glfwGetTime();

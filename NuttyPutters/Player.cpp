@@ -81,9 +81,12 @@ Player::Player(string inputConfigFilePath)
 			continue;
 		}
 	}
+
+
 	// If the player using contoller one is player one then
 	if (windowMgr::getInstance()->playerUsingControllerOne == 1)
 	{
+		
 		// Loop through all the buttons player one has assigned to their controller and make them equal to arr[]
 		for (int i = 0; i < 10; i++)
 		{
@@ -92,4 +95,9 @@ Player::Player(string inputConfigFilePath)
 			cout << "Functon " << i << " Equals " << windowMgr::getInstance()->controllerXboxPOne[i] << endl;
 		}
 	}
+}
+
+void Player::SetupControls()
+{
+	// Assign correct input file for this player
 }

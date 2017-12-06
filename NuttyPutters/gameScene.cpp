@@ -146,7 +146,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Start game logic mgr
 	// Pass in end hole position for two player mode
 	gameLogicMgr.Setup(numPlayers, courseSize);
-
+	
 
 	
 	glEnable(GL_BLEND);
@@ -442,6 +442,21 @@ void gameScene::Loop(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
+	controllers.clear();
+	controllerOne = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &controllerOneButtonCount);
+	if (controllerOne != NULL)
+	{
+		controllers.push_back(controllerOne);
+		controllerOneAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &controllerOneAxisCount);
+
+	}
+	controllerTwo = glfwGetJoystickButtons(GLFW_JOYSTICK_2, &controllerTwoButtonCount);
+	if (controllerTwo != NULL)
+	{
+		controllers.push_back(controllerTwo);
+		controllerTwoAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_2, &controllerTwoAxisCount);
+	}
+
 	// Loop around players and their inputs for both keyboard and controller
 	int thisPlayer = 0;
 
@@ -464,17 +479,19 @@ void gameScene::Input(GLFWwindow* window)
 		}
 	}
 
+
+
 	// For every player
 	for (auto &p : players)
 	{
-		// Jump if keyboard key pressed or if control button arr[7] - 7 being jump has been pressed. 7 equals B for player one currently
-		if (glfwGetKey(window, p.jumpButton) || GLFW_PRESS == p.buttons[7]) // wrong
+		// Jump if keyboard key pressed or if control button arr[7] - 7 being jump has been pressed. 7 equals B for player one currently													// first clause false (p.id != 1)
+		if (glfwGetKey(window, p.jumpButton) || (controllers.size() > 0 && p.id == 1 ?  GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : NULL))) // wrong
 		{
 			cout << "jump" << endl;
 			p.jumpPressed = true;
 		}
 
-		if (!glfwGetKey(window, p.jumpButton))
+		if (!glfwGetKey(window, p.jumpButton) && (controllers.size() > 0 && p.id == 1 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : (controllers.size() > 1 && p.id == 2 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : NULL)))
 		{
 			if (p.jumpPressed)
 			{
@@ -617,7 +634,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// If the X button is pressed then continue on with game -used for HUD elements
-		if (glfwGetKey(window, GLFW_KEY_X))
+		if (glfwGetKey(window, GLFW_KEY_X) || (controllers.size() > 0 && p.id == 1 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : NULL)))
 		{
 			continuePressed = true;
 			// Start game timer
@@ -672,14 +689,14 @@ void gameScene::Input(GLFWwindow* window)
 			if (!p.isMoving)
 			{
 				// controls in the chase camera 
-				if (glfwGetKey(window, p.rightButton))
+				if (glfwGetKey(window, p.rightButton) || (controllers.size() > 0 && p.id == 1 ? controllerOneAxis[1] > -0.5 && controllerOneAxis[1] < 0.5 && controllerOneAxis[0] > 0.7 : (controllers.size() > 1 && p.id == 2 ? controllerTwoAxis[1] > -0.5 && controllerTwoAxis[1] < 0.5 && controllerTwoAxis[0] < -0.7 : NULL)))
 				{
 					//function to rotate 
 					windowMgr::getInstance()->chaseCams[thisPlayer]->yaw_it(camSpeed * dt * 0.5); // TODO - make camSpeed a variable to allow sensitivity settings
 					// Decrease chase camera angle (out of 360 degrees)
 					p.chaseCamAngle -= (camSpeed * dt * 0.5);
 				}
-				if (glfwGetKey(window, p.leftButton))
+				if (glfwGetKey(window, p.leftButton) || (controllers.size() > 0 && p.id == 1 ? controllerOneAxis[0] > -0.5 && controllerOneAxis[0] < 0.5 && controllerOneAxis[1] < -0.7 : (controllers.size() > 1 && p.id == 2 ? controllerTwoAxis[1] > -0.5 && controllerTwoAxis[1] < 0.5 && controllerTwoAxis[0] > 0.7 : NULL)))
 				{
 					windowMgr::getInstance()->chaseCams[thisPlayer]->neg_yaw_it(camSpeed * dt * 0.5);
 					// Increase chase camera angle (out of 360 degrees)
@@ -687,23 +704,23 @@ void gameScene::Input(GLFWwindow* window)
 				}
 			}
 
-
-
 			// Camera movement
-			if (glfwGetKey(window, p.downButton))
+			if (glfwGetKey(window, p.downButton) || (controllers.size() > 0 && p.id == 1 ? controllerOneAxis[0] > -0.5 && controllerOneAxis[0] < 0.5 && controllerOneAxis[1] < -0.7 : (controllers.size() > 1 && p.id == 2 ? controllerTwoAxis[0] > -0.5 && controllerTwoAxis[0] < 0.5 && controllerTwoAxis[1] > 0.7 : NULL)))
 			{
+				cout << "DOWN" << endl;
 				windowMgr::getInstance()->chaseCams[thisPlayer]->neg_pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_Posistion(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_pos_offset().y);
 			}
-			if (glfwGetKey(window, p.upButton))
+			if (glfwGetKey(window, p.upButton) || (controllers.size() > 0 && p.id == 1 ? controllerOneAxis[0] > -0.5 && controllerOneAxis[0] < 0.5 && controllerOneAxis[1] > 0.7 : (controllers.size() > 1 && p.id == 2 ? controllerTwoAxis[0] > -0.5 && controllerTwoAxis[0] < 0.5 && controllerTwoAxis[1] < -0.7 : NULL)))
 			{
+				cout << "up" << endl;
 				windowMgr::getInstance()->chaseCams[thisPlayer]->pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_Posistion(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_pos_offset().y);
 			}
-			if (glfwGetKey(window, p.zoomOutButton))
+			if (glfwGetKey(window, p.zoomOutButton) || (controllers.size() > 0 && p.id == 1 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][9]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][9]] : NULL)))
 			{
 				//function to rotate 
 				windowMgr::getInstance()->chaseCams[thisPlayer]->zoom_out(camSpeed * dt * 0.5);
 			}
-			if (glfwGetKey(window, p.zoomInButton))
+			if (glfwGetKey(window, p.zoomInButton) || (controllers.size() > 0 && p.id == 1 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][8]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][8]] : NULL)))
 			{
 				windowMgr::getInstance()->chaseCams[thisPlayer]->zoom_in(camSpeed * dt * 0.5);
 			}
@@ -727,7 +744,7 @@ void gameScene::Input(GLFWwindow* window)
 		if (continuePressed)
 		{
 			// If Fire is pressed 
-			if (glfwGetKey(window, p.fireButtton))
+			if (glfwGetKey(window, p.fireButtton) || (controllers.size() > 0 && p.id == 1 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : NULL)))
 			{
 				if (!p.isMoving)
 				{
@@ -746,6 +763,7 @@ void gameScene::Input(GLFWwindow* window)
 					// If camera angle is between 0 and 90
 					if (p.chaseCamAngle >= 0 && p.chaseCamAngle < 1.5708)
 					{
+
 						// x = -sin(theta), z = cos(theta)
 						p.direction = normalize(vec3(-sin(p.chaseCamAngle), 0.0, cos(p.chaseCamAngle)));
 					}
@@ -772,7 +790,7 @@ void gameScene::Input(GLFWwindow* window)
 			}
 		}
 		// When Fire is realesed
-		if (!glfwGetKey(window, p.fireButtton))
+		if (!glfwGetKey(window, p.fireButtton) && (controllers.size() > 0 && p.id == 1 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : (controllers.size() > 1 && p.id == 2 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : NULL)))
 		{
 			// Only work if fire button was just released
 			if (p.firePressed)

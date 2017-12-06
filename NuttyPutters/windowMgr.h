@@ -84,6 +84,7 @@ class windowMgr
 
 		int controllerXboxPOne[10];
 		int controllerXboxPTwo[10];
+		int playerXboxControls[2][10];
 		int controllerPSPOne[10];
 		int controllerPSPTwo[10];
 		int keyboardFunctionsPOne[10];
@@ -222,6 +223,9 @@ class windowMgr
 		// DPAD LEFT = 4
 		// DPAD DOWN = 5
 		// DPAD RIGHT = 6
+		// Jump = 7
+		// Zoom In = 8
+		// Zoom Out = 9
 
 		// Cameras
 		target_camera* HUDtargetCam;
