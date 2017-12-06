@@ -187,7 +187,7 @@ public:
 	Bridge_V() { id = 7; }
 	~Bridge_V() {};
 
-	virtual void CheckCollisions(Player &player) {}
+	virtual void CheckCollisions(Player &player);
 };
 
 // NO TILE!

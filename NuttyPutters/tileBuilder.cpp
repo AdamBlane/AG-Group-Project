@@ -16,11 +16,10 @@ Tile::Tile(typeTile desiredType, vec3 newPosition, int obstacleID)
 	//this_bridgeSurroundingTexture = bridgeSurroundingTexture;
 	thisTile = desiredType;
 
-	if (thisObstacleID != 0)
-	{
-		//Setting randomly the bool for the straight tile
-		obstacle();
-	}
+
+	//Setting randomly the bool for the straight tile
+	obstacle();
+
 
 	//create tile method to generate meshes composing the tile
 	createTile();
@@ -314,9 +313,8 @@ int Tile::randomNumber(int min, int max)
 //obstacle method generating obstacles of different types
 void Tile::obstacle()
 {
-	int randomObstacle = randomNumber(0, 1);
 
-	switch (randomObstacle)
+	switch (thisObstacleID)
 	{
 	case 0:
 		cout << "Has obstacle 0!" << endl << endl << endl;

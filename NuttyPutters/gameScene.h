@@ -73,9 +73,11 @@ public:
 	// List of pause cam positions and targets for each level
 	vector<vec3> pauseCamLevelProperties;
 	// Record obstacle data ( tilePos, obType, tilePos, obType etc)
-	vector<int> obstacles; 
+	vector<vector<int>> masterObstacles; 
 	// List of pickup crate locations for each level
 	vector<int> pickupPositionIndices;
+
+	vec3 prevPos = vec3(0);
 
 	// Prevent saving same level more than once
 	bool levelSaved = false; 
@@ -106,6 +108,8 @@ public:
 	void SetupTilesToBeDrawn();
 	// Sets up pickup crates for a level
 	void SetupPickupCrates();
+
+	bool ObstacleCollision(Player &player, vec3 rectCenter, vec3 rectSize);
 
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);

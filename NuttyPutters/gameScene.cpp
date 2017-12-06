@@ -33,13 +33,17 @@ gameScene::~gameScene()
 		}
 	}
 
+	for (auto &l : masterObstacles)
+	{
+		l.clear();
+	}
 	// Clear all lists
 	masterAlgTiles.clear();
 	masterLevelSeeds.clear();
 	masterTiles.clear();
 	masterSceneryTiles.clear();
 	pauseCamLevelProperties.clear();
-	obstacles.clear();
+	
 	players.clear();
 
 }
@@ -74,8 +78,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	courseSize = courseLength;
 
 	// Record how many levels to load
-	numLevels = levelCount;
-	numLevels *= 2;
+	//numLevels = levelCount;
+	numLevels = 3;
 	//numLevels = 5;
 	// TODO - above will only go to 3 levels - FIX
 
@@ -169,7 +173,7 @@ void gameScene::LoadGame(string seed)
 
 }
 
-// Populates scenery tiles
+
 // Takes in an algTiles list, spits out a sceneryTiles list
 void gameScene::FillScenery()
 {
@@ -257,17 +261,20 @@ void gameScene::FillScenery()
 void gameScene::SetupTilesToBeDrawn()
 {
 	// Go through each alg tile list
-	for (auto &l : masterAlgTiles)
+	for (int i = 0; i < masterAlgTiles.size(); i++)
 	{
 		// The list that will be generated, and added to master list at end
 		vector<Tile> tiles;
+		// The obstacle list that will be generated, and added to master list at end
+		vector<int> obstacles;
+		
 		// Index of the current tile in current alg tiles list
 		// Obstacles use this to know where in the list they are
 		int index = 0;
-
 		// TILE CREATION
-		for (auto &t : l)
+		for (auto &t : masterAlgTiles[i])
 		{
+			// If this tile features an obstacle
 			int obstacleID = 0;
 			bool hasObstacle = false;
 
@@ -275,10 +282,7 @@ void gameScene::SetupTilesToBeDrawn()
 			// Ramp up when dir is down
 			if (t->id == 7)
 			{
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
-				// Rotate on x
-				tile.transform.getRot().x = -0.349066;
-				tile.transform.getPos().y += 1.8;
+				Tile tile(Tile::BRIDGE, t->thisCoords, 0);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
@@ -304,16 +308,17 @@ void gameScene::SetupTilesToBeDrawn()
 			}
 			else if (t->id == 1) // Straight V
 			{
+				// RNG between 0 and 1
 				hasObstacle = Tile::randomNumber(0, 1);
+				// If it randomed 1
 				if (hasObstacle)
 				{
-					obstacleID = Tile::randomNumber(1, 2);
+					obstacleID = 2; // 2 is box obstacle
 					//save this tile position in algTiles
 					obstacles.push_back(index);
-					obstacles.push_back(obstacleID);
 				}
 				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
@@ -322,7 +327,7 @@ void gameScene::SetupTilesToBeDrawn()
 				hasObstacle = Tile::randomNumber(0, 1);
 				if (hasObstacle)
 				{
-					obstacleID = Tile::randomNumber(1, 2);
+					obstacleID = 2;
 					//save this tile position in algTiles
 					obstacles.push_back(index);
 					obstacles.push_back(obstacleID);
@@ -391,6 +396,7 @@ void gameScene::SetupTilesToBeDrawn()
 				}
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
+				
 			}
 			// Increase index for next tile
 			index++;
@@ -398,7 +404,8 @@ void gameScene::SetupTilesToBeDrawn()
 
 		// Add the populated tiles list to master
 		masterTiles.push_back(tiles);
-
+		// Add to master list of obstacles to be rendered
+		masterObstacles.push_back(obstacles);
 	} // end for every list in master list
 }
 
@@ -469,6 +476,7 @@ void gameScene::Input(GLFWwindow* window)
 	}
 
 
+	// 
 	for (auto &p : players)
 	{
 		// Jump
@@ -519,6 +527,8 @@ void gameScene::Input(GLFWwindow* window)
 			// Pause input...
 			while (paused)
 			{
+				// Render to show menu changes etc
+
 				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 				// Need this to listen for further key presses
 				glfwPollEvents();
@@ -1033,7 +1043,6 @@ void gameScene::Update(GLFWwindow* window)
 
 }
 
-// Tracks current tile player is on 
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
@@ -1043,6 +1052,8 @@ void gameScene::Collisions()
 		// Check collisions for the tile each player is on only
 		masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
 		
+
+
 		// 2 player only collisions (crates, other players)
 		if (numPlayers == 2)
 		{
