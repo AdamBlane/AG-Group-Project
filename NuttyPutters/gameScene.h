@@ -73,7 +73,7 @@ public:
 	// List of pause cam positions and targets for each level
 	vector<vec3> pauseCamLevelProperties;
 	// Record obstacle data ( tilePos, obType, tilePos, obType etc)
-	vector<int> obstacles; 
+	vector<vector<int>> masterObstacles; 
 	// List of pickup crate locations for each level
 	vector<int> pickupPositionIndices;
 
