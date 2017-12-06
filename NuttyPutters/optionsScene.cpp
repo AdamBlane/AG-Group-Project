@@ -113,9 +113,9 @@ void optionsScene::Click_or_Enter(GLFWwindow *win)
 			windowMgr::getInstance()->width = mode->width;
 			windowMgr::getInstance()->height = mode->height;
 			windowMgr::getInstance()->PosX = 0;
-			windowMgr::getInstance()->PosY = 0;
-			break;
+			windowMgr::getInstance()->PosY = 0;	
 
+			break;
 		// Case 2 - windowed at 1600x900
 		case 2:
 			windowMgr::getInstance()->width = mode->width / 1.2;
@@ -152,6 +152,7 @@ void optionsScene::Click_or_Enter(GLFWwindow *win)
 	// If window has been re-scaled
 	if (windowMgr::getInstance()->button_manager != 6)
 	{
+		glfwSetWindowSizeLimits(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 		glfwSetWindowSize(win, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 		//sets window postion by calling opengl function - posiotn needs updating as first funtion is just scale
 		glfwSetWindowPos(win, windowMgr::getInstance()->PosX, windowMgr::getInstance()->PosY);

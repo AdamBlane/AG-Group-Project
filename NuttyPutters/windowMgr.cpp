@@ -50,6 +50,7 @@ GLFWwindow* windowMgr::Init()
 	win = glfwCreateWindow(width, height, "Nutty Putters", NULL, NULL);
 	// Center it
 	glfwSetWindowPos(win, PosX, PosY);
+	glfwSetWindowSizeLimits(win, width, height, width,height);
 
 	// Check window was created successfully
 	if (!win)
