@@ -69,8 +69,10 @@ class windowMgr
 		Mesh* player2Mesh;
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
+		Mesh* spaceShip;
 		vector<Mesh*> pickupCrateMeshes;
 		Texture* pickupCrateTexture;
+		Texture* spaceShipTex;
 		vector<Transform> pickupCrateTransforms;
 
 		// All contorller related textures are stored in here

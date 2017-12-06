@@ -162,6 +162,10 @@ GLFWwindow* windowMgr::Init()
 		worldClock.push_back(mesh);
 	}
 
+	///////////////////// SPACESHIP ///////////////////
+	spaceShip = new Mesh("..\\NuttyPutters\\ufo.obj");
+	spaceShipTex = new Texture("..\\NuttyPutters\\tex.png");
+
 	// ############################ TEXTURES ############################
 
 	// START SCENE TEXTURES 

@@ -128,8 +128,12 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Assign arrow textures for both player arrows
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
+	windowMgr::getInstance()->spaceShip->SetTexture(windowMgr::getInstance()->spaceShipTex);
 
+	spaceTrans.getPos() = vec3(0.0f, 10.0f, 0.0f);
+	spaceTrans.getScale() = vec3(6.0f);
 
+	//windowMgr::getInstance()->spaceShip->SetTexture
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
@@ -1216,6 +1220,10 @@ void gameScene::Render(GLFWwindow* window)
 	//{
 	//	t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	//}
+
+	windowMgr::getInstance()->spaceShip->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(spaceTrans, mvp);
+	windowMgr::getInstance()->spaceShip->Draw();
 
 	// Draw 2 Player stuff
 	if (numPlayers == 2)
