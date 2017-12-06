@@ -530,6 +530,8 @@ void gameScene::Input(GLFWwindow* window)
 			// Pause input...
 			while (paused)
 			{
+				// Render to show menu changes etc
+
 				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 				// Need this to listen for further key presses
 				glfwPollEvents();
@@ -1054,6 +1056,8 @@ void gameScene::Collisions()
 		// Check collisions for the tile each player is on only
 		masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
 		
+
+
 		// 2 player only collisions (crates, other players)
 		if (numPlayers == 2)
 		{
