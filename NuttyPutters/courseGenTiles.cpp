@@ -360,6 +360,16 @@ float DownRampDown::SetPlayerHeight(Player player)
 	return y + 1; // was return player
 }
 
+void Bridge_V::CheckCollisions(Player &player)
+{
+	if (player.transform.getPos().x > thisCoords.x + (0.75 + (player.radius / 2)) ||
+		player.transform.getPos().x < thisCoords.x - (0.75 - (player.radius / 2)))
+	{
+		floorLevel = -490.0f;
+	}
+	else
+		floorLevel = 0.0f;
+}
 // Affect floor level when player is on this tile
 void GapTile::CheckCollisions(Player &player)
 {

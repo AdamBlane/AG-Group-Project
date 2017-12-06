@@ -339,9 +339,9 @@ vector<int> courseGenV2::SetupSeed(string seed)
 		//}
 
 		levelSeed.push_back(0);
+		levelSeed.push_back(7);
 		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
+		levelSeed.push_back(7);
 		levelSeed.push_back(1);
 		levelSeed.push_back(1);
 		levelSeed.push_back(1);
@@ -554,17 +554,17 @@ vector<BaseTile*> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 			algTiles.push_back(cornerTR);
 			break;
 		}
-		// UpRampDown
+		// Bridge tile
 		case 7:
 		{
 			// Create tile
-			UpRampDown* upRamp = new UpRampDown();
-			upRamp->SetCoords(curCoords);
+			Bridge_V* bridge = new Bridge_V();
+			bridge->SetCoords(curCoords);
 			// Find next pos (always know dir is down when 7 is placed)
-			vec3 nextPos = vec3(curCoords.x, curCoords.y + 3.8, curCoords.z + size); //usually + 3.8
-			upRamp->SetNextCoords(nextPos);
-			upRamp->outDir.going_down = true;
-			algTiles.push_back(upRamp);
+			vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size); //usually + 3.8
+			bridge->SetNextCoords(nextPos);
+			bridge->outDir.going_down = true;
+			algTiles.push_back(bridge);
 			break;
 		}
 		// DownRampDown

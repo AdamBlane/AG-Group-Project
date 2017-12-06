@@ -173,7 +173,7 @@ void gameScene::LoadGame(string seed)
 
 }
 
-// Populates scenery tiles
+
 // Takes in an algTiles list, spits out a sceneryTiles list
 void gameScene::FillScenery()
 {
@@ -282,10 +282,7 @@ void gameScene::SetupTilesToBeDrawn()
 			// Ramp up when dir is down
 			if (t->id == 7)
 			{
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
-				// Rotate on x
-				tile.transform.getRot().x = -0.349066;
-				tile.transform.getPos().y += 1.8;
+				Tile tile(Tile::BRIDGE, t->thisCoords, 0);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
@@ -1046,7 +1043,6 @@ void gameScene::Update(GLFWwindow* window)
 
 }
 
-// Tracks current tile player is on 
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
