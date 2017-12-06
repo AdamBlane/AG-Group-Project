@@ -219,7 +219,6 @@ void optionsScene::Loop(GLFWwindow * win)
 
 void optionsScene::Input(GLFWwindow* win)
 {
-	// TODO - set textures based on current and last (loadGameScene has this)
 	switch (windowMgr::getInstance()->button_manager)
 	{
 		case 0:

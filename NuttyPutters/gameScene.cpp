@@ -114,9 +114,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 		windowMgr::getInstance()->chaseCams[p]->set_target_pos(vec3(player.transform.getPos()));
 		// 2 player?
 		if (numPlayers == 2)
-			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2  / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2  / (float)windowMgr::getInstance()->height, 0.414f, 40000.0f);
 		else
-			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 40000.0f);
 		// Set this player's id
 		player.id = p + 1;
 		// Add to players list
@@ -423,7 +423,92 @@ void gameScene::SetupPickupCrates()
 		pickupPositionIndices.push_back(i * 2);
 	}
 }
+void gameScene::Save_Level(GLFWwindow* win)
+{
+	// Only save if not previously saved/loaded a saved level
+	if (!levelSaved)
+	{
+		// Open file to append level seed 
+		ofstream saves("saves.csv", ofstream::app);
+		// ID of each tile makes up seed
+		for (auto &t : masterAlgTiles[currentLevel])
+		{
+			saves << t->id;
+		}
+		saves << endl;
+		cout << "Level saved" << endl;
+		levelSaved = true;
 
+		// Also save image of level
+		// Alt press below ensures only game window is captured
+		keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+		keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+		keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+		keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+
+
+													 //// The above saves the game window capture to clipboard
+													 //// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
+		HWND hwnd = GetDesktopWindow();
+		if (!OpenClipboard(hwnd))
+			cout << "Error with HWND" << endl;
+		OpenClipboard(NULL);
+		HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
+		if (hBitmap == NULL)
+			cout << "Error with clipboard bmp data" << endl;
+		CloseClipboard();
+		CImage image;
+		image.Attach(hBitmap);
+		// Build string to save with level seed name
+		string fileName = "..\\NuttyPutters\\savesImages\\";
+		for (auto &i : masterLevelSeeds[currentLevel])
+		{
+			fileName += to_string(i);
+		}
+		fileName += ".bmp";
+		image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
+		//cout << "course image saved as " << fileName << endl;
+
+		// Tell winMgr to update its saved images list
+		windowMgr::getInstance()->UpdateSavesImages(fileName.c_str());
+	} // end level saving code
+
+}
+
+void gameScene::Track_mouse(GLFWwindow* win)
+{
+	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
+}
+void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
+{
+	switch (currentMenuItem)
+	{
+		case 1:
+			// Scene 0 is no scene - it runs winMgr.CleanUp() and closes app
+			windowMgr::getInstance()->sceneManager.changeScene(0);
+			break;
+
+		// Save this level 
+		case 2:
+			Save_Level(win);
+			break;
+
+		// Unpause
+		case 3:
+			glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			cameraType = 1;
+			pause = false;
+			break;
+
+		// Exit to main menu
+		//This case resets the scene to an empty screen
+		case 4:
+			// glLoadIdentity(); might need this later
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+			break;
+	}
+}
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
@@ -500,6 +585,8 @@ void gameScene::Input(GLFWwindow* window)
 		// Pause
 		if (glfwGetKey(window, GLFW_KEY_P))
 		{
+			// Flip paused bool
+			paused = true;
 			// Change to pause target cam
 			cameraType = 2;
 			Render(window); // Render it
@@ -509,101 +596,100 @@ void gameScene::Input(GLFWwindow* window)
 			keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
 			keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
 			keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
-
+			windowMgr::getInstance()->button_manager = 0;
 			// MONDAY DEMO PRINT COMMANDS
 			cout << "\nPAUSE CONTROLS:" << endl;
-			cout << "Save level - S\n Exit game - B\n Main menu - C\n Unpause - U" << endl;
-
-
-			// Flip paused bool
-			bool paused = true;
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			// Pause input...
 			while (paused)
 			{
-				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 				// Need this to listen for further key presses
 				glfwPollEvents();
-				// Exit game 
-				if (glfwGetKey(window, GLFW_KEY_B))
+				if (glfwGetKey(window, GLFW_KEY_ENTER))
 				{
-					// Scene 0 is no scene - it runs winMgr.CleanUp() and closes app
-					windowMgr::getInstance()->sceneManager.changeScene(0);
-					break;
+					windowMgr::getInstance()->enterPressed = true;
 				}
-
-				// Save this level 
-				if (glfwGetKey(window, GLFW_KEY_S))
+				if (!glfwGetKey(window, GLFW_KEY_ENTER) && total_time >= 5.0f)
 				{
-					// Only save if not previously saved/loaded a saved level
-					if (!levelSaved)
+					if (windowMgr::getInstance()->enterPressed)
 					{
-						// Open file to append level seed 
-						ofstream saves("saves.csv", ofstream::app);
-						// ID of each tile makes up seed
-						for (auto &t : masterAlgTiles[currentLevel])
-						{
-							saves << t->id;
-						}
-						saves << endl;
-						cout << "Level saved" << endl;
-						levelSaved = true;
-
-						// Also save image of level
-						// Alt press below ensures only game window is captured
-						keybd_event(VK_MENU, 0, 0, 0); //Alt Press
-						keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
-						keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
-						keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
-
-
-						//// The above saves the game window capture to clipboard
-						//// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
-						HWND hwnd = GetDesktopWindow();
-						if (!OpenClipboard(hwnd))
-							cout << "Error with HWND" << endl;
-						OpenClipboard(NULL);
-						HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
-						if (hBitmap == NULL)
-							cout << "Error with clipboard bmp data" << endl;
-						CloseClipboard();
-						CImage image;
-						image.Attach(hBitmap);
-						// Build string to save with level seed name
-						string fileName = "..\\NuttyPutters\\savesImages\\";
-						for (auto &i : masterLevelSeeds[currentLevel])
-						{
-							fileName += to_string(i);
-						}
-						fileName += ".bmp";
-						image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
-						cout << "course image saved as " << fileName << endl;
-
-						// Tell winMgr to update its saved images list
-						windowMgr::getInstance()->UpdateSavesImages(fileName.c_str());
-					} // end level saving code
-
+						paused = false;
+						Click_Or_Enter(window, paused);
+						windowMgr::getInstance()->enterPressed = false;
+					}
 				}
-
-				// Unpause
-				if (glfwGetKey(window, GLFW_KEY_U))
+				if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && total_time >= 5.0f)
 				{
-					glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-					cameraType = 1;
-					paused = false;
-					break;
+					windowMgr::getInstance()->mouseLpressed = true;
 				}
-
-				// Exit to main menu
-				//This function resets the scene to an empty screen
-				if (glfwGetKey(window, GLFW_KEY_C))
+				if (!glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT))
 				{
-					// glLoadIdentity(); might need this later
-					windowMgr::getInstance()->sceneManager.changeScene(1);
-					break;
+					if (windowMgr::getInstance()->mouseLpressed)
+					{
+						Click_Or_Enter(window , paused);
+						windowMgr::getInstance()->mouseLpressed = false;
+					}
+				}
+				if (glfwGetKey(window, GLFW_KEY_UP))
+				{
+					windowMgr::getInstance()->upPressed = true;
 				}
 
-			} // end while paused
-			
+				if (!glfwGetKey(window, GLFW_KEY_UP))
+				{
+					if (windowMgr::getInstance()->upPressed)
+					{
+						previousMenuItem = currentMenuItem;
+						if (currentMenuItem == 1)
+						{
+							currentMenuItem = 4;
+						}
+						else if (currentMenuItem == 0)
+						{
+							currentMenuItem = 4;
+						}
+						else
+						{
+							currentMenuItem--;
+						}
+						//ChangeTexutes(win);
+						windowMgr::getInstance()->upPressed = false;
+					}
+				}
+				if (glfwGetKey(window, GLFW_KEY_DOWN))
+				{
+					windowMgr::getInstance()->downPressed = true;
+				}
+
+				if (!glfwGetKey(window, GLFW_KEY_DOWN))
+				{
+					previousMenuItem = currentMenuItem;
+					if (windowMgr::getInstance()->downPressed)
+					{
+						if (currentMenuItem == 4)
+						{
+							currentMenuItem = 1;
+						}
+						else
+						{
+							currentMenuItem++;
+						}
+
+						windowMgr::getInstance()->downPressed = false;
+						//ChangeTexutes(win);
+					}
+				}
+				// Increase time delay tracker (prevents enter/Lclick reoccuring from last scene)
+				if (total_time <= 5.0f)
+				{
+					total_time += 1.0f;
+				}
+			}
+			if (cameraType == 2) 
+			{
+				paused = true;
+			}
+			Render(window);
 			cout << "\nUnpaused" << endl;
 			
 		} // end pause
@@ -1123,7 +1209,7 @@ void gameScene::Collisions()
 void gameScene::Render(GLFWwindow* window)
 {
 	// Check whether to render for 1 or 2 players
-	if (numPlayers == 1)
+	if (numPlayers == 1 || paused == true)
 	{
 		glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	}

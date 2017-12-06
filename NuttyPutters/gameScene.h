@@ -86,7 +86,10 @@ public:
 	double accumulator = 0.0;
 	double dt;  // This is 60fps
 
-	
+
+	float total_time = 0.0f;
+	int previousMenuItem, currentMenuItem;
+	bool paused = false;
 	// Camera variables
 	double camSpeed = 4.0; 
 	float  cameraType = 1;
@@ -121,4 +124,7 @@ public:
 	void Collisions();
 	// Draw stuff
 	void Render(GLFWwindow* window);
+	void Track_mouse(GLFWwindow* win);
+	void Click_Or_Enter(GLFWwindow* win , bool pause);
+	void Save_Level(GLFWwindow* win);
 };
