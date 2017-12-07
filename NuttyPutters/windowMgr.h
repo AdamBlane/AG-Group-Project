@@ -69,12 +69,20 @@ class windowMgr
 		Mesh* player2Mesh;
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
+
+	
+    // Spaceship mesh!
 		Mesh* spaceShip;
+	  
+  // Pickup crates for 2p mode
 		vector<Mesh*> pickupCrateMeshes;
 		Texture* pickupCrateTexture;
 		Texture* spaceShipTex;
 		vector<Transform> pickupCrateTransforms;
-
+		Mesh* ufoMesh;
+		Texture* ufoTexture;
+		vector<Mesh*> wormholeMeshes;
+		Texture* wormholeTexture;
 		// All contorller related textures are stored in here
 		Texture* buttonsPS[18];
 		Texture* buttonsXB[14];

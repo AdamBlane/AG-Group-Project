@@ -39,6 +39,8 @@ public:
 	// Deconstructor
 	~gameScene();
 
+	
+
 	//Players list
 	vector<Player> players;
 	// Number of players this game
@@ -76,6 +78,9 @@ public:
 	vector<vector<int>> masterObstacles; 
 	// List of pickup crate locations for each level
 	vector<int> pickupPositionIndices;
+	// Holds two wormhole transforms
+	vector<Transform> wormholeTransforms;
+
 
 	vec3 prevPos = vec3(0);
 
@@ -91,7 +96,7 @@ public:
 	Transform spaceTrans;
 	
 	// Camera variables
-	double camSpeed = 4.0; 
+	double camSpeed = 2.0; 
 	float  cameraType = 1;
 	// TODO - replace these for player members - float chaseCamAngle, p2ChaseCamAngle, // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)

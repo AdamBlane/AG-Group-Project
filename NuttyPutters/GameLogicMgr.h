@@ -43,6 +43,9 @@ public:
 	// Keep clock ticking
 	void Update();
 
+	// Update user power bar
+	void UpdatePowerBar(Player player);
+
 	// When a player finishes, mark their total time
 	void SetEndTime(Player &player);
 	
