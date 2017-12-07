@@ -88,6 +88,17 @@ public:
 	bool levelSaved = false; 
 	bool continuePressed, resetPressed = false;;
 
+	// Setup GLFW joystick button input - required for doing anything with buttons
+	int controllerOneButtonCount;
+	const unsigned char *controllerOne;
+	int controllerTwoButtonCount;
+	const unsigned char *controllerTwo;
+	vector<const unsigned char*> controllers;
+	int controllerOneAxisCount;
+	const float *controllerOneAxis;
+	int controllerTwoAxisCount;
+	const float *controllerTwoAxis;
+
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
 	double accumulator = 0.0;
