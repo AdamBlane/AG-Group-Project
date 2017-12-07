@@ -109,6 +109,9 @@ void startScene::ChangeTexutes(GLFWwindow * win)
 
 void startScene::Init(GLFWwindow* win)
 {
+
+
+
 	// Set initial button press bools to false
 	windowMgr::getInstance()->upPressed = windowMgr::getInstance()->downPressed = windowMgr::getInstance()->leftPressed = windowMgr::getInstance()->rightPressed = windowMgr::getInstance()->enterPressed = windowMgr::getInstance()->mouseLpressed = false;
 
