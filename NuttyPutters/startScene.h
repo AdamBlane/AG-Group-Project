@@ -22,6 +22,8 @@ public:
 	// Deconstructor
 	~startScene() {}
   
+	bool loaded = false;
+
 	// Used to lock framerate
 	double lastFrame = 0;
 	double thisFrame = glfwGetTime();
@@ -50,6 +52,8 @@ public:
 	void Loop(GLFWwindow* win);
 	// Input 
 	void Input(GLFWwindow* win);
+	// First time setup (show splash screen, load assets)
+	void FirstTimeInit(GLFWwindow* win);
 	// Setup
 	void Init(GLFWwindow* win);
 	// Update

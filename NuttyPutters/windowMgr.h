@@ -51,8 +51,7 @@ class windowMgr
 		vector<Texture*> savesImages;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
-		// Unique mesh for the game loading screen
-		Mesh* meshSplash;
+
 		// 2P variant world clock meshes
 		vector<Mesh*> worldClock;
 		// Skybox vars
@@ -259,8 +258,8 @@ class windowMgr
 
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
-		// Load textures thread
-		void LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* window);
+		// Load all game assets
+		void LoadAssets();
 		// Populate savesImages vector with image files read from saves folder
 		void UpdateSavesImages(string savedImagePath);
 		// Ask winMgr to get thread to play given sound
@@ -271,7 +270,6 @@ class windowMgr
 		void Update();
 		// On window close
 		void CleanUp();
-		// Special render loop for rendiering start scene
-		void RenderSplashScreen(GLFWwindow* window);
+
 };
 
