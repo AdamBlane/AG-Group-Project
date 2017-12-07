@@ -134,7 +134,7 @@ GLFWwindow* windowMgr::Init()
 
 	// ############################ MESHES ############################
 	// Initialise general use HUD meshes
-	for (int i = 0; i < 37; ++i)
+	for (int i = 0; i < 42; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -211,6 +211,8 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("playerSelectBackground", playerSelectBackground));
 	Texture* playersLabel = new Texture("..\\NuttyPutters\\players.png");
 	textures.insert(std::pair<std::string, Texture*>("playersLabel", playersLabel));
+	Texture* numberOfLevels = new Texture("..\\NuttyPutters\\numberoflevels.png");
+	textures.insert(std::pair<std::string, Texture*>("numberOfLevels", numberOfLevels));
 	Texture* oneBtnUnselected = new Texture("..\\NuttyPutters\\none.png");
 	textures.insert(std::pair<std::string, Texture*>("oneBtnUnselected", oneBtnUnselected));
 	Texture* oneBtnSelected = new Texture("..\\NuttyPutters\\noneUnderlined.png");
@@ -497,18 +499,140 @@ GLFWwindow* windowMgr::Init()
 	//windowMgr::getInstance()->gameFunctions[8] = 4;
 	//windowMgr::getInstance()->gameFunctions[9] = 5;
 
-	// xbox
-	// FUNCTION/BUTTONS
-	windowMgr::getInstance()->gameFunctions[0] = 2;
-	windowMgr::getInstance()->gameFunctions[1] = 3;
-	windowMgr::getInstance()->gameFunctions[2] = 7;
-	windowMgr::getInstance()->gameFunctions[3] = 10;
-	windowMgr::getInstance()->gameFunctions[4] = 11;
-	windowMgr::getInstance()->gameFunctions[5] = 12;
-	windowMgr::getInstance()->gameFunctions[6] = 13;
-	windowMgr::getInstance()->gameFunctions[7] = 1;
-	windowMgr::getInstance()->gameFunctions[8] = 4;
-	windowMgr::getInstance()->gameFunctions[9] = 5;
+	//*************XBOX PLAYER ONE *****************//
+	// Create an input file object for player one keyboard controls
+	ifstream playerOneXboxFile;
+	// Open the desired file
+	playerOneXboxFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+
+	// Check for error when loading the file
+	if (playerOneXboxFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one xbox file";
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		controllerXboxPOne[0] = 2;
+		controllerXboxPOne[1] = 3;
+		controllerXboxPOne[2] = 7;
+		controllerXboxPOne[3] = 10;
+		controllerXboxPOne[4] = 11;
+		controllerXboxPOne[5] = 12;
+		controllerXboxPOne[6] = 13;
+		controllerXboxPOne[7] = 1;
+		controllerXboxPOne[8] = 4;
+		controllerXboxPOne[9] = 5;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerOneXboxFile >> playerXboxControls[0][l];
+		cout << "C1 pl " << playerXboxControls[0][l] << endl;
+		controllerXboxPOne[l] = playerXboxControls[0][l];
+		cout << "C1 co " << controllerXboxPOne[l] << endl;
+	}
+
+	//*************XBOX PLAYER TWO *****************//
+	// Create an input file object for player one keyboard controls
+	ifstream playerTwoXboxFile;
+	// Open the desired file
+	playerTwoXboxFile.open("..\\NuttyPutters\\input\\p2XboxController.txt");
+
+	// Check for error when loading the file
+	if (playerTwoXboxFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one xbox file" << endl;
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		controllerXboxPTwo[0] = 2;
+		controllerXboxPTwo[1] = 3;
+		controllerXboxPTwo[2] = 7;
+		controllerXboxPTwo[3] = 10;
+		controllerXboxPTwo[4] = 11;
+		controllerXboxPTwo[5] = 12;
+		controllerXboxPTwo[6] = 13;
+		controllerXboxPTwo[7] = 1;
+		controllerXboxPTwo[8] = 4;
+		controllerXboxPTwo[9] = 5;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerTwoXboxFile >> playerXboxControls[1][l];
+		cout << "C2 pl " << playerXboxControls[1][l] << endl;
+		controllerXboxPTwo[l] = playerXboxControls[1][l];
+		cout << "C2 co " << controllerXboxPTwo[l] << endl;
+	}
+
+	//*************KEYBOARD PLAYER ONE *****************//
+	// Create an input file object for player one keyboard controls
+	ifstream playerOneKeyboardFile;
+	// Open the desired file
+	playerOneKeyboardFile.open("..\\NuttyPutters\\input\\p1Keyboard.txt");
+
+	// Check for error when loading the file
+	if (playerOneKeyboardFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one keyboard file" << endl;
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		windowMgr::getInstance()->keyboardFunctionsPOne[0] = 81;
+		windowMgr::getInstance()->keyboardFunctionsPOne[1] = 69;
+		windowMgr::getInstance()->keyboardFunctionsPOne[2] = 80;
+		windowMgr::getInstance()->keyboardFunctionsPOne[3] = 87;
+		windowMgr::getInstance()->keyboardFunctionsPOne[4] = 68;
+		windowMgr::getInstance()->keyboardFunctionsPOne[5] = 83;
+		windowMgr::getInstance()->keyboardFunctionsPOne[6] = 65;
+		windowMgr::getInstance()->keyboardFunctionsPOne[7] = 90;
+		windowMgr::getInstance()->keyboardFunctionsPOne[8] = 82;
+		windowMgr::getInstance()->keyboardFunctionsPOne[9] = 70;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerOneKeyboardFile >> windowMgr::getInstance()->keyboardFunctionsPOne[l];
+		// Output them to the screen
+		cout << windowMgr::getInstance()->keyboardFunctionsPOne[l] << endl;
+	}
+
+	//*************KEYBOARD PLAYER TWO *****************//
+	// Create an input file object for player two keyboard controls
+	ifstream playerTwoKeyboardFile;
+	// Open the desired file
+	playerTwoKeyboardFile.open("..\\NuttyPutters\\input\\p2Keyboard.txt");
+
+	// Check for error when loading the file
+	if (playerTwoKeyboardFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one keyboard file";
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		windowMgr::getInstance()->keyboardFunctionsPTwo[0] = 72;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[1] = 71;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[2] = 89;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[3] = 73;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[4] = 76;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[5] = 75;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[6] = 74;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[7] = 77;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[8] = 78;
+		windowMgr::getInstance()->keyboardFunctionsPTwo[9] = 79;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerTwoKeyboardFile >> windowMgr::getInstance()->keyboardFunctionsPTwo[l];
+		// Output them to the screen
+		cout << windowMgr::getInstance()->keyboardFunctionsPTwo[l] << endl;
+	}
+
 
 	// LOAD HIGHSCORE SCENE TEXTURES
 	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\grass.png");
@@ -541,6 +665,18 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("zoomOutLbl", zoomOutLbl));
 	Texture* keyLbl = new Texture("..\\NuttyPutters\\Controller\\key.png");
 	textures.insert(std::pair<std::string, Texture*>("keyLbl", keyLbl));
+	Texture* playerOneLblGreen = new Texture("..\\NuttyPutters\\controller\\playeronegreen.png");
+	textures.insert(std::pair<std::string, Texture*>("playerOneLblGreen", playerOneLblGreen));
+	Texture* playerTwoLblGreen = new Texture("..\\NuttyPutters\\Controller\\playertwogreen.png");
+	textures.insert(std::pair<std::string, Texture*>("playerTwoLblGreen", playerTwoLblGreen));
+	Texture* playerOneLblRed = new Texture("..\\NuttyPutters\\Controller\\playeronered.png");
+	textures.insert(std::pair<std::string, Texture*>("playerOneLblRed", playerOneLblRed));
+	Texture* playerTwoLblRed = new Texture("..\\NuttyPutters\\Controller\\playertwoRed.png");
+	textures.insert(std::pair<std::string, Texture*>("playerTwoLblRed", playerTwoLblRed));
+	Texture* playerUsingLbl = new Texture("..\\NuttyPutters\\Controller\\playerusing.png");
+	textures.insert(std::pair<std::string, Texture*>("playerUsingLbl", playerUsingLbl));
+	Texture* selectOptionLbl = new Texture("..\\NuttyPutters\\Controller\\selectoption.png");
+	textures.insert(std::pair<std::string, Texture*>("selectOptionLbl", selectOptionLbl));
 
 	//Tiles stuff initialized here
 	for (int i = 0; i < 15; ++i)

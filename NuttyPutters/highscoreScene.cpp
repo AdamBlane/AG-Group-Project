@@ -27,262 +27,557 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(3)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(-2.7f, 1.07f, 0.0f));
 	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["selectfireLbl"]);
-	// Set selectfire button label controller button
-	windowMgr::getInstance()->meshes.at(4)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(-1.1f, 1.07f, 0.0f));
-	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->buttonsXB[2]);
 	// Back Reset
 	// Set backreset label
 	windowMgr::getInstance()->meshes.at(5)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-2.7f, 0.75f, 0.0f));
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["backresetLbl"]);
-	// Set backreset button label controller button
-	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(-1.1f, 0.75f, 0.0f));
-	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->buttonsXB[3]);
 	// Pause
 	// Set pause label
 	windowMgr::getInstance()->meshes.at(7)->SetScale(1.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(-2.7f, 0.43f, 0.0f));
 	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["pauseLbl"]);
-	// Set pause button label controller button
-	windowMgr::getInstance()->meshes.at(8)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(-1.1f, 0.43f, 0.0f));
-	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->buttonsXB[7]);
 	// Arrows
 	// Up
 	windowMgr::getInstance()->meshes.at(9)->SetScale(0.35f, 0.35f);
 	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(-2.7f, 0.11f, 0.0f));
 	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["upLbl"]);
-	// Set up controller button
-	windowMgr::getInstance()->meshes.at(10)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(-1.1f, 0.11f, 0.0f));
-	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->buttonsXB[10]);
 	// Left
 	windowMgr::getInstance()->meshes.at(11)->SetScale(0.35f, 0.35f);
 	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(-2.7f, -0.21f, 0.0f));
 	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
-	// Set left controller button
-	windowMgr::getInstance()->meshes.at(12)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(-1.1f, -0.21f, 0.0f));
-	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->buttonsXB[11]);
 	// Down 
 	windowMgr::getInstance()->meshes.at(13)->SetScale(0.35f, 0.35f);
 	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(-2.7f, -0.53f, 0.0f));
 	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["downLbl"]);
-	// Set down controller button
-	windowMgr::getInstance()->meshes.at(14)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(14)->SetPos(vec3(-1.1f, -0.53f, 0.0f));
-	windowMgr::getInstance()->meshes.at(14)->SetTexture(windowMgr::getInstance()->buttonsXB[12]);
 	// Right
 	windowMgr::getInstance()->meshes.at(15)->SetScale(0.35f, 0.35f);
 	windowMgr::getInstance()->meshes.at(15)->SetPos(vec3(-2.7f, -0.85f, 0.0f));
 	windowMgr::getInstance()->meshes.at(15)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
-	// Set right controller button
-	windowMgr::getInstance()->meshes.at(16)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(16)->SetPos(vec3(-1.1f, -0.85f, 0.0f));
-	windowMgr::getInstance()->meshes.at(16)->SetTexture(windowMgr::getInstance()->buttonsXB[13]);
 	// Jump
 	windowMgr::getInstance()->meshes.at(17)->SetScale(1.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(17)->SetPos(vec3(-2.7f, -1.17f, 0.0f));
 	windowMgr::getInstance()->meshes.at(17)->SetTexture(windowMgr::getInstance()->textures["jumpLbl"]);
-	// Set jump controller button
-	windowMgr::getInstance()->meshes.at(18)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(18)->SetPos(vec3(-1.1f, -1.17f, 0.0f));
-	windowMgr::getInstance()->meshes.at(18)->SetTexture(windowMgr::getInstance()->buttonsXB[1]);
 	// Zoom In
 	windowMgr::getInstance()->meshes.at(19)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(19)->SetPos(vec3(-2.7f, -1.50f, 0.0f));
 	windowMgr::getInstance()->meshes.at(19)->SetTexture(windowMgr::getInstance()->textures["zoomInLbl"]);
-	// Set zoom in controller button
-	windowMgr::getInstance()->meshes.at(20)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(20)->SetPos(vec3(-1.1f, -1.50f, 0.0f));
-	windowMgr::getInstance()->meshes.at(20)->SetTexture(windowMgr::getInstance()->buttonsXB[4]);
 	// Zoom Out
 	windowMgr::getInstance()->meshes.at(21)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(21)->SetPos(vec3(-2.7f, -1.82f, 0.0f));
 	windowMgr::getInstance()->meshes.at(21)->SetTexture(windowMgr::getInstance()->textures["zoomOutLbl"]);
-	// Set zoom out controller button
-	windowMgr::getInstance()->meshes.at(22)->SetScale(0.25f, 0.25f);
-	windowMgr::getInstance()->meshes.at(22)->SetPos(vec3(-1.1f, -1.82f, 0.0f));
-	windowMgr::getInstance()->meshes.at(22)->SetTexture(windowMgr::getInstance()->buttonsXB[5]);
 	// Main Menu
 	windowMgr::getInstance()->meshes.at(23)->SetScale(2.0f, 0.5f);
-	windowMgr::getInstance()->meshes.at(23)->SetPos(vec3(2.5f, 0.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(23)->SetPos(vec3(2.2f, -1.8f, 0.0f));
 	windowMgr::getInstance()->meshes.at(23)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 	// Set the player one and player two lbls
 	// P1
 	windowMgr::getInstance()->meshes.at(24)->SetScale(1.8f, 0.45f);
 	windowMgr::getInstance()->meshes.at(24)->SetPos(vec3(-2.0f, 1.81f, 0.0f));
-	windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLbl"]);
+	windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLblGreen"]);
 	// P2
 	windowMgr::getInstance()->meshes.at(25)->SetScale(1.8f, 0.45f);
 	windowMgr::getInstance()->meshes.at(25)->SetPos(vec3(0.0f, 1.81f, 0.0f));
-	windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLbl"]);
+	windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblRed"]);
 	// Keyboard Label
 	windowMgr::getInstance()->meshes.at(26)->SetScale(1.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(26)->SetPos(vec3(0.5f, 1.39f, 0.0f));
 	windowMgr::getInstance()->meshes.at(26)->SetTexture(windowMgr::getInstance()->textures["keyLbl"]);
+	// Set selectfire button label controller button
+	windowMgr::getInstance()->meshes.at(4)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(-1.1f, 1.07f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->buttonsXB[2]);
+	// Set backreset button label controller button
+	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(-1.1f, 0.75f, 0.0f));
+	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->buttonsXB[3]);
+	// Set pause button label controller button
+	windowMgr::getInstance()->meshes.at(8)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(-1.1f, 0.43f, 0.0f));
+	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->buttonsXB[7]);
+	// Set up controller button
+	windowMgr::getInstance()->meshes.at(10)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(-1.1f, 0.11f, 0.0f));
+	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->buttonsXB[10]);
+	// Set left controller button
+	windowMgr::getInstance()->meshes.at(12)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(-1.1f, -0.21f, 0.0f));
+	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->buttonsXB[11]);
+	// Set down controller button
+	windowMgr::getInstance()->meshes.at(14)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(14)->SetPos(vec3(-1.1f, -0.53f, 0.0f));
+	windowMgr::getInstance()->meshes.at(14)->SetTexture(windowMgr::getInstance()->buttonsXB[12]);
+	// Set right controller button
+	windowMgr::getInstance()->meshes.at(16)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(16)->SetPos(vec3(-1.1f, -0.85f, 0.0f));
+	windowMgr::getInstance()->meshes.at(16)->SetTexture(windowMgr::getInstance()->buttonsXB[13]);
+	// Set jump controller button
+	windowMgr::getInstance()->meshes.at(18)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(18)->SetPos(vec3(-1.1f, -1.17f, 0.0f));
+	windowMgr::getInstance()->meshes.at(18)->SetTexture(windowMgr::getInstance()->buttonsXB[1]);
+	// Set zoom in controller button
+	windowMgr::getInstance()->meshes.at(20)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(20)->SetPos(vec3(-1.1f, -1.50f, 0.0f));
+	windowMgr::getInstance()->meshes.at(20)->SetTexture(windowMgr::getInstance()->buttonsXB[4]);
+	// Set zoom out controller button
+	windowMgr::getInstance()->meshes.at(22)->SetScale(0.25f, 0.25f);
+	windowMgr::getInstance()->meshes.at(22)->SetPos(vec3(-1.1f, -1.82f, 0.0f));
+	windowMgr::getInstance()->meshes.at(22)->SetTexture(windowMgr::getInstance()->buttonsXB[5]);
 	// Select fire keyboard 
 	windowMgr::getInstance()->meshes.at(27)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(27)->SetPos(vec3(0.5f, 1.07f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(27)->SetTexture(windowMgr::getInstance()->textures["aLbl"]);
 	// Back reset keyboard
 	windowMgr::getInstance()->meshes.at(28)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(28)->SetPos(vec3(0.5f, 0.75f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(28)->SetTexture(windowMgr::getInstance()->textures["bLbl"]);
 	// Pause keyboard
 	windowMgr::getInstance()->meshes.at(29)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(29)->SetPos(vec3(0.5f, 0.43f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(29)->SetTexture(windowMgr::getInstance()->textures["cLbl"]);
 	// Up keyboard
 	windowMgr::getInstance()->meshes.at(30)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(30)->SetPos(vec3(0.5f, 0.11f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(30)->SetTexture(windowMgr::getInstance()->textures["dLbl"]);
 	// Left keyboard
 	windowMgr::getInstance()->meshes.at(31)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(31)->SetPos(vec3(0.5f, -0.21f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(31)->SetTexture(windowMgr::getInstance()->textures["eLbl"]);
 	// Down keyboard
 	windowMgr::getInstance()->meshes.at(32)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(32)->SetPos(vec3(0.5f, -0.53f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(32)->SetTexture(windowMgr::getInstance()->textures["fLbl"]);
 	// Right keyboard
 	windowMgr::getInstance()->meshes.at(33)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(33)->SetPos(vec3(0.5f, -0.85f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(33)->SetTexture(windowMgr::getInstance()->textures["gLbl"]);
 	// Jump keyboard
 	windowMgr::getInstance()->meshes.at(34)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(34)->SetPos(vec3(0.5f, -1.17f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(34)->SetTexture(windowMgr::getInstance()->textures["hLbl"]);
 	// Zoom in keyboard
 	windowMgr::getInstance()->meshes.at(35)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(35)->SetPos(vec3(0.5f, -1.49, 0.0f));
-	//windowMgr::getInstance()->meshes.at(35)->SetTexture(windowMgr::getInstance()->textures["iLbl"]);
 	// Zoom out keyboard
 	windowMgr::getInstance()->meshes.at(36)->SetScale(0.7f, 0.35f);
 	windowMgr::getInstance()->meshes.at(36)->SetPos(vec3(0.5f, -1.81, 0.0f));
-	//windowMgr::getInstance()->meshes.at(36)->SetTexture(windowMgr::getInstance()->textures["jLbl"]);
+	// Player using controller one
+	windowMgr::getInstance()->meshes.at(37)->SetScale(2.0f, 1.0f);
+	windowMgr::getInstance()->meshes.at(37)->SetPos(vec3(2.2f, -0.71f, 0.0f));
+	windowMgr::getInstance()->meshes.at(37)->SetTexture(windowMgr::getInstance()->textures["playerUsingLbl"]);
+	// Set up number of levels label
+	windowMgr::getInstance()->meshes.at(38)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(38)->SetPos(vec3(2.2f, -1.3, 0.0));
+	windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
+	// Set left arrow label
+	windowMgr::getInstance()->meshes.at(39)->SetScale(0.4f, 0.4f);
+	windowMgr::getInstance()->meshes.at(39)->SetPos(vec3(1.7f, -1.3, 0.0));
+	windowMgr::getInstance()->meshes.at(39)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
+	// Set right arrow label
+	windowMgr::getInstance()->meshes.at(40)->SetScale(0.4f, 0.4f);
+	windowMgr::getInstance()->meshes.at(40)->SetPos(vec3(2.7f, -1.3, 0.0));
+	windowMgr::getInstance()->meshes.at(40)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
+	// Select an option label 
+	windowMgr::getInstance()->meshes.at(41)->SetScale(2.0f, 1.6f);
+	windowMgr::getInstance()->meshes.at(41)->SetPos(vec3(2.2f, 0.7, 0.0));
+	windowMgr::getInstance()->meshes.at(41)->SetTexture(windowMgr::getInstance()->textures["selectOptionLbl"]);
 
-	//**********KEYBOARD SETUP**************//
-	windowMgr::getInstance()->gameKeyboardFunctions[0] = 81;
-	windowMgr::getInstance()->gameKeyboardFunctions[1] = 69;
-	windowMgr::getInstance()->gameKeyboardFunctions[2] = 80;
-	windowMgr::getInstance()->gameKeyboardFunctions[3] = 87;
-	windowMgr::getInstance()->gameKeyboardFunctions[4] = 68;
-	windowMgr::getInstance()->gameKeyboardFunctions[5] = 83;
-	windowMgr::getInstance()->gameKeyboardFunctions[6] = 65;
-	windowMgr::getInstance()->gameKeyboardFunctions[7] = 90;
-	windowMgr::getInstance()->gameKeyboardFunctions[8] = 82;
-	windowMgr::getInstance()->gameKeyboardFunctions[9] = 70;
+	// Default load player one controls
+	InitPlayerButtonsPlayerOne(win);
+}
 
+void highscoreScene::InitPlayerButtonsPlayerOne(GLFWwindow * win)
+{
 	// For all the functions
 	for (int allKeyboardFunctions = 0; allKeyboardFunctions < 10; allKeyboardFunctions++)
 	{
-		// If keyboard function is equal to A then change texture to A
-		if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 65)
+		if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 44) // comma
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[0]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 45) // minus
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[1]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 46) // full stop
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[2]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 47) // forward slash
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[3]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 48) // num 0
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[4]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 49) // num 1
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[5]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 50) // num 2
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[6]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 51) // num 3
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[7]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 52) // num 4
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[8]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 53) // num 5
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[9]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 54) // num 6
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[10]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 55) // num 7
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[11]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 56) // num 8
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[12]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 57) // num 9
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[13]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 59) // ;
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[14]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 61) // =
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[15]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 65) // A
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[16]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 66) // B
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 66) // B
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[17]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 67) // C
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 67) // C
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[18]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 68) // D
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 68) // D
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[19]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 69) // E
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 69) // E
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[20]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 70) // F
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 70) // F
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[21]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 71) // G
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 71) // G
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[22]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 72) // H
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 72) // H
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[23]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 73) // I
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 73) // I
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[24]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 74) // J
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 74) // J
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[25]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 75) // K
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 75) // K
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[26]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 76) // L
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 76) // L
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[27]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 77) // M
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 77) // M
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[28]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 78) // N
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 78) // N
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[29]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 79) // O
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 79) // O
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[30]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 80) // P
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 80) // P
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[31]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 81) // Q
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 81) // Q
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[32]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 82) // R
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 82) // R
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[33]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 83) // S
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 83) // S
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[34]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 84) // T
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 84) // T
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[35]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 85) // U
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 85) // U
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[36]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 86) // V
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 86) // V
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[37]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 87) // W
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 87) // W
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[38]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 88) // X
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 88) // X
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[39]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 89) // Y
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 89) // Y
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[40]);
 		}
-		else if (windowMgr::getInstance()->gameKeyboardFunctions[allKeyboardFunctions] == 90) // Z
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 90) // Z
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[41]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 91) // Left Bracket
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[42]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 92) // Back slash
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[43]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 93) // Right bracket
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[44]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 256) // ESC
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[45]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 257) // ETNER
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[46]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 258) // TAB
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[47]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 259) // BACKSPACE
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[48]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 260) // INSERT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[49]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 261) // DELETE
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[50]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 262) // RIGHT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[51]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 263) // LEFT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[52]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 264) // DOWN
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[53]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 265) // UP
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[54]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 266) // PAGE UP
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[55]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 267) // PAGE DOWN
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[56]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 268) // HOME
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[57]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 269) // END
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[58]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 280) // CAPS LOCK
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[59]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 281) // SCROLL LOCK
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[60]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 282) // NUM LOCK
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[61]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 283) // PRINT SCREEN
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[62]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 284) // PASUE
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[63]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 290) // F1
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[64]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 291) // F2
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[65]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 292) // F3
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[66]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 293) // F4
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[67]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 294) // F5
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[68]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 295) // F6
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[69]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 296) // F7
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[70]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 297) // F8
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[71]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 298) // F9
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[72]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 299) // F10
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[73]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 300) // F11
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[74]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 301) // F12
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[75]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 320) // PAD 0
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[76]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 321) // PAD 1
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[77]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 322) // PAD 2
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[78]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 323) // PAD 3
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[79]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 324) // PAD 4
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[80]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 325) // PAD 5
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[81]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 326) // PAD 6
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[82]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 327) // PAD 7
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[83]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 328) // PAD 8
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[84]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 329) // PAD 9
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[85]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 330) // DECIMAL
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[86]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 331) // DIVIDE
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[87]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 332) // MULITPLY
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[88]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 333) // SUBTRACT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[89]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 334) // ADD
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[90]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 335) // ENTER
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[91]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 336) // EQUAL
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[92]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 340) // LEFT SHIFT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[92]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 341) // LEFT CONTROL
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[94]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 342) // LEFT ALT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[95]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 344) // RIGHT SHIFT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[96]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 345) // RIGHT CONTROL
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[97]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPOne[allKeyboardFunctions] == 346) // RIGHT ALT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[98]);
 		}
 	}
 
@@ -304,75 +599,75 @@ void highscoreScene::Init(GLFWwindow * win)
 			for (int allFunctions = 0; allFunctions < 10; allFunctions++)
 			{
 				// If the button is 0 then 
-				if (windowMgr::getInstance()->gameFunctions[allFunctions] == 0)
+				if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 0)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[0]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 1)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 1)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[1]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 2)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 2)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[2]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 3)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 3)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[3]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 4)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 4)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[4]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 5)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 5)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[5]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 6)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 6)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[6]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 7)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 7)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[7]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 8)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 8)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[8]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 9)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 9)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[9]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 10)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 10)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[10]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 11)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 11)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[11]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 12)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 12)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[12]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 13)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 13)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[13]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 14)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 14)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[14]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 15)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 15)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[15]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 16)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 16)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[16]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 17)
+				else if (windowMgr::getInstance()->controllerPSPOne[allFunctions] == 17)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[17]);
 				}
@@ -382,74 +677,627 @@ void highscoreScene::Init(GLFWwindow * win)
 		{
 			cout << "Controller type = XBOX360 OR OTHER! " << endl;
 			// Setup the functions/buttons for xbox controller - the function being the index and button being the equal value
-			// FUNCTION/BUTTONS
-			windowMgr::getInstance()->gameFunctions[0] = 2;
-			windowMgr::getInstance()->gameFunctions[1] = 3;
-			windowMgr::getInstance()->gameFunctions[2] = 7;
-			windowMgr::getInstance()->gameFunctions[3] = 10;
-			windowMgr::getInstance()->gameFunctions[4] = 11;
-			windowMgr::getInstance()->gameFunctions[5] = 12;
-			windowMgr::getInstance()->gameFunctions[6] = 13;
-			windowMgr::getInstance()->gameFunctions[7] = 1;
-			windowMgr::getInstance()->gameFunctions[8] = 4;
-			windowMgr::getInstance()->gameFunctions[9] = 5;
 			// For all the buttons in the game 
 			for (int allFunctions = 0; allFunctions < 10; allFunctions++)
 			{
 				// If gamefunction equals button 0 then
-				if (windowMgr::getInstance()->gameFunctions[allFunctions] == 0)
+				if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 0)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[0]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 1)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 1)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[1]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 2)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 2)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[2]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 3)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 3)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[3]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 4)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 4)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[4]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 5)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 5)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[5]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 6)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 6)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[6]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 7)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 7)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[7]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 8)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 8)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[8]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 9)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 9)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[9]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 10)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 10)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[10]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 11)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 11)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[11]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 12)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 12)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[12]);
 				}
-				else if (windowMgr::getInstance()->gameFunctions[allFunctions] == 13)
+				else if (windowMgr::getInstance()->controllerXboxPOne[allFunctions] == 13)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[13]);
+				}
+			}
+		}
+	}
+}
+
+void highscoreScene::InitPlayerButtonsPlayerTwo(GLFWwindow * win)
+{
+	// For all the functions
+	for (int allKeyboardFunctions = 0; allKeyboardFunctions < 10; allKeyboardFunctions++)
+	{
+		if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 44) // comma
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[0]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 45) // minus
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[1]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 46) // full stop
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[2]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 47) // forward slash
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[3]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 48) // num 0
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[4]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 49) // num 1
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[5]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 50) // num 2
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[6]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 51) // num 3
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[7]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 52) // num 4
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[8]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 53) // num 5
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[9]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 54) // num 6
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[10]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 55) // num 7
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[11]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 56) // num 8
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[12]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 57) // num 9
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[13]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 59) // ;
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[14]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 61) // =
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[15]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 65) // A
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[16]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 66) // B
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[17]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 67) // C
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[18]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 68) // D
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[19]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 69) // E
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[20]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 70) // F
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[21]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 71) // G
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[22]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 72) // H
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[23]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 73) // I
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[24]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 74) // J
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[25]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 75) // K
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[26]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 76) // L
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[27]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 77) // M
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[28]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 78) // N
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[29]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 79) // O
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[30]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 80) // P
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[31]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 81) // Q
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[32]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 82) // R
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[33]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 83) // S
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[34]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 84) // T
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[35]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 85) // U
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[36]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 86) // V
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[37]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 87) // W
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[38]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 88) // X
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[39]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 89) // Y
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[40]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 90) // Z
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[41]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 91) // Left Bracket
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[42]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 92) // Back slash
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[43]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 93) // Right bracket
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[44]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 256) // ESC
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[45]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 257) // ETNER
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[46]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 258) // TAB
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[47]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 259) // BACKSPACE
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[48]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 260) // INSERT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[49]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 261) // DELETE
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[50]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 262) // RIGHT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[51]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 263) // LEFT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[52]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 264) // DOWN
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[53]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 265) // UP
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[54]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 266) // PAGE UP
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[55]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 267) // PAGE DOWN
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[56]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 268) // HOME
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[57]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 269) // END
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[58]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 280) // CAPS LOCK
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[59]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 281) // SCROLL LOCK
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[60]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 282) // NUM LOCK
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[61]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 283) // PRINT SCREEN
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[62]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 284) // PASUE
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[63]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 290) // F1
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[64]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 291) // F2
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[65]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 292) // F3
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[66]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 293) // F4
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[67]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 294) // F5
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[68]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 295) // F6
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[69]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 296) // F7
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[70]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 297) // F8
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[71]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 298) // F9
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[72]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 299) // F10
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[73]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 300) // F11
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[74]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 301) // F12
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[75]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 320) // PAD 0
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[76]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 321) // PAD 1
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[77]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 322) // PAD 2
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[78]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 323) // PAD 3
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[79]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 324) // PAD 4
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[80]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 325) // PAD 5
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[81]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 326) // PAD 6
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[82]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 327) // PAD 7
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[83]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 328) // PAD 8
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[84]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 329) // PAD 9
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[85]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 330) // DECIMAL
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[86]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 331) // DIVIDE
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[87]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 332) // MULITPLY
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[88]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 333) // SUBTRACT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[89]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 334) // ADD
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[90]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 335) // ENTER
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[91]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 336) // EQUAL
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[92]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 340) // LEFT SHIFT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[92]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 341) // LEFT CONTROL
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[94]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 342) // LEFT ALT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[95]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 344) // RIGHT SHIFT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[96]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 345) // RIGHT CONTROL
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[97]);
+		}
+		else if (windowMgr::getInstance()->keyboardFunctionsPTwo[allKeyboardFunctions] == 346) // RIGHT ALT
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[98]);
+		}
+	}
+
+	//******CONTROLLER SETUP*************//
+	// Create a variable to check if the joy stick is present - 1 means true
+	int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
+
+	// If controller is connected 
+	if (present == 1)
+	{
+		// Dected how many buttons the controller has
+		int buttonCount;
+		const unsigned char *buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
+		// If the amount of buttons detected is equal to 18 then 
+		if (buttonCount == 18)
+		{
+			cout << "Controller type = PS4! " << endl;
+			// For all the fucntions 
+			for (int allFunctions = 0; allFunctions < 10; allFunctions++)
+			{
+				// If the button is 0 then 
+				if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 0)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[0]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 1)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[1]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 2)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[2]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 3)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[3]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 4)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[4]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 5)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[5]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 6)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[6]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 7)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[7]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 8)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[8]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 9)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[9]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 10)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[10]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 11)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[11]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 12)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[12]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 13)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[13]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 14)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[14]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 15)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[15]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 16)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[16]);
+				}
+				else if (windowMgr::getInstance()->controllerPSPTwo[allFunctions] == 17)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[17]);
+				}
+			}
+		}
+		else
+		{
+			cout << "Controller type = XBOX360 OR OTHER! " << endl;
+			// Setup the functions/buttons for xbox controller - the function being the index and button being the equal value
+			// For all the buttons in the game 
+			for (int allFunctions = 0; allFunctions < 10; allFunctions++)
+			{
+				// If gamefunction equals button 0 then
+				if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 0)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[0]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 1)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[1]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 2)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[2]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 3)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[3]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 4)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[4]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 5)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[5]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 6)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[6]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 7)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[7]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 8)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[8]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 9)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[9]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 10)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[10]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 11)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[11]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 12)
+				{
+					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[12]);
+				}
+				else if (windowMgr::getInstance()->controllerXboxPTwo[allFunctions] == 13)
 				{
 					windowMgr::getInstance()->meshes.at(4 + (allFunctions * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[13]);
 				}
@@ -475,6 +1323,7 @@ void highscoreScene::Loop(GLFWwindow * win)
 	// Render
 	Render(win);
 }
+
 //tracks mouse
 void highscoreScene::Track_Mouse(GLFWwindow * win)
 {
@@ -494,30 +1343,92 @@ void highscoreScene::Track_Mouse(GLFWwindow * win)
 		}
 	}
 	//this is for main menu button
-	else if ((windowMgr::getInstance()->mouse_x >= 1151 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1534 * windowMgr::getInstance()->windowScale)
-		&& (windowMgr::getInstance()->mouse_y >= 411 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 481 * windowMgr::getInstance()->windowScale))
+	else if ((windowMgr::getInstance()->mouse_x >= 1086 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1469 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 809 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 877 * windowMgr::getInstance()->windowScale))
 	{
 		windowMgr::getInstance()->button_manager = 3;
 	}
+	//this is for main menu button
+	else if ((windowMgr::getInstance()->mouse_y >= 703 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 758 * windowMgr::getInstance()->windowScale))
+	{
+		//this is to highlights left arrow
+		if (windowMgr::getInstance()->mouse_x >= 1127 && windowMgr::getInstance()->mouse_x <= 1203)
+		{
+			windowMgr::getInstance()->button_manager = 4;
+		}
+		//this is to highlight right arrow
+		else if (windowMgr::getInstance()->mouse_x >= 1351 && windowMgr::getInstance()->mouse_x <= 1429)
+		{
+			windowMgr::getInstance()->button_manager = 5;
+		}
+	}
 }
+
 //whenever a click occurs
 void highscoreScene::Click(GLFWwindow * win)
 {
+	// Create the outputFile object
+	ofstream outputFile;
 	switch (windowMgr::getInstance()->button_manager)
 	{
 	case 1:
+		windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLblGreen"]);
+		windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblRed"]);
 		//put in code here for player 1
+		InitPlayerButtonsPlayerOne(win);
 		break;
 	case 2:
+		windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLblRed"]);
+		windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblGreen"]);
 		//put in code here for player 2
+		InitPlayerButtonsPlayerTwo(win);
 		break;
 		//to go back to main menu
 	case 3:
+		// Set the output file
+		//outputFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+		// Loop through total number of entries 
+		//for (int l = 0; l < 10; l++)
+		{
+			// Output the values to the output file
+			//outputFile << windowMgr::getInstance()->gameFunctions[l] << endl;
+		}
+		// Set tje global window manager variable playerUsingControllerOne to the variable player For Controller which is selected in this highscore scene. 
+		windowMgr::getInstance()->playerUsingControllerOne = playerForController;
+		// Change back to main menu
 		windowMgr::getInstance()->sceneManager.changeScene(1);
+	break;
+	//left arrow function
+	case 4:
+		cout << "left" << endl;
+		if (playerForController == 1)
+		{
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+			playerForController = 2;
+		}
+		else if (playerForController == 2)
+		{
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+			playerForController = 1;
+		}
 		break;
-
+		//right arrow functio
+	case 5:
+		cout << "right" << endl;
+		if (playerForController == 1)
+		{
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+			playerForController = 2;
+		}
+		else if (playerForController == 2)
+		{
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+			playerForController = 1;
+		}
+		break;
 	}
 }
+
 // Input 
 void highscoreScene::Input(GLFWwindow* win)
 {
@@ -525,6 +1436,7 @@ void highscoreScene::Input(GLFWwindow* win)
 	{
 		windowMgr::getInstance()->mouseLpressed = true;
 	}
+
 	if (!glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
 	{
 		if (windowMgr::getInstance()->mouseLpressed)
@@ -533,11 +1445,13 @@ void highscoreScene::Input(GLFWwindow* win)
 			windowMgr::getInstance()->mouseLpressed = false;
 		}
 	}
+
 	// If key is pressed and boolean equals false then set bool to true
 	if (glfwGetKey(win, GLFW_KEY_COMMA) && !keyboardButtonPressed[0])
 	{
 		keyboardButtonPressed[0] = true;
 	}
+
 	// If key is no longer pressed and bool is true then
 	if (!glfwGetKey(win, GLFW_KEY_COMMA) && keyboardButtonPressed[0])
 	{
