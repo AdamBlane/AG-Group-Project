@@ -515,7 +515,7 @@ void gameScene::Input(GLFWwindow* window)
 			p.jumpPressed = true;
 		}
 
-		if (!glfwGetKey(window, p.jumpButton) && (controllers.size() > 0 && p.id == 1 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : (controllers.size() > 1 && p.id == 2 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : NULL)))
+		if (!glfwGetKey(window, p.jumpButton) || (controllers.size() > 0 && p.id == 1 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : (controllers.size() > 1 && p.id == 2 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : NULL)))
 
 		{
 			// If jump button recently pressed 
@@ -826,7 +826,7 @@ void gameScene::Input(GLFWwindow* window)
 			}
 		}
 		// When Fire is realesed
-		if (!glfwGetKey(window, p.fireButtton) && (controllers.size() > 0 && p.id == 1 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : (controllers.size() > 1 && p.id == 2 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : NULL)))
+		if (!glfwGetKey(window, p.fireButtton) || (controllers.size() > 0 && p.id == 1 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : (controllers.size() > 1 && p.id == 2 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : NULL)))
 		{
 			// Only work if fire button was just released
 			if (p.firePressed)

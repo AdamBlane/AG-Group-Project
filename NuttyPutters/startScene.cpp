@@ -107,6 +107,23 @@ void startScene::ChangeTexutes(GLFWwindow * win)
 
 }
 
+// First time setup; show splash screen & load assets
+void startScene::FirstTimeInit(GLFWwindow* win)
+{
+	// Show splash screen
+	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
+	Render(win);
+	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
+	Render(win);
+	// Load textures
+	windowMgr::getInstance()->LoadAssets();
+	loaded = true;
+
+	Init(win);
+}
+
 void startScene::Init(GLFWwindow* win)
 {
 	// Set initial button press bools to false
@@ -316,6 +333,7 @@ void startScene::Render(GLFWwindow* win)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
+	if (loaded)
 	// Bind, update and draw HUD elements
 	for (int a = 0; a < 7; a++)
 	{
@@ -323,6 +341,13 @@ void startScene::Render(GLFWwindow* win)
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(a)->Draw();
 	}
+	else
+	{
+		windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(0)->Draw();
+	}
+
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
