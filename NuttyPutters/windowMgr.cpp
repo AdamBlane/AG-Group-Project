@@ -511,16 +511,16 @@ GLFWwindow* windowMgr::Init()
 		// Print to screen
 		cout << "Error in opening player one xbox file";
 		// Set default values for xbox controller - FUNCTION/BUTTONS
-		controllerXboxPOne[0] = 2;
-		controllerXboxPOne[1] = 3;
-		controllerXboxPOne[2] = 7;
-		controllerXboxPOne[3] = 10;
-		controllerXboxPOne[4] = 11;
-		controllerXboxPOne[5] = 12;
-		controllerXboxPOne[6] = 13;
-		controllerXboxPOne[7] = 1;
-		controllerXboxPOne[8] = 4;
-		controllerXboxPOne[9] = 5;
+		playerXboxControls[0][1] = 2;
+		playerXboxControls[0][1] = 3;
+		playerXboxControls[0][2] = 7;
+		playerXboxControls[0][3] = 10;
+		playerXboxControls[0][4] = 11;
+		playerXboxControls[0][5] = 12;
+		playerXboxControls[0][6] = 13;
+		playerXboxControls[0][7] = 1;
+		playerXboxControls[0][8] = 4;
+		playerXboxControls[0][9] = 5;
 	}
 
 	// For the number of lines in the input file 
@@ -528,9 +528,7 @@ GLFWwindow* windowMgr::Init()
 	{
 		// Assign the psoition, score and name to the arrays from the file
 		playerOneXboxFile >> playerXboxControls[0][l];
-		cout << "C1 pl " << playerXboxControls[0][l] << endl;
-		controllerXboxPOne[l] = playerXboxControls[0][l];
-		cout << "C1 co " << controllerXboxPOne[l] << endl;
+		cout << "Controller one " << playerXboxControls[0][l] << endl;
 	}
 
 	//*************XBOX PLAYER TWO *****************//
@@ -545,16 +543,16 @@ GLFWwindow* windowMgr::Init()
 		// Print to screen
 		cout << "Error in opening player one xbox file" << endl;
 		// Set default values for xbox controller - FUNCTION/BUTTONS
-		controllerXboxPTwo[0] = 2;
-		controllerXboxPTwo[1] = 3;
-		controllerXboxPTwo[2] = 7;
-		controllerXboxPTwo[3] = 10;
-		controllerXboxPTwo[4] = 11;
-		controllerXboxPTwo[5] = 12;
-		controllerXboxPTwo[6] = 13;
-		controllerXboxPTwo[7] = 1;
-		controllerXboxPTwo[8] = 4;
-		controllerXboxPTwo[9] = 5;
+		playerXboxControls[1][0] = 2;
+		playerXboxControls[1][1] = 3;
+		playerXboxControls[1][2] = 7;
+		playerXboxControls[1][3] = 10;
+		playerXboxControls[1][4] = 11;
+		playerXboxControls[1][5] = 12;
+		playerXboxControls[1][6] = 13;
+		playerXboxControls[1][7] = 1;
+		playerXboxControls[1][8] = 4;
+		playerXboxControls[1][9] = 5;
 	}
 
 	// For the number of lines in the input file 
@@ -562,9 +560,7 @@ GLFWwindow* windowMgr::Init()
 	{
 		// Assign the psoition, score and name to the arrays from the file
 		playerTwoXboxFile >> playerXboxControls[1][l];
-		cout << "C2 pl " << playerXboxControls[1][l] << endl;
-		controllerXboxPTwo[l] = playerXboxControls[1][l];
-		cout << "C2 co " << controllerXboxPTwo[l] << endl;
+		cout << "Controller two " << playerXboxControls[1][l] << endl;
 	}
 
 	//*************KEYBOARD PLAYER ONE *****************//
@@ -579,25 +575,25 @@ GLFWwindow* windowMgr::Init()
 		// Print to screen
 		cout << "Error in opening player one keyboard file" << endl;
 		// Set default values for xbox controller - FUNCTION/BUTTONS
-		windowMgr::getInstance()->keyboardFunctionsPOne[0] = 81;
-		windowMgr::getInstance()->keyboardFunctionsPOne[1] = 69;
-		windowMgr::getInstance()->keyboardFunctionsPOne[2] = 80;
-		windowMgr::getInstance()->keyboardFunctionsPOne[3] = 87;
-		windowMgr::getInstance()->keyboardFunctionsPOne[4] = 68;
-		windowMgr::getInstance()->keyboardFunctionsPOne[5] = 83;
-		windowMgr::getInstance()->keyboardFunctionsPOne[6] = 65;
-		windowMgr::getInstance()->keyboardFunctionsPOne[7] = 90;
-		windowMgr::getInstance()->keyboardFunctionsPOne[8] = 82;
-		windowMgr::getInstance()->keyboardFunctionsPOne[9] = 70;
+		windowMgr::getInstance()->playerKeyboardControls[0][0] = 81;
+		windowMgr::getInstance()->playerKeyboardControls[0][1] = 69;
+		windowMgr::getInstance()->playerKeyboardControls[0][2] = 80;
+		windowMgr::getInstance()->playerKeyboardControls[0][3] = 87;
+		windowMgr::getInstance()->playerKeyboardControls[0][4] = 68;
+		windowMgr::getInstance()->playerKeyboardControls[0][5] = 83;
+		windowMgr::getInstance()->playerKeyboardControls[0][6] = 65;
+		windowMgr::getInstance()->playerKeyboardControls[0][7] = 90;
+		windowMgr::getInstance()->playerKeyboardControls[0][8] = 82;
+		windowMgr::getInstance()->playerKeyboardControls[0][9] = 70;
 	}
 
 	// For the number of lines in the input file 
 	for (int l = 0; l < 10; l++)
 	{
 		// Assign the psoition, score and name to the arrays from the file
-		playerOneKeyboardFile >> windowMgr::getInstance()->keyboardFunctionsPOne[l];
+		playerOneKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[0][l];
 		// Output them to the screen
-		cout << windowMgr::getInstance()->keyboardFunctionsPOne[l] << endl;
+		cout << "Keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
 	}
 
 	//*************KEYBOARD PLAYER TWO *****************//
@@ -612,25 +608,25 @@ GLFWwindow* windowMgr::Init()
 		// Print to screen
 		cout << "Error in opening player one keyboard file";
 		// Set default values for xbox controller - FUNCTION/BUTTONS
-		windowMgr::getInstance()->keyboardFunctionsPTwo[0] = 72;
-		windowMgr::getInstance()->keyboardFunctionsPTwo[1] = 71;
-		windowMgr::getInstance()->keyboardFunctionsPTwo[2] = 89;
-		windowMgr::getInstance()->keyboardFunctionsPTwo[3] = 73;
-		windowMgr::getInstance()->keyboardFunctionsPTwo[4] = 76;
-		windowMgr::getInstance()->keyboardFunctionsPTwo[5] = 75;
-		windowMgr::getInstance()->keyboardFunctionsPTwo[6] = 74;
-		windowMgr::getInstance()->keyboardFunctionsPTwo[7] = 77;
-		windowMgr::getInstance()->keyboardFunctionsPTwo[8] = 78;
-		windowMgr::getInstance()->keyboardFunctionsPTwo[9] = 79;
+		windowMgr::getInstance()->playerKeyboardControls[1][0] = 72;
+		windowMgr::getInstance()->playerKeyboardControls[1][1] = 71;
+		windowMgr::getInstance()->playerKeyboardControls[1][2] = 89;
+		windowMgr::getInstance()->playerKeyboardControls[1][3] = 73;
+		windowMgr::getInstance()->playerKeyboardControls[1][4] = 76;
+		windowMgr::getInstance()->playerKeyboardControls[1][5] = 75;
+		windowMgr::getInstance()->playerKeyboardControls[1][6] = 74;
+		windowMgr::getInstance()->playerKeyboardControls[1][7] = 77;
+		windowMgr::getInstance()->playerKeyboardControls[1][8] = 78;
+		windowMgr::getInstance()->playerKeyboardControls[1][9] = 79;
 	}
 
 	// For the number of lines in the input file 
 	for (int l = 0; l < 10; l++)
 	{
 		// Assign the psoition, score and name to the arrays from the file
-		playerTwoKeyboardFile >> windowMgr::getInstance()->keyboardFunctionsPTwo[l];
+		playerTwoKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[1][l];
 		// Output them to the screen
-		cout << windowMgr::getInstance()->keyboardFunctionsPTwo[l] << endl;
+		cout << "Keyboard 2 " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
 	}
 
 

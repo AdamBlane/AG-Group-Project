@@ -39,6 +39,7 @@ public:
 	int indexAtButton = 0;
 	int indexAtKey = 0;
 	int playerForController = 1;
+	int playerTab = 1; // Set and keep track of what tab we are on - ie player one or two. One by default.
 
 	bool keyboardButtonPressed[99] = { false };
 
@@ -183,7 +184,8 @@ public:
 	// Draw stuff
 	void Loop(GLFWwindow* win);
 	// Input 
-	void Input(GLFWwindow* win);
+	void InputKeyboard(GLFWwindow* win);
+	void InputController(GLFWwindow* win);
 	// Setup
 	void Init(GLFWwindow* win);
 	// Update
@@ -195,7 +197,5 @@ public:
 	// For mouse button actions
 	void Click(GLFWwindow* window);
 	// Load unqiue player buttons
-	void InitPlayerButtonsPlayerOne(GLFWwindow* window);
-	// Load unqiue player buttons
-	void InitPlayerButtonsPlayerTwo(GLFWwindow* window);
+	void InitPlayerButtons(GLFWwindow* window);
 };

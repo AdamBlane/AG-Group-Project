@@ -84,13 +84,10 @@ class windowMgr
 		int gameKeyboardFunctions[10];
 
 		// Various controller arrays which hold the controller information
-		int controllerXboxPOne[10];
-		int controllerXboxPTwo[10];
 		int playerXboxControls[2][10];
+		int playerKeyboardControls[2][10];
 		int controllerPSPOne[10];
 		int controllerPSPTwo[10];
-		int keyboardFunctionsPOne[10];
-		int keyboardFunctionsPTwo[10];
 		int playerUsingControllerOne = 1;
 
 		// KEYBOARD - One
