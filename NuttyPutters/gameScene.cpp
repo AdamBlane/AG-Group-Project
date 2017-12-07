@@ -953,8 +953,8 @@ void gameScene::CheckLoadNextLevel()
 			// Shrink this players wormhole
 			wormholeTransforms[i].getScale() = vec3(0);
 			// Ensure player lands on start tile
-			players[i].transform.getPos().x = players[i].transform.getPos().z = 0.0f;
-
+			players[i].transform.getPos().x = i * 2.0f;
+			players[i].transform.getPos().z = 0.0f;
 			// Allow level changing for next level
 			changedLevel = false;
 			// Change pause cam properties to match with this level
