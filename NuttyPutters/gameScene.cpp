@@ -138,24 +138,34 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[0]);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[1]);
 
+	// Setup wormhole stuff for both players (regardless of player mode)
 	Transform wormholeTransform;
 	// Place under end hole
-	wormholeTransform.getPos() = masterAlgTiles[currentLevel].back()->thisCoords;
+	//wormholeTransform.getPos() = masterAlgTiles[currentLevel].back()->thisCoords;
 	wormholeTransform.getPos().y = -489;
-
 	// To face upwards
 	wormholeTransform.getRot().x = -1.5708;
 	// Initially zero scale
 	wormholeTransform.getScale() = vec3(0);
-	
 	wormholeTransforms.push_back(wormholeTransform);
+	// Same again for second
+	Transform wormholeTransform2;
+	// Place under end hole
+
+	wormholeTransform2.getPos().y = -489;
+	// To face upwards
+	wormholeTransform2.getRot().x = -1.5708;
+	// Initially zero scale
+	wormholeTransform2.getScale() = vec3(1);
+	wormholeTransforms.push_back(wormholeTransform2);
+	
 	//wormholeTransform.getScale() = vec3(1);
 	// Set pickup crate properties
 	SetupPickupCrates();
 
 	// Set dt based on player count
 	//dt = (playerCount * 0.01) - 0.002;
-	dt = 0.016;
+	dt = 0.012;
 
 
 	// Start game logic mgr
@@ -183,7 +193,6 @@ void gameScene::LoadGame(string seed)
 	masterAlgTiles.push_back(algTiles);
 
 }
-
 
 // Takes in an algTiles list, spits out a sceneryTiles list
 void gameScene::FillScenery()
@@ -487,17 +496,16 @@ void gameScene::Input(GLFWwindow* window)
 	}
 
 
-	// 
+	// For every player
 	for (auto &p : players)
 	{
 		// Jump
-		if (glfwGetKey(window, p.jumpButton) && p.jumpCounter < 3) //AND player hasn't jumped thrice
+		if (glfwGetKey(window, p.jumpButton) && p.jumpCounter < 4) //AND player hasn't jumped thrice
 		{
 			// Increase player jump count
 			p.jumpCounter++;
 			p.jumpPressed = true;
 		}
-
 		if (!glfwGetKey(window, p.jumpButton))
 		{
 			// If jump button recently pressed 
@@ -761,8 +769,14 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				if (!p.isMoving)
 				{
-					// Increment power counter as long as fire is held
-					p.power += 0.4;
+					if (p.power < 50) // Enforce power limit
+					{
+						// Increment power counter as long as fire is held
+						p.power += 0.2;
+					}
+
+					// Update power bar indicator
+					gameLogicMgr.UpdatePowerBar(p);
 
 					// Update the power bar based on the the fireCounter value 
 					//powerBarTrans.getPos().x -= (fireCounter/5.0f) * powerBarMesh->getGeomPos().x;
@@ -1195,7 +1209,7 @@ void gameScene::Render(GLFWwindow* window)
 	// Display HUD (exact meshes to draw depend on player count)
 	if (numPlayers == 1)
 	{
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 9; i++)
 		{
 			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
@@ -1204,7 +1218,7 @@ void gameScene::Render(GLFWwindow* window)
 	}
 	else // its 2 player
 	{
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
@@ -1229,10 +1243,14 @@ void gameScene::Render(GLFWwindow* window)
 	windowMgr::getInstance()->textureShader->Bind();
 
 
-	// TESTING WORMHOLE
-	windowMgr::getInstance()->wormholeTexture->Bind(0);
-	windowMgr::getInstance()->textureShader->Update(wormholeTransforms[0], mvp);
-	windowMgr::getInstance()->wormholeMesh->Draw();
+	// DRAW WORMHOLES
+	for (int i = 0; i < wormholeTransforms.size(); i++)
+	{
+		windowMgr::getInstance()->wormholeTexture->Bind(0);
+		windowMgr::getInstance()->textureShader->Update(wormholeTransforms[i], mvp);
+		windowMgr::getInstance()->wormholeMeshes[i]->Draw();
+	}
+
 
 
 	// DRAW all level tiles
@@ -1324,12 +1342,13 @@ void gameScene::Render(GLFWwindow* window)
 		glDepthRange(0, 0.01);
 
 		// TODO HUD stuff
-		windowMgr::getInstance()->meshes.at(2)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(2)->Draw();
-		windowMgr::getInstance()->meshes.at(3)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(3)->Draw();
+		for (int i = 4; i < 8; i++)
+		{
+			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->meshes.at(i)->Draw();
+		}
+
 
 
 		// Reset the depth range to allow for objects at a distance to be rendered
@@ -1362,7 +1381,13 @@ void gameScene::Render(GLFWwindow* window)
 			windowMgr::getInstance()->pickupCrateMeshes[ppi / 2]->Draw();
 		}
 
-
+		// DRAW WORMHOLES
+		for (int i = 0; i < wormholeTransforms.size(); i++)
+		{
+			windowMgr::getInstance()->wormholeTexture->Bind(0);
+			windowMgr::getInstance()->textureShader->Update(wormholeTransforms[i], mvp2);
+			windowMgr::getInstance()->wormholeMeshes[i]->Draw();
+		}
 
 		// DRAW all level tiles
 		for (auto &t : masterTiles[currentLevel])

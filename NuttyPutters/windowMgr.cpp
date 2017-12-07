@@ -115,9 +115,13 @@ GLFWwindow* windowMgr::Init()
 	// Update hud target camera
 	HUDtargetCam->update(0.00001);
 
-	wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+	Mesh* wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+	Mesh* wormholeMesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 	wormholeTexture = new Texture("..\\NuttyPutters\\wormhole.jpg");
 	wormholeMesh->SetTexture(wormholeTexture);
+	wormholeMesh2->SetTexture(wormholeTexture);
+	wormholeMeshes.push_back(wormholeMesh);
+	wormholeMeshes.push_back(wormholeMesh2);
 	// ############################ AUDIO ############################
 	// Init fmod system
 	FMOD::System_Create(&system);
@@ -293,6 +297,8 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("playerTwoLbl", playerTwoLbl));
 	Texture* powerLbl = new Texture("..\\NuttyPutters\\power.png");
 	textures.insert(std::pair<std::string, Texture*>("powerLbl", powerLbl));
+	Texture* powerIndicator = new Texture("..\\NuttyPutters\\powerIndicator.png");
+	textures.insert(std::pair<std::string, Texture*>("powerIndicator", powerIndicator));
 	Texture* powerOutlineLbl = new Texture("..\\NuttyPutters\\powerbar.jpg");
 	textures.insert(std::pair<std::string, Texture*>("powerOutlineLbl", powerOutlineLbl));
 	Texture* gameSplashScreen = new Texture("..\\NuttyPutters\\loadingscreen.png");

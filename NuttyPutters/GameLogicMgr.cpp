@@ -108,6 +108,20 @@ void GameLogicMgr::Update()
 	}
 }
 
+// Update power bar
+void GameLogicMgr::UpdatePowerBar(Player player)
+{
+	// Check which player this is
+	if (player.id == 1)
+	{
+		// Update p1 power bar
+	}
+	else if (player.id == 2)
+	{
+		// Update p2 power bar
+	}
+}
+
 // When a player finishes, mark their total time
 void GameLogicMgr::SetEndTime(Player &player)
 {

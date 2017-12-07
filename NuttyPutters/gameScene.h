@@ -95,7 +95,7 @@ public:
 
 	
 	// Camera variables
-	double camSpeed = 4.0; 
+	double camSpeed = 2.0; 
 	float  cameraType = 1;
 	// TODO - replace these for player members - float chaseCamAngle, p2ChaseCamAngle, // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)

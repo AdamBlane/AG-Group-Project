@@ -75,7 +75,7 @@ class windowMgr
 		vector<Transform> pickupCrateTransforms;
 		Mesh* ufoMesh;
 		Texture* ufoTexture;
-		Mesh* wormholeMesh;
+		vector<Mesh*> wormholeMeshes;
 		Texture* wormholeTexture;
 		// All contorller related textures are stored in here
 		Texture* buttonsPS[18];
