@@ -69,9 +69,15 @@ class windowMgr
 		Mesh* player2Mesh;
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
-		// Pickup crates for 2p mode
+
+	
+    // Spaceship mesh!
+		Mesh* spaceShip;
+	  
+  // Pickup crates for 2p mode
 		vector<Mesh*> pickupCrateMeshes;
 		Texture* pickupCrateTexture;
+		Texture* spaceShipTex;
 		vector<Transform> pickupCrateTransforms;
 		Mesh* ufoMesh;
 		Texture* ufoTexture;
