@@ -423,6 +423,8 @@ void gameScene::SetupPickupCrates()
 		pickupPositionIndices.push_back(i * 2);
 	}
 }
+
+
 void gameScene::Save_Level(GLFWwindow* win)
 {
 	// Only save if not previously saved/loaded a saved level
@@ -502,10 +504,12 @@ void gameScene::Track_mouse(GLFWwindow* win)
 		ChangeTexutes(win);
 	}
 }
+
 void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 {
 	switch (currentMenuItem)
 	{
+		// Resume
 		case 1:
 			glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 			cameraType = 1;
@@ -531,6 +535,7 @@ void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 		
 	}
 }
+
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
@@ -549,6 +554,7 @@ void gameScene::Loop(GLFWwindow* window)
 	// Render
 	Render(window);
 }
+
 // Textures
 void gameScene::ChangeTexutes(GLFWwindow * win)
 {
@@ -653,10 +659,8 @@ void gameScene::Input(GLFWwindow* window)
 		// Pause
 		if (glfwGetKey(window, GLFW_KEY_P))
 		{
-			// Flip paused bool
-			paused = true;
-			// Change to pause target cam
-			cameraType = 2;
+
+
 			// Quick screenshot - need to do this twice; once here, again on Save
 			// Alt press below ensures only game window is captured
 			keybd_event(VK_MENU, 0, 0, 0); //Alt Press
@@ -664,10 +668,20 @@ void gameScene::Input(GLFWwindow* window)
 			keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
 			keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 			//Render(window);
+		
+			// Change to pause target cam
+			cameraType = 2;
+			// Flip paused bool
+			paused = true;
+			
+			// Show mouse while paused
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
 			while (paused)
 			{
+				// Mouse tracking function
 				Track_mouse(window);
+				// Item selection
 				if (glfwGetKey(window, GLFW_KEY_ENTER))
 				{
 					windowMgr::getInstance()->enterPressed = true;
@@ -676,11 +690,17 @@ void gameScene::Input(GLFWwindow* window)
 				{
 					if (windowMgr::getInstance()->enterPressed)
 					{
-						paused = false;
+						// If clicking save level, don't unpause
+						if (currentMenuItem != 2)
+							paused = false;
+
+						// Perform action clicked
 						Click_Or_Enter(window, paused);
+						// Flip flag
 						windowMgr::getInstance()->enterPressed = false;
 					}
 				}
+
 				if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && total_time >= 5.0f)
 				{
 					windowMgr::getInstance()->mouseLpressed = true;
@@ -754,11 +774,9 @@ void gameScene::Input(GLFWwindow* window)
 				Render(window); // Render it
 				
 			}//endloop
-			if (cameraType == 2) 
-			{
-				paused = true;
-			}
-			Render(window);
+			
+			// Perform another render
+			//Render(window);
 			cout << "\nUnpaused" << endl;
 			
 		} // end pause
