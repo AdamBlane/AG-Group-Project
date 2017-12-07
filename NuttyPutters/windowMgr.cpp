@@ -163,7 +163,7 @@ GLFWwindow* windowMgr::Init()
 	}
 
 	///////////////////// SPACESHIP ///////////////////
-	spaceShip = new Mesh("..\\NuttyPutters\\ufo.obj");
+	spaceShip = new Mesh("..\\NuttyPutters\\sphere.obj");
 	spaceShipTex = new Texture("..\\NuttyPutters\\tex.png");
 
 	// ############################ TEXTURES ############################

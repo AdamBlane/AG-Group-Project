@@ -286,7 +286,7 @@ void gameScene::SetupTilesToBeDrawn()
 			// Ramp up when dir is down
 			if (t->id == 7)
 			{
-				Tile tile(Tile::BRIDGE, t->thisCoords, 0);
+				Tile tile(Tile::BRIDGE, t->thisCoords, obstacleID);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
@@ -294,10 +294,7 @@ void gameScene::SetupTilesToBeDrawn()
 			if (t->id == 8)
 			{
 				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
-				// Rotate on x
-				tile.transform.getRot().x = -0.349066;
-				tile.transform.getPos().y -= 1.8;
+				Tile tile(Tile::GAP, t->thisCoords, obstacleID);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
@@ -312,15 +309,6 @@ void gameScene::SetupTilesToBeDrawn()
 			}
 			else if (t->id == 1) // Straight V
 			{
-				// RNG between 0 and 1
-				hasObstacle = Tile::randomNumber(0, 1);
-				// If it randomed 1
-				if (hasObstacle)
-				{
-					obstacleID = 2; // 2 is box obstacle
-					//save this tile position in algTiles
-					obstacles.push_back(index);
-				}
 				// Create straight tile
 				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 				// Add to list of tiles to be rendered
@@ -328,16 +316,8 @@ void gameScene::SetupTilesToBeDrawn()
 			}
 			else if (t->id == 2) // Straight H
 			{
-				hasObstacle = Tile::randomNumber(0, 1);
-				if (hasObstacle)
-				{
-					obstacleID = 2;
-					//save this tile position in algTiles
-					obstacles.push_back(index);
-					obstacles.push_back(obstacleID);
-				}
 				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 				// Straight needs rotating by 90, since it's vertical by default
 				tile.transform.getRot().y = 1.5708;
 				// Add to list of tiles to be rendered
