@@ -339,15 +339,15 @@ vector<int> courseGenV2::SetupSeed(string seed)
 		//}
 
 		levelSeed.push_back(0);
-		levelSeed.push_back(7);
+		levelSeed.push_back(8);
 		levelSeed.push_back(1);
 		levelSeed.push_back(7);
+		levelSeed.push_back(8);
 		levelSeed.push_back(1);
 		levelSeed.push_back(1);
+		levelSeed.push_back(7);
 		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
+		levelSeed.push_back(8);
 		levelSeed.push_back(1);
 		levelSeed.push_back(9);
 
@@ -561,7 +561,7 @@ vector<BaseTile*> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 			Bridge_V* bridge = new Bridge_V();
 			bridge->SetCoords(curCoords);
 			// Find next pos (always know dir is down when 7 is placed)
-			vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size); //usually + 3.8
+			vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
 			bridge->SetNextCoords(nextPos);
 			bridge->outDir.going_down = true;
 			algTiles.push_back(bridge);
@@ -571,13 +571,13 @@ vector<BaseTile*> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 		case 8:
 		{
 			// Create tile
-			//DownRampDown* downRamp;
-			//downRamp.SetCoords(curCoords);
-			//// Find next pos (always know dir is up with tile 8)
-			//vec3 nextPos = vec3(curCoords.x, curCoords.y - 3.8, curCoords.z - size);
-			//downRamp.SetNextCoords(nextPos);
-			//downRamp.outDir.going_up = true;
-			//algTiles.push_back(downRamp);
+			GapTile* gap = new GapTile();
+			gap->SetCoords(curCoords);
+			// Find next pos (always know dir is up with tile 8)
+			vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
+			gap->SetNextCoords(nextPos);
+			gap->outDir.going_down = true;
+			algTiles.push_back(gap);
 			break;
 		}
 		// End tile

@@ -88,6 +88,7 @@ public:
 	double accumulator = 0.0;
 	double dt;  // This is 60fps
 
+	Transform spaceTrans;
 	
 	// Camera variables
 	double camSpeed = 4.0; 
