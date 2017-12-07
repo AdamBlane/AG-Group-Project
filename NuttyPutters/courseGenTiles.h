@@ -52,6 +52,7 @@ public:
 	void SetNextCoords(vec3 coords); 
 	vec3 GetNextCoords();
 	vec3 GetThisCoords();
+	bool SphereRectCollision(Player player, vec3 rectCenter, vec3 rectSize);
 
 	
 	// Returns true if player is within tile bounds

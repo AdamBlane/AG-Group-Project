@@ -17,6 +17,36 @@ vec3 BaseTile::GetNextCoords() { return nextCoords; }
 // Getter of this coords
 vec3 BaseTile::GetThisCoords() { return thisCoords; }
 
+bool BaseTile::SphereRectCollision(Player player, vec3 rectCenter, vec3 rectSize)
+{
+	float sphereXDistance = abs(player.transform.getPos().x - rectCenter.x);
+	float sphereYDistance = abs(player.transform.getPos().y - rectCenter.y);
+	float sphereZDistance = abs(player.transform.getPos().z - rectCenter.z);
+
+	if (sphereXDistance >= (rectSize.x + player.radius)) { return false; }
+	if (sphereYDistance >= (rectSize.y + player.radius)) { return false; }
+	if (sphereZDistance >= (rectSize.z + player.radius)) { return false; }
+
+	if (sphereXDistance < (rectSize.x))
+	{
+		return true;
+	}
+	if (sphereYDistance < (rectSize.y))
+	{
+		return true;
+	}
+	if (sphereZDistance < (rectSize.z))
+	{
+		return true;
+	}
+
+	float cornerDistance_sq = ((sphereXDistance - rectSize.x) * (sphereXDistance - rectSize.x)) +
+		((sphereYDistance - rectSize.y) * (sphereYDistance - rectSize.y) +
+		((sphereYDistance - rectSize.z) * (sphereYDistance - rectSize.z)));
+
+	return (cornerDistance_sq < (player.radius * player.radius));
+}
+
 // This is called on each tile; spatial partitioning method
 // Returns true if player is on this tile
 bool BaseTile::isPlayerOnTile(vec3 playerPos)
@@ -362,8 +392,8 @@ float DownRampDown::SetPlayerHeight(Player player)
 
 void Bridge_V::CheckCollisions(Player &player)
 {
-	if (player.transform.getPos().x > thisCoords.x + (0.75 + (player.radius / 2)) ||
-		player.transform.getPos().x < thisCoords.x - (0.75 - (player.radius / 2)))
+	if (player.transform.getPos().x > thisCoords.x + (0.75 + (player.radius / 3)) ||
+		player.transform.getPos().x < thisCoords.x - (0.75 - (player.radius / 3)))
 	{
 		floorLevel = -490.0f;
 	}
@@ -373,9 +403,21 @@ void Bridge_V::CheckCollisions(Player &player)
 // Affect floor level when player is on this tile
 void GapTile::CheckCollisions(Player &player)
 {
-	// Player keeps track of floor level of tile its on
-	// So set floor level to bottom of skybox! 
-	player.floorLevel = -490.0f;
+	vec3 boxPos = vec3(thisCoords.x, thisCoords.y + 0.5f, thisCoords.z);
+	vec3 boxSize = vec3(1.5f - (player.radius / 3), 0.5f, 1.5f - (player.radius / 3));
+
+	bool intersect = SphereRectCollision(player, boxPos, boxSize);
+
+	if (intersect)
+	{
+		floorLevel = -0.5f;
+	}
+	else
+	{
+		// Player keeps track of floor level of tile its on
+		// So set floor level to bottom of skybox! 
+ 		floorLevel = -490.0f;
+	}
 }
 
 // Collisions check for end tile
