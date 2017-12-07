@@ -71,8 +71,7 @@ GLFWwindow* windowMgr::Init()
 	// ############################ SHADERS ############################
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-	// Setup skybox shader
-	skyboxShader = new Shader("..\\NuttyPutters\\skyShader");
+
 
 	// ############################ CAMERAS ############################
 	// Target camera for hud
@@ -80,6 +79,28 @@ GLFWwindow* windowMgr::Init()
 	HUDtargetCam->set_Posistion(vec3(0, 0, 5.0f));
 	HUDtargetCam->set_Target(vec3(0, 0, 0));
 	HUDtargetCam->set_projection(quarter_pi<float>(), (float)width / (float)height, 0.414f, 1000.0f);
+	
+
+	// ############################ SPLASH SCREEN ############################
+	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.jpg");
+	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
+
+	Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+	meshes.push_back(mesh);
+
+
+
+	// Setup start scene
+	sceneManager.startScene.FirstTimeInit(win);
+
+	return win;
+}
+
+void windowMgr::LoadAssets()
+{
+	// Setup skybox shader
+	skyboxShader = new Shader("..\\NuttyPutters\\skyShader");
+
 	// Target camera for pause
 	PAUSEtargetCam = new target_camera();
 	//PAUSEtargetCam->set_Posistion(vec3(0.0f, 15.0f, 0.0f));
@@ -104,16 +125,6 @@ GLFWwindow* windowMgr::Init()
 	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
 	chaseCams.push_back(p2ChaseCam);
 
-	// ############################ SPLASH SCREEN ############################
-	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.jpg");
-	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
-
-	meshSplash = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
-
-	// Load game splash screen
-	RenderSplashScreen(win);
-	// Update hud target camera
-	HUDtargetCam->update(0.00001);
 
 	Mesh* wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 	Mesh* wormholeMesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
@@ -139,10 +150,10 @@ GLFWwindow* windowMgr::Init()
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
 
 	// ############################ MESHES ############################
-	
+
 
 	// Initialise general use HUD meshes
-	for (int i = 0; i < 42; ++i)
+	for (int i = 0; i < 41; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -158,11 +169,11 @@ GLFWwindow* windowMgr::Init()
 	// Pickup crate meshes - no more than 5 in any given level
 	for (int i = 0; i < 5; i++)
 	{
-		Transform trans;		
+		Transform trans;
 		pickupCrateTransforms.push_back(trans);
 		pickupCrateMeshes.push_back(new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f, 1.0f));
 	}
-	
+
 	// World clock meshes
 	for (int i = 0; i < 5; i++)
 	{
@@ -343,7 +354,7 @@ GLFWwindow* windowMgr::Init()
 	Texture* semiColonLbl = new Texture("..\\NuttyPutters\\semicolon.png");
 	//textures.insert(std::pair<std::string, Texture*>("semiColonLbl", semiColonLbl));
 	numberTextures.push_back(semiColonLbl);
-	
+
 	// Game information
 	Texture* parFourLbl = new Texture("..\\NuttyPutters\\par4.png");
 	textures.insert(std::pair<std::string, Texture*>("parFourLbl", parFourLbl));
@@ -730,38 +741,7 @@ GLFWwindow* windowMgr::Init()
 	tileTextures.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
 
 
-
-	// Setup start scene
-	sceneManager.startScene.Init(win);
-
-	return win;
 }
-
-// Load texture thread function
-void windowMgr::LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* window)
-{
-	glfwMakeContextCurrent(window);
-
-	Texture* floorGrass = new Texture("..\\NuttyPutters\\grass.png");
-	tileTexs.insert(std::pair<std::string, Texture*>("floorGrass", floorGrass));
-
-	Texture* grassHole = new Texture("..\\NuttyPutters\\grassHole.png");
-	tileTexs.insert(std::pair<std::string, Texture*>("grassHole", grassHole));
-
-	Texture* grassScenery = new Texture("..\\NuttyPutters\\lava.jpg");
-	tileTexs.insert(std::pair<std::string, Texture*>("grassScenery", grassScenery));
-
-	Texture* tileWood = new Texture("..\\NuttyPutters\\box.jpg");
-	tileTexs.insert(std::pair<std::string, Texture*>("tileWood", tileWood));
-
-	Texture* waterBridge = new Texture("..\\NuttyPutters\\water.png");
-	tileTexs.insert(std::pair<std::string, Texture*>("waterBridge", waterBridge));
-
-	Texture* bottomBridge = new Texture("..\\NuttyPutters\\bridgeBottom.jpg");
-	tileTexs.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
-}
-
-
 // Called by gameScene.cpp whenever the user saves that level
 // Take the saved level seed and ask winMgr to grab the newly made image and add to list
 void windowMgr::UpdateSavesImages(string savedImagePath)
@@ -850,38 +830,3 @@ void windowMgr::CleanUp()
 	exit(EXIT_SUCCESS);
 }
 
-void windowMgr::RenderSplashScreen(GLFWwindow* win)
-{
-	glfwMakeContextCurrent(win);
-	cout << "Render splash screen" << endl;
-
-	windowMgr::getInstance()->meshSplash->SetScale(9.0f, 5.0f);
-	windowMgr::getInstance()->meshSplash->SetPos(vec3(0.0f, 0.0f, -1.0f));
-	windowMgr::getInstance()->meshSplash->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
-
-	// If camera type is target camera - used for HUD elements - then
-	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
-
-	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
-	// Set depth range to near to allow for HUD elements to be rendered and drawn
-	glDepthRange(0, 0.01);
-
-	windowMgr::getInstance()->meshSplash->thisTexture.Bind(0);
-	windowMgr::getInstance()->textureShader->Update(texShaderTransform, hudVP);
-	windowMgr::getInstance()->meshSplash->Draw();
-
-	// Reset the depth range to allow for objects at a distance to be rendered
-	glDepthRange(0.01, 1.0);
-	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
-
-	// Render any background stuff if required here
-
-	// Fully reset depth range for next frame - REQUIRED
-	glDepthRange(0, 1.0);
-
-	// Bind texture shader
-	windowMgr::getInstance()->textureShader->Bind();
-
-	glfwSwapBuffers(win);
-	glfwPollEvents();
-}
