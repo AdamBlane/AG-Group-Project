@@ -124,7 +124,10 @@ public:
 	void Collisions();
 	// Draw stuff
 	void Render(GLFWwindow* window);
+	//Function to track mouse movements
 	void Track_mouse(GLFWwindow* win);
 	void Click_Or_Enter(GLFWwindow* win , bool pause);
 	void Save_Level(GLFWwindow* win);
+	//seperate render for pause screen
+	void ChangeTexutes(GLFWwindow* win);
 };

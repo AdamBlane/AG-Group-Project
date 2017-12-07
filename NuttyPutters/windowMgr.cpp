@@ -294,6 +294,23 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("powerOutlineLbl", powerOutlineLbl));
 	Texture* gameSplashScreen = new Texture("..\\NuttyPutters\\loadingscreen.png");
 	textures.insert(std::pair<std::string, Texture*>("gameSplashScreen", gameSplashScreen));
+	//pause screen textures
+	Texture* unpauseBtnUnselected = new Texture("..\\NuttyPutters\\pause\\unpause.png");
+	textures.insert(std::pair<std::string, Texture*>("unpauseBtnUnselected", unpauseBtnUnselected));
+	Texture* unpauseBtnSelected = new Texture("..\\NuttyPutters\\pause\\unpause(1).png");
+	textures.insert(std::pair<std::string, Texture*>("unpauseBtnSelected", unpauseBtnSelected));
+	Texture* exitgameBtnUnselected = new Texture("..\\NuttyPutters\\pause\\exit.png");
+	textures.insert(std::pair<std::string, Texture*>("exitgameBtnUnselected", exitgameBtnUnselected));
+	Texture* exitgameBtnSelected = new Texture("..\\NuttyPutters\\pause\\exit(1).png");
+	textures.insert(std::pair<std::string, Texture*>("exitgameBtnSelected", exitgameBtnSelected));
+	Texture* menuBtnUnselected = new Texture("..\\NuttyPutters\\pause\\menu.png");
+	textures.insert(std::pair<std::string, Texture*>("menuBtnUnselected", menuBtnUnselected));
+	Texture* menuBtnSelected = new Texture("..\\NuttyPutters\\pause\\menu(1).png");
+	textures.insert(std::pair<std::string, Texture*>("menuBtnSelected", menuBtnSelected));
+	Texture* saveBtnUnselected = new Texture("..\\NuttyPutters\\pause\\save.png");
+	textures.insert(std::pair<std::string, Texture*>("saveBtnUnselected", saveBtnUnselected));
+	Texture* saveBtnSelected = new Texture("..\\NuttyPutters\\pause\\save(1).png");
+	textures.insert(std::pair<std::string, Texture*>("saveBtnSelected", saveBtnSelected));
 	// Timer numbers
 	Texture* zeroLbl = new Texture("..\\NuttyPutters\\nzero.png");
 	//textures.insert(std::pair<std::string, Texture*>("zeroLbl", zeroLbl));

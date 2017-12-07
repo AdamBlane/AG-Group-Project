@@ -1,8 +1,22 @@
 #include "UI.h"
 #include "windowMgr.h"
 
-
-
+//sets hud for 
+void UI::PauseScreen()
+{
+	windowMgr::getInstance()->meshes.at(0)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(1)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(0.0f, 0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(2)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.0f, -0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(0.0f, -0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+}
 // Sets up basic HUD layout for 1 player game
 void UI::p1Setup()
 {
@@ -37,6 +51,23 @@ void UI::p1Setup()
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(3.05f, 1.7f, 0.0f));
 	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
 
+
+	windowMgr::getInstance()->meshes.at(7)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(0.0f, 0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(8)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0.0f, 0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(9)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0.0f, -0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(10)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, -0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+
 }
 
 // Sets up basic HUD layout for 2 player game
@@ -60,7 +91,21 @@ void UI::p2Setup()
 	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
+	windowMgr::getInstance()->meshes.at(4)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0f, 0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
 
+	windowMgr::getInstance()->meshes.at(5)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(0.0f, 0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(6)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(7)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(0.0f, -0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
 	// World clock setup - appear behind end hole
 
 
@@ -153,28 +198,7 @@ void UI::UpdateStrokeCounter(int playerIndex, int strokeCounter)
 		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
 	}
 
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
