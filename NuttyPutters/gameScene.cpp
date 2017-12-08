@@ -232,6 +232,7 @@ void gameScene::FillScenery()
 		zMin -= 20;
 		xMax += 20;
 		zMax += 10;
+		// test
 		// Set the pause target cam pos and target, now that we know level dimensions
 		vec3 pauseCamPos, pauseCamTarget;
 		pauseCamPos.x = xMin, pauseCamPos.y = 30.0f, pauseCamPos.z = zMin;
