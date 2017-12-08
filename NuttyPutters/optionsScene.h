@@ -29,7 +29,6 @@ public:
 	//Shader* textureShader;
 
 	Transform optionSceneTransform;
-	int button_manager = 1;
 
 	float total_time = 0.0f;
 	int previousMenuItem, currentMenuItem;

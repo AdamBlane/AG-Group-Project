@@ -50,6 +50,7 @@ GLFWwindow* windowMgr::Init()
 	win = glfwCreateWindow(width, height, "Nutty Putters", NULL, NULL);
 	// Center it
 	glfwSetWindowPos(win, PosX, PosY);
+	glfwSetWindowSizeLimits(win, width, height, width,height);
 
 	// Check window was created successfully
 	if (!win)
@@ -78,7 +79,7 @@ GLFWwindow* windowMgr::Init()
 	HUDtargetCam = new target_camera();
 	HUDtargetCam->set_Posistion(vec3(0, 0, 5.0f));
 	HUDtargetCam->set_Target(vec3(0, 0, 0));
-	HUDtargetCam->set_projection(quarter_pi<float>(), (float)width / (float)height, 0.414f, 1000.0f);
+	HUDtargetCam->set_projection(quarter_pi<float>(), (float)width / (float)height, 0.414f, 40000.0f);
 	
 
 	// ############################ SPLASH SCREEN ############################
@@ -100,29 +101,28 @@ void windowMgr::LoadAssets()
 {
 	// Setup skybox shader
 	skyboxShader = new Shader("..\\NuttyPutters\\skyShader");
-
 	// Target camera for pause
 	PAUSEtargetCam = new target_camera();
 	//PAUSEtargetCam->set_Posistion(vec3(0.0f, 15.0f, 0.0f));
 	//PAUSEtargetCam->set_Target(vec3(0, 0, 0));
-	PAUSEtargetCam->set_projection(quarter_pi<float>(), (float)width / (float)height, 0.414f, 1000.0f);
+	PAUSEtargetCam->set_projection(quarter_pi<float>(), (float)width / (float)height, 0.414f, 40000.0f);
 	// Free camera for in game
 	freeCam = new free_camera();
 	freeCam->set_Posistion(vec3(0, 10, -10));
 	freeCam->rotate(-10.0, 0.0);
 	freeCam->set_Target(vec3(0, 0, 0));
-	freeCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	freeCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 40000.0f);
 	// Chase camera for p1 in game
 	p1ChaseCam = new chase_camera();
 	p1ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p1ChaseCam->set_springiness(0.2f);
-	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p1ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 40000.0f);
 	chaseCams.push_back(p1ChaseCam);
 	// p2 chase cam
 	p2ChaseCam = new chase_camera();
 	p2ChaseCam->set_pos_offset(vec3(0.0f, 5.0f, -5.0f));
 	p2ChaseCam->set_springiness(0.2f);
-	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2 / (float)windowMgr::getInstance()->height, 0.414f, 40000.0f);
 	chaseCams.push_back(p2ChaseCam);
 
 
@@ -320,6 +320,23 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("powerOutlineLbl", powerOutlineLbl));
 	Texture* gameSplashScreen = new Texture("..\\NuttyPutters\\loadingscreen.png");
 	textures.insert(std::pair<std::string, Texture*>("gameSplashScreen", gameSplashScreen));
+	//pause screen textures
+	Texture* unpauseBtnUnselected = new Texture("..\\NuttyPutters\\pause\\unpause.png");
+	textures.insert(std::pair<std::string, Texture*>("unpauseBtnUnselected", unpauseBtnUnselected));
+	Texture* unpauseBtnSelected = new Texture("..\\NuttyPutters\\pause\\unpause(1).png");
+	textures.insert(std::pair<std::string, Texture*>("unpauseBtnSelected", unpauseBtnSelected));
+	Texture* exitgameBtnUnselected = new Texture("..\\NuttyPutters\\pause\\exit.png");
+	textures.insert(std::pair<std::string, Texture*>("exitgameBtnUnselected", exitgameBtnUnselected));
+	Texture* exitgameBtnSelected = new Texture("..\\NuttyPutters\\pause\\exit(1).png");
+	textures.insert(std::pair<std::string, Texture*>("exitgameBtnSelected", exitgameBtnSelected));
+	Texture* menuBtnUnselected = new Texture("..\\NuttyPutters\\pause\\menu.png");
+	textures.insert(std::pair<std::string, Texture*>("menuBtnUnselected", menuBtnUnselected));
+	Texture* menuBtnSelected = new Texture("..\\NuttyPutters\\pause\\menu(1).png");
+	textures.insert(std::pair<std::string, Texture*>("menuBtnSelected", menuBtnSelected));
+	Texture* saveBtnUnselected = new Texture("..\\NuttyPutters\\pause\\save.png");
+	textures.insert(std::pair<std::string, Texture*>("saveBtnUnselected", saveBtnUnselected));
+	Texture* saveBtnSelected = new Texture("..\\NuttyPutters\\pause\\save(1).png");
+	textures.insert(std::pair<std::string, Texture*>("saveBtnSelected", saveBtnSelected));
 	// Timer numbers
 	Texture* zeroLbl = new Texture("..\\NuttyPutters\\nzero.png");
 	//textures.insert(std::pair<std::string, Texture*>("zeroLbl", zeroLbl));

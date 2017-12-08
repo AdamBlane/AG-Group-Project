@@ -3,6 +3,7 @@
 #include "windowMgr.h" // to access singleton
 #include "courseGenV2.h"
 #include "UI.h"
+#include "PauseScreen.h"
 #include <thread>
 
 
@@ -53,7 +54,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 {
 	// MONDAY DEMO 
 	continuePressed = true;
-
+	paused = false;
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -117,9 +118,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 		windowMgr::getInstance()->chaseCams[p]->set_target_pos(vec3(player.transform.getPos()));
 		// 2 player?
 		if (numPlayers == 2)
-			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2 / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2  / (float)windowMgr::getInstance()->height, 0.414f, 40000.0f);
 		else
-			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 1000.0f);
+			windowMgr::getInstance()->chaseCams[p]->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / (float)windowMgr::getInstance()->height, 0.414f, 40000.0f);
 		// Set this player's id
 		player.id = p + 1;
 		// Add to players list
@@ -435,6 +436,118 @@ void gameScene::SetupPickupCrates()
 	}
 }
 
+
+void gameScene::Save_Level(GLFWwindow* win)
+{
+	// Only save if not previously saved/loaded a saved level
+	if (!levelSaved)
+	{
+		// Open file to append level seed 
+		ofstream saves("saves.csv", ofstream::app);
+		// ID of each tile makes up seed
+		for (auto &t : masterAlgTiles[currentLevel])
+		{
+			saves << t->id;
+		}
+		saves << endl;
+		cout << "Level saved" << endl;
+		levelSaved = true;
+
+		// Also save image of level
+		// Alt press below ensures only game window is captured
+		keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+		keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+		keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+		keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+
+
+		//// The above saves the game window capture to clipboard
+		//// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
+		HWND hwnd = GetDesktopWindow();
+		if (!OpenClipboard(hwnd))
+			cout << "Error with HWND" << endl;
+		OpenClipboard(NULL);
+		HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
+		if (hBitmap == NULL)
+			cout << "Error with clipboard bmp data" << endl;
+		CloseClipboard();
+		CImage image;
+		image.Attach(hBitmap);
+		// Build string to save with level seed name
+		string fileName = "..\\NuttyPutters\\savesImages\\";
+		for (auto &i : masterLevelSeeds[currentLevel])
+		{
+			fileName += to_string(i);
+		}
+		fileName += ".bmp";
+		image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
+		//cout << "course image saved as " << fileName << endl;
+
+		// Tell winMgr to update its saved images list
+		windowMgr::getInstance()->UpdateSavesImages(fileName.c_str());
+	} // end level saving code
+
+}
+
+void gameScene::Track_mouse(GLFWwindow* win)
+{
+	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
+	if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 200 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale))
+	{
+		previousMenuItem = currentMenuItem;
+		if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 1;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 456 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 2;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 580 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 3;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 4;
+		}
+		ChangeTexutes(win);
+	}
+}
+
+void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
+{
+	switch (currentMenuItem)
+	{
+		// Resume
+		case 1:
+			glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			cameraType = 1;
+			pause = false;
+			break;
+
+		// Save this level 
+		case 2:
+			Save_Level(win);
+			break;
+		// Exit to main menu
+		//This case resets the scene to an empty screen
+		case 3:
+			// glLoadIdentity(); might need this later
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+			break;
+		// Exit Game
+		case 4:
+			// Scene 0 is no scene - it runs winMgr.CleanUp() and closes app
+			windowMgr::getInstance()->sceneManager.changeScene(0);
+			break;
+
+		
+	}
+}
+
 // Main game loop 
 void gameScene::Loop(GLFWwindow* window)
 {
@@ -452,6 +565,53 @@ void gameScene::Loop(GLFWwindow* window)
 
 	// Render
 	Render(window);
+}
+
+// Textures
+void gameScene::ChangeTexutes(GLFWwindow * win)
+{
+	int a;
+	if (numPlayers == 1) 
+	{
+		a = 9;
+	}
+	else if (numPlayers == 2)
+	{
+		a = 8;
+	}
+	switch (previousMenuItem)
+	{
+		//cases for the buttons to switch to each screen
+		case 1:
+			windowMgr::getInstance()->meshes.at(0 + a)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(1 + a)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+			break;
+	}
+	switch (currentMenuItem)
+	{
+		//cases for the buttons to switch to each screen
+		case 1:
+			windowMgr::getInstance()->meshes.at(0 + a)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnSelected"]);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(1 + a)->SetTexture(windowMgr::getInstance()->textures["saveBtnSelected"]);
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnSelected"]);
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnSelected"]);
+			break;
+	}
+
 }
 
 // Act on input
@@ -537,112 +697,120 @@ void gameScene::Input(GLFWwindow* window)
 		// Pause
 		if (glfwGetKey(window, GLFW_KEY_P))
 		{
-			// Change to pause target cam
-			cameraType = 2;
-			Render(window); // Render it
+
+
 			// Quick screenshot - need to do this twice; once here, again on Save
 			// Alt press below ensures only game window is captured
 			keybd_event(VK_MENU, 0, 0, 0); //Alt Press
 			keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
 			keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
 			keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
-
-			// MONDAY DEMO PRINT COMMANDS
-			cout << "\nPAUSE CONTROLS:" << endl;
-			cout << "Save level - S\n Exit game - B\n Main menu - C\n Unpause - U" << endl;
-
-
+			//Render(window);
+		
+			// Change to pause target cam
+			cameraType = 2;
 			// Flip paused bool
-			bool paused = true;
-			// Pause input...
+			paused = true;
+			
+			// Show mouse while paused
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
 			while (paused)
 			{
-				// Render to show menu changes etc
-
-				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-				// Need this to listen for further key presses
-				glfwPollEvents();
-				// Exit game 
-				if (glfwGetKey(window, GLFW_KEY_B))
+				// Mouse tracking function
+				Track_mouse(window);
+				// Item selection
+				if (glfwGetKey(window, GLFW_KEY_ENTER))
 				{
-					// Scene 0 is no scene - it runs winMgr.CleanUp() and closes app
-					windowMgr::getInstance()->sceneManager.changeScene(0);
-					break;
+					windowMgr::getInstance()->enterPressed = true;
 				}
-
-				// Save this level 
-				if (glfwGetKey(window, GLFW_KEY_S))
+				if (!glfwGetKey(window, GLFW_KEY_ENTER) && total_time >= 5.0f)
 				{
-					// Only save if not previously saved/loaded a saved level
-					if (!levelSaved)
+					if (windowMgr::getInstance()->enterPressed)
 					{
-						// Open file to append level seed 
-						ofstream saves("saves.csv", ofstream::app);
-						// ID of each tile makes up seed
-						for (auto &t : masterAlgTiles[currentLevel])
-						{
-							saves << t->id;
-						}
-						saves << endl;
-						cout << "Level saved" << endl;
-						levelSaved = true;
+						// If clicking save level, don't unpause
+						if (currentMenuItem != 2)
+							paused = false;
 
-						// Also save image of level
-						// Alt press below ensures only game window is captured
-						keybd_event(VK_MENU, 0, 0, 0); //Alt Press
-						keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
-						keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
-						keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
-
-
-						//// The above saves the game window capture to clipboard
-						//// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
-						HWND hwnd = GetDesktopWindow();
-						if (!OpenClipboard(hwnd))
-							cout << "Error with HWND" << endl;
-						OpenClipboard(NULL);
-						HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP);
-						if (hBitmap == NULL)
-							cout << "Error with clipboard bmp data" << endl;
-						CloseClipboard();
-						CImage image;
-						image.Attach(hBitmap);
-						// Build string to save with level seed name
-						string fileName = "..\\NuttyPutters\\savesImages\\";
-						for (auto &i : masterLevelSeeds[currentLevel])
-						{
-							fileName += to_string(i);
-						}
-						fileName += ".bmp";
-						image.Save(fileName.c_str(), Gdiplus::ImageFormatBMP);
-						cout << "course image saved as " << fileName << endl;
-
-						// Tell winMgr to update its saved images list
-						windowMgr::getInstance()->UpdateSavesImages(fileName.c_str());
-					} // end level saving code
-
+						// Perform action clicked
+						Click_Or_Enter(window, paused);
+						// Flip flag
+						windowMgr::getInstance()->enterPressed = false;
+					}
 				}
 
-				// Unpause
-				if (glfwGetKey(window, GLFW_KEY_U))
+				if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && total_time >= 5.0f)
 				{
-					glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-					cameraType = 1;
-					paused = false;
-					break;
+					windowMgr::getInstance()->mouseLpressed = true;
 				}
-
-				// Exit to main menu
-				//This function resets the scene to an empty screen
-				if (glfwGetKey(window, GLFW_KEY_C))
+				if (!glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT))
 				{
-					// glLoadIdentity(); might need this later
-					windowMgr::getInstance()->sceneManager.changeScene(1);
-					break;
+					if (windowMgr::getInstance()->mouseLpressed)
+					{
+						if (currentMenuItem != 2) 
+						{
+							paused = false;
+						}
+						Click_Or_Enter(window , paused);
+						windowMgr::getInstance()->mouseLpressed = false;
+					}
+				}
+				if (glfwGetKey(window, GLFW_KEY_UP))
+				{
+					windowMgr::getInstance()->upPressed = true;
 				}
 
-			} // end while paused
+				if (!glfwGetKey(window, GLFW_KEY_UP))
+				{
+					if (windowMgr::getInstance()->upPressed)
+					{
+						previousMenuItem = currentMenuItem;
+						if (currentMenuItem == 1)
+						{
+							currentMenuItem = 4;
+						}
+						else if (currentMenuItem == 0)
+						{
+							currentMenuItem = 4;
+						}
+						else
+						{
+							currentMenuItem--;
+						}
+						ChangeTexutes(window);
+						windowMgr::getInstance()->upPressed = false;
+					}
+				}
+				if (glfwGetKey(window, GLFW_KEY_DOWN))
+				{
+					windowMgr::getInstance()->downPressed = true;
+				}
 
+				if (!glfwGetKey(window, GLFW_KEY_DOWN))
+				{
+					previousMenuItem = currentMenuItem;
+					if (windowMgr::getInstance()->downPressed)
+					{
+						if (currentMenuItem == 4)
+						{
+							currentMenuItem = 1;
+						}
+						else
+						{
+							currentMenuItem++;
+						}
+						windowMgr::getInstance()->downPressed = false;
+						ChangeTexutes(window);
+					}
+				}
+				// Increase time delay tracker (prevents enter/Lclick reoccuring from last scene)
+				if (total_time <= 5.0f)
+				{
+					total_time += 1.0f;
+				}
+				Render(window); // Render it
+				
+			}//endloop
 			cout << "\nUnpaused" << endl;
 
 		} // end pause
@@ -1181,7 +1349,7 @@ void gameScene::Collisions()
 void gameScene::Render(GLFWwindow* window)
 {
 	// Check whether to render for 1 or 2 players
-	if (numPlayers == 1)
+	if (numPlayers == 1 || paused == true)
 	{
 		glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	}
@@ -1218,7 +1386,29 @@ void gameScene::Render(GLFWwindow* window)
 
 
 	// Display HUD (exact meshes to draw depend on player count)
-	if (numPlayers == 1)
+	if (paused == true) 
+	{
+		if (numPlayers == 1) 
+		{
+			for (int i = 9; i <= 12; i++)
+			{
+				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(i)->Draw();
+			}
+		}
+		if (numPlayers == 2)
+		{
+			for (int i = 8; i <= 11; i++)
+			{
+				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(i)->Draw();
+			}
+		}
+		
+	}
+	else if (numPlayers == 1)
 	{
 		for (int i = 0; i < 9; i++)
 		{
@@ -1280,7 +1470,7 @@ void gameScene::Render(GLFWwindow* window)
 	windowMgr::getInstance()->spaceShip->Draw();
 
 	// Draw 2 Player stuff
-	if (numPlayers == 2)
+	if (numPlayers == 2 && paused != true)
 	{
 		// Render player 2
 		windowMgr::getInstance()->textures["playerBlueTexture"]->Bind(0);
@@ -1343,7 +1533,7 @@ void gameScene::Render(GLFWwindow* window)
 	// ################### PLAYER 2 SCREEN ################### //
 
 
-	if (numPlayers == 2)
+	if (numPlayers == 2 && paused != true)
 	{
 		// Player 2 has the right hand vertical half of the screen
 		glViewport(windowMgr::getInstance()->width / 2, 0, windowMgr::getInstance()->width / 2, windowMgr::getInstance()->height);
@@ -1444,9 +1634,9 @@ void gameScene::Render(GLFWwindow* window)
 
 	// Fully reset depth range for next frame - REQUIRED
 	glDepthRange(0, 1.0);
-
 	glfwSwapBuffers(window);
-	glfwPollEvents();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glfwPollEvents();	
 }
 
 
