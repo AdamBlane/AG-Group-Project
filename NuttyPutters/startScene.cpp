@@ -44,6 +44,7 @@ void startScene::Track_Mouse(GLFWwindow *window)
 		}
 		ChangeTexutes(window);
 	}
+
 }
 
 void startScene::ChangeTexutes(GLFWwindow * win)
@@ -106,6 +107,23 @@ void startScene::ChangeTexutes(GLFWwindow * win)
 
 }
 
+// First time setup; show splash screen & load assets
+void startScene::FirstTimeInit(GLFWwindow* win)
+{
+	// Show splash screen
+	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
+	Render(win);
+	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
+	Render(win);
+	// Load textures
+	windowMgr::getInstance()->LoadAssets();
+	loaded = true;
+
+	Init(win);
+}
+
 void startScene::Init(GLFWwindow* win)
 {
 	// Set initial button press bools to false
@@ -115,13 +133,12 @@ void startScene::Init(GLFWwindow* win)
 	upPressed = downPressed = selectPressed = false;
 	// Reset select delay counter
 	selectCooldown = 0;
-
+	windowMgr::getInstance()->button_manager = 0;
 	// Background image will never change so setup here
 	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
 	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
-	currentMenuItem = 3;
 
 	// Perform setup of initial button configs - (un)selected textures
 	// Pick next item in meshes list (increment the number by 1 each time)
@@ -145,9 +162,14 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
-
-	ChangeTexutes(win);
+	currentMenuItem = 1;
+	previousMenuItem = 6;
+	for (int i = 0; i < 100; i++) 
+	{
+		ChangeTexutes(win);
+	}
 }
+		
 
 // Main loop for this scene
 void startScene::Loop(GLFWwindow* win)
@@ -311,6 +333,7 @@ void startScene::Render(GLFWwindow* win)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
+	if (loaded)
 	// Bind, update and draw HUD elements
 	for (int a = 0; a < 7; a++)
 	{
@@ -318,6 +341,13 @@ void startScene::Render(GLFWwindow* win)
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(a)->Draw();
 	}
+	else
+	{
+		windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(0)->Draw();
+	}
+
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);

@@ -54,6 +54,7 @@ public:
 	int buttonSelect = 1;
 	int playerChoice = 0;
 	int difficultyChoice = 0;
+	int numberOfHoles = 1;
 
 	// Difficulty; number of tiles in level - NOT SURE WHAT THIS IS
 	int courseLength = 12;

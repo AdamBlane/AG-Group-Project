@@ -51,8 +51,7 @@ class windowMgr
 		vector<Texture*> savesImages;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
-		// Unique mesh for the game loading screen
-		Mesh* meshSplash;
+
 		// 2P variant world clock meshes
 		vector<Mesh*> worldClock;
 		// Skybox vars
@@ -69,10 +68,20 @@ class windowMgr
 		Mesh* player2Mesh;
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
+
+	
+    // Spaceship mesh!
+		Mesh* spaceShip;
+	  
+  // Pickup crates for 2p mode
 		vector<Mesh*> pickupCrateMeshes;
 		Texture* pickupCrateTexture;
+		Texture* spaceShipTex;
 		vector<Transform> pickupCrateTransforms;
-
+		Mesh* ufoMesh;
+		Texture* ufoTexture;
+		vector<Mesh*> wormholeMeshes;
+		Texture* wormholeTexture;
 		// All contorller related textures are stored in here
 		Texture* buttonsPS[18];
 		Texture* buttonsXB[14];
@@ -82,6 +91,13 @@ class windowMgr
 		// All the game functions are stored here with the index being the function and the value being the button number
 		int gameFunctions[10];
 		int gameKeyboardFunctions[10];
+
+		// Various controller arrays which hold the controller information
+		int playerXboxControls[2][10];
+		int playerKeyboardControls[2][10];
+		int controllerPSPOne[10];
+		int controllerPSPTwo[10];
+		int playerUsingControllerOne = 1;
 
 		// KEYBOARD - One
 		// Comma = 0
@@ -249,8 +265,8 @@ class windowMgr
 
 		// Perform initial window setup
 		GLFWwindow* windowMgr::Init();
-		// Load textures thread
-		void LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* window);
+		// Loads all game assets
+		void LoadAssets();
 		// Populate savesImages vector with image files read from saves folder
 		void UpdateSavesImages(string savedImagePath);
 		// Ask winMgr to get thread to play given sound
@@ -261,7 +277,6 @@ class windowMgr
 		void Update();
 		// On window close
 		void CleanUp();
-		// Special render loop for rendiering start scene
-		void RenderSplashScreen(GLFWwindow* window);
+
 };
 

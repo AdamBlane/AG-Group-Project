@@ -72,8 +72,7 @@ GLFWwindow* windowMgr::Init()
 	// ############################ SHADERS ############################
 	// Setup texture shader
 	textureShader = new Shader("..\\NuttyPutters\\textureShader");
-	// Setup skybox shader
-	skyboxShader = new Shader("..\\NuttyPutters\\skyShader");
+
 
 	// ############################ CAMERAS ############################
 	// Target camera for hud
@@ -81,6 +80,27 @@ GLFWwindow* windowMgr::Init()
 	HUDtargetCam->set_Posistion(vec3(0, 0, 5.0f));
 	HUDtargetCam->set_Target(vec3(0, 0, 0));
 	HUDtargetCam->set_projection(quarter_pi<float>(), (float)width / (float)height, 0.414f, 40000.0f);
+	
+
+	// ############################ SPLASH SCREEN ############################
+	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.jpg");
+	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
+
+	Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+	meshes.push_back(mesh);
+
+
+
+	// Setup start scene
+	sceneManager.startScene.FirstTimeInit(win);
+
+	return win;
+}
+
+void windowMgr::LoadAssets()
+{
+	// Setup skybox shader
+	skyboxShader = new Shader("..\\NuttyPutters\\skyShader");
 	// Target camera for pause
 	PAUSEtargetCam = new target_camera();
 	//PAUSEtargetCam->set_Posistion(vec3(0.0f, 15.0f, 0.0f));
@@ -105,18 +125,14 @@ GLFWwindow* windowMgr::Init()
 	p2ChaseCam->set_projection(quarter_pi<float>(), (float)windowMgr::getInstance()->width / 2 / (float)windowMgr::getInstance()->height, 0.414f, 40000.0f);
 	chaseCams.push_back(p2ChaseCam);
 
-	// ############################ SPLASH SCREEN ############################
-	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.jpg");
-	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
 
-	meshSplash = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
-
-	// Load game splash screen
-	RenderSplashScreen(win);
-	// Update hud target camera
-	HUDtargetCam->update(0.00001);
-
-
+	Mesh* wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+	Mesh* wormholeMesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+	wormholeTexture = new Texture("..\\NuttyPutters\\wormhole.jpg");
+	wormholeMesh->SetTexture(wormholeTexture);
+	wormholeMesh2->SetTexture(wormholeTexture);
+	wormholeMeshes.push_back(wormholeMesh);
+	wormholeMeshes.push_back(wormholeMesh2);
 	// ############################ AUDIO ############################
 	// Init fmod system
 	FMOD::System_Create(&system);
@@ -134,8 +150,10 @@ GLFWwindow* windowMgr::Init()
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
 
 	// ############################ MESHES ############################
+
+
 	// Initialise general use HUD meshes
-	for (int i = 0; i < 37; ++i)
+	for (int i = 0; i < 41; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
@@ -151,17 +169,21 @@ GLFWwindow* windowMgr::Init()
 	// Pickup crate meshes - no more than 5 in any given level
 	for (int i = 0; i < 5; i++)
 	{
-		Transform trans;		
+		Transform trans;
 		pickupCrateTransforms.push_back(trans);
 		pickupCrateMeshes.push_back(new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f, 1.0f));
 	}
-	
+
 	// World clock meshes
 	for (int i = 0; i < 5; i++)
 	{
 		Mesh* mesh = new Mesh(Mesh::CUBOID, vec3(-5.0f + (i * 2.5), 8.0f, 0.0f), 5.0f, 5.0f, 5.0f);
 		worldClock.push_back(mesh);
 	}
+
+	///////////////////// SPACESHIP ///////////////////
+	spaceShip = new Mesh("..\\NuttyPutters\\sphere.obj");
+	spaceShipTex = new Texture("..\\NuttyPutters\\tex.png");
 
 	// ############################ TEXTURES ############################
 
@@ -212,6 +234,8 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("playerSelectBackground", playerSelectBackground));
 	Texture* playersLabel = new Texture("..\\NuttyPutters\\players.png");
 	textures.insert(std::pair<std::string, Texture*>("playersLabel", playersLabel));
+	Texture* numberOfLevels = new Texture("..\\NuttyPutters\\numberoflevels.png");
+	textures.insert(std::pair<std::string, Texture*>("numberOfLevels", numberOfLevels));
 	Texture* oneBtnUnselected = new Texture("..\\NuttyPutters\\none.png");
 	textures.insert(std::pair<std::string, Texture*>("oneBtnUnselected", oneBtnUnselected));
 	Texture* oneBtnSelected = new Texture("..\\NuttyPutters\\noneUnderlined.png");
@@ -290,6 +314,8 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("playerTwoLbl", playerTwoLbl));
 	Texture* powerLbl = new Texture("..\\NuttyPutters\\power.png");
 	textures.insert(std::pair<std::string, Texture*>("powerLbl", powerLbl));
+	Texture* powerIndicator = new Texture("..\\NuttyPutters\\powerIndicator.png");
+	textures.insert(std::pair<std::string, Texture*>("powerIndicator", powerIndicator));
 	Texture* powerOutlineLbl = new Texture("..\\NuttyPutters\\powerbar.jpg");
 	textures.insert(std::pair<std::string, Texture*>("powerOutlineLbl", powerOutlineLbl));
 	Texture* gameSplashScreen = new Texture("..\\NuttyPutters\\loadingscreen.png");
@@ -345,7 +371,7 @@ GLFWwindow* windowMgr::Init()
 	Texture* semiColonLbl = new Texture("..\\NuttyPutters\\semicolon.png");
 	//textures.insert(std::pair<std::string, Texture*>("semiColonLbl", semiColonLbl));
 	numberTextures.push_back(semiColonLbl);
-	
+
 	// Game information
 	Texture* parFourLbl = new Texture("..\\NuttyPutters\\par4.png");
 	textures.insert(std::pair<std::string, Texture*>("parFourLbl", parFourLbl));
@@ -515,18 +541,136 @@ GLFWwindow* windowMgr::Init()
 	//windowMgr::getInstance()->gameFunctions[8] = 4;
 	//windowMgr::getInstance()->gameFunctions[9] = 5;
 
-	// xbox
-	// FUNCTION/BUTTONS
-	windowMgr::getInstance()->gameFunctions[0] = 2;
-	windowMgr::getInstance()->gameFunctions[1] = 3;
-	windowMgr::getInstance()->gameFunctions[2] = 7;
-	windowMgr::getInstance()->gameFunctions[3] = 10;
-	windowMgr::getInstance()->gameFunctions[4] = 11;
-	windowMgr::getInstance()->gameFunctions[5] = 12;
-	windowMgr::getInstance()->gameFunctions[6] = 13;
-	windowMgr::getInstance()->gameFunctions[7] = 1;
-	windowMgr::getInstance()->gameFunctions[8] = 4;
-	windowMgr::getInstance()->gameFunctions[9] = 5;
+	//*************XBOX PLAYER ONE *****************//
+	// Create an input file object for player one keyboard controls
+	ifstream playerOneXboxFile;
+	// Open the desired file
+	playerOneXboxFile.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+
+	// Check for error when loading the file
+	if (playerOneXboxFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one xbox file";
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		playerXboxControls[0][1] = 2;
+		playerXboxControls[0][1] = 3;
+		playerXboxControls[0][2] = 7;
+		playerXboxControls[0][3] = 10;
+		playerXboxControls[0][4] = 11;
+		playerXboxControls[0][5] = 12;
+		playerXboxControls[0][6] = 13;
+		playerXboxControls[0][7] = 1;
+		playerXboxControls[0][8] = 4;
+		playerXboxControls[0][9] = 5;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerOneXboxFile >> playerXboxControls[0][l];
+		cout << "Controller one " << playerXboxControls[0][l] << endl;
+	}
+
+	//*************XBOX PLAYER TWO *****************//
+	// Create an input file object for player one keyboard controls
+	ifstream playerTwoXboxFile;
+	// Open the desired file
+	playerTwoXboxFile.open("..\\NuttyPutters\\input\\p2XboxController.txt");
+
+	// Check for error when loading the file
+	if (playerTwoXboxFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one xbox file" << endl;
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		playerXboxControls[1][0] = 2;
+		playerXboxControls[1][1] = 3;
+		playerXboxControls[1][2] = 7;
+		playerXboxControls[1][3] = 10;
+		playerXboxControls[1][4] = 11;
+		playerXboxControls[1][5] = 12;
+		playerXboxControls[1][6] = 13;
+		playerXboxControls[1][7] = 1;
+		playerXboxControls[1][8] = 4;
+		playerXboxControls[1][9] = 5;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerTwoXboxFile >> playerXboxControls[1][l];
+		cout << "Controller two " << playerXboxControls[1][l] << endl;
+	}
+
+	//*************KEYBOARD PLAYER ONE *****************//
+	// Create an input file object for player one keyboard controls
+	ifstream playerOneKeyboardFile;
+	// Open the desired file
+	playerOneKeyboardFile.open("..\\NuttyPutters\\input\\p1Keyboard.txt");
+
+	// Check for error when loading the file
+	if (playerOneKeyboardFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one keyboard file" << endl;
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		windowMgr::getInstance()->playerKeyboardControls[0][0] = 81;
+		windowMgr::getInstance()->playerKeyboardControls[0][1] = 69;
+		windowMgr::getInstance()->playerKeyboardControls[0][2] = 80;
+		windowMgr::getInstance()->playerKeyboardControls[0][3] = 87;
+		windowMgr::getInstance()->playerKeyboardControls[0][4] = 68;
+		windowMgr::getInstance()->playerKeyboardControls[0][5] = 83;
+		windowMgr::getInstance()->playerKeyboardControls[0][6] = 65;
+		windowMgr::getInstance()->playerKeyboardControls[0][7] = 90;
+		windowMgr::getInstance()->playerKeyboardControls[0][8] = 82;
+		windowMgr::getInstance()->playerKeyboardControls[0][9] = 70;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerOneKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[0][l];
+		// Output them to the screen
+		cout << "Keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
+	}
+
+	//*************KEYBOARD PLAYER TWO *****************//
+	// Create an input file object for player two keyboard controls
+	ifstream playerTwoKeyboardFile;
+	// Open the desired file
+	playerTwoKeyboardFile.open("..\\NuttyPutters\\input\\p2Keyboard.txt");
+
+	// Check for error when loading the file
+	if (playerTwoKeyboardFile.fail())
+	{
+		// Print to screen
+		cout << "Error in opening player one keyboard file";
+		// Set default values for xbox controller - FUNCTION/BUTTONS
+		windowMgr::getInstance()->playerKeyboardControls[1][0] = 72;
+		windowMgr::getInstance()->playerKeyboardControls[1][1] = 71;
+		windowMgr::getInstance()->playerKeyboardControls[1][2] = 89;
+		windowMgr::getInstance()->playerKeyboardControls[1][3] = 73;
+		windowMgr::getInstance()->playerKeyboardControls[1][4] = 76;
+		windowMgr::getInstance()->playerKeyboardControls[1][5] = 75;
+		windowMgr::getInstance()->playerKeyboardControls[1][6] = 74;
+		windowMgr::getInstance()->playerKeyboardControls[1][7] = 77;
+		windowMgr::getInstance()->playerKeyboardControls[1][8] = 78;
+		windowMgr::getInstance()->playerKeyboardControls[1][9] = 79;
+	}
+
+	// For the number of lines in the input file 
+	for (int l = 0; l < 10; l++)
+	{
+		// Assign the psoition, score and name to the arrays from the file
+		playerTwoKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[1][l];
+		// Output them to the screen
+		cout << "Keyboard 2 " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
+	}
+
 
 	// LOAD HIGHSCORE SCENE TEXTURES
 	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\grass.png");
@@ -559,6 +703,18 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("zoomOutLbl", zoomOutLbl));
 	Texture* keyLbl = new Texture("..\\NuttyPutters\\Controller\\key.png");
 	textures.insert(std::pair<std::string, Texture*>("keyLbl", keyLbl));
+	Texture* playerOneLblGreen = new Texture("..\\NuttyPutters\\controller\\playeronegreen.png");
+	textures.insert(std::pair<std::string, Texture*>("playerOneLblGreen", playerOneLblGreen));
+	Texture* playerTwoLblGreen = new Texture("..\\NuttyPutters\\Controller\\playertwogreen.png");
+	textures.insert(std::pair<std::string, Texture*>("playerTwoLblGreen", playerTwoLblGreen));
+	Texture* playerOneLblRed = new Texture("..\\NuttyPutters\\Controller\\playeronered.png");
+	textures.insert(std::pair<std::string, Texture*>("playerOneLblRed", playerOneLblRed));
+	Texture* playerTwoLblRed = new Texture("..\\NuttyPutters\\Controller\\playertwoRed.png");
+	textures.insert(std::pair<std::string, Texture*>("playerTwoLblRed", playerTwoLblRed));
+	Texture* playerUsingLbl = new Texture("..\\NuttyPutters\\Controller\\playerusing.png");
+	textures.insert(std::pair<std::string, Texture*>("playerUsingLbl", playerUsingLbl));
+	Texture* selectOptionLbl = new Texture("..\\NuttyPutters\\Controller\\selectoption.png");
+	textures.insert(std::pair<std::string, Texture*>("selectOptionLbl", selectOptionLbl));
 
 	//Tiles stuff initialized here
 	for (int i = 0; i < 15; ++i)
@@ -602,38 +758,7 @@ GLFWwindow* windowMgr::Init()
 	tileTextures.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
 
 
-
-	// Setup start scene
-	sceneManager.startScene.Init(win);
-
-	return win;
 }
-
-// Load texture thread function
-void windowMgr::LoadTextures(map<std::string, Texture*> &tileTexs, GLFWwindow* window)
-{
-	glfwMakeContextCurrent(window);
-
-	Texture* floorGrass = new Texture("..\\NuttyPutters\\grass.png");
-	tileTexs.insert(std::pair<std::string, Texture*>("floorGrass", floorGrass));
-
-	Texture* grassHole = new Texture("..\\NuttyPutters\\grassHole.png");
-	tileTexs.insert(std::pair<std::string, Texture*>("grassHole", grassHole));
-
-	Texture* grassScenery = new Texture("..\\NuttyPutters\\lava.jpg");
-	tileTexs.insert(std::pair<std::string, Texture*>("grassScenery", grassScenery));
-
-	Texture* tileWood = new Texture("..\\NuttyPutters\\box.jpg");
-	tileTexs.insert(std::pair<std::string, Texture*>("tileWood", tileWood));
-
-	Texture* waterBridge = new Texture("..\\NuttyPutters\\water.png");
-	tileTexs.insert(std::pair<std::string, Texture*>("waterBridge", waterBridge));
-
-	Texture* bottomBridge = new Texture("..\\NuttyPutters\\bridgeBottom.jpg");
-	tileTexs.insert(std::pair<std::string, Texture*>("bottomBridge", bottomBridge));
-}
-
-
 // Called by gameScene.cpp whenever the user saves that level
 // Take the saved level seed and ask winMgr to grab the newly made image and add to list
 void windowMgr::UpdateSavesImages(string savedImagePath)
@@ -722,38 +847,3 @@ void windowMgr::CleanUp()
 	exit(EXIT_SUCCESS);
 }
 
-void windowMgr::RenderSplashScreen(GLFWwindow* win)
-{
-	glfwMakeContextCurrent(win);
-	cout << "Render splash screen" << endl;
-
-	windowMgr::getInstance()->meshSplash->SetScale(9.0f, 5.0f);
-	windowMgr::getInstance()->meshSplash->SetPos(vec3(0.0f, 0.0f, -1.0f));
-	windowMgr::getInstance()->meshSplash->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
-
-	// If camera type is target camera - used for HUD elements - then
-	glm::mat4 hudVP = windowMgr::getInstance()->HUDtargetCam->get_Projection() * windowMgr::getInstance()->HUDtargetCam->get_View();
-
-	// HUD RENDERING STARTING - DONT NOT ENTER ANY OTHER CODE NOT RELATED TO HUD BETWEEN THIS AND THE END HUD COMMENT
-	// Set depth range to near to allow for HUD elements to be rendered and drawn
-	glDepthRange(0, 0.01);
-
-	windowMgr::getInstance()->meshSplash->thisTexture.Bind(0);
-	windowMgr::getInstance()->textureShader->Update(texShaderTransform, hudVP);
-	windowMgr::getInstance()->meshSplash->Draw();
-
-	// Reset the depth range to allow for objects at a distance to be rendered
-	glDepthRange(0.01, 1.0);
-	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
-
-	// Render any background stuff if required here
-
-	// Fully reset depth range for next frame - REQUIRED
-	glDepthRange(0, 1.0);
-
-	// Bind texture shader
-	windowMgr::getInstance()->textureShader->Bind();
-
-	glfwSwapBuffers(win);
-	glfwPollEvents();
-}

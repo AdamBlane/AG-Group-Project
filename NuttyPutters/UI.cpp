@@ -50,23 +50,34 @@ void UI::p1Setup()
 	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(3.05f, 1.7f, 0.0f));
 	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
+// Power bar
+	windowMgr::getInstance()->meshes.at(7)->SetScale(0.8f, 0.8f);
+	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.0f, -1.0f, -0.1f));
+	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
 
-
-	windowMgr::getInstance()->meshes.at(7)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(0.0f, 0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
-
-	windowMgr::getInstance()->meshes.at(8)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0.0f, 0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
-
+	// Power indicator
+	windowMgr::getInstance()->meshes.at(8)->SetScale(0.2f, 0.2f);
+	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
+  
 	windowMgr::getInstance()->meshes.at(9)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0.0f, -0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0.0f, 0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
 
 	windowMgr::getInstance()->meshes.at(10)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, -0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, 0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(11)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(0.0f, -0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(12)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(0.0f, -0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+  
+	
+
 
 }
 
@@ -82,34 +93,53 @@ void UI::p2Setup()
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 		
-	// P2 Stroke Labels
-	windowMgr::getInstance()->meshes.at(2)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Power bar
+	windowMgr::getInstance()->meshes.at(2)->SetScale(0.8f, 0.8f);
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(3.0f, -1.0f, -0.1f));
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
 
-	windowMgr::getInstance()->meshes.at(3)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	// Power indicator
+	windowMgr::getInstance()->meshes.at(3)->SetScale(0.2f, 0.2f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
 
-	windowMgr::getInstance()->meshes.at(4)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0f, 0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
-
-	windowMgr::getInstance()->meshes.at(5)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(0.0f, 0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
-
-	windowMgr::getInstance()->meshes.at(6)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
-
-	windowMgr::getInstance()->meshes.at(7)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(0.0f, -0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
 	// World clock setup - appear behind end hole
+	// P2 Stroke Labels
+	windowMgr::getInstance()->meshes.at(4)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
+	windowMgr::getInstance()->meshes.at(5)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
-	// Set initial textures
+	// Power bar
+	windowMgr::getInstance()->meshes.at(6)->SetScale(0.8f, 0.8f);
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(3.0f, -1.0f, -0.1f));
+	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
+
+	// Power indicator
+	windowMgr::getInstance()->meshes.at(7)->SetScale(0.2f, 0.2f);
+	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
+  
+  windowMgr::getInstance()->meshes.at(8)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0.0f, 0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(9)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0.0f, 0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(10)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, -0.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(11)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(0.0f, -0.9f, 0.0f));
+	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+
+	// World clock setup - appear behind end hole. Set initial textures: 
 	for (int i = 0; i <  windowMgr::getInstance()->worldClock.size(); i++)
 	{
 		if (i == 2)

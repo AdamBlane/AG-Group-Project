@@ -26,48 +26,68 @@ void playerSelectScene::Init(GLFWwindow * win)
 
 	// Set up players label
 	windowMgr::getInstance()->meshes.at(1)->SetScale(2.8f, 0.7f);
-	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-0.4, 1.4, 0.0));
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-0.4, 1.7, 0.0));
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["playersLabel"]);
 
 	// Set up one players label/button
 	windowMgr::getInstance()->meshes.at(2)->SetScale(0.6f, 0.6f);
-	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.9, 1.4, 0.0));
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.9, 1.7, 0.0));
 	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnSelected"]);
 
 	// Set up two players label/button
 	windowMgr::getInstance()->meshes.at(3)->SetScale(0.6f, 0.6f);
-	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(1.3, 1.4, 0.0));
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(1.3, 1.7, 0.0));
 	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
 
 	// Set up difficulty label
 	windowMgr::getInstance()->meshes.at(4)->SetScale(2.8f, 0.7f);
-	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0, 0.7, 0.0));
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0, 1.15, 0.0));
 	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["difficultyLabel"]);
 
-	// Set up difficulty label
+	// Set up easy label
 	windowMgr::getInstance()->meshes.at(5)->SetScale(1.4f, 0.7f);
-	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-1.4, 0.0, 0.0));
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-1.4, 0.6, 0.0));
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["easyBtnSelected"]);
 
-	// Set up difficulty label
+	// Set up med label
 	windowMgr::getInstance()->meshes.at(6)->SetScale(1.4f, 0.7f);
-	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0, 0.0, 0.0));
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0, 0.6, 0.0));
 	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["medBtnUnselected"]);
 
-	// Set up difficulty label
+	// Set up hard label
 	windowMgr::getInstance()->meshes.at(7)->SetScale(1.4f, 0.7f);
-	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(1.4, 0.0f, 0.0));
+	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(1.4, 0.6f, 0.0));
 	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["hardBtnUnselected"]);
 
-	// Set up difficulty label
+	// Set up start label
 	windowMgr::getInstance()->meshes.at(8)->SetScale(2.8f, 0.7f);
-	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0, -1.0, 0.0));
+	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0, -1.15, 0.0));
 	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
 
-	// Set up difficulty label
+	// Set up main menu label
 	windowMgr::getInstance()->meshes.at(9)->SetScale(2.8f, 0.7f);
 	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0, -1.7, 0.0));
-	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);	
+	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
+
+	// Set up number of levels label
+	windowMgr::getInstance()->meshes.at(10)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0, 0.05, 0.0));
+	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["numberOfLevels"]);
+
+	// Set up number of levels label
+	windowMgr::getInstance()->meshes.at(11)->SetScale(0.7f, 0.7f);
+	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(0, -0.5, 0.0));
+	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
+
+	// Set left arrow label
+	windowMgr::getInstance()->meshes.at(12)->SetScale(0.7f, 0.7f);
+	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(-1.0, -0.5, 0.0));
+	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
+
+	// Set right arrow label
+	windowMgr::getInstance()->meshes.at(13)->SetScale(0.7f, 0.7f);
+	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(1.0, -0.5, 0.0));
+	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
 }
 
 // Draw stuff for this scene
@@ -86,7 +106,7 @@ void playerSelectScene::Loop(GLFWwindow * win)
 	Render(win);
 }
 
-// Act on user input 
+/// Act on user input 
 void playerSelectScene::Input(GLFWwindow* win)
 {
 	// Print button selection - needed for test purposes
@@ -97,22 +117,22 @@ void playerSelectScene::Input(GLFWwindow* win)
 	// Button select switch statement which switchs through 4 buttons on the vertical axis - Players, Difficulty, Start Game, Main Menu
 	switch (buttonSelect)
 	{
-	// Case 1 is player select
+		// Case 1 is player select
 	case 1:
 		// Switch player select between numbers one and two 
 		switch (playerSelect)
 		{
 			//Update textures based on what number is selected
-			case 1:
-				windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnSelected"]);
-				windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
-				selectedPlayers = 1; // Set selected player to 1, used in game scene
-				break;
-			case 2:
-				windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
-				windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnSelected"]);
-				selectedPlayers = 2; // Set selected player to 2, used in game scene
-				break;
+		case 1:
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
+			selectedPlayers = 1; // Set selected player to 1, used in game scene
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnSelected"]);
+			selectedPlayers = 2; // Set selected player to 2, used in game scene
+			break;
 		}
 
 		// If right key is pressed set keyLeft to true
@@ -162,12 +182,12 @@ void playerSelectScene::Input(GLFWwindow* win)
 		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 		break;
-	// Case 2 is difficulty select 
+		// Case 2 is difficulty select 
 	case 2:
 		// Switch statements to select different difficulty - Easy, Medium, Hard
 		switch (difficultySelect)
 		{
-		// Update the necessary textures based on the users input
+			// Update the necessary textures based on the users input
 		case 1:
 			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["easyBtnSelected"]);
 			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["medBtnUnselected"]);
@@ -235,14 +255,95 @@ void playerSelectScene::Input(GLFWwindow* win)
 		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 		break;
-	// Case three is sart game
 	case 3:
+		// Switch statements to select the number of holes difficulty - currently 1 to 9
+		switch (numberOfHoles)
+		{
+			// Update the necessary textures based on the users input
+		case 1:
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+			break;
+		case 5:
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+			break;
+		case 6:
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+			break;
+		case 7:
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+			break;
+		case 8:
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+			break;
+		case 9:
+			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+			break;
+		}
+
+		// If right key is pressed set keyLeft to true
+		if (glfwGetKey(win, GLFW_KEY_LEFT))
+		{
+			keyLeft = true;
+		}
+		// If key left is and left is not pressed then
+		if (keyLeft && !glfwGetKey(win, GLFW_KEY_LEFT))
+		{
+			// If button selected is button 4 - main menu - then wrap around to button 1
+			if (numberOfHoles == 1)
+			{
+				numberOfHoles = 9;
+			}
+			// else keep going down
+			else
+			{
+				numberOfHoles--;
+			}
+			// Reset keyLeft
+			keyLeft = false;
+		}
+
+		// If right key is pressed set keyRight to true
+		if (glfwGetKey(win, GLFW_KEY_RIGHT))
+		{
+			keyRight = true;
+		}
+		// If keyRight is true and right is not pressed then
+		if (keyRight && !glfwGetKey(win, GLFW_KEY_RIGHT))
+		{
+			// If button selected is button 3 - main menu - then wrap around to button 1
+			if (numberOfHoles == 9)
+			{
+				numberOfHoles = 1;
+			}
+			// else keep going down
+			else
+			{
+				numberOfHoles++;
+			}
+			// Reset keyRight
+			keyRight = false;
+		}
+		// Reset the start game and main menu textures
+		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
+		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
+		break;
+		// Case four is sart game
+	case 4:
 		// Update textures as required
 		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelectedPS"]);
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 		break;
-	// Case 4 is main menu
-	case 4:
+		// Case five is main menu
+	case 5:
 		// Update textures as required
 		windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselectedPS"]);
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
@@ -258,12 +359,12 @@ void playerSelectScene::Input(GLFWwindow* win)
 	if (keyEnter && !glfwGetKey(win, GLFW_KEY_ENTER))
 	{
 		// If button select is 3 then start the game
-		if (buttonSelect == 3)
+		if (buttonSelect == 4)
 		{
 			windowMgr::getInstance()->sceneManager.changeScene(6, courseLength, playerSelect, difficultySelect);
 		}
 		// If button select is 4 then return to main menu
-		if (buttonSelect == 4)
+		if (buttonSelect == 5)
 		{
 			windowMgr::getInstance()->sceneManager.changeScene(1);
 		}
@@ -283,7 +384,7 @@ void playerSelectScene::Input(GLFWwindow* win)
 		// If button selected is buttons 1 - player amount selection - then wrap around to button 4
 		if (buttonSelect == 1)
 		{
-			buttonSelect = 4;
+			buttonSelect = 5;
 		}
 		// else keep going up
 		else
@@ -304,7 +405,7 @@ void playerSelectScene::Input(GLFWwindow* win)
 	if (keyDown && !glfwGetKey(win, GLFW_KEY_DOWN))
 	{
 		// If button selected is button 4 - main menu - then wrap around to button 1
-		if (buttonSelect == 4)
+		if (buttonSelect == 5)
 		{
 			buttonSelect = 1;
 		}
@@ -336,7 +437,7 @@ void playerSelectScene::Render(GLFWwindow* win)
 	glDepthRange(0, 0.01);
 
 	// For loop which goes through all 10 HUD elements and binds, updates anbd draws the meshes.
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 14; i++)
 	{
 		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);

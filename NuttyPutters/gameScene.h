@@ -39,6 +39,8 @@ public:
 	// Deconstructor
 	~gameScene();
 
+	
+
 	//Players list
 	vector<Player> players;
 	// Number of players this game
@@ -73,13 +75,29 @@ public:
 	// List of pause cam positions and targets for each level
 	vector<vec3> pauseCamLevelProperties;
 	// Record obstacle data ( tilePos, obType, tilePos, obType etc)
-	vector<int> obstacles; 
+	vector<vector<int>> masterObstacles; 
 	// List of pickup crate locations for each level
 	vector<int> pickupPositionIndices;
+	// Holds two wormhole transforms
+	vector<Transform> wormholeTransforms;
+
+
+	vec3 prevPos = vec3(0);
 
 	// Prevent saving same level more than once
 	bool levelSaved = false; 
 	bool continuePressed, resetPressed = false;;
+
+	// Setup GLFW joystick button input - required for doing anything with buttons
+	int controllerOneButtonCount;
+	const unsigned char *controllerOne;
+	int controllerTwoButtonCount;
+	const unsigned char *controllerTwo;
+	vector<const unsigned char*> controllers;
+	int controllerOneAxisCount;
+	const float *controllerOneAxis;
+	int controllerTwoAxisCount;
+	const float *controllerTwoAxis;
 
 	// Track fps to give dt
 	double currentTime = glfwGetTime();
@@ -90,8 +108,11 @@ public:
 	float total_time = 0.0f;
 	int previousMenuItem, currentMenuItem;
 	bool paused = false;
+  
+	Transform spaceTrans;
+	
 	// Camera variables
-	double camSpeed = 4.0; 
+	double camSpeed = 2.0; 
 	float  cameraType = 1;
 	// TODO - replace these for player members - float chaseCamAngle, p2ChaseCamAngle, // for switching between free/chase cam (default)
     // For finding cursor pos on screen (used for free cam)
@@ -109,6 +130,8 @@ public:
 	void SetupTilesToBeDrawn();
 	// Sets up pickup crates for a level
 	void SetupPickupCrates();
+
+	bool ObstacleCollision(Player &player, vec3 rectCenter, vec3 rectSize);
 
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);

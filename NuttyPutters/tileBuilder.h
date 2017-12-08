@@ -23,6 +23,7 @@ public:
 		STRAIGHT,
 		THICKER_STRAIGHT,
 		BRIDGE,
+		GAP,
 		CORNER,
 		SCENERY
 	};
@@ -98,6 +99,7 @@ private:
 	void middleTunnel();
 
 	void bridgeTile();
+	void gapTile();
 	void cornerTile();
 
 	//obstacle method calling obstacles of different types

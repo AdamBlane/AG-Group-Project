@@ -12,7 +12,7 @@ gameScene::gameScene() { }
 // Deconstructor
 gameScene::~gameScene()
 {
-	
+
 	// Delete everything in alg tiles since it was declared on heap
 	for (auto &l : masterAlgTiles)
 	{
@@ -34,13 +34,17 @@ gameScene::~gameScene()
 		}
 	}
 
+	for (auto &l : masterObstacles)
+	{
+		l.clear();
+	}
 	// Clear all lists
 	masterAlgTiles.clear();
 	masterLevelSeeds.clear();
 	masterTiles.clear();
 	masterSceneryTiles.clear();
 	pauseCamLevelProperties.clear();
-	obstacles.clear();
+
 	players.clear();
 
 }
@@ -66,7 +70,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	cout << "\nGAME CONTROLS:" << endl;
 	cout << "Pause - P" << endl;
 	cout << "Reset Player 1 position - R" << endl;
-	
+
 	// LEVEL GEN
 	//courseGenV2 cg(12);
 	//algTiles = cg.run();
@@ -75,8 +79,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	courseSize = courseLength;
 
 	// Record how many levels to load
-	numLevels = levelCount;
-	numLevels *= 2;
+	//numLevels = levelCount;
+	numLevels = 3;
 	//numLevels = 5;
 	// TODO - above will only go to 3 levels - FIX
 
@@ -125,8 +129,12 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Assign arrow textures for both player arrows
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
+	windowMgr::getInstance()->spaceShip->SetTexture(windowMgr::getInstance()->spaceShipTex);
 
+	spaceTrans.getPos() = vec3(0.0f, 10.0f, 0.0f);
+	spaceTrans.getScale() = vec3(6.0f);
 
+	//windowMgr::getInstance()->spaceShip->SetTexture
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
@@ -135,13 +143,34 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[0]);
 	windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[1]);
 
+	// Setup wormhole stuff for both players (regardless of player mode)
+	Transform wormholeTransform;
+	// Place under end hole
+	//wormholeTransform.getPos() = masterAlgTiles[currentLevel].back()->thisCoords;
+	wormholeTransform.getPos().y = -489;
+	// To face upwards
+	wormholeTransform.getRot().x = -1.5708;
+	// Initially zero scale
+	wormholeTransform.getScale() = vec3(0);
+	wormholeTransforms.push_back(wormholeTransform);
+	// Same again for second
+	Transform wormholeTransform2;
+	// Place under end hole
+
+	wormholeTransform2.getPos().y = -489;
+	// To face upwards
+	wormholeTransform2.getRot().x = -1.5708;
+	// Initially zero scale
+	wormholeTransform2.getScale() = vec3(1);
+	wormholeTransforms.push_back(wormholeTransform2);
 	
+	//wormholeTransform.getScale() = vec3(1);
 	// Set pickup crate properties
 	SetupPickupCrates();
-	
+
 	// Set dt based on player count
 	//dt = (playerCount * 0.01) - 0.002;
-	dt = 0.016;
+	dt = 0.012;
 
 
 	// Start game logic mgr
@@ -149,7 +178,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	gameLogicMgr.Setup(numPlayers, courseSize);
 
 
-	
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -170,7 +199,6 @@ void gameScene::LoadGame(string seed)
 
 }
 
-// Populates scenery tiles
 // Takes in an algTiles list, spits out a sceneryTiles list
 void gameScene::FillScenery()
 {
@@ -205,6 +233,7 @@ void gameScene::FillScenery()
 		zMin -= 20;
 		xMax += 20;
 		zMax += 10;
+		// test
 		// Set the pause target cam pos and target, now that we know level dimensions
 		vec3 pauseCamPos, pauseCamTarget;
 		pauseCamPos.x = xMin, pauseCamPos.y = 30.0f, pauseCamPos.z = zMin;
@@ -248,7 +277,7 @@ void gameScene::FillScenery()
 
 		// Add fininshed scenery tiles list to master list
 		masterSceneryTiles.push_back(sceneryTiles);
-	
+
 		*/
 	}
 
@@ -258,17 +287,20 @@ void gameScene::FillScenery()
 void gameScene::SetupTilesToBeDrawn()
 {
 	// Go through each alg tile list
-	for (auto &l : masterAlgTiles)
+	for (int i = 0; i < masterAlgTiles.size(); i++)
 	{
 		// The list that will be generated, and added to master list at end
 		vector<Tile> tiles;
+		// The obstacle list that will be generated, and added to master list at end
+		vector<int> obstacles;
+
 		// Index of the current tile in current alg tiles list
 		// Obstacles use this to know where in the list they are
 		int index = 0;
-
 		// TILE CREATION
-		for (auto &t : l)
+		for (auto &t : masterAlgTiles[i])
 		{
+			// If this tile features an obstacle
 			int obstacleID = 0;
 			bool hasObstacle = false;
 
@@ -276,10 +308,7 @@ void gameScene::SetupTilesToBeDrawn()
 			// Ramp up when dir is down
 			if (t->id == 7)
 			{
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
-				// Rotate on x
-				tile.transform.getRot().x = -0.349066;
-				tile.transform.getPos().y += 1.8;
+				Tile tile(Tile::BRIDGE, t->thisCoords, obstacleID);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
@@ -287,10 +316,7 @@ void gameScene::SetupTilesToBeDrawn()
 			if (t->id == 8)
 			{
 				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
-				// Rotate on x
-				tile.transform.getRot().x = -0.349066;
-				tile.transform.getPos().y -= 1.8;
+				Tile tile(Tile::GAP, t->thisCoords, obstacleID);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
@@ -305,31 +331,15 @@ void gameScene::SetupTilesToBeDrawn()
 			}
 			else if (t->id == 1) // Straight V
 			{
-				hasObstacle = Tile::randomNumber(0, 1);
-				if (hasObstacle)
-				{
-					obstacleID = Tile::randomNumber(1, 2);
-					//save this tile position in algTiles
-					obstacles.push_back(index);
-					obstacles.push_back(obstacleID);
-				}
 				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
 			}
 			else if (t->id == 2) // Straight H
 			{
-				hasObstacle = Tile::randomNumber(0, 1);
-				if (hasObstacle)
-				{
-					obstacleID = Tile::randomNumber(1, 2);
-					//save this tile position in algTiles
-					obstacles.push_back(index);
-					obstacles.push_back(obstacleID);
-				}
 				// Create straight tile
-				Tile tile(Tile::STRAIGHT, t->thisCoords, 0);
+				Tile tile(Tile::STRAIGHT, t->thisCoords, obstacleID);
 				// Straight needs rotating by 90, since it's vertical by default
 				tile.transform.getRot().y = 1.5708;
 				// Add to list of tiles to be rendered
@@ -392,6 +402,7 @@ void gameScene::SetupTilesToBeDrawn()
 				}
 				// Add to list of tiles to be rendered
 				tiles.push_back(tile);
+
 			}
 			// Increase index for next tile
 			index++;
@@ -399,7 +410,8 @@ void gameScene::SetupTilesToBeDrawn()
 
 		// Add the populated tiles list to master
 		masterTiles.push_back(tiles);
-
+		// Add to master list of obstacles to be rendered
+		masterObstacles.push_back(obstacles);
 	} // end for every list in master list
 }
 
@@ -605,6 +617,29 @@ void gameScene::ChangeTexutes(GLFWwindow * win)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
+	// Clear the controllers vector
+	controllers.clear();
+	// Get the state of controller one
+	controllerOne = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &controllerOneButtonCount);
+	// If controlelr one does not equal null then
+	if (controllerOne != NULL)
+	{
+		// Add controller one to controllers vector
+		controllers.push_back(controllerOne);
+		// Setup the controller axis
+		controllerOneAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &controllerOneAxisCount);
+
+	}
+	// Get the state of controller two
+	controllerTwo = glfwGetJoystickButtons(GLFW_JOYSTICK_2, &controllerTwoButtonCount);
+	// If controller two does not equal null then 
+	if (controllerTwo != NULL)
+	{
+		// Add controller two to the controllers vector
+		controllers.push_back(controllerTwo);
+		// Setup the controller axis
+		controllerTwoAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_2, &controllerTwoAxisCount);
+	}
 
 	// Loop around players and their inputs for both keyboard and controller
 	int thisPlayer = 0;
@@ -629,17 +664,20 @@ void gameScene::Input(GLFWwindow* window)
 	}
 
 
+	// For every player
 	for (auto &p : players)
 	{
 		// Jump
-		if (glfwGetKey(window, p.jumpButton) && p.jumpCounter < 3) //AND player hasn't jumped thrice
+		if ((glfwGetKey(window, p.jumpButton) || (controllers.size() > 0 && p.id == 1 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : NULL))) 
+			&& p.jumpCounter < 3) //AND player hasn't jumped thrice
 		{
 			// Increase player jump count
 			p.jumpCounter++;
 			p.jumpPressed = true;
 		}
 
-		if (!glfwGetKey(window, p.jumpButton))
+		if (!glfwGetKey(window, p.jumpButton) || (controllers.size() > 0 && p.id == 1 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : (controllers.size() > 1 && p.id == 2 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][7]] : NULL)))
+
 		{
 			// If jump button recently pressed 
 			if (p.jumpPressed)
@@ -761,7 +799,6 @@ void gameScene::Input(GLFWwindow* window)
 						{
 							currentMenuItem++;
 						}
-
 						windowMgr::getInstance()->downPressed = false;
 						ChangeTexutes(window);
 					}
@@ -774,11 +811,8 @@ void gameScene::Input(GLFWwindow* window)
 				Render(window); // Render it
 				
 			}//endloop
-			
-			// Perform another render
-			//Render(window);
 			cout << "\nUnpaused" << endl;
-			
+
 		} // end pause
 
 		// If button one is pressed change to free camera
@@ -800,7 +834,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// If the X button is pressed then continue on with game -used for HUD elements
-		if (glfwGetKey(window, GLFW_KEY_X))
+		if (glfwGetKey(window, GLFW_KEY_X) || (controllers.size() > 0 && p.id == 1 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : NULL)))
 		{
 			continuePressed = true;
 			// Start game timer
@@ -855,14 +889,14 @@ void gameScene::Input(GLFWwindow* window)
 			if (!p.isMoving)
 			{
 				// controls in the chase camera 
-				if (glfwGetKey(window, p.rightButton))
+				if (glfwGetKey(window, p.rightButton) || (controllers.size() > 0 && p.id == 1 ? controllerOneAxis[1] > -0.5 && controllerOneAxis[1] < 0.5 && controllerOneAxis[0] > 0.7 : (controllers.size() > 1 && p.id == 2 ? controllerTwoAxis[1] > -0.5 && controllerTwoAxis[1] < 0.5 && controllerTwoAxis[0] < -0.7 : NULL)))
 				{
 					//function to rotate 
 					windowMgr::getInstance()->chaseCams[thisPlayer]->yaw_it(camSpeed * dt * 0.5); // TODO - make camSpeed a variable to allow sensitivity settings
 					// Decrease chase camera angle (out of 360 degrees)
 					p.chaseCamAngle -= (camSpeed * dt * 0.5);
 				}
-				if (glfwGetKey(window, p.leftButton))
+				if (glfwGetKey(window, p.leftButton) || (controllers.size() > 0 && p.id == 1 ? controllerOneAxis[0] > -0.5 && controllerOneAxis[0] < 0.5 && controllerOneAxis[1] < -0.7 : (controllers.size() > 1 && p.id == 2 ? controllerTwoAxis[1] > -0.5 && controllerTwoAxis[1] < 0.5 && controllerTwoAxis[0] > 0.7 : NULL)))
 				{
 					windowMgr::getInstance()->chaseCams[thisPlayer]->neg_yaw_it(camSpeed * dt * 0.5);
 					// Increase chase camera angle (out of 360 degrees)
@@ -873,20 +907,20 @@ void gameScene::Input(GLFWwindow* window)
 
 
 			// Camera movement
-			if (glfwGetKey(window, p.downButton))
+			if (glfwGetKey(window, p.downButton) || (controllers.size() > 0 && p.id == 1 ? controllerOneAxis[0] > -0.5 && controllerOneAxis[0] < 0.5 && controllerOneAxis[1] < -0.7 : (controllers.size() > 1 && p.id == 2 ? controllerTwoAxis[0] > -0.5 && controllerTwoAxis[0] < 0.5 && controllerTwoAxis[1] > 0.7 : NULL)))
 			{
 				windowMgr::getInstance()->chaseCams[thisPlayer]->neg_pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_Posistion(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_pos_offset().y);
 			}
-			if (glfwGetKey(window, p.upButton))
+			if (glfwGetKey(window, p.upButton) || (controllers.size() > 0 && p.id == 1 ? controllerOneAxis[0] > -0.5 && controllerOneAxis[0] < 0.5 && controllerOneAxis[1] > 0.7 : (controllers.size() > 1 && p.id == 2 ? controllerTwoAxis[0] > -0.5 && controllerTwoAxis[0] < 0.5 && controllerTwoAxis[1] < -0.7 : NULL)))
 			{
 				windowMgr::getInstance()->chaseCams[thisPlayer]->pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_Posistion(), windowMgr::getInstance()->chaseCams[thisPlayer]->get_pos_offset().y);
 			}
-			if (glfwGetKey(window, p.zoomOutButton))
+			if (glfwGetKey(window, p.zoomOutButton) || (controllers.size() > 0 && p.id == 1 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][9]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][9]] : NULL)))
 			{
 				//function to rotate 
 				windowMgr::getInstance()->chaseCams[thisPlayer]->zoom_out(camSpeed * dt * 0.5);
 			}
-			if (glfwGetKey(window, p.zoomInButton))
+			if (glfwGetKey(window, p.zoomInButton) || (controllers.size() > 0 && p.id == 1 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][8]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][8]] : NULL)))
 			{
 				windowMgr::getInstance()->chaseCams[thisPlayer]->zoom_in(camSpeed * dt * 0.5);
 			}
@@ -910,12 +944,18 @@ void gameScene::Input(GLFWwindow* window)
 		if (continuePressed)
 		{
 			// If Fire is pressed 
-			if (glfwGetKey(window, p.fireButtton))
+			if (glfwGetKey(window, p.fireButtton) || (controllers.size() > 0 && p.id == 1 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : (controllers.size() > 1 && p.id == 2 ? GLFW_PRESS == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : NULL)))
 			{
 				if (!p.isMoving)
 				{
-					// Increment power counter as long as fire is held
-					p.power += 0.4;
+					if (p.power < 50) // Enforce power limit
+					{
+						// Increment power counter as long as fire is held
+						p.power += 0.2;
+					}
+
+					// Update power bar indicator
+					gameLogicMgr.UpdatePowerBar(p);
 
 					// Update the power bar based on the the fireCounter value 
 					//powerBarTrans.getPos().x -= (fireCounter/5.0f) * powerBarMesh->getGeomPos().x;
@@ -955,7 +995,7 @@ void gameScene::Input(GLFWwindow* window)
 			}
 		}
 		// When Fire is realesed
-		if (!glfwGetKey(window, p.fireButtton))
+		if (!glfwGetKey(window, p.fireButtton) || (controllers.size() > 0 && p.id == 1 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : (controllers.size() > 1 && p.id == 2 ? GLFW_RELEASE == controllers[p.id - 1][windowMgr::getInstance()->playerXboxControls[p.id - 1][0]] : NULL)))
 		{
 			// Only work if fire button was just released
 			if (p.firePressed)
@@ -1020,68 +1060,80 @@ void gameScene::CheckLoadNextLevel()
 	// For each player
 	for (int i = 0; i < players.size(); ++i)
 	{
+		// Check if player is falling through end hole, go to next level or finish game
+		if (players[i].ballInHole && players[i].transform.getPos().y < -450.0f) // Abritrary time period before tp
 		{
-			// Check if player is falling through end hole...
-			if (players[i].ballInHole && players[i].transform.getPos().y < -450.0f) // Abritrary time period before tp
-			{	
-				// If finished last level
-				if (currentLevel == numLevels - 1 && !changedLevel)
-				{
-					// TODO - quit, pause, ask for next level etc
+			// If finished last level
+			if (currentLevel == numLevels - 1 && !changedLevel)
+			{
+				// TODO - quit, pause, ask for next level etc
 
-					// Stop camera from following player
-					players[i].camFollow = false;
-					// Update the total time count for this player 
-					gameLogicMgr.SetEndTime(players[i]);
-					// Print game score for this player
-					gameLogicMgr.PrintPlayerScore(players[i]);
-				}
-				// If there is another level to go...
-				else if (currentLevel < numLevels - 1)
+				// Stop camera from following player
+				players[i].camFollow = false;
+				// Update the total time count for this player 
+				gameLogicMgr.SetEndTime(players[i]);
+				// Print game score for this player
+				gameLogicMgr.PrintPlayerScore(players[i]);
+			}
+			// If there is another level to go...
+			else if (currentLevel < numLevels - 1)
+			{
+				// Move onto next level; draws behind player while falling
+				// Only do this once (will trigger multiple frames)
+				if (!changedLevel)
 				{
-					// Move onto next level; draws behind player while falling
-					// Only do this once (will trigger multiple frames)
-					if (!changedLevel)
+					// If there are 2 players
+					if (numPlayers == 2)
 					{
-						// If there are 2 players
-						if (numPlayers == 2)
+						// If this is players[0] it needs to check players[1], and visa versa
+						// Need a key to make a 0 always 1, and a 1 always 0
+						// i = (i * -1) + 1 is key
+						// i=0 -> (0 * -1) + 1 = 1
+						// i=1 -> (1 * -1) + 1 = 0 
+						// If other player isn't through end hole, tp him
+						if (!players[(i  * -1) + 1].ballInHole)
 						{
-							// If this is players[0] it needs to check players[1], and visa versa
-							// Need a key to make a 0 always 1, and a 1 always 0
-							// i = (i * -1) + 1 is key
-							// i=0 -> (0 * -1) + 1 = 1
-							// i=1 -> (1 * -1) + 1 = 0 
-							// If other player isn't through end hole, tp him
-							if (!players[(i  * -1) + 1].ballInHole)
-							{
-								// Incur time penalty for not finishing course
-								players[(i  * -1) + 1].totalTime += 20;
-								// Move him to new start tile
-								players[(i  * -1) + 1].transform.setPos(vec3(2.0f, 1.0f, 0.0f));
-								
-							}
-						}
-					
-						// Increase level index
-						currentLevel++;
-						// Prevent further increments
-						changedLevel = true;
-						// Respawn pickup crates
-						SetupPickupCrates();
-					}
-				}
-				
+							// Incur time penalty for not finishing course
+							players[(i  * -1) + 1].totalTime += 20;
+							// Move him to new start tile
+							players[(i  * -1) + 1].transform.setPos(vec3(2.0f, 1.0f, 0.0f));
 
-			} // end check if player is falling through hole
+						}
+					}
+
+					// Increase level index
+					currentLevel++;
+					// Prevent further increments
+					changedLevel = true;
+					// Respawn pickup crates
+					SetupPickupCrates();
+				}
+			}
+
+
+
+		} // end check if player is falling through hole
+
+		// Check for falling player, spawn wormhole underneath them
+		if (players[i].transform.getPos().y < -400.0f)
+		{
+			wormholeTransforms[i].getPos() = players[i].transform.getPos();
+			wormholeTransforms[i].getPos().y = -489;
+			// Open up wormhole!
+			if (wormholeTransforms[i].getScale().x < 10)
+			{
+				wormholeTransforms[i].getScale() += vec3(0.2);
+			}
 		}
 
 		// Otherwise check if player is falling from top of skybox onto next level
-		//else
 		if (players[i].isFalling && players[i].transform.getPos().y > 50.0f)
 		{
+			// Shrink this players wormhole
+			wormholeTransforms[i].getScale() = vec3(0);
 			// Ensure player lands on start tile
-			players[i].transform.getPos().x = players[i].transform.getPos().z = 0.0f;
-
+			players[i].transform.getPos().x = i * 2.0f;
+			players[i].transform.getPos().z = 0.0f;
 			// Allow level changing for next level
 			changedLevel = false;
 			// Change pause cam properties to match with this level
@@ -1104,15 +1156,15 @@ void gameScene::Update(GLFWwindow* window)
 
 	// Check whether to load next level, pass in player
 	CheckLoadNextLevel();
-	
-	
+
+
 	// Update spatial partitioning
 	SpatialPartitioningUpdate();
-	
+
 
 	// Update game clock
 	gameLogicMgr.Update();
-	
+
 
 	// Free cam stuff
 	static double ratio_width = quarter_pi<float>() / 1600.0;
@@ -1136,7 +1188,7 @@ void gameScene::Update(GLFWwindow* window)
 	if (numPlayers == 1)
 	{	// Only follow if not just finished the last level
 		if (players[0].camFollow)
-		{		
+		{
 			windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
 		}
 		// Update
@@ -1146,13 +1198,13 @@ void gameScene::Update(GLFWwindow* window)
 	{
 		// Only follow if not just finished the last level
 		if (players[0].camFollow)
-		{			
+		{
 			windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
 		}
 		windowMgr::getInstance()->chaseCams[0]->update(0.00001);
 		// Only follow if not just finished the last level
 		if (players[1].camFollow)
-		{			
+		{
 			windowMgr::getInstance()->chaseCams[1]->move(players[1].transform.getPos(), players[1].transform.getRot());
 		}
 		windowMgr::getInstance()->chaseCams[1]->update(0.00001);
@@ -1171,13 +1223,13 @@ void gameScene::Update(GLFWwindow* window)
 	currentTime = newTime;
 
 	accumulator += frameTime;
-	
+
 	// Calculate fps
 	//double fps = 1.0 / frameTime;
 	//if (accumulator > dt)
 		//cout << "FPS:" << fps << endl;
 
-		
+
 	// Update each player
 	for (auto &p : players)
 	{
@@ -1187,14 +1239,14 @@ void gameScene::Update(GLFWwindow* window)
 			// Work out whether to apply gravity or not (is player on the floor/in air)
 			// Update player's floor level for this tile - this tile floor level + 0.5 (half tile thickness) + player radius
 			p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
-			physicsSystem.ApplyGravity(p, p.floorLevel); 
-			
+			physicsSystem.ApplyGravity(p, p.floorLevel);
+
 			// If time to perform another physics step																						 // Perform physics step	
 			//if (accumulator >= dt)
 			{
 				// Update position
 				physicsSystem.Integrate(p, dt, p.floorLevel);
-				
+
 				// Remove dt from accumulator
 				//accumulator -= dt;
 			}
@@ -1202,21 +1254,22 @@ void gameScene::Update(GLFWwindow* window)
 		// Update p arrow mesh position to follow player
 		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
 	}
-		
+
 
 
 }
 
-// Tracks current tile player is on 
 // Calls collision checking code of tile player is on
 void gameScene::Collisions()
 {
-	
+
 	for (auto &p : players)
 	{
 		// Check collisions for the tile each player is on only
 		masterAlgTiles[currentLevel].at(p.currentTile)->CheckCollisions(p);
-		
+
+
+
 		// 2 player only collisions (crates, other players)
 		if (numPlayers == 2)
 		{
@@ -1275,17 +1328,17 @@ void gameScene::Collisions()
 				}
 
 			}
-		
+
 		} // end 2 player collisions code
-				
+
 	} // end for each player collisions code
 
 
 	// TODO Determine if this can be done more cheapply, and less hardcoded
-	
+
 	if (numPlayers == 2)
-	{  
-		
+	{
+
 
 
 	}
@@ -1337,7 +1390,7 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		if (numPlayers == 1) 
 		{
-			for (int i = 7; i <= 10; i++)
+			for (int i = 9; i <= 12; i++)
 			{
 				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
@@ -1346,7 +1399,7 @@ void gameScene::Render(GLFWwindow* window)
 		}
 		if (numPlayers == 2)
 		{
-			for (int i = 4; i <= 7; i++)
+			for (int i = 8; i <= 11; i++)
 			{
 				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
@@ -1357,7 +1410,7 @@ void gameScene::Render(GLFWwindow* window)
 	}
 	else if (numPlayers == 1)
 	{
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 9; i++)
 		{
 			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
@@ -1366,7 +1419,7 @@ void gameScene::Render(GLFWwindow* window)
 	}
 	else // its 2 player
 	{
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
@@ -1380,15 +1433,25 @@ void gameScene::Render(GLFWwindow* window)
 	glDepthRange(0.01, 1.0);
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
 
-	
-	
+
 
 	// Skybox 
 	windowMgr::getInstance()->skyboxShader->Bind();
 	windowMgr::getInstance()->skyboxShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
 	windowMgr::getInstance()->skyboxMesh->Draw();
+
 	// Bind texture shader
 	windowMgr::getInstance()->textureShader->Bind();
+
+
+	// DRAW WORMHOLES
+	for (int i = 0; i < wormholeTransforms.size(); i++)
+	{
+		windowMgr::getInstance()->wormholeTexture->Bind(0);
+		windowMgr::getInstance()->textureShader->Update(wormholeTransforms[i], mvp);
+		windowMgr::getInstance()->wormholeMeshes[i]->Draw();
+	}
+
 
 
 	// DRAW all level tiles
@@ -1401,6 +1464,10 @@ void gameScene::Render(GLFWwindow* window)
 	//{
 	//	t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	//}
+
+	windowMgr::getInstance()->spaceShip->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(spaceTrans, mvp);
+	windowMgr::getInstance()->spaceShip->Draw();
 
 	// Draw 2 Player stuff
 	if (numPlayers == 2 && paused != true)
@@ -1437,12 +1504,12 @@ void gameScene::Render(GLFWwindow* window)
 	windowMgr::getInstance()->textureShader->Update(players[0].transform, mvp);
 	windowMgr::getInstance()->player2Mesh->Draw();
 
-
 	// Render player 1 arrow
 	windowMgr::getInstance()->p1ArrowMesh->thisTexture.Bind(0);
 	windowMgr::getInstance()->textureShader->Update(players[0].arrowTransform, mvp);
 	// Rotate the arrow on the Y axis by - camera angle minus 90 degrees
 	players[0].arrowTransform.setRot(glm::vec3(0, -players[0].chaseCamAngle - 1.5708, 0));
+
 
 
 	// TEST
@@ -1480,12 +1547,13 @@ void gameScene::Render(GLFWwindow* window)
 		glDepthRange(0, 0.01);
 
 		// TODO HUD stuff
-		windowMgr::getInstance()->meshes.at(2)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(2)->Draw();
-		windowMgr::getInstance()->meshes.at(3)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(3)->Draw();
+		for (int i = 4; i < 8; i++)
+		{
+			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->meshes.at(i)->Draw();
+		}
+
 
 
 		// Reset the depth range to allow for objects at a distance to be rendered
@@ -1518,6 +1586,13 @@ void gameScene::Render(GLFWwindow* window)
 			windowMgr::getInstance()->pickupCrateMeshes[ppi / 2]->Draw();
 		}
 
+		// DRAW WORMHOLES
+		for (int i = 0; i < wormholeTransforms.size(); i++)
+		{
+			windowMgr::getInstance()->wormholeTexture->Bind(0);
+			windowMgr::getInstance()->textureShader->Update(wormholeTransforms[i], mvp2);
+			windowMgr::getInstance()->wormholeMeshes[i]->Draw();
+		}
 
 		// DRAW all level tiles
 		for (auto &t : masterTiles[currentLevel])
