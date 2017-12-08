@@ -50,7 +50,7 @@ void UI::p1Setup()
 	windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(3.05f, 1.7f, 0.0f));
 	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
-// Power bar
+    // Power bar
 	windowMgr::getInstance()->meshes.at(7)->SetScale(0.8f, 0.8f);
 	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.0f, -1.0f, -0.1f));
 	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
@@ -123,7 +123,7 @@ void UI::p2Setup()
 	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.0f, -1.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
   
-  windowMgr::getInstance()->meshes.at(8)->SetScale(1.8f, 0.6f);
+    windowMgr::getInstance()->meshes.at(8)->SetScale(1.8f, 0.6f);
 	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0.0f, 0.9f, 0.0f));
 	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
 

@@ -573,11 +573,11 @@ void gameScene::ChangeTexutes(GLFWwindow * win)
 	int a;
 	if (numPlayers == 1) 
 	{
-		a = 7;
+		a = 9;
 	}
 	else if (numPlayers == 2)
 	{
-		a = 4;
+		a = 8;
 	}
 	switch (previousMenuItem)
 	{
