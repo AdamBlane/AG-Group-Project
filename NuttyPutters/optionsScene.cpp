@@ -212,8 +212,16 @@ void optionsScene::Loop(GLFWwindow * win)
 	Input(win);
 	// Update
 	Update(win);
-	//Tracks Mouse
-	Track_Mouse(win);
+
+	//code to disable mouse
+	windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
+	windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
+	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	//tracks mouse
+	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x && windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+	{
+		Track_Mouse(win);
+	}
 	// Render
 	Render(win);
 }

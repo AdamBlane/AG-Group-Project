@@ -9,7 +9,6 @@
 // button is hovered over
 void startScene::Track_Mouse(GLFWwindow *window)
 {
-	glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
 	//this mess plots out where the buttons are for start scene
 	if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
@@ -162,12 +161,6 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
-	currentMenuItem = 1;
-	previousMenuItem = 6;
-	for (int i = 0; i < 100; i++) 
-	{
-		ChangeTexutes(win);
-	}
 }
 		
 
@@ -185,9 +178,15 @@ void startScene::Loop(GLFWwindow* win)
 	// Clear buffers every frame
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	//code to disable mouse
+	windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
+	windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
+	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 	//tracks mouse
-	Track_Mouse(win);
+	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x && windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+	{
+		Track_Mouse(win);
+	}
 
 	// Input
 	Input(win);

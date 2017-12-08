@@ -717,8 +717,15 @@ void gameScene::Input(GLFWwindow* window)
 
 			while (paused)
 			{
-				// Mouse tracking function
-				Track_mouse(window);
+				//code to disable mouse
+				windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
+				windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
+				glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+				//tracks mouse
+				if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x && windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+				{
+					Track_mouse(window);
+				}
 				// Item selection
 				if (glfwGetKey(window, GLFW_KEY_ENTER))
 				{
