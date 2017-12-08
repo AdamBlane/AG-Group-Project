@@ -39,14 +39,14 @@ public:
 
 	// Input
 	// Action isPressed flags
-	bool firePressed = false;
-	bool jumpPressed = false;
-	bool upPressed = false;
-	bool downPressed = false;
-	bool leftPressed = false;
-	bool rightPressed = false;
-	bool zoomInPressed = false;
-	bool zoomOutPressed = false;
+	bool firePressed, firePressedC;
+	bool jumpPressed, jumpPressedC;
+	bool upPressed, upPressedC;
+	bool downPressed, downPressedC;
+	bool leftPressed, leftPressedC;
+	bool rightPressed, rightPressedC;
+	bool zoomInPressed, zoomInPressedC;
+	bool zoomOutPressed, zoomOutPressedC;
 
 	// Keyboard input members
 	int fireButtton, jumpButton, upButton,

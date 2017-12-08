@@ -39,7 +39,7 @@ public:
 	// Deconstructor
 	~gameScene();
 
-	
+
 
 	//Players list
 	vector<Player> players;
@@ -55,7 +55,6 @@ public:
 	int courseSize;
 	// Best position of world clock
 
-	const unsigned char *buttons;
 	// SYSTEMS USED
 	// Handles gameplay logic
 	GameLogicMgr gameLogicMgr;
@@ -75,7 +74,7 @@ public:
 	// List of pause cam positions and targets for each level
 	vector<vec3> pauseCamLevelProperties;
 	// Record obstacle data ( tilePos, obType, tilePos, obType etc)
-	vector<vector<int>> masterObstacles; 
+	vector<vector<int>> masterObstacles;
 	// List of pickup crate locations for each level
 	vector<int> pickupPositionIndices;
 	// Holds two wormhole transforms
@@ -85,7 +84,7 @@ public:
 	vec3 prevPos = vec3(0);
 
 	// Prevent saving same level more than once
-	bool levelSaved = false; 
+	bool levelSaved = false;
 	bool continuePressed, resetPressed = false;;
 
 	// Setup GLFW joystick button input - required for doing anything with buttons
@@ -93,7 +92,6 @@ public:
 	const unsigned char *controllerOne;
 	int controllerTwoButtonCount;
 	const unsigned char *controllerTwo;
-	vector<const unsigned char*> controllers;
 	int controllerOneAxisCount;
 	const float *controllerOneAxis;
 	int controllerTwoAxisCount;
@@ -108,20 +106,20 @@ public:
 	float total_time = 0.0f;
 	int previousMenuItem, currentMenuItem;
 	bool paused = false;
-  
+
 	Transform spaceTrans;
-	
+
 	// Camera variables
-	double camSpeed = 2.0; 
+	double camSpeed = 2.0;
 	float  cameraType = 1;
 	// TODO - replace these for player members - float chaseCamAngle, p2ChaseCamAngle, // for switching between free/chase cam (default)
-    // For finding cursor pos on screen (used for free cam)
-	double cursor_x, cursor_y = 0.0; 
-	
+	// For finding cursor pos on screen (used for free cam)
+	double cursor_x, cursor_y = 0.0;
+
 
 	// Setup scene. Last seed params is optional; = denotes default value
 	// If called from loadGameScene, requires seed value(as string)
-	void Init(GLFWwindow* window, int courseLength, int playerCount, int levelCount, string seed = "seed"); 
+	void Init(GLFWwindow* window, int courseLength, int playerCount, int levelCount, string seed = "seed");
 	// Loads level of given size; random if no optional seed given
 	void LoadGame(string seed);
 	// Fills space around level with scenery tiles
@@ -131,10 +129,14 @@ public:
 	// Sets up pickup crates for a level
 	void SetupPickupCrates();
 
-	bool ObstacleCollision(Player &player, vec3 rectCenter, vec3 rectSize);
 
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);
+	// Player movement fuctions
+	void Jump(Player &p);
+	void FirePress(Player &p);
+	void FireRelease(Player &p);
+	void Pause(GLFWwindow* window);
 	// Act on controller/keyboard input
 	void Input(GLFWwindow* window);
 	// Tiles are treated as partitions
@@ -149,8 +151,10 @@ public:
 	void Render(GLFWwindow* window);
 	//Function to track mouse movements
 	void Track_mouse(GLFWwindow* win);
-	void Click_Or_Enter(GLFWwindow* win , bool pause);
+	// Called when on pause screen; enact highlighted choice
+	void Click_Or_Enter(GLFWwindow* win, bool pause);
+	// Called from pause menu; screenshots and saves current level to file
 	void Save_Level(GLFWwindow* win);
 	//seperate render for pause screen
-	void ChangeTexutes(GLFWwindow* win);
+	void ChangeTextures(GLFWwindow* win);
 };

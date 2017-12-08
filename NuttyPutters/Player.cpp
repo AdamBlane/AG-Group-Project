@@ -6,6 +6,10 @@
 // Constructor - loads key config from file
 Player::Player(string inputConfigFilePath)
 {
+	// Ensure flags are initially set to false
+	firePressed = jumpPressed = upPressed = downPressed = leftPressed = rightPressed = zoomInPressed = zoomOutPressed = false;
+	firePressedC = jumpPressedC = upPressedC = downPressedC = leftPressedC = rightPressedC = zoomInPressedC = zoomOutPressedC = false;
+
 	// First set necessary vars
 	power = 0.0f;
 	// Open the file for reading
@@ -36,7 +40,7 @@ Player::Player(string inputConfigFilePath)
 		// Now set this player's input values accordingly
 		if (function == "fire")
 		{
-			fireButtton =  stoi(button_value);
+			fireButtton = stoi(button_value);
 			continue;
 		}
 		else if (function == "jump")
@@ -79,7 +83,7 @@ Player::Player(string inputConfigFilePath)
 			fireButtonC = stoi(button_value);
 			continue;
 		}
-		
+
 	}
 
 }
