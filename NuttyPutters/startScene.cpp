@@ -141,17 +141,17 @@ void startScene::Init(GLFWwindow* win)
 
 	// Perform setup of initial button configs - (un)selected textures
 	// Pick next item in meshes list (increment the number by 1 each time)
-	windowMgr::getInstance()->meshes.at(1)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(1)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(0.0f, 1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(2)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(2)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.0f, 0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(3)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(3)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(0.0f, 0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(4)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(4)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0f, -0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(5)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(5)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(0.0f, -0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(6)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(6)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -1.5f, 0.0f));
 
 
