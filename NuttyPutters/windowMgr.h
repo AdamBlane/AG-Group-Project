@@ -35,6 +35,7 @@ class windowMgr
 		int button_manager = 0;
 		//track mouse
 		double mouse_x, mouse_y;
+		double previous_mouse_x, previous_mouse_y;
 		// Window width and height values
 		int width, height;
 		// Window offset from top left point of monitor

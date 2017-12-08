@@ -38,7 +38,7 @@ namespace AllCamera
 
 	void chase_camera::pitch_it(float rot, const glm::vec3 &target_location, const glm::vec3 &cam_location, float y_)
 	{
-		if (4 >= cam_location.y - target_location.y)
+		if (6.0 >= cam_location.y - target_location.y)
 		{
 			target_rotaion += glm::vec3(rot, 0, 0);
 		}
@@ -63,9 +63,9 @@ namespace AllCamera
 	}
 	void chase_camera::zoom_out(float rot)
 	{
-		if (chase_camera::get_pos_offset().z >= -10.0)
+		if (chase_camera::get_pos_offset().z >= -10.0 /*&& 1.1 <= cam_location.y - target_location.y*/)
 		{
-			chase_camera::set_pos_offset(glm::vec3(chase_camera::get_pos_offset().x, chase_camera::get_pos_offset().y, chase_camera::get_pos_offset().z - rot));
+			chase_camera::set_pos_offset(glm::vec3(chase_camera::get_pos_offset().x, chase_camera::get_pos_offset().y - 0.01f, chase_camera::get_pos_offset().z - rot));
 		}
 
 	}
@@ -73,7 +73,7 @@ namespace AllCamera
 	{
 		if (chase_camera::get_pos_offset().z <= -2.5)
 		{
-			chase_camera::set_pos_offset(glm::vec3(chase_camera::get_pos_offset().x, chase_camera::get_pos_offset().y, chase_camera::get_pos_offset().z + rot));
+			chase_camera::set_pos_offset(glm::vec3(chase_camera::get_pos_offset().x, chase_camera::get_pos_offset().y + 0.01f, chase_camera::get_pos_offset().z + rot));
 		}
 	}
 }
