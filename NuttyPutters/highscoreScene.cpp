@@ -24,17 +24,17 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["buttonLbl"]);
 	// Select Fire
 	// Set selectfire label
-	windowMgr::getInstance()->meshes.at(3)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(3)->SetScale(1.75f, 0.25f);
 	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(-2.7f, 1.07f, 0.0f));
 	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["selectfireLbl"]);
 	// Back Reset
 	// Set backreset label
-	windowMgr::getInstance()->meshes.at(5)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(5)->SetScale(1.75f, 0.25f);
 	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-2.7f, 0.75f, 0.0f));
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["backresetLbl"]);
 	// Pause
 	// Set pause label
-	windowMgr::getInstance()->meshes.at(7)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(7)->SetScale(1.0f, 0.25f);
 	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(-2.7f, 0.43f, 0.0f));
 	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["pauseLbl"]);
 	// Arrows
@@ -59,11 +59,11 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(17)->SetPos(vec3(-2.7f, -1.17f, 0.0f));
 	windowMgr::getInstance()->meshes.at(17)->SetTexture(windowMgr::getInstance()->textures["jumpLbl"]);
 	// Zoom In
-	windowMgr::getInstance()->meshes.at(19)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(19)->SetScale(1.8f, 0.3f);
 	windowMgr::getInstance()->meshes.at(19)->SetPos(vec3(-2.7f, -1.50f, 0.0f));
 	windowMgr::getInstance()->meshes.at(19)->SetTexture(windowMgr::getInstance()->textures["zoomInLbl"]);
 	// Zoom Out
-	windowMgr::getInstance()->meshes.at(21)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(21)->SetScale(1.8f, 0.3f);
 	windowMgr::getInstance()->meshes.at(21)->SetPos(vec3(-2.7f, -1.82f, 0.0f));
 	windowMgr::getInstance()->meshes.at(21)->SetTexture(windowMgr::getInstance()->textures["zoomOutLbl"]);
 	// Main Menu
@@ -154,25 +154,25 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(36)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(36)->SetPos(vec3(0.5f, -1.81, 0.0f));
 	// Player using controller one
-	windowMgr::getInstance()->meshes.at(37)->SetScale(2.8f, 0.7f);
+	windowMgr::getInstance()->meshes.at(37)->SetScale(2.4f, 0.6f);
 	windowMgr::getInstance()->meshes.at(37)->SetPos(vec3(2.2f, -0.81f, 0.0f));
 	windowMgr::getInstance()->meshes.at(37)->SetTexture(windowMgr::getInstance()->textures["sensitivityLbl"]);
 	// Set left arrow label
-	windowMgr::getInstance()->meshes.at(39)->SetScale(0.4f, 0.4f);
-	windowMgr::getInstance()->meshes.at(39)->SetPos(vec3(1.7f, -1.3, 0.0));
-	windowMgr::getInstance()->meshes.at(39)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
+	windowMgr::getInstance()->meshes.at(39)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(39)->SetPos(vec3(1.7f, -1.25, 0.0));
+	windowMgr::getInstance()->meshes.at(39)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
 	// Set right arrow label
-	windowMgr::getInstance()->meshes.at(40)->SetScale(0.4f, 0.4f);
-	windowMgr::getInstance()->meshes.at(40)->SetPos(vec3(2.7f, -1.3, 0.0));
-	windowMgr::getInstance()->meshes.at(40)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
+	windowMgr::getInstance()->meshes.at(40)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(40)->SetPos(vec3(2.7f, -1.25, 0.0));
+	windowMgr::getInstance()->meshes.at(40)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
 	// Select an option label 
 	windowMgr::getInstance()->meshes.at(41)->SetScale(2.0f, 1.6f);
 	windowMgr::getInstance()->meshes.at(41)->SetPos(vec3(2.2f, 0.7, 0.0));
 	windowMgr::getInstance()->meshes.at(41)->SetTexture(windowMgr::getInstance()->textures["selectOptionLbl"]);
 
 	// Set the sensitivity value based on the 
-	windowMgr::getInstance()->meshes.at(38)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(38)->SetPos(vec3(2.2f, -1.3, 0.0));
+	windowMgr::getInstance()->meshes.at(38)->SetScale(1.8f, 0.45f);
+	windowMgr::getInstance()->meshes.at(38)->SetPos(vec3(2.2f, -1.25, 0.0));
 
 	if (playerTab == 1)
 	{
