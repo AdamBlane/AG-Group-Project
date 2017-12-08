@@ -193,9 +193,9 @@ void Mesh::plane()
 		Vertex(glm::vec3(position.x + halfSide1, position.y, position.z + halfSide1), glm::vec2(1.0, 0.0)), //index 1
 		Vertex(glm::vec3(position.x - halfSide1, position.y, position.z - halfSide1), glm::vec2(0.0, 1.0)), //index 2
 																											//TR2
-																											///get index 1
-																											Vertex(glm::vec3(position.x + halfSide1, position.y, position.z - halfSide1), glm::vec2(1.0, 1.0)), //index 3
-																																																				///get index 2
+		///get index 1
+		Vertex(glm::vec3(position.x + halfSide1, position.y, position.z - halfSide1), glm::vec2(1.0, 1.0)), //index 3
+		///get index 2
 	};
 
 	unsigned int indices[] = {
@@ -288,66 +288,84 @@ void Mesh::cuboid()
 {
 	//Counter-clock wise
 
+	double limitTexture = 1.0;
+
+	//if (halfSide1 != halfSide3)
+	//{
+	//	if (halfSide1 > halfSide3)
+	//	{
+	//		limitTexture = halfSide1;
+	//	}
+	//	else if (halfSide3 > halfSide1)
+	//	{
+	//		limitTexture = halfSide3;
+	//	}
+	//	else if (halfSide3 = halfSide1)
+	//	{
+	//		limitTexture = halfSide3;
+	//	}
+	//}
+
 	Vertex vertices[] = {
 		/////////FRONT
 		//TR1
 		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(0.0, limitTexture)),
 		//TR2
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(1.0, 1.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(0.0, limitTexture)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(limitTexture, limitTexture)),
 
 		/////////BACK
 		//TR1
 		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(limitTexture, 0.0)),
 		//TR2
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(1.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(limitTexture, limitTexture)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(limitTexture, 0.0)),
 
 		/////////LEFT
 		//TR1
 		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
 		//TR2
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(1.0, 1.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(limitTexture, limitTexture)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
 
 		/////////RIGHT
 		//TR1
 		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
 		//TR2
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(1.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(limitTexture, limitTexture)),
 
 		/////////TOP
 		//TR1
 		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
 		//TR2
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(1.0, 1.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(limitTexture, limitTexture)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y + halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
 
 		/////////BOTTOM
 		//TR1
 		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(0.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
 		//TR2
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(1.0, 0.0)),
-		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(0.0, 1.0)),
-		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(1.0, 1.0))
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z + halfSide3), glm::vec2(limitTexture, 0.0)),
+		Vertex(glm::vec3(position.x - halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(0.0, limitTexture)),
+		Vertex(glm::vec3(position.x + halfSide1, position.y - halfSide2, position.z - halfSide3), glm::vec2(limitTexture, limitTexture))
 	};
 
 	unsigned int indices[] = {

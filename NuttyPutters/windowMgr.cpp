@@ -163,8 +163,8 @@ GLFWwindow* windowMgr::Init()
 	}
 
 	///////////////////// SPACESHIP ///////////////////
-	spaceShip = new Mesh("..\\NuttyPutters\\sphere.obj");
-	spaceShipTex = new Texture("..\\NuttyPutters\\tex.png");
+	spaceShip = new Mesh("..\\NuttyPutters\\miniplanet.obj");
+	spaceShipTex = new Texture("..\\NuttyPutters\\miniplanet.png");
 
 	// ############################ TEXTURES ############################
 
@@ -547,14 +547,14 @@ GLFWwindow* windowMgr::Init()
 	textures.insert(std::pair<std::string, Texture*>("keyLbl", keyLbl));
 
 	//Tiles stuff initialized here
-	for (int i = 0; i < 15; ++i)
+	for (int i = 0; i < 80; ++i)
 
 	{
 		Mesh* mesh = new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		tileMeshes.push_back(mesh);
 	}
 
-	for (int i = 0; i < 15; ++i)
+	for (int i = 0; i < 30; ++i)
 
 	{
 		Mesh* mesh = new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
@@ -569,16 +569,19 @@ GLFWwindow* windowMgr::Init()
 	}
 
 	// Initialise tile textures, then add to map
-	Texture* floorGrass = new Texture("..\\NuttyPutters\\grass.png");
+	Texture* floorGrass = new Texture("..\\NuttyPutters\\floor.png");
 	tileTextures.insert(std::pair<std::string, Texture*>("floorGrass", floorGrass));
 
-	Texture* grassHole = new Texture("..\\NuttyPutters\\grassHole.png");
+	Texture* grassHole = new Texture("..\\NuttyPutters\\endHole2.png");
 	tileTextures.insert(std::pair<std::string, Texture*>("grassHole", grassHole));
+
+	Texture* platform = new Texture("..\\NuttyPutters\\platform2.png");
+	tileTextures.insert(std::pair<std::string, Texture*>("platform", platform));
 
 	Texture* grassScenery = new Texture("..\\NuttyPutters\\lava.jpg");
 	tileTextures.insert(std::pair<std::string, Texture*>("grassScenery", grassScenery));
 
-	Texture* tileWood = new Texture("..\\NuttyPutters\\box.jpg");
+	Texture* tileWood = new Texture("..\\NuttyPutters\\bond.png");
 	tileTextures.insert(std::pair<std::string, Texture*>("tileWood", tileWood));
 
 	Texture* waterBridge = new Texture("..\\NuttyPutters\\water.png");
