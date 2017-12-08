@@ -15,11 +15,11 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, 0.0f));
 	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["loadGameBackground"]);
 	// Set action label
-	windowMgr::getInstance()->meshes.at(1)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(1)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.7f, 1.39f, 0.0f));
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["actionLbl"]);
 	// Set button label
-	windowMgr::getInstance()->meshes.at(2)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(2)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(-1.1f, 1.39f, 0.0f));
 	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["buttonLbl"]);
 	// Select Fire
@@ -55,7 +55,7 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(15)->SetPos(vec3(-2.7f, -0.85f, 0.0f));
 	windowMgr::getInstance()->meshes.at(15)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
 	// Jump
-	windowMgr::getInstance()->meshes.at(17)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(17)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(17)->SetPos(vec3(-2.7f, -1.17f, 0.0f));
 	windowMgr::getInstance()->meshes.at(17)->SetTexture(windowMgr::getInstance()->textures["jumpLbl"]);
 	// Zoom In
@@ -72,15 +72,15 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(23)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 	// Set the player one and player two lbls
 	// P1
-	windowMgr::getInstance()->meshes.at(24)->SetScale(1.8f, 0.45f);
-	windowMgr::getInstance()->meshes.at(24)->SetPos(vec3(-2.0f, 1.81f, 0.0f));
+	windowMgr::getInstance()->meshes.at(24)->SetScale(2.7f, 0.45f);
+	windowMgr::getInstance()->meshes.at(24)->SetPos(vec3(-2.3f, 1.81f, 0.0f));
 	windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLblGreen"]);
 	// P2
-	windowMgr::getInstance()->meshes.at(25)->SetScale(1.8f, 0.45f);
+	windowMgr::getInstance()->meshes.at(25)->SetScale(2.7f, 0.45f);
 	windowMgr::getInstance()->meshes.at(25)->SetPos(vec3(0.0f, 1.81f, 0.0f));
 	windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblRed"]);
 	// Keyboard Label
-	windowMgr::getInstance()->meshes.at(26)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(26)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(26)->SetPos(vec3(0.5f, 1.39f, 0.0f));
 	windowMgr::getInstance()->meshes.at(26)->SetTexture(windowMgr::getInstance()->textures["keyLbl"]);
 	// Set selectfire button label controller button
@@ -124,37 +124,37 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(22)->SetPos(vec3(-1.1f, -1.82f, 0.0f));
 	windowMgr::getInstance()->meshes.at(22)->SetTexture(windowMgr::getInstance()->buttonsXB[5]);
 	// Select fire keyboard 
-	windowMgr::getInstance()->meshes.at(27)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(27)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(27)->SetPos(vec3(0.5f, 1.07f, 0.0f));
 	// Back reset keyboard
-	windowMgr::getInstance()->meshes.at(28)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(28)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(28)->SetPos(vec3(0.5f, 0.75f, 0.0f));
 	// Pause keyboard
-	windowMgr::getInstance()->meshes.at(29)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(29)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(29)->SetPos(vec3(0.5f, 0.43f, 0.0f));
 	// Up keyboard
-	windowMgr::getInstance()->meshes.at(30)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(30)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(30)->SetPos(vec3(0.5f, 0.11f, 0.0f));
 	// Left keyboard
-	windowMgr::getInstance()->meshes.at(31)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(31)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(31)->SetPos(vec3(0.5f, -0.21f, 0.0f));
 	// Down keyboard
-	windowMgr::getInstance()->meshes.at(32)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(32)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(32)->SetPos(vec3(0.5f, -0.53f, 0.0f));
 	// Right keyboard
-	windowMgr::getInstance()->meshes.at(33)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(33)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(33)->SetPos(vec3(0.5f, -0.85f, 0.0f));
 	// Jump keyboard
-	windowMgr::getInstance()->meshes.at(34)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(34)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(34)->SetPos(vec3(0.5f, -1.17f, 0.0f));
 	// Zoom in keyboard
-	windowMgr::getInstance()->meshes.at(35)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(35)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(35)->SetPos(vec3(0.5f, -1.49, 0.0f));
 	// Zoom out keyboard
-	windowMgr::getInstance()->meshes.at(36)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(36)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(36)->SetPos(vec3(0.5f, -1.81, 0.0f));
 	// Player using controller one
-	windowMgr::getInstance()->meshes.at(37)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(37)->SetScale(2.8f, 0.7f);
 	windowMgr::getInstance()->meshes.at(37)->SetPos(vec3(2.2f, -0.81f, 0.0f));
 	windowMgr::getInstance()->meshes.at(37)->SetTexture(windowMgr::getInstance()->textures["sensitivityLbl"]);
 	// Set left arrow label
