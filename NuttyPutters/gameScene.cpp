@@ -76,11 +76,14 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	//algTiles = cg.run();
 
 	// Record desired course size 
-	courseSize = courseLength;
+	//courseSize = courseLength;
+
+	courseSize = 12;
+
 
 	// Record how many levels to load
-	//numLevels = levelCount;
-	numLevels = 3;
+	numLevels = levelCount;
+
 	//numLevels = 5;
 	// TODO - above will only go to 3 levels - FIX
 
@@ -818,8 +821,6 @@ void gameScene::Pause(GLFWwindow* window)
 void gameScene::Input(GLFWwindow* window)
 {
 
-
-
 	// These functions are for debugging, to be excluded from final game
 	// REST POSITION FUNCTION
 	if (glfwGetKey(window, GLFW_KEY_R))
@@ -949,7 +950,7 @@ void gameScene::Input(GLFWwindow* window)
 		if (cameraType == 1)
 		{
 			// If ball is not moving then allow for angle on chase camera to be changed
-			if (!p.isMoving)
+			if (!gameOver)
 			{
 				// controls in the chase camera 
 				if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][4]))
@@ -965,41 +966,42 @@ void gameScene::Input(GLFWwindow* window)
 					// Increase chase camera angle (out of 360 degrees)
 					p.chaseCamAngle += (camSpeed * dt * 0.5);
 				}
-			}
 
 
 
-			// Camera movement
-			if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][5]))
-			{
-				windowMgr::getInstance()->chaseCams[p.id - 1]->neg_pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[p.id - 1]->get_Posistion(), windowMgr::getInstance()->chaseCams[p.id - 1]->get_pos_offset().y);
-			}
-			if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][3]))
-			{
-				windowMgr::getInstance()->chaseCams[p.id - 1]->pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[p.id - 1]->get_Posistion(), windowMgr::getInstance()->chaseCams[p.id - 1]->get_pos_offset().y);
-			}
-			if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][9]))
-			{
-				//function to rotate 
-				windowMgr::getInstance()->chaseCams[p.id - 1]->zoom_out(camSpeed * dt * 0.5);
-			}
-			if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][8]))
-			{
-				windowMgr::getInstance()->chaseCams[p.id - 1]->zoom_in(camSpeed * dt * 0.5);
-			}
+
+				// Camera movement
+				if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][5]))
+				{
+					windowMgr::getInstance()->chaseCams[p.id - 1]->neg_pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[p.id - 1]->get_Posistion(), windowMgr::getInstance()->chaseCams[p.id - 1]->get_pos_offset().y);
+				}
+				if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][3]))
+				{
+					windowMgr::getInstance()->chaseCams[p.id - 1]->pitch_it(camSpeed * dt * 0.5, p.transform.getPos(), windowMgr::getInstance()->chaseCams[p.id - 1]->get_Posistion(), windowMgr::getInstance()->chaseCams[p.id - 1]->get_pos_offset().y);
+				}
+				if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][9]))
+				{
+					//function to rotate 
+					windowMgr::getInstance()->chaseCams[p.id - 1]->zoom_out(camSpeed * dt * 0.5);
+				}
+				if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][8]))
+				{
+					windowMgr::getInstance()->chaseCams[p.id - 1]->zoom_in(camSpeed * dt * 0.5);
+				}
 
 
-			// If chase camera angle is greater than 360 reset to 0
-			if (p.chaseCamAngle > 6.28319)
-			{
-				p.chaseCamAngle = 0.0;
-			}
-			// If chase camera angle is less than 0 then reset to 360
-			else if (p.chaseCamAngle < 0)
-			{
-				p.chaseCamAngle = 6.28319;
-			}
-		} // end chase camera controls
+				// If chase camera angle is greater than 360 reset to 0
+				if (p.chaseCamAngle > 6.28319)
+				{
+					p.chaseCamAngle = 0.0;
+				}
+				// If chase camera angle is less than 0 then reset to 360
+				else if (p.chaseCamAngle < 0)
+				{
+					p.chaseCamAngle = 6.28319;
+				}
+			} // if game isn't over 
+		} // end if !p.isMoving chase camera controls
 
 
 		  // If Fire is pressed 
@@ -1075,7 +1077,7 @@ void gameScene::Input(GLFWwindow* window)
 		if (cameraType == 1)
 		{
 			// If ball is not moving then allow for angle on chase camera to be changed
-			if (!players[0].isMoving)
+			if (!gameOver)
 			{
 				// controls in the chase camera 
 				if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][4]] || controllerOneAxis[0] < -0.5)
@@ -1091,40 +1093,41 @@ void gameScene::Input(GLFWwindow* window)
 					// Increase chase camera angle (out of 360 degrees)
 					players[0].chaseCamAngle += (camSpeed * dt * 0.5);
 				}
-			}
 
 
 
-			// Camera movement
-			if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]] || controllerOneAxis[1] < -0.5)
-			{
-				windowMgr::getInstance()->chaseCams[0]->neg_pitch_it(camSpeed * dt * 0.5, players[0].transform.getPos(), windowMgr::getInstance()->chaseCams[0]->get_Posistion(), windowMgr::getInstance()->chaseCams[0]->get_pos_offset().y);
-			}
-			if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]] || controllerOneAxis[1] > 0.5)
-			{
-				windowMgr::getInstance()->chaseCams[0]->pitch_it(camSpeed * dt * 0.5, players[0].transform.getPos(), windowMgr::getInstance()->chaseCams[0]->get_Posistion(), windowMgr::getInstance()->chaseCams[0]->get_pos_offset().y);
-			}
-			if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][9]])
-			{
-				//function to rotate 
-				windowMgr::getInstance()->chaseCams[0]->zoom_out(camSpeed * dt * 0.5);
-			}
-			if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][8]])
-			{
-				windowMgr::getInstance()->chaseCams[0]->zoom_in(camSpeed * dt * 0.5);
-			}
+
+				// Camera movement
+				if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]] || controllerOneAxis[1] < -0.5)
+				{
+					windowMgr::getInstance()->chaseCams[0]->neg_pitch_it(camSpeed * dt * 0.5, players[0].transform.getPos(), windowMgr::getInstance()->chaseCams[0]->get_Posistion(), windowMgr::getInstance()->chaseCams[0]->get_pos_offset().y);
+				}
+				if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]] || controllerOneAxis[1] > 0.5)
+				{
+					windowMgr::getInstance()->chaseCams[0]->pitch_it(camSpeed * dt * 0.5, players[0].transform.getPos(), windowMgr::getInstance()->chaseCams[0]->get_Posistion(), windowMgr::getInstance()->chaseCams[0]->get_pos_offset().y);
+				}
+				if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][9]])
+				{
+					//function to rotate 
+					windowMgr::getInstance()->chaseCams[0]->zoom_out(camSpeed * dt * 0.5);
+				}
+				if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][8]])
+				{
+					windowMgr::getInstance()->chaseCams[0]->zoom_in(camSpeed * dt * 0.5);
+				}
 
 
-			// If chase camera angle is greater than 360 reset to 0
-			if (players[0].chaseCamAngle > 6.28319)
-			{
-				players[0].chaseCamAngle = 0.0;
-			}
-			// If chase camera angle is less than 0 then reset to 360
-			else if (players[0].chaseCamAngle < 0)
-			{
-				players[0].chaseCamAngle = 6.28319;
-			}
+				// If chase camera angle is greater than 360 reset to 0
+				if (players[0].chaseCamAngle > 6.28319)
+				{
+					players[0].chaseCamAngle = 0.0;
+				}
+				// If chase camera angle is less than 0 then reset to 360
+				else if (players[0].chaseCamAngle < 0)
+				{
+					players[0].chaseCamAngle = 6.28319;
+				}
+			} // end if game isn't over allow camera control
 		} // end chase camera controls
 
 
@@ -1201,7 +1204,7 @@ void gameScene::Input(GLFWwindow* window)
 		if (cameraType == 1)
 		{
 			// If ball is not moving then allow for angle on chase camera to be changed
-			if (!players[1].isMoving)
+			if (!gameOver)
 			{
 				// controls in the chase camera 
 				if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][4]] || controllerTwoAxis[0] < -0.5)
@@ -1217,40 +1220,41 @@ void gameScene::Input(GLFWwindow* window)
 					// Increase chase camera angle (out of 360 degrees)
 					players[1].chaseCamAngle += (camSpeed * dt * 0.5);
 				}
-			}
 
 
 
-			// Camera movement
-			if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][5]] || controllerTwoAxis[1] < -0.5)
-			{
-				windowMgr::getInstance()->chaseCams[1]->neg_pitch_it(camSpeed * dt * 0.5, players[1].transform.getPos(), windowMgr::getInstance()->chaseCams[1]->get_Posistion(), windowMgr::getInstance()->chaseCams[1]->get_pos_offset().y);
-			}
-			if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][3]] || controllerTwoAxis[1] > 0.5)
-			{
-				windowMgr::getInstance()->chaseCams[1]->pitch_it(camSpeed * dt * 0.5, players[1].transform.getPos(), windowMgr::getInstance()->chaseCams[1]->get_Posistion(), windowMgr::getInstance()->chaseCams[1]->get_pos_offset().y);
-			}
-			if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][9]])
-			{
-				//function to rotate 
-				windowMgr::getInstance()->chaseCams[1]->zoom_out(camSpeed * dt * 0.5);
-			}
-			if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][8]])
-			{
-				windowMgr::getInstance()->chaseCams[1]->zoom_in(camSpeed * dt * 0.5);
-			}
+
+				// Camera movement
+				if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][5]] || controllerTwoAxis[1] < -0.5)
+				{
+					windowMgr::getInstance()->chaseCams[1]->neg_pitch_it(camSpeed * dt * 0.5, players[1].transform.getPos(), windowMgr::getInstance()->chaseCams[1]->get_Posistion(), windowMgr::getInstance()->chaseCams[1]->get_pos_offset().y);
+				}
+				if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][3]] || controllerTwoAxis[1] > 0.5)
+				{
+					windowMgr::getInstance()->chaseCams[1]->pitch_it(camSpeed * dt * 0.5, players[1].transform.getPos(), windowMgr::getInstance()->chaseCams[1]->get_Posistion(), windowMgr::getInstance()->chaseCams[1]->get_pos_offset().y);
+				}
+				if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][9]])
+				{
+					//function to rotate 
+					windowMgr::getInstance()->chaseCams[1]->zoom_out(camSpeed * dt * 0.5);
+				}
+				if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][8]])
+				{
+					windowMgr::getInstance()->chaseCams[1]->zoom_in(camSpeed * dt * 0.5);
+				}
 
 
-			// If chase camera angle is greater than 360 reset to 0
-			if (players[1].chaseCamAngle > 6.28319)
-			{
-				players[1].chaseCamAngle = 0.0;
-			}
-			// If chase camera angle is less than 0 then reset to 360
-			else if (players[1].chaseCamAngle < 0)
-			{
-				players[1].chaseCamAngle = 6.28319;
-			}
+				// If chase camera angle is greater than 360 reset to 0
+				if (players[1].chaseCamAngle > 6.28319)
+				{
+					players[1].chaseCamAngle = 0.0;
+				}
+				// If chase camera angle is less than 0 then reset to 360
+				else if (players[1].chaseCamAngle < 0)
+				{
+					players[1].chaseCamAngle = 6.28319;
+				}
+			} // end if game isn't over allow camera control
 		} // end chase camera controls
 
 
@@ -1316,7 +1320,7 @@ void gameScene::CheckLoadNextLevel()
 			if (currentLevel == numLevels - 1 && !changedLevel)
 			{
 				// TODO - quit, pause, ask for next level etc
-
+				gameOver = true;
 				// Stop camera from following player
 				players[i].camFollow = false;
 				// Update the total time count for this player 

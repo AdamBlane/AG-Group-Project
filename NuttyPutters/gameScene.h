@@ -53,7 +53,8 @@ public:
 	bool changedLevel = false;
 	// Total number of tiles per level
 	int courseSize;
-	// Best position of world clock
+	// Game ended flag
+	bool gameOver = false;
 
 	// SYSTEMS USED
 	// Handles gameplay logic
