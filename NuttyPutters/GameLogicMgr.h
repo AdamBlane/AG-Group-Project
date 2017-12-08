@@ -43,6 +43,7 @@ public:
 	// Keep clock ticking
 	void Update();
 
+
 	// Update user power bar
 	void UpdatePowerBar(Player player);
 

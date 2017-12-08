@@ -108,6 +108,7 @@ void GameLogicMgr::Update()
 	}
 }
 
+
 // Update power bar
 void GameLogicMgr::UpdatePowerBar(Player player)
 {
@@ -181,8 +182,6 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 		cout << "To return to main menu, pause game (P) then hit C!" << endl;
 		gameEnded = true;
 	}
-
-
 	
 }
 

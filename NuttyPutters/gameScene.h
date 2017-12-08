@@ -54,7 +54,7 @@ public:
 	// Total number of tiles per level
 	int courseSize;
 	// Game ended flag
-	//bool gameOver = false;
+	bool gameEnded = false;
 	// SYSTEMS USED
 	// Handles gameplay logic
 	GameLogicMgr gameLogicMgr;

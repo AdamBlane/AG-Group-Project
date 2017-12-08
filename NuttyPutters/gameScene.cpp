@@ -1321,14 +1321,30 @@ void gameScene::CheckLoadNextLevel()
 			{
 				// This player's game is over! (Locks their camera)
 				players[i].gameOver = true;
-				// TODO - Check if both players game over, that's the real gameOver
+				
 
 				// Stop camera from following player
 				players[i].camFollow = false;
+				
 				// Update the total time count for this player 
 				gameLogicMgr.SetEndTime(players[i]);
+				
 				// Print game score for this player
 				gameLogicMgr.PrintPlayerScore(players[i]);
+
+				// Check if both players game over, that's the real gameOver
+				if (numPlayers == 2 && players[i * -1 + 1].gameOver)
+				{
+					// Flip flag
+					gameEnded = true;
+				}
+				// Or it's just one player
+				else if (numPlayers == 1)
+				{
+					gameEnded = true;
+				}
+
+
 			}
 			// If there is another level to go...
 			else if (currentLevel < numLevels - 1)
@@ -1418,7 +1434,8 @@ void gameScene::Update(GLFWwindow* window)
 
 
 	// Update game clock
-	gameLogicMgr.Update();
+	if (!gameEnded)
+		gameLogicMgr.Update();
 
 
 	// Free cam stuff
