@@ -66,7 +66,7 @@ void courseGenV2::PlaceTile()
 
 	// Add random choice to game tiles
 	gameTiles.push_back(potentialTiles.at(choice));
-
+	
 	// Update current tile position tracker
 	curTileCoords = gameTiles.back()->GetNextCoords();
 
@@ -74,10 +74,10 @@ void courseGenV2::PlaceTile()
 	dir = gameTiles.back()->outDir;
 
 	// Delete unused potential tiles 
-	for (auto &t : potentialTiles)
-	{
-		delete(t);
-	}
+	//for (auto &t : potentialTiles)
+	//{
+	//	delete(t);
+	//}
 	// Clear potential tiles for next iteration
 	potentialTiles.clear();
 }
@@ -119,22 +119,31 @@ void courseGenV2::CheckStraights()
 		// If this pos is free, can add straight
 		if (!tilePosTaken(followingPos))
 		{
+			// Create potential tile types
+			Bridge_V* bridge = new Bridge_V();
 			StraightTile_V* straightV = new StraightTile_V();
 			// Set position and next tile pos
 			straightV->SetCoords(curTileCoords);
+			bridge->SetCoords(curTileCoords);
 			straightV->SetNextCoords(followingPos);
+			bridge->SetNextCoords(followingPos);
 			// Set out direction
 			if (dir.going_up)
 			{
 				// Continue going up
 				straightV->outDir.going_up = true;
+				bridge->outDir.going_up = true;
 			}
 			else if (dir.going_down)
+			{
 				// Continue going down
 				straightV->outDir.going_down = true;
-				
+				bridge->outDir.going_down = true;
+			}
+
 			// Add to list of potential next tiles
 			potentialTiles.push_back(straightV);
+			potentialTiles.push_back(bridge);
 		}
 	}
 	// Left/Right is true
@@ -158,20 +167,21 @@ void courseGenV2::CheckStraights()
 			potentialTiles.push_back(straightH);
 		}
 	}
+	
 	// RAMP TESTING
-	if (dir.going_down)
-	{
-		// Following is + 3.8 on y axis (arbitrary atm)
-		vec3 followingPos = vec3(curTileCoords.x, curTileCoords.y + 3.8, curTileCoords.z + zDiff);
-		if (!tilePosTaken(followingPos))
-		{
-			UpRampDown* ramp = new UpRampDown();
-			ramp->SetCoords(curTileCoords);
-			ramp->SetNextCoords(followingPos);
-			ramp->outDir.going_down = true;
-			potentialTiles.push_back(ramp);
-		}
-	}
+	//if (dir.going_down)
+	//{
+	//	// Following is + 3.8 on y axis (arbitrary atm)
+	//	vec3 followingPos = vec3(curTileCoords.x, curTileCoords.y + 3.8, curTileCoords.z + zDiff);
+	//	if (!tilePosTaken(followingPos))
+	//	{
+	//		UpRampDown* ramp = new UpRampDown();
+	//		ramp->SetCoords(curTileCoords);
+	//		ramp->SetNextCoords(followingPos);
+	//		ramp->outDir.going_down = true;
+	//		potentialTiles.push_back(ramp);
+	//	}
+	//}
 	/*if (dir.going_up) // Ignoring this ramp type for now
 	{
 		vec3 followingPos = vec3(curTileCoords.x, curTileCoords.y - 3.8, curTileCoords.z + zDiff);
@@ -200,7 +210,7 @@ void courseGenV2::CheckCorners()
 		{
 			CornerTile_BL* cornerBL = new CornerTile_BL();
 			// Set positions
-			cornerBL->SetCoords(curTileCoords);
+			cornerBL->SetCoords(curTileCoords);		
 			cornerBL->SetNextCoords(followingPosR);
 			cornerBL->outDir.going_right = true;
 			// Add to potentials list
@@ -211,11 +221,16 @@ void courseGenV2::CheckCorners()
 		// If free, add corner
 		if (!tilePosTaken(followingPosL))
 		{
+			GapTile* gapTile = new GapTile();
 			CornerTile_BR* cornerBR = new CornerTile_BR();
 			cornerBR->SetCoords(curTileCoords);
+			gapTile->SetCoords(curTileCoords);
 			cornerBR->SetNextCoords(followingPosL);
+			gapTile->SetNextCoords(followingPosL);
 			cornerBR->outDir.going_left = true;
+			gapTile->outDir.going_left = true;
 			potentialTiles.push_back(cornerBR);
+			potentialTiles.push_back(gapTile);
 		}
 	}
 	// Check for top L/R corners
@@ -225,11 +240,16 @@ void courseGenV2::CheckCorners()
 		vec3 followingPosR = vec3(curTileCoords.x + tileSize, curTileCoords.y, curTileCoords.z);
 		if (!tilePosTaken(followingPosR))
 		{
+			GapTile* gapTile = new GapTile();
 			CornerTile_TL* cornerTL = new CornerTile_TL();
 			cornerTL->SetCoords(curTileCoords);
+			gapTile->SetCoords(curTileCoords);
 			cornerTL->SetNextCoords(followingPosR);
+			gapTile->SetNextCoords(followingPosR);
 			cornerTL->outDir.going_right = true;
+			gapTile->outDir.going_right = true;
 			potentialTiles.push_back(cornerTL);
+			potentialTiles.push_back(gapTile);
 		}
 		// Top right - goes up to the left
 		vec3 followingPosL = vec3(curTileCoords.x - tileSize, curTileCoords.y, curTileCoords.z);
@@ -259,11 +279,16 @@ void courseGenV2::CheckCorners()
 		vec3 followingPosU = vec3(curTileCoords.x, curTileCoords.y, curTileCoords.z - tileSize);
 		if (!tilePosTaken(followingPosU))
 		{
+			GapTile* gapTile = new GapTile();
 			CornerTile_BL* cornerBL = new CornerTile_BL();
 			cornerBL->SetCoords(curTileCoords);
+			gapTile->SetCoords(curTileCoords);
 			cornerBL->SetNextCoords(followingPosU);
+			gapTile->SetNextCoords(followingPosU);
 			cornerBL->outDir.going_up = true;
+			gapTile->outDir.going_up = true;
 			potentialTiles.push_back(cornerBL);
+			potentialTiles.push_back(gapTile);
 		}
 	}
 	// Check for right top/bottom
@@ -273,11 +298,16 @@ void courseGenV2::CheckCorners()
 		vec3 followingPosD = vec3(curTileCoords.x, curTileCoords.y, curTileCoords.z + tileSize);
 		if (!tilePosTaken(followingPosD))
 		{
+			GapTile* gapTile = new GapTile();
 			CornerTile_TR* cornerTR = new CornerTile_TR();
 			cornerTR->SetCoords(curTileCoords);
+			gapTile->SetCoords(curTileCoords);
 			cornerTR->SetNextCoords(followingPosD);
+			gapTile->SetNextCoords(followingPosD);
 			cornerTR->outDir.going_down = true;
+			gapTile->outDir.going_down = true;
 			potentialTiles.push_back(cornerTR);
+			potentialTiles.push_back(gapTile);
 		}
 		// Bottom right - goes right and up
 		vec3 followingPosU = vec3(curTileCoords.x, curTileCoords.y, curTileCoords.z - tileSize);
@@ -306,50 +336,64 @@ bool courseGenV2::tilePosTaken(vec3 checkPos)
 }
 
 // Setup game seed based on default/given seed value
-vector<int> courseGenV2::SetupSeed(string seed)
+vector<int> courseGenV2::SetupSeed(string seed, int courseLength)
 {
 	// Resulting seeds list
 	vector<int> levelSeed;
 	// Only get seed from file if not given to us from load game screen
 	if (seed == "seed") // it's the default value
 	{
-		// Some magic numbers in the following section; for milestone 2, will replace after
-		// Insert start
-		levelSeed.push_back(0);
-		// Open seeds file 
-		ifstream seedsFile("res12.csv");
-		// find how many lines in seed file (hardcoded for now)
-		int seedsCount = 341;
-		// pick random number in that range
-		default_random_engine rng(random_device{}());
-		uniform_int_distribution<int> distribution(1, seedsCount);
-		int choice = distribution(rng);
-		cout << choice << endl;
-		// read that line
-		string line;
-		for (int l = 0; l < choice; ++l)
-		{
-			getline(seedsFile, line);
-		} // last iteration will be on desired line, so line should be correct seed now
-		  // parse seed into array
-		for (int c = 0; c < line.length(); ++c)
-		{
-			// Convert each character in string to int
-			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
-		}
-
+		//// Insert start
 		//levelSeed.push_back(0);
-		//levelSeed.push_back(8);
-		//levelSeed.push_back(1);
-		//levelSeed.push_back(7);
-		//levelSeed.push_back(8);
-		//levelSeed.push_back(1);
-		//levelSeed.push_back(1);
-		//levelSeed.push_back(7);
-		//levelSeed.push_back(1);
-		//levelSeed.push_back(8);
-		//levelSeed.push_back(1);
-		//levelSeed.push_back(9);
+
+		//// Seeds file to read
+		//ifstream seedsFile;
+		//// Open seeds file (different file for each difficulty)
+		//if (courseLength == 8)
+		//{
+
+		//}
+		//else if (courseLength == 12)
+		//{
+		//	seedsFile.open("res12.csv");
+		//}
+		//else if (courseLength == 16)
+		//{
+
+		//}
+		//
+		//// find how many lines in seed file (hardcoded for now)
+		//int seedsCount = 341;
+		//// pick random number in that range
+		//default_random_engine rng(random_device{}());
+		//uniform_int_distribution<int> distribution(1, seedsCount);
+		//int choice = distribution(rng);
+		//cout << choice << endl;
+		//// read that line
+		//string line;
+		//for (int l = 0; l < choice; ++l)
+		//{
+		//	getline(seedsFile, line);
+		//} // last iteration will be on desired line, so line should be correct seed now
+		//  // parse seed into array
+		//for (int c = 0; c < line.length(); ++c)
+		//{
+		//	// Convert each character in string to int
+		//	levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
+		//}
+
+		levelSeed.push_back(0);
+		levelSeed.push_back(1);
+		levelSeed.push_back(4);
+		levelSeed.push_back(2);
+		levelSeed.push_back(3);
+		levelSeed.push_back(8);
+		levelSeed.push_back(4);
+		levelSeed.push_back(6);
+		levelSeed.push_back(8);
+		levelSeed.push_back(6);
+		levelSeed.push_back(5);
+		levelSeed.push_back(9);
 
 
 	} // end if seed is default
@@ -560,24 +604,60 @@ vector<BaseTile*> courseGenV2::SetupAlgTiles(vector<int> levelSeed)
 			// Create tile
 			Bridge_V* bridge = new Bridge_V();
 			bridge->SetCoords(curCoords);
-			// Find next pos (always know dir is down when 7 is placed)
-			vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
-			bridge->SetNextCoords(nextPos);
-			bridge->outDir.going_down = true;
+			// Check direction to find next pos
+			vec3 nextPos;
+			if (algTiles.back()->outDir.going_down)
+			{
+				// Find next pos (always know dir is down when 7 is placed)
+				nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
+				bridge->outDir.going_down = true;
+			}
+			else if (algTiles.back()->outDir.going_up)
+			{
+				// Find next pos (always know dir is down when 7 is placed)
+				nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
+				bridge->outDir.going_up = true;
+			}
+
+			bridge->SetNextCoords(nextPos);		
 			algTiles.push_back(bridge);
 			break;
 		}
-		// DownRampDown
+		// Gap Tile
 		case 8:
 		{
-			// Create tile
-			GapTile* gap = new GapTile();
-			gap->SetCoords(curCoords);
-			// Find next pos (always know dir is up with tile 8)
-			vec3 nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
-			gap->SetNextCoords(nextPos);
-			gap->outDir.going_down = true;
-			algTiles.push_back(gap);
+			// Create tile & set its coords
+			GapTile* gapTile = new GapTile();
+			gapTile->SetCoords(curCoords);
+			// Need to know direction to determine next pos
+			vec3 nextPos;
+			if (algTiles.back()->outDir.going_up)
+			{
+				// Find next pos & set outwards direction
+				nextPos = vec3(curCoords.x + size, curCoords.y, curCoords.z);
+				gapTile->outDir.going_right = true;
+			}
+			else if (algTiles.back()->outDir.going_down)
+			{
+				// Find next pos & set outwards direction
+				nextPos = vec3(curCoords.x - size, curCoords.y, curCoords.z);
+				gapTile->outDir.going_left = true;
+			}
+			else if (algTiles.back()->outDir.going_left)
+			{
+				// Find next pos & set outwards direction
+				nextPos = vec3(curCoords.x, curCoords.y, curCoords.z - size);
+				gapTile->outDir.going_up = true;
+			}
+			else if (algTiles.back()->outDir.going_right)
+			{
+				// Find next pos & set outwards direction
+				nextPos = vec3(curCoords.x, curCoords.y, curCoords.z + size);
+				gapTile->outDir.going_down = true;
+			}
+
+			gapTile->SetNextCoords(nextPos);
+			algTiles.push_back(gapTile);
 			break;
 		}
 		// End tile

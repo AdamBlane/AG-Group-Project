@@ -30,7 +30,7 @@ public:
 	bool isFalling = false;
 	bool camFollow = true;
 	double chaseCamAngle;
-
+	 
 	// Gameplay
 	int id;
 	int strokeCounter = 0;

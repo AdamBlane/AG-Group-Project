@@ -73,7 +73,23 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// LEVEL GEN
 	//courseGenV2 cg(12);
-	//algTiles = cg.run();
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	vector<BaseTile*> algTiles = cg.run();
+	//	for (auto &a : algTiles)
+	//	{
+	//		if (a->id == 8)
+	//		{
+	//			for (auto &b : algTiles)
+	//			{
+	//				cout << b->id << endl;
+	//			}
+	//		}
+	//	}
+	//}
+	
+
+
 
 	// Record desired course size 
 	//courseSize = courseLength;
@@ -164,7 +180,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// To face upwards
 	wormholeTransform2.getRot().x = -1.5708;
 	// Initially zero scale
-	wormholeTransform2.getScale() = vec3(1);
+	wormholeTransform2.getScale() = vec3(0);
 	wormholeTransforms.push_back(wormholeTransform2);
 
 	//wormholeTransform.getScale() = vec3(1);
@@ -192,7 +208,7 @@ void gameScene::LoadGame(string seed)
 	// Create the course gen object that deals with seed and alg tile creation
 	courseGenV2 cgSystem;
 	// Setup the seed (either given or default)
-	vector<int> levelSeed = cgSystem.SetupSeed(seed);
+	vector<int> levelSeed = cgSystem.SetupSeed(seed, courseSize);
 	// Add it to master seeds list
 	masterLevelSeeds.push_back(levelSeed);
 	// Use seed to generate the algorithm tiles list
@@ -1321,14 +1337,30 @@ void gameScene::CheckLoadNextLevel()
 			{
 				// This player's game is over! (Locks their camera)
 				players[i].gameOver = true;
-				// TODO - Check if both players game over, that's the real gameOver
+				
 
 				// Stop camera from following player
 				players[i].camFollow = false;
+				
 				// Update the total time count for this player 
 				gameLogicMgr.SetEndTime(players[i]);
+				
 				// Print game score for this player
 				gameLogicMgr.PrintPlayerScore(players[i]);
+
+				// Check if both players game over, that's the real gameOver
+				if (numPlayers == 2 && players[i * -1 + 1].gameOver)
+				{
+					// Flip flag
+					gameEnded = true;
+				}
+				// Or it's just one player
+				else if (numPlayers == 1)
+				{
+					gameEnded = true;
+				}
+
+
 			}
 			// If there is another level to go...
 			else if (currentLevel < numLevels - 1)
@@ -1418,7 +1450,8 @@ void gameScene::Update(GLFWwindow* window)
 
 
 	// Update game clock
-	gameLogicMgr.Update();
+	if (!gameEnded)
+		gameLogicMgr.Update();
 
 
 	// Free cam stuff
