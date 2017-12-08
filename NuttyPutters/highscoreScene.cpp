@@ -157,10 +157,6 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(37)->SetScale(2.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(37)->SetPos(vec3(2.2f, -0.81f, 0.0f));
 	windowMgr::getInstance()->meshes.at(37)->SetTexture(windowMgr::getInstance()->textures["sensitivityLbl"]);
-	// Set up number of levels label
-	windowMgr::getInstance()->meshes.at(38)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(38)->SetPos(vec3(2.2f, -1.3, 0.0));
-	windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
 	// Set left arrow label
 	windowMgr::getInstance()->meshes.at(39)->SetScale(0.4f, 0.4f);
 	windowMgr::getInstance()->meshes.at(39)->SetPos(vec3(1.7f, -1.3, 0.0));
@@ -174,6 +170,95 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(41)->SetPos(vec3(2.2f, 0.7, 0.0));
 	windowMgr::getInstance()->meshes.at(41)->SetTexture(windowMgr::getInstance()->textures["selectOptionLbl"]);
 
+	// Set the sensitivity value based on the 
+	windowMgr::getInstance()->meshes.at(38)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(38)->SetPos(vec3(2.2f, -1.3, 0.0));
+
+	if (playerTab == 1)
+	{
+		switch (windowMgr::getInstance()->playerOneSensitivity)
+		{
+		case 1:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+			windowMgr::getInstance()->playerOneSensitivity = 1;
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+			windowMgr::getInstance()->playerOneSensitivity = 2;
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+			windowMgr::getInstance()->playerOneSensitivity = 3;
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+			windowMgr::getInstance()->playerOneSensitivity = 4;
+			break;
+		case 5:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+			windowMgr::getInstance()->playerOneSensitivity = 5;
+			break;
+		case 6:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+			windowMgr::getInstance()->playerOneSensitivity = 6;
+			break;
+		case 7:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+			windowMgr::getInstance()->playerOneSensitivity = 7;
+			break;
+		case 8:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+			windowMgr::getInstance()->playerOneSensitivity = 8;
+			break;
+		case 9:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+			windowMgr::getInstance()->playerOneSensitivity = 9;
+			break;
+		}
+	}
+
+	if (playerTab == 2)
+	{
+		switch (windowMgr::getInstance()->playerTwoSensitivity)
+		{
+		case 1:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+			windowMgr::getInstance()->playerTwoSensitivity = 1;
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+			windowMgr::getInstance()->playerTwoSensitivity = 2;
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+			windowMgr::getInstance()->playerTwoSensitivity = 3;
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+			windowMgr::getInstance()->playerTwoSensitivity = 4;
+			break;
+		case 5:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+			windowMgr::getInstance()->playerTwoSensitivity = 5;
+			break;
+		case 6:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+			windowMgr::getInstance()->playerTwoSensitivity = 6;
+			break;
+		case 7:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+			windowMgr::getInstance()->playerTwoSensitivity = 7;
+			break;
+		case 8:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+			windowMgr::getInstance()->playerTwoSensitivity = 8;
+			break;
+		case 9:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+			windowMgr::getInstance()->playerTwoSensitivity = 9;
+			break;
+		}
+	}
 	// Default load player one controls
 	InitPlayerButtons(win);
 }
@@ -856,109 +941,14 @@ void highscoreScene::Click(GLFWwindow * win)
 	break;
 	//left arrow function
 	case 4:
-		cout << "left" << endl;
 		// Switch statements to select the sensitivity - currently 1 to 9
 		if (playerTab == 1)
 		{
-			switch (windowMgr::getInstance()->playerOneSensitivity)
-			{
-			case 1:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-				windowMgr::getInstance()->playerOneSensitivity = 1;
-				break;
-			case 2:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-				windowMgr::getInstance()->playerOneSensitivity = 2;
-				break;
-			case 3:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
-				windowMgr::getInstance()->playerOneSensitivity = 3;
-				break;
-			case 4:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
-				windowMgr::getInstance()->playerOneSensitivity = 4;
-				break;
-			case 5:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
-				windowMgr::getInstance()->playerOneSensitivity = 5;
-				break;
-			case 6:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
-				windowMgr::getInstance()->playerOneSensitivity = 6;
-				break;
-			case 7:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
-				windowMgr::getInstance()->playerOneSensitivity = 7;
-				break;
-			case 8:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
-				windowMgr::getInstance()->playerOneSensitivity = 8;
-				break;
-			case 9:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
-				windowMgr::getInstance()->playerOneSensitivity = 9;
-				break;
-			}
 			windowMgr::getInstance()->playerOneSensitivity -= 1;
 			if (windowMgr::getInstance()->playerOneSensitivity == 0)
 			{
 				windowMgr::getInstance()->playerOneSensitivity = 9;
 			}
-		}
-
-		if (playerTab == 2)
-		{
-			switch (windowMgr::getInstance()->playerTwoSensitivity)
-			{
-			case 1:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-				windowMgr::getInstance()->playerTwoSensitivity = 1;
-				break;
-			case 2:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-				windowMgr::getInstance()->playerTwoSensitivity = 2;
-				break;
-			case 3:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
-				windowMgr::getInstance()->playerTwoSensitivity = 3;
-				break;
-			case 4:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
-				windowMgr::getInstance()->playerTwoSensitivity = 4;
-				break;
-			case 5:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
-				windowMgr::getInstance()->playerTwoSensitivity = 5;
-				break;
-			case 6:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
-				windowMgr::getInstance()->playerTwoSensitivity = 6;
-				break;
-			case 7:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
-				windowMgr::getInstance()->playerTwoSensitivity = 7;
-				break;
-			case 8:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
-				windowMgr::getInstance()->playerTwoSensitivity = 8;
-				break;
-			case 9:
-				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
-				windowMgr::getInstance()->playerTwoSensitivity = 9;
-				break;
-			}
-			windowMgr::getInstance()->playerTwoSensitivity -= 1;
-			if (windowMgr::getInstance()->playerTwoSensitivity == 0)
-			{
-				windowMgr::getInstance()->playerTwoSensitivity = 9;
-			}
-		}
-		break;
-		//right arrow functio
-	case 5:
-		cout << "right" << endl;
-		if (playerTab == 1)
-		{
 			switch (windowMgr::getInstance()->playerOneSensitivity)
 			{
 			case 1:
@@ -998,15 +988,15 @@ void highscoreScene::Click(GLFWwindow * win)
 				windowMgr::getInstance()->playerOneSensitivity = 9;
 				break;
 			}
-			windowMgr::getInstance()->playerOneSensitivity += 1;
-			if (windowMgr::getInstance()->playerOneSensitivity == 10)
-			{
-				windowMgr::getInstance()->playerOneSensitivity = 1;
-			}
 		}
 
 		if (playerTab == 2)
 		{
+			windowMgr::getInstance()->playerTwoSensitivity -= 1;
+			if (windowMgr::getInstance()->playerTwoSensitivity == 0)
+			{
+				windowMgr::getInstance()->playerTwoSensitivity = 9;
+			}
 			switch (windowMgr::getInstance()->playerTwoSensitivity)
 			{
 			case 1:
@@ -1046,12 +1036,112 @@ void highscoreScene::Click(GLFWwindow * win)
 				windowMgr::getInstance()->playerTwoSensitivity = 9;
 				break;
 			}
-			windowMgr::getInstance()->playerTwoSensitivity += 1;
-			if (windowMgr::getInstance()->playerTwoSensitivity == 10)
+		}
+		cout << "Left with value of: " << windowMgr::getInstance()->playerOneSensitivity << endl;
+		break;
+		//right arrow functio
+	case 5:
+		if (playerTab == 1)
+		{
+			windowMgr::getInstance()->playerOneSensitivity += 1;
+
+			if (windowMgr::getInstance()->playerOneSensitivity == 10)
 			{
+				windowMgr::getInstance()->playerOneSensitivity = 1;
+			}
+
+			switch (windowMgr::getInstance()->playerOneSensitivity)
+			{
+			case 1:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+				windowMgr::getInstance()->playerOneSensitivity = 1;
+				break;
+			case 2:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+				windowMgr::getInstance()->playerOneSensitivity = 2;
+				break;
+			case 3:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+				windowMgr::getInstance()->playerOneSensitivity = 3;
+				break;
+			case 4:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+				windowMgr::getInstance()->playerOneSensitivity = 4;
+				break;
+			case 5:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+				windowMgr::getInstance()->playerOneSensitivity = 5;
+				break;
+			case 6:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+				windowMgr::getInstance()->playerOneSensitivity = 6;
+				break;
+			case 7:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+				windowMgr::getInstance()->playerOneSensitivity = 7;
+				break;
+			case 8:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+				windowMgr::getInstance()->playerOneSensitivity = 8;
+				break;
+			case 9:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+				windowMgr::getInstance()->playerOneSensitivity = 9;
+				break;
+			}
+
+			
+		}
+
+		if (playerTab == 2)
+		{
+			windowMgr::getInstance()->playerTwoSensitivity += 1;
+			if (windowMgr::getInstance()->playerOneSensitivity == 10)
+			{
+				windowMgr::getInstance()->playerOneSensitivity = 1;
+			}
+
+			switch (windowMgr::getInstance()->playerTwoSensitivity)
+			{
+			case 1:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
 				windowMgr::getInstance()->playerTwoSensitivity = 1;
+				break;
+			case 2:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+				windowMgr::getInstance()->playerTwoSensitivity = 2;
+				break;
+			case 3:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+				windowMgr::getInstance()->playerTwoSensitivity = 3;
+				break;
+			case 4:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+				windowMgr::getInstance()->playerTwoSensitivity = 4;
+				break;
+			case 5:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+				windowMgr::getInstance()->playerTwoSensitivity = 5;
+				break;
+			case 6:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+				windowMgr::getInstance()->playerTwoSensitivity = 6;
+				break;
+			case 7:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+				windowMgr::getInstance()->playerTwoSensitivity = 7;
+				break;
+			case 8:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+				windowMgr::getInstance()->playerTwoSensitivity = 8;
+				break;
+			case 9:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+				windowMgr::getInstance()->playerTwoSensitivity = 9;
+				break;
 			}
 		}
+		cout << "Right with value of: " << windowMgr::getInstance()->playerOneSensitivity << endl;
 		break;
 	}
 }
