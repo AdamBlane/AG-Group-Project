@@ -950,7 +950,7 @@ void gameScene::Input(GLFWwindow* window)
 		if (cameraType == 1)
 		{
 			// If ball is not moving then allow for angle on chase camera to be changed
-			if (!gameOver)
+			if (!p.gameOver)
 			{
 				// controls in the chase camera 
 				if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][4]))
@@ -1077,7 +1077,7 @@ void gameScene::Input(GLFWwindow* window)
 		if (cameraType == 1)
 		{
 			// If ball is not moving then allow for angle on chase camera to be changed
-			if (!gameOver)
+			if (!players[0].gameOver)
 			{
 				// controls in the chase camera 
 				if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][4]] || controllerOneAxis[0] < -0.5)
@@ -1204,7 +1204,7 @@ void gameScene::Input(GLFWwindow* window)
 		if (cameraType == 1)
 		{
 			// If ball is not moving then allow for angle on chase camera to be changed
-			if (!gameOver)
+			if (!players[1].gameOver)
 			{
 				// controls in the chase camera 
 				if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][4]] || controllerTwoAxis[0] < -0.5)
@@ -1319,8 +1319,10 @@ void gameScene::CheckLoadNextLevel()
 			// If finished last level
 			if (currentLevel == numLevels - 1 && !changedLevel)
 			{
-				// TODO - quit, pause, ask for next level etc
-				gameOver = true;
+				// This player's game is over! (Locks their camera)
+				players[i].gameOver = true;
+				// TODO - Check if both players game over, that's the real gameOver
+
 				// Stop camera from following player
 				players[i].camFollow = false;
 				// Update the total time count for this player 
