@@ -164,7 +164,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// To face upwards
 	wormholeTransform2.getRot().x = -1.5708;
 	// Initially zero scale
-	wormholeTransform2.getScale() = vec3(1);
+	wormholeTransform2.getScale() = vec3(0);
 	wormholeTransforms.push_back(wormholeTransform2);
 
 	//wormholeTransform.getScale() = vec3(1);
