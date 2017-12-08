@@ -231,6 +231,9 @@ class windowMgr
 		// DPAD LEFT = 4
 		// DPAD DOWN = 5
 		// DPAD RIGHT = 6
+		// Jump = 7
+		// Zoom in = 8
+		// Zoom out = 9 
 
 		// Cameras
 		target_camera* HUDtargetCam;

@@ -55,7 +55,6 @@ public:
 	int courseSize;
 	// Best position of world clock
 
-	const unsigned char *buttons;
 	// SYSTEMS USED
 	// Handles gameplay logic
 	GameLogicMgr gameLogicMgr;
@@ -93,7 +92,6 @@ public:
 	const unsigned char *controllerOne;
 	int controllerTwoButtonCount;
 	const unsigned char *controllerTwo;
-	vector<const unsigned char*> controllers;
 	int controllerOneAxisCount;
 	const float *controllerOneAxis;
 	int controllerTwoAxisCount;
@@ -135,6 +133,11 @@ public:
 
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);
+	// Player movement fuctions
+	void Jump(Player &p);
+	void FirePress(Player &p);
+	void FireRelease(Player &p);
+	void Pause(GLFWwindow* window);
 	// Act on controller/keyboard input
 	void Input(GLFWwindow* window);
 	// Tiles are treated as partitions
@@ -149,8 +152,10 @@ public:
 	void Render(GLFWwindow* window);
 	//Function to track mouse movements
 	void Track_mouse(GLFWwindow* win);
+	// Called when on pause screen; enact highlighted choice
 	void Click_Or_Enter(GLFWwindow* win , bool pause);
+	// Called from pause menu; screenshots and saves current level to file
 	void Save_Level(GLFWwindow* win);
 	//seperate render for pause screen
-	void ChangeTexutes(GLFWwindow* win);
+	void ChangeTextures(GLFWwindow* win);
 };
