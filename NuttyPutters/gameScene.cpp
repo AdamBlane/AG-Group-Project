@@ -73,7 +73,23 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// LEVEL GEN
 	//courseGenV2 cg(12);
-	//algTiles = cg.run();
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	vector<BaseTile*> algTiles = cg.run();
+	//	for (auto &a : algTiles)
+	//	{
+	//		if (a->id == 8)
+	//		{
+	//			for (auto &b : algTiles)
+	//			{
+	//				cout << b->id << endl;
+	//			}
+	//		}
+	//	}
+	//}
+	
+
+
 
 	// Record desired course size 
 	//courseSize = courseLength;
@@ -192,7 +208,7 @@ void gameScene::LoadGame(string seed)
 	// Create the course gen object that deals with seed and alg tile creation
 	courseGenV2 cgSystem;
 	// Setup the seed (either given or default)
-	vector<int> levelSeed = cgSystem.SetupSeed(seed);
+	vector<int> levelSeed = cgSystem.SetupSeed(seed, courseSize);
 	// Add it to master seeds list
 	masterLevelSeeds.push_back(levelSeed);
 	// Use seed to generate the algorithm tiles list

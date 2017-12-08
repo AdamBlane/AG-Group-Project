@@ -38,7 +38,7 @@ public:
 
 	// These functions do not use proc gen alg
 	// Load game seed 
-	vector<int> SetupSeed(string seed);
+	vector<int> SetupSeed(string seed, int courseLength);
 	// Setup Alg tiles
 	vector<BaseTile*> SetupAlgTiles(vector<int> levelSeed);
 };
