@@ -36,7 +36,7 @@ public:
 	int strokeCounter = 0;
 	int currentPowerup = 0;
 	int totalTime = 0;
-
+	bool gameOver = false;
 	// Input
 	// Action isPressed flags
 	bool firePressed, firePressedC;
