@@ -30,6 +30,9 @@ public:
 	inline bool selectedChosenDifficulty() { return selectedDifficulty; }
 
 
+	float total_time = 0.0f;
+	int previousMenuItem, currentMenuItem;
+
 	// Booleans for key pressing - used to make sure players cant change options rapidly
 	bool keyDown = false;
 	bool keyUp = false;
@@ -69,4 +72,9 @@ public:
 	void Update(GLFWwindow* window);
 	// Render
 	void Render(GLFWwindow* window);
+	//to track and change textures
+	void ChangeTexutes(GLFWwindow* win);
+	//for action keys
+	void Click_or_Enter(GLFWwindow* window);
+	void Track_Mouse(GLFWwindow* win);
 };
