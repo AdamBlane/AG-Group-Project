@@ -230,7 +230,7 @@ void windowMgr::LoadAssets()
 		}
 	}
 	// PLAYER SELECT SCENE TEXTURES
-	Texture* playerSelectBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
+	Texture* playerSelectBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackgroundplain.png");
 	textures.insert(std::pair<std::string, Texture*>("playerSelectBackground", playerSelectBackground));
 	Texture* playersLabel = new Texture("..\\NuttyPutters\\players.png");
 	textures.insert(std::pair<std::string, Texture*>("playersLabel", playersLabel));

@@ -13,7 +13,7 @@ void highscoreScene::Init(GLFWwindow * win)
 	// Set background
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, 0.0f));
-	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["loadGameBackground"]);
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
 	// Set action label
 	windowMgr::getInstance()->meshes.at(1)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.7f, 1.39f, 0.0f));
@@ -67,7 +67,7 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(21)->SetPos(vec3(-2.7f, -1.82f, 0.0f));
 	windowMgr::getInstance()->meshes.at(21)->SetTexture(windowMgr::getInstance()->textures["zoomOutLbl"]);
 	// Main Menu
-	windowMgr::getInstance()->meshes.at(23)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(23)->SetScale(3.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(23)->SetPos(vec3(2.2f, -1.8f, 0.0f));
 	windowMgr::getInstance()->meshes.at(23)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 	// Set the player one and player two lbls
