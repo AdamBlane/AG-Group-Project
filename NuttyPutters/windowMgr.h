@@ -98,6 +98,8 @@ class windowMgr
 		int controllerPSPOne[10];
 		int controllerPSPTwo[10];
 		int playerUsingControllerOne = 1;
+		int playerOneSensitivity = 5;
+		int playerTwoSensitivity = 5;
 
 		// KEYBOARD - One
 		// Comma = 0
