@@ -24,7 +24,7 @@ public:
 	// Gameplay 
 	int selectedPlayers = 0;
 	int selectedDifficulty = 0;
-
+	int selectedLevels = 1;
 	// Getters
 	inline bool selectedAmountOfPlayers() { return selectedPlayers; }
 	inline bool selectedChosenDifficulty() { return selectedDifficulty; }
@@ -56,8 +56,7 @@ public:
 	int difficultyChoice = 0;
 	int numberOfHoles = 1;
 
-	// Difficulty; number of tiles in level - NOT SURE WHAT THIS IS
-	int courseLength = 12;
+
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);

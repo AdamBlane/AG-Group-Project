@@ -313,43 +313,43 @@ vector<int> courseGenV2::SetupSeed(string seed)
 	// Only get seed from file if not given to us from load game screen
 	if (seed == "seed") // it's the default value
 	{
-		//// Some magic numbers in the following section; for milestone 2, will replace after
-		//// Insert start
-		//levelSeed.push_back(0);
-		//// Open seeds file 
-		//ifstream seedsFile("res12.csv");
-		//// find how many lines in seed file (hardcoded for now)
-		//int seedsCount = 341;
-		//// pick random number in that range
-		//default_random_engine rng(random_device{}());
-		//uniform_int_distribution<int> distribution(1, seedsCount);
-		//int choice = distribution(rng);
-		//cout << choice << endl;
-		//// read that line
-		//string line;
-		//for (int l = 0; l < choice; ++l)
-		//{
-		//	getline(seedsFile, line);
-		//} // last iteration will be on desired line, so line should be correct seed now
-		//  // parse seed into array
-		//for (int c = 0; c < line.length(); ++c)
-		//{
-		//	// Convert each character in string to int
-		//	levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
-		//}
-
+		// Some magic numbers in the following section; for milestone 2, will replace after
+		// Insert start
 		levelSeed.push_back(0);
-		levelSeed.push_back(8);
-		levelSeed.push_back(1);
-		levelSeed.push_back(7);
-		levelSeed.push_back(8);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(7);
-		levelSeed.push_back(1);
-		levelSeed.push_back(8);
-		levelSeed.push_back(1);
-		levelSeed.push_back(9);
+		// Open seeds file 
+		ifstream seedsFile("res12.csv");
+		// find how many lines in seed file (hardcoded for now)
+		int seedsCount = 341;
+		// pick random number in that range
+		default_random_engine rng(random_device{}());
+		uniform_int_distribution<int> distribution(1, seedsCount);
+		int choice = distribution(rng);
+		cout << choice << endl;
+		// read that line
+		string line;
+		for (int l = 0; l < choice; ++l)
+		{
+			getline(seedsFile, line);
+		} // last iteration will be on desired line, so line should be correct seed now
+		  // parse seed into array
+		for (int c = 0; c < line.length(); ++c)
+		{
+			// Convert each character in string to int
+			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
+		}
+
+		//levelSeed.push_back(0);
+		//levelSeed.push_back(8);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(7);
+		//levelSeed.push_back(8);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(7);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(8);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(9);
 
 
 	} // end if seed is default
