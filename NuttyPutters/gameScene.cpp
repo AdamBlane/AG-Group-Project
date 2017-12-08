@@ -73,19 +73,15 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// LEVEL GEN
 	//courseGenV2 cg(12);
-	//for (int i = 0; i < 100; i++)
+	//ofstream seeds("seeds12.csv", ofstream::app);
+	//for (int i = 0; i < 10000; i++)
 	//{
 	//	vector<BaseTile*> algTiles = cg.run();
 	//	for (auto &a : algTiles)
 	//	{
-	//		if (a->id == 8)
-	//		{
-	//			for (auto &b : algTiles)
-	//			{
-	//				cout << b->id << endl;
-	//			}
-	//		}
+	//		seeds << a->id;
 	//	}
+	//	seeds << endl;
 	//}
 	
 
@@ -651,12 +647,32 @@ void gameScene::Jump(Player &p)
 // Player movement; fire press
 void gameScene::FirePress(Player &p)
 {
-	if (p.power < 50) // Enforce power limit
+	// Should power counter be increasing?
+	if (p.powerIncreasing)
 	{
-		// Increment power counter as long as fire is held
+		// Increase power counter
 		p.power += 0.2;
+
+		// Check if limit was reached
+		if (p.power >= 50)
+		{
+			p.powerIncreasing = false;
+		}
+	}
+	// Otherwise power is decreasing
+	else
+	{
+		// Decrease power counter
+		p.power -= 0.2;
+
+		// Check if power at 0
+		if (p.power <= 0)
+		{
+			p.powerIncreasing = true;
+		}
 	}
 
+	cout << p.power << endl;
 	// Update power bar indicator
 	gameLogicMgr.UpdatePowerBar(p);
 

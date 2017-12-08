@@ -355,7 +355,7 @@ vector<int> courseGenV2::SetupSeed(string seed, int courseLength)
 		//}
 		//else if (courseLength == 12)
 		//{
-		//	seedsFile.open("res12.csv");
+		//	seedsFile.open("seeds12.csv");
 		//}
 		//else if (courseLength == 16)
 		//{
@@ -384,17 +384,30 @@ vector<int> courseGenV2::SetupSeed(string seed, int courseLength)
 
 		levelSeed.push_back(0);
 		levelSeed.push_back(1);
-		levelSeed.push_back(4);
-		levelSeed.push_back(2);
+		levelSeed.push_back(7);
 		levelSeed.push_back(3);
 		levelSeed.push_back(8);
 		levelSeed.push_back(4);
-		levelSeed.push_back(6);
-		levelSeed.push_back(8);
-		levelSeed.push_back(6);
 		levelSeed.push_back(5);
+		levelSeed.push_back(3);
+		levelSeed.push_back(8);
+		levelSeed.push_back(7);
+		levelSeed.push_back(1);
 		levelSeed.push_back(9);
 
+
+		//levelSeed.push_back(0);
+		//levelSeed.push_back(4);
+		//levelSeed.push_back(5);
+		//levelSeed.push_back(7);
+		//levelSeed.push_back(3);
+		//levelSeed.push_back(2);
+		//levelSeed.push_back(8);
+		//levelSeed.push_back(7);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(3);
+		//levelSeed.push_back(2);
+		//levelSeed.push_back(9);
 
 	} // end if seed is default
 	else // this has been given a seed value
