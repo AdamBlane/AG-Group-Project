@@ -71,26 +71,30 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	cout << "Pause - P" << endl;
 	cout << "Reset Player 1 position - R" << endl;
 
-	// LEVEL GEN
-	//courseGenV2 cg(12);
-	//ofstream seeds("seeds12.csv", ofstream::app);
-	//for (int i = 0; i < 10000; i++)
+	// LEVEL GEN	
+	//ofstream seeds("seeds16.csv", ofstream::app);
+	//vector<BaseTile*> algTiles;
+	//for (int i = 0; i < 250; i++)
 	//{
-	//	vector<BaseTile*> algTiles = cg.run();
+	//	courseGenV2 cg(16);
+	//	algTiles = cg.run();
 	//	for (auto &a : algTiles)
 	//	{
 	//		seeds << a->id;
 	//	}
 	//	seeds << endl;
+	//	algTiles.clear();
 	//}
+	 
+
 	
 
 
 
 	// Record desired course size 
-	//courseSize = courseLength;
+	courseSize = courseLength;
 
-	courseSize = 12;
+	//courseSize = 12;
 
 
 	// Record how many levels to load
@@ -141,11 +145,13 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 		// Add to players list
 		players.push_back(player);
 	}
+	
 	// Assign arrow textures for both player arrows
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
 	windowMgr::getInstance()->spaceShip->SetTexture(windowMgr::getInstance()->spaceShipTex);
 
+	// TESTING spaceship
 	spaceTrans.getPos() = vec3(0.0f, 10.0f, 0.0f);
 	spaceTrans.getScale() = vec3(6.0f);
 
@@ -437,7 +443,7 @@ void gameScene::SetupPickupCrates()
 	pickupPositionIndices.clear();
 	// Setup the 5 crates
 	// TODO - scale with difficulty
-	for (int i = 0; i < (int)windowMgr::getInstance()->pickupCrateMeshes.size(); i++)
+	for (int i = 0; i < courseSize / 2; i++)
 	{
 		// Set texture of each crate
 		// TODO - move this to init so we only do it once
