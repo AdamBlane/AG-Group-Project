@@ -85,7 +85,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	//	seeds << endl;
 	//	algTiles.clear();
 	//}
-
+	 
 
 	
 
