@@ -38,8 +38,6 @@ public:
 	int indexAt99 = 0;
 	int indexAtButton = 0;
 	int indexAtKey = 0;
-	int playerForController = 1;
-	int playerTab = 1; // Set and keep track of what tab we are on - ie player one or two. One by default.
 
 	bool keyboardButtonPressed[100] = { false };
 
