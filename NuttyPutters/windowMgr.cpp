@@ -167,7 +167,7 @@ void windowMgr::LoadAssets()
 	p1ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	p2ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	// Pickup crate meshes - no more than 5 in any given level
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		Transform trans;
 		pickupCrateTransforms.push_back(trans);
