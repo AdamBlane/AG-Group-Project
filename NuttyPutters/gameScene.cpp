@@ -72,19 +72,19 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	cout << "Reset Player 1 position - R" << endl;
 
 	// LEVEL GEN	
-	ofstream seeds("seeds8.csv", ofstream::app);
-	vector<BaseTile*> algTiles;
-	for (int i = 0; i < 1000; i++)
-	{
-		courseGenV2 cg(8);
-		algTiles = cg.run();
-		for (auto &a : algTiles)
-		{
-			seeds << a->id;
-		}
-		seeds << endl;
-		algTiles.clear();
-	}
+	//ofstream seeds("seeds16.csv", ofstream::app);
+	//vector<BaseTile*> algTiles;
+	//for (int i = 0; i < 250; i++)
+	//{
+	//	courseGenV2 cg(16);
+	//	algTiles = cg.run();
+	//	for (auto &a : algTiles)
+	//	{
+	//		seeds << a->id;
+	//	}
+	//	seeds << endl;
+	//	algTiles.clear();
+	//}
 
 
 	

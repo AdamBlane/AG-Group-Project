@@ -349,23 +349,28 @@ vector<int> courseGenV2::SetupSeed(string seed, int courseLength)
 		// Seeds file to read
 		ifstream seedsFile;
 		// Number of available seeds in that file
-		int seedCount;
+		int seedsCount;
 		// Open seeds file (different file for each difficulty)
 		if (courseLength == 8)
 		{
 			seedsFile.open("seeds8.csv");
+			// There are 3000 lines in this file
+			seedsCount = 2999;
 		}
 		else if (courseLength == 12)
 		{
 			seedsFile.open("seeds12.csv");
+			// There are 256 lines in this file
+			seedsCount = 255;
 		}
 		else if (courseLength == 16)
 		{
-
+			seedsFile.open("seeds16.csv");
+			// There are 66 lines in this file
+			seedsCount = 65;
 		}
 		
-		// find how many lines in seed file (hardcoded for now)
-		int seedsCount = 341;
+
 		// pick random number in that range
 		default_random_engine rng(random_device{}());
 		uniform_int_distribution<int> distribution(1, seedsCount);
