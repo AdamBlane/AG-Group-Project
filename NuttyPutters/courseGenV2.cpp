@@ -384,14 +384,14 @@ vector<int> courseGenV2::SetupSeed(string seed, int courseLength)
 
 		levelSeed.push_back(0);
 		levelSeed.push_back(1);
-		levelSeed.push_back(7);
-		levelSeed.push_back(3);
-		levelSeed.push_back(8);
-		levelSeed.push_back(4);
-		levelSeed.push_back(5);
-		levelSeed.push_back(3);
-		levelSeed.push_back(8);
-		levelSeed.push_back(7);
+		levelSeed.push_back(1);
+		levelSeed.push_back(1);
+		levelSeed.push_back(1);
+		levelSeed.push_back(1);
+		levelSeed.push_back(1);
+		levelSeed.push_back(1);
+		levelSeed.push_back(1);
+		levelSeed.push_back(1);
 		levelSeed.push_back(1);
 		levelSeed.push_back(9);
 

@@ -182,6 +182,8 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 		cout << "To return to main menu, pause game (P) then hit C!" << endl;
 		gameEnded = true;
 	}
+
+	uiMgr.SetScoreToPrint(players, p1Score, p2Score);
 	
 }
 

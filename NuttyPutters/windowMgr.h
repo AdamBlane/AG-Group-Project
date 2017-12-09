@@ -52,6 +52,9 @@ class windowMgr
 		vector<Texture*> savesImages;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
+		//Score numbers
+		vector<Mesh*> player1ScoreMeshes;
+		vector<Mesh*> player2ScoreMeshes;
 
 		// 2P variant world clock meshes
 		vector<Mesh*> worldClock;

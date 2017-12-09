@@ -83,7 +83,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	//	}
 	//	seeds << endl;
 	//}
-	
+
 
 
 
@@ -963,7 +963,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// Pause
-		if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][2]))
+		if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][2]) && !gameEnded)
 		{
 			Pause(window);
 		}
@@ -1090,7 +1090,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// Pause
-		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][2]])
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][2]] && !gameEnded)
 		{
 			Pause(window);
 		}
@@ -1217,7 +1217,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// Pause
-		if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][2]])
+		if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][2]] && !gameEnded)
 		{
 			Pause(window);
 		}
@@ -1353,14 +1353,14 @@ void gameScene::CheckLoadNextLevel()
 			{
 				// This player's game is over! (Locks their camera)
 				players[i].gameOver = true;
-				
+
 
 				// Stop camera from following player
 				players[i].camFollow = false;
-				
+
 				// Update the total time count for this player 
 				gameLogicMgr.SetEndTime(players[i]);
-				
+
 				// Print game score for this player
 				gameLogicMgr.PrintPlayerScore(players[i]);
 
@@ -1653,7 +1653,8 @@ void gameScene::Collisions()
 void gameScene::Render(GLFWwindow* window)
 {
 	// Check whether to render for 1 or 2 players
-	if (numPlayers == 1 || paused == true)
+	// if the game has ended, reset viewport to normal
+	if (numPlayers == 1 || paused == true || gameEnded)
 	{
 		glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	}
@@ -1712,22 +1713,93 @@ void gameScene::Render(GLFWwindow* window)
 		}
 
 	}
-	else if (numPlayers == 1)
+	//HUD for end game
+	//if game has ended for both players
+	else if (gameEnded)
 	{
-		for (int i = 0; i < 9; i++)
+		//if number of players is 1
+		if (numPlayers == 1)
 		{
-			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			//render background for player score
+			windowMgr::getInstance()->meshes.at(13)->thisTexture.Bind(0);
 			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(i)->Draw();
+			windowMgr::getInstance()->meshes.at(13)->Draw();
+
+			//render numbers for printing the score on screen
+			for (int i = 0; i < gameLogicMgr.uiMgr.usedMeshesP1; i++)
+			{
+				windowMgr::getInstance()->player1ScoreMeshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->player1ScoreMeshes.at(i)->Draw();
+			}
+		}
+		//if number of players is 2
+		else if (numPlayers == 2)
+		{
+			//Checks what winning condition is satisfied
+
+			//if p1 has higher score than p2 ->> p2 won
+			if (gameLogicMgr.p1Score > gameLogicMgr.p2Score)
+			{
+				//printing background with "Player 2 won"
+				windowMgr::getInstance()->meshes.at(14)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(14)->Draw();
+
+			}
+			//if p2 has higher score than p1 ->> p1 won
+			else if (gameLogicMgr.p2Score > gameLogicMgr.p1Score)
+			{
+				//printing background with "Player 1 won"
+				windowMgr::getInstance()->meshes.at(13)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(13)->Draw();
+			}
+			//if players have same score
+			else if (gameLogicMgr.p1Score == gameLogicMgr.p2Score)
+			{
+				//printing background with "it's a draw"
+				windowMgr::getInstance()->meshes.at(15)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(15)->Draw();
+			}
+			//End of IF statements
+
+			//printing score for player 1, getting size from UI
+			for (int i = 0; i < gameLogicMgr.uiMgr.usedMeshesP1; i++)
+			{
+				windowMgr::getInstance()->player1ScoreMeshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->player1ScoreMeshes.at(i)->Draw();
+			}
+			//printing score for player 2, getting size from UI
+			for (int i = 0; i < gameLogicMgr.uiMgr.usedMeshesP2; i++)
+			{
+				windowMgr::getInstance()->player2ScoreMeshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->player2ScoreMeshes.at(i)->Draw();
+			}
 		}
 	}
-	else // its 2 player
+	else if (!gameEnded)
 	{
-		for (int i = 0; i < 4; i++)
+		if (numPlayers == 1)
 		{
-			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(i)->Draw();
+			for (int i = 0; i < 9; i++)
+			{
+				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(i)->Draw();
+			}
+		}
+		else
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(i)->Draw();
+			}
 		}
 	}
 

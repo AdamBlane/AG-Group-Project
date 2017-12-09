@@ -159,6 +159,13 @@ void windowMgr::LoadAssets()
 		meshes.push_back(mesh);
 	}
 
+	//MEshes used for printing score 
+	for (int i = 0; i < 20; ++i)
+	{
+		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+		player1ScoreMeshes.push_back(mesh);
+		player2ScoreMeshes.push_back(mesh);
+	}
 
 	// Initialise unique meshes
 	// Player meshes
@@ -710,6 +717,23 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("sensitivityLbl", sensitivityLbl));
 	Texture* selectOptionLbl = new Texture("..\\NuttyPutters\\Controller\\selectoption.png");
 	textures.insert(std::pair<std::string, Texture*>("selectOptionLbl", selectOptionLbl));
+
+	//SCORE SCREEN TEXTURES
+
+	//Single player
+	Texture* onePlayerScore = new Texture("..\\NuttyPutters\\scoreScreen_onePlayer.png");
+	textures.insert(std::pair<std::string, Texture*>("onePlayerScore", onePlayerScore));
+	//Multiplayer
+	//player 1 wins
+	Texture* MultPlayerP1Win = new Texture("..\\NuttyPutters\\scoreScreen_multiP_P1Win.png");
+	textures.insert(std::pair<std::string, Texture*>("MultPlayerP1Win", MultPlayerP1Win));
+	//player 2 wins
+	Texture* MultPlayerP2Win = new Texture("..\\NuttyPutters\\scoreScreen_multiP_P2Win.png");
+	textures.insert(std::pair<std::string, Texture*>("MultPlayerP2Win", MultPlayerP2Win));
+	//draw
+	Texture* MultPlayerDraw = new Texture("..\\NuttyPutters\\scoreScreen_multiP_Draw.png");
+	textures.insert(std::pair<std::string, Texture*>("MultPlayerDraw", MultPlayerDraw));
+
 
 	//Tiles stuff initialized here
 	for (int i = 0; i < 15; ++i)
