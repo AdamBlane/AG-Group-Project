@@ -549,12 +549,11 @@ void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 
 		// Save this level 
 	case 2:
-		Save_Level(win);
+		//Save_Level(win);
 		break;
 		// Exit to main menu
 		//This case resets the scene to an empty screen
 	case 3:
-		cout << "three" << endl;
 		// Setup control screen meshes
 		// gameLogicMgr.ShowControlScreen -> UImgr.ShowControlScreen
 		doesUserWantControls = true;
@@ -768,6 +767,15 @@ void gameScene::Pause(GLFWwindow* window)
 	{
 		// Mouse tracking function
 		Track_mouse(window);
+		// If user on coontrol screen
+		if (doesUserWantControls)
+		{
+			windowMgr::getInstance()->ControlsInputKeyboard();
+			windowMgr::getInstance()->ControlsInputController();
+			windowMgr::getInstance()->ControlsTrackMouse();
+			cout << "Input" << endl;
+		}
+
 		// Item selection
 		if (glfwGetKey(window, GLFW_KEY_ENTER))
 		{
@@ -779,12 +787,12 @@ void gameScene::Pause(GLFWwindow* window)
 			{
 				// If clicking save level, don't unpause
 				if (currentMenuItem != 2)
-					paused = false;
+					//paused = false;
 
 				// Perform action clicked
 				Click_Or_Enter(window, paused);
 				// Flip flag
-				windowMgr::getInstance()->enterPressed = false;
+				//windowMgr::getInstance()->enterPressed = false;
 			}
 		}
 
@@ -798,10 +806,10 @@ void gameScene::Pause(GLFWwindow* window)
 			{
 				if (currentMenuItem != 2)
 				{
-					paused = false;
+					//paused = false;
 				}
 				Click_Or_Enter(window, paused);
-				windowMgr::getInstance()->mouseLpressed = false;
+				//windowMgr::getInstance()->mouseLpressed = false;
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_UP))
@@ -827,7 +835,7 @@ void gameScene::Pause(GLFWwindow* window)
 					currentMenuItem--;
 				}
 				ChangeTextures(window);
-				windowMgr::getInstance()->upPressed = false;
+				//windowMgr::getInstance()->upPressed = false;
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN))
@@ -848,7 +856,7 @@ void gameScene::Pause(GLFWwindow* window)
 				{
 					currentMenuItem++;
 				}
-				windowMgr::getInstance()->downPressed = false;
+				//windowMgr::getInstance()->downPressed = false;
 				ChangeTextures(window);
 			}
 		}
@@ -866,7 +874,6 @@ void gameScene::Pause(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
-
 	// These functions are for debugging, to be excluded from final game
 	// REST POSITION FUNCTION
 	if (glfwGetKey(window, GLFW_KEY_R))
@@ -1708,15 +1715,14 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		if (doesUserWantControls)
 		{
-			for (int i = 0; i < 42; i++)
+			for (int i = 1; i < 42; i++)
 			{
-				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->controllerMeshes.at(i)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-				windowMgr::getInstance()->meshes.at(i)->Draw();
+				windowMgr::getInstance()->controllerMeshes.at(i)->Draw();
 			}
 		}
-
-		if (numPlayers == 1)
+		else if (numPlayers == 1)
 		{
 			for (int i = 9; i <= 13; i++)
 			{
@@ -1725,7 +1731,7 @@ void gameScene::Render(GLFWwindow* window)
 				windowMgr::getInstance()->meshes.at(i)->Draw();
 			}
 		}
-		if (numPlayers == 2)
+		else if (numPlayers == 2)
 		{
 			for (int i = 8; i <= 12; i++)
 			{

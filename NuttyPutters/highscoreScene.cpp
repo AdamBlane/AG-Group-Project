@@ -9,10 +9,10 @@ highscoreScene::~highscoreScene() { }
 void highscoreScene::Init(GLFWwindow * win)
 {
 	// Setup the initial textures
-	windowMgr::getInstance()->ControlsTextureSetup();
+	//windowMgr::getInstance()->ControlsTextureSetup();
 
 	// Default load player one controls
-	windowMgr::getInstance()->ControlsButtonsSetup();
+	//windowMgr::getInstance()->ControlsButtonsSetup();
 }
 
 // Draw stuff
@@ -43,7 +43,7 @@ void highscoreScene::Track_Mouse(GLFWwindow * win)
 //whenever a click occurs
 void highscoreScene::Click(GLFWwindow * win)
 {
-	windowMgr::getInstance()->ControlsTrackClick();
+
 }
 
 // Input 
@@ -78,11 +78,11 @@ void highscoreScene::Render(GLFWwindow* win)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	for (int i = 0; i < meshesInScene; i++)
+	for (int i = 0; i < 42; i++)
 	{
-		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+		windowMgr::getInstance()->controllerMeshes.at(i)->thisTexture.Bind(0);
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(i)->Draw();
+		windowMgr::getInstance()->controllerMeshes.at(i)->Draw();
 	}
 
 	// Reset the depth range to allow for objects at a distance to be rendered
