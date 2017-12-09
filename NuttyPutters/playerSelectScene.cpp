@@ -270,15 +270,15 @@ void playerSelectScene::Input(GLFWwindow* win)
 			// Update the necessary textures based on the users input
 		case 1:
 			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["easyBtnUnselected"]);
-			selectedDifficulty = 1; // Selecteddifficulty is used in the game scene
+			selectedDifficulty = 8; // Selecteddifficulty is used in the game scene
 			break;
 		case 2:
 			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["medBtnUnselected"]);
-			selectedDifficulty = 2;
+			selectedDifficulty = 12;
 			break;
 		case 3:
 			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["hardBtnUnselected"]);
-			selectedDifficulty = 3;
+			selectedDifficulty = 16;
 			break;
 		}
 		// If right key is pressed set keyLeft to true
@@ -412,7 +412,7 @@ void playerSelectScene::Input(GLFWwindow* win)
 		// If button select is 3 then start the game
 		if (currentMenuItem == 4)
 		{
-			windowMgr::getInstance()->sceneManager.changeScene(6, selectedDifficulty, playerSelect, selectedLevels);
+			windowMgr::getInstance()->sceneManager.changeScene(6, selectedDifficulty, playerSelect, numberOfHoles);
 		}
 		// If button select is 4 then return to main menu
 		if (currentMenuItem == 5)
