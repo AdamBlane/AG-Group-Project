@@ -513,21 +513,25 @@ void gameScene::Track_mouse(GLFWwindow* win)
 		&& (windowMgr::getInstance()->mouse_y >= 200 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale))
 	{
 		previousMenuItem = currentMenuItem;
-		if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
+		if (windowMgr::getInstance()->mouse_y <= 255 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 1;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 456 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 380 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 2;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 580 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 505 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 3;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 645 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 4;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 800 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 5;
 		}
 		ChangeTextures(win);
 	}
@@ -552,11 +556,13 @@ void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 		// Exit to main menu
 		//This case resets the scene to an empty screen
 	case 3:
+		cout << "three" << endl;
+	case 4:
 		// glLoadIdentity(); might need this later
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 		break;
 		// Exit Game
-	case 4:
+	case 5:
 		// Scene 0 is no scene - it runs winMgr.CleanUp() and closes app
 		windowMgr::getInstance()->sceneManager.changeScene(0);
 		break;
@@ -606,10 +612,13 @@ void gameScene::ChangeTextures(GLFWwindow * win)
 		windowMgr::getInstance()->meshes.at(1 + a)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
 		break;
 	case 3:
-		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["controlsBtnUnselected"]);
 		break;
 	case 4:
-		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+		break;
+	case 5:
+		windowMgr::getInstance()->meshes.at(4 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
 		break;
 	}
 	switch (currentMenuItem)
@@ -622,10 +631,13 @@ void gameScene::ChangeTextures(GLFWwindow * win)
 		windowMgr::getInstance()->meshes.at(1 + a)->SetTexture(windowMgr::getInstance()->textures["saveBtnSelected"]);
 		break;
 	case 3:
-		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnSelected"]);
+		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["controlsBtnSelected"]);
 		break;
 	case 4:
-		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnSelected"]);
+		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnSelected"]);
+		break;
+	case 5:
+		windowMgr::getInstance()->meshes.at(4 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnSelected"]);
 		break;
 	}
 
@@ -802,11 +814,11 @@ void gameScene::Pause(GLFWwindow* window)
 				previousMenuItem = currentMenuItem;
 				if (currentMenuItem == 1)
 				{
-					currentMenuItem = 4;
+					currentMenuItem = 5;
 				}
 				else if (currentMenuItem == 0)
 				{
-					currentMenuItem = 4;
+					currentMenuItem = 5;
 				}
 				else
 				{
@@ -826,7 +838,7 @@ void gameScene::Pause(GLFWwindow* window)
 			previousMenuItem = currentMenuItem;
 			if (windowMgr::getInstance()->downPressed)
 			{
-				if (currentMenuItem == 4)
+				if (currentMenuItem == 5)
 				{
 					currentMenuItem = 1;
 				}
@@ -1694,7 +1706,7 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		if (numPlayers == 1)
 		{
-			for (int i = 9; i <= 12; i++)
+			for (int i = 9; i <= 13; i++)
 			{
 				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
@@ -1703,7 +1715,7 @@ void gameScene::Render(GLFWwindow* window)
 		}
 		if (numPlayers == 2)
 		{
-			for (int i = 8; i <= 11; i++)
+			for (int i = 8; i <= 12; i++)
 			{
 				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);

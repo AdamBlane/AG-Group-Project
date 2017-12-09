@@ -69,7 +69,7 @@ void highscoreScene::Init(GLFWwindow * win)
 	// Main Menu
 	windowMgr::getInstance()->meshes.at(23)->SetScale(3.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(23)->SetPos(vec3(2.2f, -1.8f, 0.0f));
-	windowMgr::getInstance()->meshes.at(23)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(23)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
 	// Set the player one and player two lbls
 	// P1
 	windowMgr::getInstance()->meshes.at(24)->SetScale(2.7f, 0.45f);

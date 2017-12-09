@@ -300,7 +300,7 @@ void windowMgr::LoadAssets()
 	// Pickup crate texture
 	pickupCrateTexture = new Texture("..\\NuttyPutters\\powerUpBox.png");
 	// HUD label textures
-	Texture* xStrokeLbl = new Texture("..\\NuttyPutters\\x.png");
+	Texture* xStrokeLbl = new Texture("..\\NuttyPutters\\controller\\X.png");
 	textures.insert(std::pair<std::string, Texture*>("xStrokeLbl", xStrokeLbl));
 	Texture* playerOneLbl = new Texture("..\\NuttyPutters\\playerone.png");
 	textures.insert(std::pair<std::string, Texture*>("playerOneLbl", playerOneLbl));
@@ -315,22 +315,30 @@ void windowMgr::LoadAssets()
 	Texture* gameSplashScreen = new Texture("..\\NuttyPutters\\loadingscreen.png");
 	textures.insert(std::pair<std::string, Texture*>("gameSplashScreen", gameSplashScreen));
 	//pause screen textures
-	Texture* unpauseBtnUnselected = new Texture("..\\NuttyPutters\\pause\\unpause.png");
+	Texture* unpauseBtnUnselected = new Texture("..\\NuttyPutters\\pause\\resumeUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("unpauseBtnUnselected", unpauseBtnUnselected));
-	Texture* unpauseBtnSelected = new Texture("..\\NuttyPutters\\pause\\unpause(1).png");
+	Texture* unpauseBtnSelected = new Texture("..\\NuttyPutters\\pause\\resumeSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("unpauseBtnSelected", unpauseBtnSelected));
-	Texture* exitgameBtnUnselected = new Texture("..\\NuttyPutters\\pause\\exit.png");
+	Texture* exitgameBtnUnselected = new Texture("..\\NuttyPutters\\pause\\exitUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("exitgameBtnUnselected", exitgameBtnUnselected));
-	Texture* exitgameBtnSelected = new Texture("..\\NuttyPutters\\pause\\exit(1).png");
+	Texture* exitgameBtnSelected = new Texture("..\\NuttyPutters\\pause\\exitSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("exitgameBtnSelected", exitgameBtnSelected));
-	Texture* menuBtnUnselected = new Texture("..\\NuttyPutters\\pause\\menu.png");
+	Texture* menuBtnUnselected = new Texture("..\\NuttyPutters\\pause\\mainmenuUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("menuBtnUnselected", menuBtnUnselected));
-	Texture* menuBtnSelected = new Texture("..\\NuttyPutters\\pause\\menu(1).png");
+	Texture* menuBtnSelected = new Texture("..\\NuttyPutters\\pause\\mainmenuSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("menuBtnSelected", menuBtnSelected));
-	Texture* saveBtnUnselected = new Texture("..\\NuttyPutters\\pause\\save.png");
+	Texture* saveBtnUnselected = new Texture("..\\NuttyPutters\\pause\\saveUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("saveBtnUnselected", saveBtnUnselected));
-	Texture* saveBtnSelected = new Texture("..\\NuttyPutters\\pause\\save(1).png");
+	Texture* saveBtnSelected = new Texture("..\\NuttyPutters\\pause\\saveSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("saveBtnSelected", saveBtnSelected));
+	Texture* controlsBtnSelected = new Texture("..\\NuttyPutters\\pause\\controlsSelected.png");
+	textures.insert(std::pair<std::string, Texture*>("controlsBtnSelected", controlsBtnSelected));
+	Texture* controlsBtnUnselected = new Texture("..\\NuttyPutters\\pause\\controlsUnselected.png");
+	textures.insert(std::pair<std::string, Texture*>("controlsBtnUnselected", controlsBtnUnselected));
+	Texture* backBtnUnselected = new Texture("..\\NuttyPutters\\controller\\backUnselected.png");
+	textures.insert(std::pair<std::string, Texture*>("backBtnUnselected", backBtnUnselected));
+	Texture* backBtnSelected = new Texture("..\\NuttyPutters\\controller\\backSelected.png");
+	textures.insert(std::pair<std::string, Texture*>("backBtnSelected", backBtnSelected));
 	// Timer numbers
 	Texture* zeroLbl = new Texture("..\\NuttyPutters\\nzero.png");
 	//textures.insert(std::pair<std::string, Texture*>("zeroLbl", zeroLbl));
