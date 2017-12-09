@@ -50,6 +50,11 @@ public:
 	// Flags for button presses; logic occurs on release after being pressed
 	bool upPressed, downPressed, selectPressed;
 
+	// Setup GLFW joystick button input - required for doing anything with buttons
+	int controllerOneButtonCount;
+	const unsigned char *controllerOne;
+	int controllerOneAxisCount;
+	const float *controllerOneAxis;
 	// Main logic loop for this scene
 	void Loop(GLFWwindow* win);
 	// Input 

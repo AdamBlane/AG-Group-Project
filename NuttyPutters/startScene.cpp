@@ -223,6 +223,80 @@ void startScene::Click_or_Enter(GLFWwindow* win)
 // Act on input
 void startScene::Input(GLFWwindow * win)
 {
+	// Get the state of controller one
+	controllerOne = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &controllerOneButtonCount);
+	// If controller 1 is connected, run controller input loop for p1 only
+	if (controllerOne != NULL)
+	{
+		// Get axes details
+		controllerOneAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &controllerOneAxisCount);
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+		{
+			windowMgr::getInstance()->upCotn = true;
+		}
+
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+		{
+			if (windowMgr::getInstance()->upCotn)
+			{
+				previousMenuItem = currentMenuItem;
+				if (currentMenuItem == 1)
+				{
+					currentMenuItem = 6;
+				}
+				else if (currentMenuItem == 0)
+				{
+					currentMenuItem = 6;
+				}
+				else
+				{
+					currentMenuItem--;
+				}
+				ChangeTexutes(win);
+				windowMgr::getInstance()->upCotn = false;
+			}
+		}
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]])
+		{
+			windowMgr::getInstance()->downCotn = true;
+		}
+
+		if ((GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]]))
+		{
+			if (windowMgr::getInstance()->downCotn)
+			{
+				previousMenuItem = currentMenuItem;
+				if (currentMenuItem == 6)
+				{
+					currentMenuItem = 1;
+				}
+				else
+				{
+					currentMenuItem++;
+				}
+
+				windowMgr::getInstance()->downCotn = false;
+				ChangeTexutes(win);
+			}
+		}
+
+		// When Fire is realesed
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]])
+		{
+			windowMgr::getInstance()->enterCotn = true;
+		}
+		if ((GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]]))
+		{
+			if (windowMgr::getInstance()->enterCotn)
+			{
+				Click_or_Enter(win);
+				windowMgr::getInstance()->enterCotn = false;
+				ChangeTexutes(win);
+			}
+		}
+
+	}
+
 	if (glfwGetKey(win, GLFW_KEY_ENTER))
 	{
 		windowMgr::getInstance()->enterPressed = true;
@@ -361,5 +435,6 @@ void startScene::Render(GLFWwindow* win)
 	windowMgr::getInstance()->textureShader->Bind();
 
 	glfwSwapBuffers(win);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
 }

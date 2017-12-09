@@ -350,11 +350,112 @@ void playerSelectScene::ChangeTexutes(GLFWwindow *win)
 /// Act on user input 
 void playerSelectScene::Input(GLFWwindow* win)
 {
-	// Print button selection - needed for test purposes
-	//cout << "Button Select " << buttonSelect << endl;
-	//cout << "Player Select " << playerSelect << endl;
-	//cout << "Difficulty Select " << difficultySelect << endl;
-	// Button select switch statement which switchs through 4 buttons on the vertical axis - Players, Difficulty, Start Game, Main Menu
+	// Get the state of controller one
+	controllerOne = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &controllerOneButtonCount);
+	// If controller 1 is connected, run controller input loop for p1 only
+	if (controllerOne != NULL)
+	{
+		// Get axes details
+		controllerOneAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &controllerOneAxisCount);
+		// If right key is pressed set keyLeft to true
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][4]])
+		{
+			windowMgr::getInstance()->leftCotn = true;
+		}
+		// If leftKey is true and left key is not pressed then
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][4]] && windowMgr::getInstance()->leftCotn)
+		{
+			Click_Left(win);
+			// Reset keyLeft to false
+			windowMgr::getInstance()->leftCotn = false;
+		}
+
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][6]])
+		{
+			windowMgr::getInstance()->rightCotn = true;
+		}
+		// If leftKey is true and left key is not pressed then
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][6]] && windowMgr::getInstance()->rightCotn)
+		{
+			Click_Right(win);
+			// Reset keyLeft to false
+			windowMgr::getInstance()->rightCotn = false;
+		}
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+		{
+			windowMgr::getInstance()->upCotn = true;
+		}
+
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+		{
+			if (windowMgr::getInstance()->upCotn)
+			{
+				previousMenuItem = currentMenuItem;
+				if (currentMenuItem == 1)
+				{
+					currentMenuItem = 5;
+				}
+				else if (currentMenuItem == 0)
+				{
+					currentMenuItem = 5;
+				}
+				else
+				{
+					currentMenuItem--;
+				}
+				ChangeTexutes(win);
+				windowMgr::getInstance()->upCotn = false;
+			}
+		}
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]])
+		{
+			windowMgr::getInstance()->downCotn = true;
+		}
+
+		if ((GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]]))
+		{
+			if (windowMgr::getInstance()->downCotn)
+			{
+				previousMenuItem = currentMenuItem;
+				if (currentMenuItem == 5)
+				{
+					currentMenuItem = 1;
+				}
+				else
+				{
+					currentMenuItem++;
+				}
+
+				windowMgr::getInstance()->downCotn = false;
+				ChangeTexutes(win);
+			}
+		}
+
+		// When Fire is realesed
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]])
+		{
+			windowMgr::getInstance()->enterCotn = true;
+		}
+		if ((GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]]))
+		{
+			if (windowMgr::getInstance()->enterCotn)
+			{
+				// If button select is 3 then start the game
+				if (currentMenuItem == 4)
+				{
+					windowMgr::getInstance()->sceneManager.changeScene(6, selectedDifficulty, playerSelect, numberOfHoles);
+				}
+				// If button select is 4 then return to main menu
+				else if (currentMenuItem == 5)
+				{
+					windowMgr::getInstance()->sceneManager.changeScene(1);
+				}
+				windowMgr::getInstance()->enterCotn = false;
+				ChangeTexutes(win);
+			}
+		}
+
+	}
 		// If right key is pressed set keyLeft to true
 	if (glfwGetKey(win, GLFW_KEY_LEFT))
 	{
@@ -533,5 +634,6 @@ void playerSelectScene::Render(GLFWwindow* win)
 	windowMgr::getInstance()->textureShader->Bind();
 
 	glfwSwapBuffers(win);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
 }

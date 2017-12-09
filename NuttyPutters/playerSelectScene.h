@@ -33,6 +33,11 @@ public:
 	float total_time = 0.0f;
 	int previousMenuItem, currentMenuItem;
 
+	int controllerOneButtonCount;
+	const unsigned char *controllerOne;
+	int controllerOneAxisCount;
+	const float *controllerOneAxis;
+
 	// Booleans for key pressing - used to make sure players cant change options rapidly
 	bool keyDown = false;
 	bool keyUp = false;
