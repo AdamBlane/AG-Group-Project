@@ -11,25 +11,25 @@ void startScene::Track_Mouse(GLFWwindow *window)
 {
 	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
 	//this mess plots out where the buttons are for start scene
-	if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
-		&& (windowMgr::getInstance()->mouse_y >= 59 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 840 * windowMgr::getInstance()->windowScale))
+	if ((windowMgr::getInstance()->mouse_x >= 386 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1210 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 68 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 810 * windowMgr::getInstance()->windowScale))
 	{
 		previousMenuItem = currentMenuItem;
-		if (windowMgr::getInstance()->mouse_y <= 200 * windowMgr::getInstance()->windowScale)
+		if (windowMgr::getInstance()->mouse_y <= 185 * windowMgr::getInstance()->windowScale)
 		{
 			//highlights start game button
 			currentMenuItem = 1;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 306 * windowMgr::getInstance()->windowScale)
 		{
 			//highlights load game button
 			currentMenuItem = 2;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 456 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 446 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 3;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 580 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 557 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 4;
 		}
@@ -183,7 +183,7 @@ void startScene::Loop(GLFWwindow* win)
 	windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
 	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 	//tracks mouse
-	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x && windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 	{
 		Track_Mouse(win);
 	}

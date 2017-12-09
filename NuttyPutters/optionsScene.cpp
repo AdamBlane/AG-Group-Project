@@ -9,40 +9,35 @@ optionsScene::~optionsScene() { }
 
 void optionsScene::Track_Mouse(GLFWwindow *window)
 {
-	glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
-	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
-	if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
-		&& (windowMgr::getInstance()->mouse_y >= 59 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale))
+	if ((windowMgr::getInstance()->mouse_x >= 393 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1203 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 79 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 816 * windowMgr::getInstance()->windowScale))
 	{
 		previousMenuItem = currentMenuItem;
-		if (windowMgr::getInstance()->mouse_y <= 200 * windowMgr::getInstance()->windowScale)
+		if (windowMgr::getInstance()->mouse_y <= 187 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 1;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 322 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 2;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 456 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 449 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 3;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 580 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 589 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 4;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 706 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 5;
 		}
-			ChangeTexutes(window);
-	}
-	else if ((windowMgr::getInstance()->mouse_x >= 439 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1429 * windowMgr::getInstance()->windowScale)
-		&& (windowMgr::getInstance()->mouse_y >= 711 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 839 * windowMgr::getInstance()->windowScale))
-	{
-		previousMenuItem = currentMenuItem;
-		//highlights the back button
-		currentMenuItem = 6;
+		else if ((windowMgr::getInstance()->mouse_y <= 816 * windowMgr::getInstance()->windowScale))
+		{
+			//highlights the back button
+			currentMenuItem = 6;
+		}
 		ChangeTexutes(window);
 	}
 }
@@ -218,7 +213,7 @@ void optionsScene::Loop(GLFWwindow * win)
 	windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
 	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 	//tracks mouse
-	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x && windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 	{
 		Track_Mouse(win);
 	}

@@ -8,42 +8,42 @@ playerSelectScene::~playerSelectScene() { }
 
 void playerSelectScene::Track_Mouse(GLFWwindow *window)
 {
-	glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 	cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
-	//if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
-	//	&& (windowMgr::getInstance()->mouse_y >= 59 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale))
-	//{
-	//	previousMenuItem = currentMenuItem;
-	//	if (windowMgr::getInstance()->mouse_y <= 200 * windowMgr::getInstance()->windowScale)
-	//	{
-	//		currentMenuItem = 1;
-	//	}
-	//	else if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
-	//	{
-	//		currentMenuItem = 2;
-	//	}
-	//	else if (windowMgr::getInstance()->mouse_y <= 456 * windowMgr::getInstance()->windowScale)
-	//	{
-	//		currentMenuItem = 3;
-	//	}
-	//	else if (windowMgr::getInstance()->mouse_y <= 580 * windowMgr::getInstance()->windowScale)
-	//	{
-	//		currentMenuItem = 4;
-	//	}
-	//	else if (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale)
-	//	{
-	//		currentMenuItem = 5;
-	//	}
-	//	ChangeTexutes(window);
-	//}
-	//else if ((windowMgr::getInstance()->mouse_x >= 1039 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1429 * windowMgr::getInstance()->windowScale)
-	//	&& (windowMgr::getInstance()->mouse_y >= 711 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 839 * windowMgr::getInstance()->windowScale))
-	//{
-	//	previousMenuItem = currentMenuItem;
-	//	//highlights the back button
-	//	currentMenuItem = 6;
-	//	ChangeTexutes(window);
-	//}
+	if (windowMgr::getInstance()->mouse_y <= 114 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_y >= 45 * windowMgr::getInstance()->windowScale)
+	{
+		selection = 1;
+	}
+	else if (windowMgr::getInstance()->mouse_y <= 267 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_y >= 196 * windowMgr::getInstance()->windowScale)
+	{
+		selection = 2;
+	}
+	else if (windowMgr::getInstance()->mouse_y <= 419 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_y >= 347 * windowMgr::getInstance()->windowScale)
+	{
+		selection = 3;
+	}
+	if ((windowMgr::getInstance()->mouse_x >= 922 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1018 * windowMgr::getInstance()->windowScale))
+	{
+		leftbutton = true;
+	}
+	else if ((windowMgr::getInstance()->mouse_x >= 1320 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1415 * windowMgr::getInstance()->windowScale))
+	{
+		rightbutton = true;
+	}
+	else 
+	{
+		leftbutton = false;
+		rightbutton = false;
+	}
+	if ((windowMgr::getInstance()->mouse_x >= 134 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 814 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 367 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 560 * windowMgr::getInstance()->windowScale))
+	{
+		selection = 4;
+	}
+	else if ((windowMgr::getInstance()->mouse_x >= 148 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 814 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 650 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 721 * windowMgr::getInstance()->windowScale))
+	{
+		selection = 5;
+	}
 }
 // Setup meshes, textures, member vars
 void playerSelectScene::Init(GLFWwindow * win)
@@ -65,7 +65,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 
 	// Set up players label
 	windowMgr::getInstance()->meshes.at(1)->SetScale(3.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-0.7, 1.7, 0.0));
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-1.0f, 1.7, 0.0));
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["playersLabel"]);
 
 	////// Set up one players label/button
@@ -84,7 +84,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 
 	//// Set up difficulty label
 	windowMgr::getInstance()->meshes.at(5)->SetScale(3.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-1.0f, 1.0, 0.0));
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-1.30f, 1.0, 0.0));
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["difficultyLabel"]);
 
 	////// Set up med label
@@ -104,7 +104,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 
 	//// Set up number of levels label
 	windowMgr::getInstance()->meshes.at(9)->SetScale(3.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(-1.6f, 0.3, 0.0));
+	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(-1.45f, 0.3, 0.0));
 	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["numberOfLevels"]);
 
 	////// Set left arrow label
@@ -124,12 +124,12 @@ void playerSelectScene::Init(GLFWwindow * win)
 
 	//// Set up start label
 	windowMgr::getInstance()->meshes.at(13)->SetScale(3.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(-1.05f, -0.4, 0.0));
+	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(-1.5f, -0.4, 0.0));
 	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
 
 	//// Set up main menu label
 	windowMgr::getInstance()->meshes.at(14)->SetScale(3.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(14)->SetPos(vec3(-0.95f, -1.1, 0.0));
+	windowMgr::getInstance()->meshes.at(14)->SetPos(vec3(-1.45f, -1.1, 0.0));
 	windowMgr::getInstance()->meshes.at(14)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 
 
@@ -147,15 +147,168 @@ void playerSelectScene::Loop(GLFWwindow * win)
 	// Update
 	Update(win);
 
+	//code to disable mouse
+	windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
+	windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
+	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	//tracks mouse
+	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+	{
+		Track_Mouse(win);
+	}
 	// Render
 	Render(win);
 }
-void playerSelectScene::Click_or_Enter(GLFWwindow *win)
+void playerSelectScene::Click_Right(GLFWwindow *win)
 {
-
+	switch (currentMenuItem)
+	{
+		// Case 1 is player select
+	case 1:
+		// If button selected is button 4 - main menu - then wrap around to button 1
+		if (playerSelect == 2)
+		{
+			playerSelect = 1;
+		}
+		// else keep going down
+		else
+		{
+			playerSelect++;
+		}
+		break;
+		// Case 2 is difficulty select 
+	case 2:
+		// If button selected is button 3 - main menu - then wrap around to button 1
+		if (difficultySelect == 3)
+		{
+			difficultySelect = 1;
+		}
+		// else keep going down
+		else
+		{
+			difficultySelect++;
+		}
+		break;
+	case 3:// If button selected is button 4 - main menu - then wrap around to button 1
+		if (numberOfHoles == 9)
+		{
+			numberOfHoles = 1;
+		}
+		// else keep going down
+		else
+		{
+			numberOfHoles++;
+		}
+		break;
+	}
+	ChangeTexutes(win);
+}
+void playerSelectScene::Click_Left(GLFWwindow *win)
+{
+	switch (currentMenuItem)
+	{
+		// Case 1 is player select
+	case 1:
+		// If button selected is button 4 - main menu - then wrap around to button 1
+		if (playerSelect == 1)
+		{
+			playerSelect = 2;
+		}
+		// else keep going down
+		else
+		{
+			playerSelect--;
+		}
+		break;
+		// Case 2 is difficulty select 
+	case 2:
+		// If button selected is button 4 - main menu - then wrap around to button 1
+		if (difficultySelect == 1)
+		{
+			difficultySelect = 3;
+		}
+		// else keep going down
+		else
+		{
+			difficultySelect--;
+		}
+		break;
+	case 3:// If button selected is button 4 - main menu - then wrap around to button 1
+		if (numberOfHoles == 1)
+		{
+			numberOfHoles = 9;
+		}
+		// else keep going down
+		else
+		{
+			numberOfHoles--;
+		}
+		break;
+	}
+	ChangeTexutes(win);
 }
 void playerSelectScene::ChangeTexutes(GLFWwindow *win)
 {
+	switch (playerSelect)
+	{
+		//Update textures based on what number is selected
+	case 1:
+		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
+		selectedPlayers = 1; // Set selected player to 1, used in game scene
+		break;
+	case 2:
+		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
+		selectedPlayers = 2; // Set selected player to 2, used in game scene
+		break;
+	}
+	switch (numberOfHoles)
+	{
+		// Update the necessary textures based on the users input
+	case 1:
+		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+		break;
+	case 2:
+		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+		break;
+	case 3:
+		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+		break;
+	case 4:
+		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+		break;
+	case 5:
+		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+		break;
+	case 6:
+		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+		break;
+	case 7:
+		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+		break;
+	case 8:
+		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+		break;
+	case 9:
+		windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+		break;
+	}
+	// Switch statements to select different difficulty - Easy, Medium, Hard
+	switch (difficultySelect)
+	{
+		// Update the necessary textures based on the users input
+	case 1:
+		windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["easyBtnUnselected"]);
+		selectedDifficulty = 8; // Selecteddifficulty is used in the game scene
+		break;
+	case 2:
+		windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["medBtnUnselected"]);
+		selectedDifficulty = 12;
+		break;
+	case 3:
+		windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["hardBtnUnselected"]);
+		selectedDifficulty = 16;
+		break;
+	}
 	switch (previousMenuItem)
 	{
 	case 1:
@@ -202,209 +355,73 @@ void playerSelectScene::Input(GLFWwindow* win)
 	//cout << "Player Select " << playerSelect << endl;
 	//cout << "Difficulty Select " << difficultySelect << endl;
 	// Button select switch statement which switchs through 4 buttons on the vertical axis - Players, Difficulty, Start Game, Main Menu
-	switch (currentMenuItem)
+		// If right key is pressed set keyLeft to true
+	if (glfwGetKey(win, GLFW_KEY_LEFT))
 	{
-		// Case 1 is player select
-	case 1:
-		switch (playerSelect)
-		{
-			//Update textures based on what number is selected
-		case 1:
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
-			selectedPlayers = 1; // Set selected player to 1, used in game scene
-			break;
-		case 2:
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
-			selectedPlayers = 2; // Set selected player to 2, used in game scene
-			break;
-		}
-		// If right key is pressed set keyLeft to true
-		if (glfwGetKey(win, GLFW_KEY_LEFT))
-		{
-			keyLeft = true;
-		}
-		// If leftKey is true and left key is not pressed then
-		if (keyLeft && !glfwGetKey(win, GLFW_KEY_LEFT))
-		{
-			// If button selected is button 4 - main menu - then wrap around to button 1
-			if (playerSelect == 1)
-			{
-				playerSelect = 2;
-			}
-			// else keep going down
-			else
-			{
-				playerSelect--;
-			}
-			// Reset keyLeft to false
-			keyLeft = false;
-		}
-
-		// If right key is pressed set keyRight to true
-		if (glfwGetKey(win, GLFW_KEY_RIGHT))
-		{
-			keyRight = true;
-		}
-		// If keyRight is true and right is not pressed then
-		if (keyRight && !glfwGetKey(win, GLFW_KEY_RIGHT))
-		{
-			// If button selected is button 4 - main menu - then wrap around to button 1
-			if (playerSelect == 2)
-			{
-				playerSelect = 1;
-			}
-			// else keep going down
-			else
-			{
-				playerSelect++;
-			}
-			// Reset keyRight to false
-			keyRight = false;
-		}
-		break;
-		// Case 2 is difficulty select 
-	case 2:
-		// Switch statements to select different difficulty - Easy, Medium, Hard
-		switch (difficultySelect)
-		{
-			// Update the necessary textures based on the users input
-		case 1:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["easyBtnUnselected"]);
-			selectedDifficulty = 8; // Selecteddifficulty is used in the game scene
-			break;
-		case 2:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["medBtnUnselected"]);
-			selectedDifficulty = 12;
-			break;
-		case 3:
-			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["hardBtnUnselected"]);
-			selectedDifficulty = 16;
-			break;
-		}
-		// If right key is pressed set keyLeft to true
-		if (glfwGetKey(win, GLFW_KEY_LEFT))
-		{
-			keyLeft = true;
-		}
-		// If key left is and left is not pressed then
-		if (keyLeft && !glfwGetKey(win, GLFW_KEY_LEFT))
-		{
-			// If button selected is button 4 - main menu - then wrap around to button 1
-			if (difficultySelect == 1)
-			{
-				difficultySelect = 3;
-			}
-			// else keep going down
-			else
-			{
-				difficultySelect--;
-			}
-			// Reset keyLeft
-			keyLeft = false;
-		}
-
-		// If right key is pressed set keyRight to true
-		if (glfwGetKey(win, GLFW_KEY_RIGHT))
-		{
-			keyRight = true;
-		}
-		// If keyRight is true and right is not pressed then
-		if (keyRight && !glfwGetKey(win, GLFW_KEY_RIGHT))
-		{
-			// If button selected is button 3 - main menu - then wrap around to button 1
-			if (difficultySelect == 3)
-			{
-				difficultySelect = 1;
-			}
-			// else keep going down
-			else
-			{
-				difficultySelect++;
-			}
-			// Reset keyRight
-			keyRight = false;
-		}
-		break;
-	case 3:
-		switch (numberOfHoles)
-		{
-			// Update the necessary textures based on the users input
-		case 1:
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-			break;
-		case 2:
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-			break;
-		case 3:
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
-			break;
-		case 4:
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
-			break;
-		case 5:
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
-			break;
-		case 6:
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
-			break;
-		case 7:
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
-			break;
-		case 8:
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
-			break;
-		case 9:
-			windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
-			break;
-		}
-		// If right key is pressed set keyLeft to true
-		if (glfwGetKey(win, GLFW_KEY_LEFT))
-		{
-			keyLeft = true;
-		}
-		// If key left is and left is not pressed then
-		if (keyLeft && !glfwGetKey(win, GLFW_KEY_LEFT))
-		{
-			// If button selected is button 4 - main menu - then wrap around to button 1
-			if (numberOfHoles == 1)
-			{
-				numberOfHoles = 9;
-			}
-			// else keep going down
-			else
-			{
-				numberOfHoles--;
-			}
-			// Reset keyLeft
-			keyLeft = false;
-		}
-		// If right key is pressed set keyRight to true
-		if (glfwGetKey(win, GLFW_KEY_RIGHT))
-		{
-			keyRight = true;
-		}
-		// If keyRight is true and right is not pressed then
-		if (keyRight && !glfwGetKey(win, GLFW_KEY_RIGHT))
-		{
-			// If button selected is button 3 - main menu - then wrap around to button 1
-			if (numberOfHoles == 9)
-			{
-				numberOfHoles = 1;
-			}
-			// else keep going down
-			else
-			{
-				numberOfHoles++;
-			}
-			// Reset keyRight
-			keyRight = false;
-		}
-		break;
-		// Case four is start game
+		keyLeft = true;
 	}
+	// If leftKey is true and left key is not pressed then
+	if (keyLeft && !glfwGetKey(win, GLFW_KEY_LEFT))
+	{
+		Click_Left(win);
+		// Reset keyLeft to false
+		keyLeft = false;
+	}
+
+	// If right key is pressed set keyRight to true
+	if (glfwGetKey(win, GLFW_KEY_RIGHT))
+	{
+		keyRight = true;
+	}
+	// If keyRight is true and right is not pressed then
+	if (keyRight && !glfwGetKey(win, GLFW_KEY_RIGHT))
+	{
+		Click_Right(win);
+		// Reset keyRight
+		keyRight = false;
+	}
+
 	if (glfwGetKey(win, GLFW_KEY_ENTER))
 	{
 		keyEnter = true;
+	}
+	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) && total_time >= 5.0f)
+	{
+		windowMgr::getInstance()->mouseLpressed = true;
+	}
+	if (!glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
+	{
+		if (windowMgr::getInstance()->mouseLpressed && leftbutton == true && selection != 0)
+		{
+			previousMenuItem = currentMenuItem;
+			currentMenuItem = selection;
+			Click_Left(win);
+			windowMgr::getInstance()->mouseLpressed = false;
+		}
+		else if(windowMgr::getInstance()->mouseLpressed && rightbutton == true && selection != 0)
+		{
+			previousMenuItem = currentMenuItem;
+			currentMenuItem = selection;
+			Click_Right(win);
+			windowMgr::getInstance()->mouseLpressed = false;
+		}
+		else if (windowMgr::getInstance()->mouseLpressed && selection != 0)
+		{
+			previousMenuItem = currentMenuItem;
+			currentMenuItem = selection;
+			ChangeTexutes(win);
+			// If button select is 3 then start the game
+			if (currentMenuItem == 4)
+			{
+				windowMgr::getInstance()->sceneManager.changeScene(6, selectedDifficulty, playerSelect, numberOfHoles);
+			}
+			// If button select is 4 then return to main menu
+			else if (currentMenuItem == 5)
+			{
+				windowMgr::getInstance()->sceneManager.changeScene(1);
+			}
+			windowMgr::getInstance()->mouseLpressed = false;
+		}
 	}
 	// If key enter equals true and enter is not pressed then
 	if (keyEnter && !glfwGetKey(win, GLFW_KEY_ENTER))
@@ -415,7 +432,7 @@ void playerSelectScene::Input(GLFWwindow* win)
 			windowMgr::getInstance()->sceneManager.changeScene(6, selectedDifficulty, playerSelect, numberOfHoles);
 		}
 		// If button select is 4 then return to main menu
-		if (currentMenuItem == 5)
+		else if (currentMenuItem == 5)
 		{
 			windowMgr::getInstance()->sceneManager.changeScene(1);
 		}

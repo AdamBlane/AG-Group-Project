@@ -844,8 +844,16 @@ void highscoreScene::Loop(GLFWwindow * win)
 
 	// Update
 	Update(win);
-	//Tracks Mouse 
-	Track_Mouse(win);
+	//code to disable mouse
+	windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
+	windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
+	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	//tracks mouse
+	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+	{
+		Track_Mouse(win);
+	}
+
 	// Render
 	Render(win);
 }
@@ -853,8 +861,6 @@ void highscoreScene::Loop(GLFWwindow * win)
 //tracks mouse
 void highscoreScene::Track_Mouse(GLFWwindow * win)
 {
-	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
-	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
 	if ((windowMgr::getInstance()->mouse_y >= 13 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 94 * windowMgr::getInstance()->windowScale))
 	{
 		//this is to highlightplayer 1
