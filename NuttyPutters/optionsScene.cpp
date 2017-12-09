@@ -37,7 +37,7 @@ void optionsScene::Track_Mouse(GLFWwindow *window)
 		}
 			ChangeTexutes(window);
 	}
-	else if ((windowMgr::getInstance()->mouse_x >= 1039 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1429 * windowMgr::getInstance()->windowScale)
+	else if ((windowMgr::getInstance()->mouse_x >= 439 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1429 * windowMgr::getInstance()->windowScale)
 		&& (windowMgr::getInstance()->mouse_y >= 711 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 839 * windowMgr::getInstance()->windowScale))
 	{
 		previousMenuItem = currentMenuItem;
@@ -69,7 +69,7 @@ void optionsScene::ChangeTexutes(GLFWwindow * win)
 			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["thirdBtnUnselected"]);
 			break;
 		case 6:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 			break;
 	}
 	switch (currentMenuItem)
@@ -91,7 +91,7 @@ void optionsScene::ChangeTexutes(GLFWwindow * win)
 			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["thirdBtnSelected"]);
 			break;
 		case 6:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["backBtnSelected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
 			break;
 	}
 
@@ -146,7 +146,7 @@ void optionsScene::Click_or_Enter(GLFWwindow *win)
 			break;
 		// Case 3 - Back button
 		case 6:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 			windowMgr::getInstance()->sceneManager.changeScene(1);
 			break;
 	}
@@ -180,24 +180,24 @@ void optionsScene::Init(GLFWwindow * win)
 
 	// Perform setup of initial button configs - (un)selected textures
 	// Pick next item in meshes list (increment the number by 1 each time)
-	windowMgr::getInstance()->meshes.at(1)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(1)->SetScale(4.2f, 0.6f);
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(0.0f, 1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(2)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(2)->SetScale(4.2f, 0.6f);
 	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.0f, 0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(6)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(2.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(4)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(6)->SetScale(4.2f, 0.6f);
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetScale(4.2f, 0.6f);
 	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0f, 0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(3)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(3)->SetScale(4.2f, 0.6f);
 	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(0.0f, -0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(5)->SetScale(1.8f, 0.6f);
+	windowMgr::getInstance()->meshes.at(5)->SetScale(4.2f, 0.6f);
 	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(0.0f, -0.9f, 0.0f));
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["fullscreenBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["windowBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["smallwindowBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["halfBtnUnselected"]);
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["thirdBtnUnselected"]);
-	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 
 	//Create_Button(win);
 
@@ -236,7 +236,7 @@ void optionsScene::Input(GLFWwindow* win)
 			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["smallwindowBtnUnselected"]);
 			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["halfBtnUnselected"]);
 			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["thirdBtnUnselected"]);
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 			break;
 	}
 	if (glfwGetKey(win, GLFW_KEY_ENTER))

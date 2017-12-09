@@ -267,31 +267,25 @@ void windowMgr::LoadAssets()
 	Texture* mainMenuBtnSelected = new Texture("..\\NuttyPutters\\mainmenuUnderlined.png");
 	textures.insert(std::pair<std::string, Texture*>("mainMenuBtnSelected", mainMenuBtnSelected));
 	// OPTIONS SCENE TEXTURES
-	Texture* optionsBackground = new Texture("..\\NuttyPutters\\highscore\\background.png");
-	textures.insert(std::pair<std::string, Texture*>("optionsBackground", optionsBackground));
-	Texture* backBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\back.png");
-	textures.insert(std::pair<std::string, Texture*>("backBtnUnselected", backBtnUnselected));
-	Texture* backBtnSelected = new Texture("..\\NuttyPutters\\highscore\\back(1).png");
-	textures.insert(std::pair<std::string, Texture*>("backBtnSelected", backBtnSelected));
-	Texture* windowBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\wiw.png");
+	Texture* windowBtnUnselected = new Texture("..\\NuttyPutters\\options\\sixteenUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("windowBtnUnselected", windowBtnUnselected));
-	Texture* windowBtnSelected = new Texture("..\\NuttyPutters\\highscore\\wiw(1).png");
+	Texture* windowBtnSelected = new Texture("..\\NuttyPutters\\options\\sixteenSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("windowBtnSelected", windowBtnSelected));
-	Texture* fullscreenBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\doesitmatter.png");
+	Texture* fullscreenBtnUnselected = new Texture("..\\NuttyPutters\\options\\fullscreenUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnUnselected", fullscreenBtnUnselected));
-	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\highscore\\no.png");
+	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\options\\fullscreenSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnSelected", fullscreenBtnSelected));
-	Texture* smallwindowBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\full.png");
+	Texture* smallwindowBtnUnselected = new Texture("..\\NuttyPutters\\options\\twelveUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnUnselected", smallwindowBtnUnselected));
-	Texture* smallwindowBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
+	Texture* smallwindowBtnSelected = new Texture("..\\NuttyPutters\\options\\twelveSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnSelected", smallwindowBtnSelected));
-	Texture* halfBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\half.png");
+	Texture* halfBtnUnselected = new Texture("..\\NuttyPutters\\options\\nineUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("halfBtnUnselected", halfBtnUnselected));
-	Texture* halfBtnSelected = new Texture("..\\NuttyPutters\\highscore\\half(1).png");
+	Texture* halfBtnSelected = new Texture("..\\NuttyPutters\\options\\nineSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("halfBtnSelected", halfBtnSelected));
-	Texture* thirdBtnSelected = new Texture("..\\NuttyPutters\\highscore\\third(1).png");
+	Texture* thirdBtnSelected = new Texture("..\\NuttyPutters\\options\\sixSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("thirdBtnSelected", thirdBtnSelected));
-	Texture* thirdBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\third.png");
+	Texture* thirdBtnUnselected = new Texture("..\\NuttyPutters\\options\\sixUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("thirdBtnUnselected", thirdBtnUnselected));
 	// GAME SCENE TEXTURES
 	// Skybox textures
