@@ -18,6 +18,7 @@ public:
 	glm::dvec3 impulse; // direction * power 
 	glm::dvec3 direction; // dir camera is facing
 	double power; // accumulated counter from holding fire
+	bool powerIncreasing = true; // is power accumulator increasing/decreasing
 	double mass = 1.2;
 	double radius = 0.5;
 
@@ -30,23 +31,23 @@ public:
 	bool isFalling = false;
 	bool camFollow = true;
 	double chaseCamAngle;
-
+	 
 	// Gameplay
 	int id;
 	int strokeCounter = 0;
 	int currentPowerup = 0;
 	int totalTime = 0;
-
+	bool gameOver = false;
 	// Input
 	// Action isPressed flags
-	bool firePressed = false;
-	bool jumpPressed = false;
-	bool upPressed = false;
-	bool downPressed = false;
-	bool leftPressed = false;
-	bool rightPressed = false;
-	bool zoomInPressed = false;
-	bool zoomOutPressed = false;
+	bool firePressed, firePressedC;
+	bool jumpPressed, jumpPressedC;
+	bool upPressed, upPressedC;
+	bool downPressed, downPressedC;
+	bool leftPressed, leftPressedC;
+	bool rightPressed, rightPressedC;
+	bool zoomInPressed, zoomInPressedC;
+	bool zoomOutPressed, zoomOutPressedC;
 
 	// Keyboard input members
 	int fireButtton, jumpButton, upButton,

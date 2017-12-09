@@ -243,7 +243,6 @@ void playerSelectScene::Input(GLFWwindow* win)
 				selectedDifficulty = 3;
 				break;
 			}
-
 			// If right key is pressed set keyLeft to true
 			if (glfwGetKey(win, GLFW_KEY_LEFT))
 			{
@@ -321,7 +320,9 @@ void playerSelectScene::Input(GLFWwindow* win)
 				windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
 				break;
 			}
-
+			// Reset keyRight
+			keyRight = false;
+		}
 			// If right key is pressed set keyLeft to true
 			if (glfwGetKey(win, GLFW_KEY_LEFT))
 			{
@@ -389,7 +390,7 @@ void playerSelectScene::Input(GLFWwindow* win)
 		// If button select is 3 then start the game
 		if (buttonSelect == 4)
 		{
-			windowMgr::getInstance()->sceneManager.changeScene(6, courseLength, playerSelect, difficultySelect);
+			windowMgr::getInstance()->sceneManager.changeScene(6, selectedDifficulty, playerSelect, selectedLevels);
 		}
 		// If button select is 4 then return to main menu
 		if (buttonSelect == 5)

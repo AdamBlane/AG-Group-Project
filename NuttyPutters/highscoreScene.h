@@ -41,7 +41,7 @@ public:
 	int playerForController = 1;
 	int playerTab = 1; // Set and keep track of what tab we are on - ie player one or two. One by default.
 
-	bool keyboardButtonPressed[99] = { false };
+	bool keyboardButtonPressed[100] = { false };
 
 	// KEYBOARD - One
 	// Comma = 0

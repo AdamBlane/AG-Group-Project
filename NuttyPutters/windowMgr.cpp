@@ -83,7 +83,7 @@ GLFWwindow* windowMgr::Init()
 	
 
 	// ############################ SPLASH SCREEN ############################
-	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.jpg");
+	Texture* startBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
 	textures.insert(std::pair<std::string, Texture*>("startBackground", startBackground));
 
 	Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
@@ -230,7 +230,7 @@ void windowMgr::LoadAssets()
 		}
 	}
 	// PLAYER SELECT SCENE TEXTURES
-	Texture* playerSelectBackground = new Texture("..\\NuttyPutters\\grass.png");
+	Texture* playerSelectBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackgroundplain.png");
 	textures.insert(std::pair<std::string, Texture*>("playerSelectBackground", playerSelectBackground));
 	Texture* playersLabel = new Texture("..\\NuttyPutters\\players.png");
 	textures.insert(std::pair<std::string, Texture*>("playersLabel", playersLabel));
@@ -267,31 +267,25 @@ void windowMgr::LoadAssets()
 	Texture* mainMenuBtnSelected = new Texture("..\\NuttyPutters\\mainmenuUnderlined.png");
 	textures.insert(std::pair<std::string, Texture*>("mainMenuBtnSelected", mainMenuBtnSelected));
 	// OPTIONS SCENE TEXTURES
-	Texture* optionsBackground = new Texture("..\\NuttyPutters\\highscore\\background.png");
-	textures.insert(std::pair<std::string, Texture*>("optionsBackground", optionsBackground));
-	Texture* backBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\back.png");
-	textures.insert(std::pair<std::string, Texture*>("backBtnUnselected", backBtnUnselected));
-	Texture* backBtnSelected = new Texture("..\\NuttyPutters\\highscore\\back(1).png");
-	textures.insert(std::pair<std::string, Texture*>("backBtnSelected", backBtnSelected));
-	Texture* windowBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\wiw.png");
+	Texture* windowBtnUnselected = new Texture("..\\NuttyPutters\\options\\sixteenUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("windowBtnUnselected", windowBtnUnselected));
-	Texture* windowBtnSelected = new Texture("..\\NuttyPutters\\highscore\\wiw(1).png");
+	Texture* windowBtnSelected = new Texture("..\\NuttyPutters\\options\\sixteenSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("windowBtnSelected", windowBtnSelected));
-	Texture* fullscreenBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\doesitmatter.png");
+	Texture* fullscreenBtnUnselected = new Texture("..\\NuttyPutters\\options\\fullscreenUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnUnselected", fullscreenBtnUnselected));
-	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\highscore\\no.png");
+	Texture* fullscreenBtnSelected = new Texture("..\\NuttyPutters\\options\\fullscreenSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("fullscreenBtnSelected", fullscreenBtnSelected));
-	Texture* smallwindowBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\full.png");
+	Texture* smallwindowBtnUnselected = new Texture("..\\NuttyPutters\\options\\twelveUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnUnselected", smallwindowBtnUnselected));
-	Texture* smallwindowBtnSelected = new Texture("..\\NuttyPutters\\highscore\\full(1).png");
+	Texture* smallwindowBtnSelected = new Texture("..\\NuttyPutters\\options\\twelveSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("smallwindowBtnSelected", smallwindowBtnSelected));
-	Texture* halfBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\half.png");
+	Texture* halfBtnUnselected = new Texture("..\\NuttyPutters\\options\\nineUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("halfBtnUnselected", halfBtnUnselected));
-	Texture* halfBtnSelected = new Texture("..\\NuttyPutters\\highscore\\half(1).png");
+	Texture* halfBtnSelected = new Texture("..\\NuttyPutters\\options\\nineSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("halfBtnSelected", halfBtnSelected));
-	Texture* thirdBtnSelected = new Texture("..\\NuttyPutters\\highscore\\third(1).png");
+	Texture* thirdBtnSelected = new Texture("..\\NuttyPutters\\options\\sixSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("thirdBtnSelected", thirdBtnSelected));
-	Texture* thirdBtnUnselected = new Texture("..\\NuttyPutters\\highscore\\third.png");
+	Texture* thirdBtnUnselected = new Texture("..\\NuttyPutters\\options\\sixUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("thirdBtnUnselected", thirdBtnUnselected));
 	// GAME SCENE TEXTURES
 	// Skybox textures
@@ -492,6 +486,7 @@ void windowMgr::LoadAssets()
 	buttonsKeyboardOne[96] = new Texture("..\\NuttyPutters\\controller\\rightshift.png");
 	buttonsKeyboardOne[97] = new Texture("..\\NuttyPutters\\controller\\rightcontrol.png");
 	buttonsKeyboardOne[98] = new Texture("..\\NuttyPutters\\controller\\rightalt.png");
+	buttonsKeyboardOne[99] = new Texture("..\\NuttyPutters\\controller\\space.png");
 
 	//// LOAD GAME XBOX BUTTON TEXTURES
 	buttonsXB[0] = new Texture("..\\NuttyPutters\\Controller\\aButton.png");
@@ -673,7 +668,7 @@ void windowMgr::LoadAssets()
 
 
 	// LOAD HIGHSCORE SCENE TEXTURES
-	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\grass.png");
+	Texture* loadGameBackground = new Texture("..\\NuttyPutters\\Mainmenu\\startBackground.png");
 	textures.insert(std::pair<std::string, Texture*>("loadGameBackground", loadGameBackground));
 	Texture* actionLbl = new Texture("..\\NuttyPutters\\Controller\\action.png");
 	textures.insert(std::pair<std::string, Texture*>("actionLbl", actionLbl));
@@ -711,14 +706,13 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("playerOneLblRed", playerOneLblRed));
 	Texture* playerTwoLblRed = new Texture("..\\NuttyPutters\\Controller\\playertwoRed.png");
 	textures.insert(std::pair<std::string, Texture*>("playerTwoLblRed", playerTwoLblRed));
-	Texture* playerUsingLbl = new Texture("..\\NuttyPutters\\Controller\\playerusing.png");
-	textures.insert(std::pair<std::string, Texture*>("playerUsingLbl", playerUsingLbl));
+	Texture* sensitivityLbl = new Texture("..\\NuttyPutters\\Controller\\sensitivity.png");
+	textures.insert(std::pair<std::string, Texture*>("sensitivityLbl", sensitivityLbl));
 	Texture* selectOptionLbl = new Texture("..\\NuttyPutters\\Controller\\selectoption.png");
 	textures.insert(std::pair<std::string, Texture*>("selectOptionLbl", selectOptionLbl));
 
 	//Tiles stuff initialized here
 	for (int i = 0; i < 15; ++i)
-
 	{
 		Mesh* mesh = new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		tileMeshes.push_back(mesh);

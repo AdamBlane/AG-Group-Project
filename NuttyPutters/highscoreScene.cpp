@@ -13,28 +13,28 @@ void highscoreScene::Init(GLFWwindow * win)
 	// Set background
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, 0.0f));
-	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["loadGameBackground"]);
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
 	// Set action label
-	windowMgr::getInstance()->meshes.at(1)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(1)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.7f, 1.39f, 0.0f));
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["actionLbl"]);
 	// Set button label
-	windowMgr::getInstance()->meshes.at(2)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(2)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(-1.1f, 1.39f, 0.0f));
 	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["buttonLbl"]);
 	// Select Fire
 	// Set selectfire label
-	windowMgr::getInstance()->meshes.at(3)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(3)->SetScale(1.75f, 0.25f);
 	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(-2.7f, 1.07f, 0.0f));
 	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["selectfireLbl"]);
 	// Back Reset
 	// Set backreset label
-	windowMgr::getInstance()->meshes.at(5)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(5)->SetScale(1.75f, 0.25f);
 	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-2.7f, 0.75f, 0.0f));
 	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["backresetLbl"]);
 	// Pause
 	// Set pause label
-	windowMgr::getInstance()->meshes.at(7)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(7)->SetScale(1.0f, 0.25f);
 	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(-2.7f, 0.43f, 0.0f));
 	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["pauseLbl"]);
 	// Arrows
@@ -55,32 +55,32 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(15)->SetPos(vec3(-2.7f, -0.85f, 0.0f));
 	windowMgr::getInstance()->meshes.at(15)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
 	// Jump
-	windowMgr::getInstance()->meshes.at(17)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(17)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(17)->SetPos(vec3(-2.7f, -1.17f, 0.0f));
 	windowMgr::getInstance()->meshes.at(17)->SetTexture(windowMgr::getInstance()->textures["jumpLbl"]);
 	// Zoom In
-	windowMgr::getInstance()->meshes.at(19)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(19)->SetScale(1.8f, 0.3f);
 	windowMgr::getInstance()->meshes.at(19)->SetPos(vec3(-2.7f, -1.50f, 0.0f));
 	windowMgr::getInstance()->meshes.at(19)->SetTexture(windowMgr::getInstance()->textures["zoomInLbl"]);
 	// Zoom Out
-	windowMgr::getInstance()->meshes.at(21)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(21)->SetScale(1.8f, 0.3f);
 	windowMgr::getInstance()->meshes.at(21)->SetPos(vec3(-2.7f, -1.82f, 0.0f));
 	windowMgr::getInstance()->meshes.at(21)->SetTexture(windowMgr::getInstance()->textures["zoomOutLbl"]);
 	// Main Menu
-	windowMgr::getInstance()->meshes.at(23)->SetScale(2.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(23)->SetScale(3.0f, 0.5f);
 	windowMgr::getInstance()->meshes.at(23)->SetPos(vec3(2.2f, -1.8f, 0.0f));
 	windowMgr::getInstance()->meshes.at(23)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 	// Set the player one and player two lbls
 	// P1
-	windowMgr::getInstance()->meshes.at(24)->SetScale(1.8f, 0.45f);
-	windowMgr::getInstance()->meshes.at(24)->SetPos(vec3(-2.0f, 1.81f, 0.0f));
+	windowMgr::getInstance()->meshes.at(24)->SetScale(2.7f, 0.45f);
+	windowMgr::getInstance()->meshes.at(24)->SetPos(vec3(-2.3f, 1.81f, 0.0f));
 	windowMgr::getInstance()->meshes.at(24)->SetTexture(windowMgr::getInstance()->textures["playerOneLblGreen"]);
 	// P2
-	windowMgr::getInstance()->meshes.at(25)->SetScale(1.8f, 0.45f);
+	windowMgr::getInstance()->meshes.at(25)->SetScale(2.7f, 0.45f);
 	windowMgr::getInstance()->meshes.at(25)->SetPos(vec3(0.0f, 1.81f, 0.0f));
 	windowMgr::getInstance()->meshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblRed"]);
 	// Keyboard Label
-	windowMgr::getInstance()->meshes.at(26)->SetScale(1.0f, 0.5f);
+	windowMgr::getInstance()->meshes.at(26)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(26)->SetPos(vec3(0.5f, 1.39f, 0.0f));
 	windowMgr::getInstance()->meshes.at(26)->SetTexture(windowMgr::getInstance()->textures["keyLbl"]);
 	// Set selectfire button label controller button
@@ -124,56 +124,141 @@ void highscoreScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(22)->SetPos(vec3(-1.1f, -1.82f, 0.0f));
 	windowMgr::getInstance()->meshes.at(22)->SetTexture(windowMgr::getInstance()->buttonsXB[5]);
 	// Select fire keyboard 
-	windowMgr::getInstance()->meshes.at(27)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(27)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(27)->SetPos(vec3(0.5f, 1.07f, 0.0f));
 	// Back reset keyboard
-	windowMgr::getInstance()->meshes.at(28)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(28)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(28)->SetPos(vec3(0.5f, 0.75f, 0.0f));
 	// Pause keyboard
-	windowMgr::getInstance()->meshes.at(29)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(29)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(29)->SetPos(vec3(0.5f, 0.43f, 0.0f));
 	// Up keyboard
-	windowMgr::getInstance()->meshes.at(30)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(30)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(30)->SetPos(vec3(0.5f, 0.11f, 0.0f));
 	// Left keyboard
-	windowMgr::getInstance()->meshes.at(31)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(31)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(31)->SetPos(vec3(0.5f, -0.21f, 0.0f));
 	// Down keyboard
-	windowMgr::getInstance()->meshes.at(32)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(32)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(32)->SetPos(vec3(0.5f, -0.53f, 0.0f));
 	// Right keyboard
-	windowMgr::getInstance()->meshes.at(33)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(33)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(33)->SetPos(vec3(0.5f, -0.85f, 0.0f));
 	// Jump keyboard
-	windowMgr::getInstance()->meshes.at(34)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(34)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(34)->SetPos(vec3(0.5f, -1.17f, 0.0f));
 	// Zoom in keyboard
-	windowMgr::getInstance()->meshes.at(35)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(35)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(35)->SetPos(vec3(0.5f, -1.49, 0.0f));
 	// Zoom out keyboard
-	windowMgr::getInstance()->meshes.at(36)->SetScale(0.7f, 0.35f);
+	windowMgr::getInstance()->meshes.at(36)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->meshes.at(36)->SetPos(vec3(0.5f, -1.81, 0.0f));
 	// Player using controller one
-	windowMgr::getInstance()->meshes.at(37)->SetScale(2.0f, 1.0f);
-	windowMgr::getInstance()->meshes.at(37)->SetPos(vec3(2.2f, -0.71f, 0.0f));
-	windowMgr::getInstance()->meshes.at(37)->SetTexture(windowMgr::getInstance()->textures["playerUsingLbl"]);
-	// Set up number of levels label
-	windowMgr::getInstance()->meshes.at(38)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(38)->SetPos(vec3(2.2f, -1.3, 0.0));
-	windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(37)->SetScale(2.4f, 0.6f);
+	windowMgr::getInstance()->meshes.at(37)->SetPos(vec3(2.2f, -0.81f, 0.0f));
+	windowMgr::getInstance()->meshes.at(37)->SetTexture(windowMgr::getInstance()->textures["sensitivityLbl"]);
 	// Set left arrow label
-	windowMgr::getInstance()->meshes.at(39)->SetScale(0.4f, 0.4f);
-	windowMgr::getInstance()->meshes.at(39)->SetPos(vec3(1.7f, -1.3, 0.0));
-	windowMgr::getInstance()->meshes.at(39)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
+	windowMgr::getInstance()->meshes.at(39)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(39)->SetPos(vec3(1.7f, -1.25, 0.0));
+	windowMgr::getInstance()->meshes.at(39)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
 	// Set right arrow label
-	windowMgr::getInstance()->meshes.at(40)->SetScale(0.4f, 0.4f);
-	windowMgr::getInstance()->meshes.at(40)->SetPos(vec3(2.7f, -1.3, 0.0));
-	windowMgr::getInstance()->meshes.at(40)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
+	windowMgr::getInstance()->meshes.at(40)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(40)->SetPos(vec3(2.7f, -1.25, 0.0));
+	windowMgr::getInstance()->meshes.at(40)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
 	// Select an option label 
 	windowMgr::getInstance()->meshes.at(41)->SetScale(2.0f, 1.6f);
 	windowMgr::getInstance()->meshes.at(41)->SetPos(vec3(2.2f, 0.7, 0.0));
 	windowMgr::getInstance()->meshes.at(41)->SetTexture(windowMgr::getInstance()->textures["selectOptionLbl"]);
 
+	// Set the sensitivity value based on the 
+	windowMgr::getInstance()->meshes.at(38)->SetScale(1.8f, 0.45f);
+	windowMgr::getInstance()->meshes.at(38)->SetPos(vec3(2.2f, -1.25, 0.0));
+
+	if (playerTab == 1)
+	{
+		switch (windowMgr::getInstance()->playerOneSensitivity)
+		{
+		case 1:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+			windowMgr::getInstance()->playerOneSensitivity = 1;
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+			windowMgr::getInstance()->playerOneSensitivity = 2;
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+			windowMgr::getInstance()->playerOneSensitivity = 3;
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+			windowMgr::getInstance()->playerOneSensitivity = 4;
+			break;
+		case 5:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+			windowMgr::getInstance()->playerOneSensitivity = 5;
+			break;
+		case 6:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+			windowMgr::getInstance()->playerOneSensitivity = 6;
+			break;
+		case 7:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+			windowMgr::getInstance()->playerOneSensitivity = 7;
+			break;
+		case 8:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+			windowMgr::getInstance()->playerOneSensitivity = 8;
+			break;
+		case 9:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+			windowMgr::getInstance()->playerOneSensitivity = 9;
+			break;
+		}
+	}
+
+	if (playerTab == 2)
+	{
+		switch (windowMgr::getInstance()->playerTwoSensitivity)
+		{
+		case 1:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+			windowMgr::getInstance()->playerTwoSensitivity = 1;
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+			windowMgr::getInstance()->playerTwoSensitivity = 2;
+			break;
+		case 3:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+			windowMgr::getInstance()->playerTwoSensitivity = 3;
+			break;
+		case 4:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+			windowMgr::getInstance()->playerTwoSensitivity = 4;
+			break;
+		case 5:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+			windowMgr::getInstance()->playerTwoSensitivity = 5;
+			break;
+		case 6:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+			windowMgr::getInstance()->playerTwoSensitivity = 6;
+			break;
+		case 7:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+			windowMgr::getInstance()->playerTwoSensitivity = 7;
+			break;
+		case 8:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+			windowMgr::getInstance()->playerTwoSensitivity = 8;
+			break;
+		case 9:
+			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+			windowMgr::getInstance()->playerTwoSensitivity = 9;
+			break;
+		}
+	}
 	// Default load player one controls
 	InitPlayerButtons(win);
 }
@@ -579,6 +664,10 @@ void highscoreScene::InitPlayerButtons(GLFWwindow * win)
 		{
 			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[98]);
 		}
+		else if (windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][allKeyboardFunctions] == 32) // SPACE
+		{
+			windowMgr::getInstance()->meshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[99]);
+		}
 	}
 
 	//******CONTROLLER SETUP*************//
@@ -852,31 +941,207 @@ void highscoreScene::Click(GLFWwindow * win)
 	break;
 	//left arrow function
 	case 4:
-		cout << "left" << endl;
-		if (playerForController == 1)
+		// Switch statements to select the sensitivity - currently 1 to 9
+		if (playerTab == 1)
 		{
-			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-			playerForController = 2;
+			windowMgr::getInstance()->playerOneSensitivity -= 1;
+			if (windowMgr::getInstance()->playerOneSensitivity == 0)
+			{
+				windowMgr::getInstance()->playerOneSensitivity = 9;
+			}
+			switch (windowMgr::getInstance()->playerOneSensitivity)
+			{
+			case 1:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+				windowMgr::getInstance()->playerOneSensitivity = 1;
+				break;
+			case 2:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+				windowMgr::getInstance()->playerOneSensitivity = 2;
+				break;
+			case 3:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+				windowMgr::getInstance()->playerOneSensitivity = 3;
+				break;
+			case 4:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+				windowMgr::getInstance()->playerOneSensitivity = 4;
+				break;
+			case 5:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+				windowMgr::getInstance()->playerOneSensitivity = 5;
+				break;
+			case 6:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+				windowMgr::getInstance()->playerOneSensitivity = 6;
+				break;
+			case 7:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+				windowMgr::getInstance()->playerOneSensitivity = 7;
+				break;
+			case 8:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+				windowMgr::getInstance()->playerOneSensitivity = 8;
+				break;
+			case 9:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+				windowMgr::getInstance()->playerOneSensitivity = 9;
+				break;
+			}
 		}
-		else if (playerForController == 2)
+
+		if (playerTab == 2)
 		{
-			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-			playerForController = 1;
+			windowMgr::getInstance()->playerTwoSensitivity -= 1;
+			if (windowMgr::getInstance()->playerTwoSensitivity == 0)
+			{
+				windowMgr::getInstance()->playerTwoSensitivity = 9;
+			}
+			switch (windowMgr::getInstance()->playerTwoSensitivity)
+			{
+			case 1:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+				windowMgr::getInstance()->playerTwoSensitivity = 1;
+				break;
+			case 2:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+				windowMgr::getInstance()->playerTwoSensitivity = 2;
+				break;
+			case 3:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+				windowMgr::getInstance()->playerTwoSensitivity = 3;
+				break;
+			case 4:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+				windowMgr::getInstance()->playerTwoSensitivity = 4;
+				break;
+			case 5:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+				windowMgr::getInstance()->playerTwoSensitivity = 5;
+				break;
+			case 6:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+				windowMgr::getInstance()->playerTwoSensitivity = 6;
+				break;
+			case 7:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+				windowMgr::getInstance()->playerTwoSensitivity = 7;
+				break;
+			case 8:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+				windowMgr::getInstance()->playerTwoSensitivity = 8;
+				break;
+			case 9:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+				windowMgr::getInstance()->playerTwoSensitivity = 9;
+				break;
+			}
 		}
+		cout << "Left with value of: " << windowMgr::getInstance()->playerOneSensitivity << endl;
 		break;
 		//right arrow functio
 	case 5:
-		cout << "right" << endl;
-		if (playerForController == 1)
+		if (playerTab == 1)
 		{
-			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-			playerForController = 2;
+			windowMgr::getInstance()->playerOneSensitivity += 1;
+
+			if (windowMgr::getInstance()->playerOneSensitivity == 10)
+			{
+				windowMgr::getInstance()->playerOneSensitivity = 1;
+			}
+
+			switch (windowMgr::getInstance()->playerOneSensitivity)
+			{
+			case 1:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+				windowMgr::getInstance()->playerOneSensitivity = 1;
+				break;
+			case 2:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+				windowMgr::getInstance()->playerOneSensitivity = 2;
+				break;
+			case 3:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+				windowMgr::getInstance()->playerOneSensitivity = 3;
+				break;
+			case 4:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+				windowMgr::getInstance()->playerOneSensitivity = 4;
+				break;
+			case 5:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+				windowMgr::getInstance()->playerOneSensitivity = 5;
+				break;
+			case 6:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+				windowMgr::getInstance()->playerOneSensitivity = 6;
+				break;
+			case 7:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+				windowMgr::getInstance()->playerOneSensitivity = 7;
+				break;
+			case 8:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+				windowMgr::getInstance()->playerOneSensitivity = 8;
+				break;
+			case 9:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+				windowMgr::getInstance()->playerOneSensitivity = 9;
+				break;
+			}
+
+			
 		}
-		else if (playerForController == 2)
+
+		if (playerTab == 2)
 		{
-			windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-			playerForController = 1;
+			windowMgr::getInstance()->playerTwoSensitivity += 1;
+			if (windowMgr::getInstance()->playerOneSensitivity == 10)
+			{
+				windowMgr::getInstance()->playerOneSensitivity = 1;
+			}
+
+			switch (windowMgr::getInstance()->playerTwoSensitivity)
+			{
+			case 1:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
+				windowMgr::getInstance()->playerTwoSensitivity = 1;
+				break;
+			case 2:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
+				windowMgr::getInstance()->playerTwoSensitivity = 2;
+				break;
+			case 3:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
+				windowMgr::getInstance()->playerTwoSensitivity = 3;
+				break;
+			case 4:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
+				windowMgr::getInstance()->playerTwoSensitivity = 4;
+				break;
+			case 5:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
+				windowMgr::getInstance()->playerTwoSensitivity = 5;
+				break;
+			case 6:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
+				windowMgr::getInstance()->playerTwoSensitivity = 6;
+				break;
+			case 7:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
+				windowMgr::getInstance()->playerTwoSensitivity = 7;
+				break;
+			case 8:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
+				windowMgr::getInstance()->playerTwoSensitivity = 8;
+				break;
+			case 9:
+				windowMgr::getInstance()->meshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
+				windowMgr::getInstance()->playerTwoSensitivity = 9;
+				break;
+			}
 		}
+		cout << "Right with value of: " << windowMgr::getInstance()->playerOneSensitivity << endl;
 		break;
 	}
 }
@@ -907,7 +1172,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	// If key is no longer pressed and bool is true then
 	if (!glfwGetKey(win, GLFW_KEY_COMMA) && keyboardButtonPressed[0])
 	{
-		updateKeyboardFunctionsList(0, 49);
+		updateKeyboardFunctionsList(0, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_MINUS) && !keyboardButtonPressed[1])
@@ -916,7 +1181,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_MINUS) && keyboardButtonPressed[1])
 	{
-		updateKeyboardFunctionsList(1, 49);
+		updateKeyboardFunctionsList(1, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_PERIOD) && !keyboardButtonPressed[2])
@@ -925,7 +1190,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_PERIOD) && keyboardButtonPressed[2])
 	{
-		updateKeyboardFunctionsList(2, 49);
+		updateKeyboardFunctionsList(2, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_SLASH) && !keyboardButtonPressed[3])
@@ -934,7 +1199,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_SLASH) && keyboardButtonPressed[3])
 	{
-		updateKeyboardFunctionsList(3, 49);
+		updateKeyboardFunctionsList(3, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_0) && !keyboardButtonPressed[4])
@@ -943,7 +1208,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_0) && keyboardButtonPressed[4])
 	{
-		updateKeyboardFunctionsList(4, 49);
+		updateKeyboardFunctionsList(4, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_1) && !keyboardButtonPressed[5])
@@ -952,7 +1217,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_1) && keyboardButtonPressed[5])
 	{
-		updateKeyboardFunctionsList(5, 49);
+		updateKeyboardFunctionsList(5, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_2) && !keyboardButtonPressed[6])
@@ -961,7 +1226,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_2) && keyboardButtonPressed[6])
 	{
-		updateKeyboardFunctionsList(6, 49);
+		updateKeyboardFunctionsList(6, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_3) && !keyboardButtonPressed[7])
@@ -970,7 +1235,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_3) && keyboardButtonPressed[7])
 	{
-		updateKeyboardFunctionsList(7, 49);
+		updateKeyboardFunctionsList(7, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_4) && !keyboardButtonPressed[8])
@@ -979,7 +1244,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_4) && keyboardButtonPressed[8])
 	{
-		updateKeyboardFunctionsList(8, 49);
+		updateKeyboardFunctionsList(8, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_5) && !keyboardButtonPressed[9])
@@ -988,7 +1253,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_5) && keyboardButtonPressed[9])
 	{
-		updateKeyboardFunctionsList(9, 49);
+		updateKeyboardFunctionsList(9, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_6) && !keyboardButtonPressed[10])
@@ -997,7 +1262,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_6) && keyboardButtonPressed[10])
 	{
-		updateKeyboardFunctionsList(10, 49);
+		updateKeyboardFunctionsList(10, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_7) && !keyboardButtonPressed[11])
@@ -1006,7 +1271,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_7) && keyboardButtonPressed[11])
 	{
-		updateKeyboardFunctionsList(11, 49);
+		updateKeyboardFunctionsList(11, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_8) && !keyboardButtonPressed[12])
@@ -1015,7 +1280,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_8) && keyboardButtonPressed[12])
 	{
-		updateKeyboardFunctionsList(12, 49);
+		updateKeyboardFunctionsList(12, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_9) && !keyboardButtonPressed[13])
@@ -1024,7 +1289,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_9) && keyboardButtonPressed[13])
 	{
-		updateKeyboardFunctionsList(13, 49);
+		updateKeyboardFunctionsList(13, 44);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_SEMICOLON) && !keyboardButtonPressed[14])
@@ -1033,7 +1298,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_SEMICOLON) && keyboardButtonPressed[14])
 	{
-		updateKeyboardFunctionsList(14, 49);
+		updateKeyboardFunctionsList(14, 45);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_EQUAL) && !keyboardButtonPressed[15])
@@ -1042,7 +1307,7 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	}
 	if (!glfwGetKey(win, GLFW_KEY_EQUAL) && keyboardButtonPressed[15])
 	{
-		updateKeyboardFunctionsList(15, 49);
+		updateKeyboardFunctionsList(15, 46);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_A) && !keyboardButtonPressed[16])
@@ -1790,6 +2055,15 @@ void highscoreScene::InputKeyboard(GLFWwindow* win)
 	if (!glfwGetKey(win, GLFW_KEY_RIGHT_ALT) && keyboardButtonPressed[98])
 	{
 		updateKeyboardFunctionsList(98, 230);
+	}
+
+	if (glfwGetKey(win, GLFW_KEY_SPACE) && !keyboardButtonPressed[99])
+	{
+		keyboardButtonPressed[99] = true;
+	}
+	if (!glfwGetKey(win, GLFW_KEY_SPACE) && keyboardButtonPressed[99])
+	{
+		updateKeyboardFunctionsList(99, -67);
 	}
 }
 
