@@ -192,8 +192,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Pass in end hole position for two player mode
 	gameLogicMgr.Setup(numPlayers, courseSize);
 
-
-
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -557,6 +555,10 @@ void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 		//This case resets the scene to an empty screen
 	case 3:
 		cout << "three" << endl;
+		// Setup control screen meshes
+		// gameLogicMgr.ShowControlScreen -> UImgr.ShowControlScreen
+		doesUserWantControls = true;
+		break;
 	case 4:
 		// glLoadIdentity(); might need this later
 		windowMgr::getInstance()->sceneManager.changeScene(1);
@@ -1704,6 +1706,16 @@ void gameScene::Render(GLFWwindow* window)
 	// Display HUD (exact meshes to draw depend on player count)
 	if (paused == true)
 	{
+		if (doesUserWantControls)
+		{
+			for (int i = 0; i < 42; i++)
+			{
+				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(i)->Draw();
+			}
+		}
+
 		if (numPlayers == 1)
 		{
 			for (int i = 9; i <= 13; i++)
@@ -1722,7 +1734,6 @@ void gameScene::Render(GLFWwindow* window)
 				windowMgr::getInstance()->meshes.at(i)->Draw();
 			}
 		}
-
 	}
 	else if (numPlayers == 1)
 	{
@@ -1742,8 +1753,6 @@ void gameScene::Render(GLFWwindow* window)
 			windowMgr::getInstance()->meshes.at(i)->Draw();
 		}
 	}
-
-
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
@@ -1945,8 +1954,6 @@ void gameScene::Render(GLFWwindow* window)
 			windowMgr::getInstance()->p2ArrowMesh->Draw();
 		}
 	}
-
-
 
 	// Fully reset depth range for next frame - REQUIRED
 	glDepthRange(0, 1.0);

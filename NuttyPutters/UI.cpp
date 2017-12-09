@@ -38,7 +38,6 @@ void UI::p1Setup()
 	windowMgr::getInstance()->meshes.at(7)->SetScale(0.8f, 0.8f);
 	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.0f, -1.0f, -0.1f));
 	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
-
 	// Power indicator
 	windowMgr::getInstance()->meshes.at(8)->SetScale(0.2f, 0.2f);
 	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(3.0f, -1.5f, 0.0f));
