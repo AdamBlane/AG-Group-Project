@@ -41,10 +41,15 @@ class UI
 	void UpdateWorldClock(int time);
 	// Increment stroke counter for a player
 	void UpdateStrokeCounter(int playerIndex, int strokeCount);
+	// Sets pause screen mesh properties
 	void PauseScreen();
 
+	// Render endgame scoreboard for 1p game
+	void p1GameScoreboard(int score);
+	// Render endgame scoreboard for 2p game
+	void p2GameScoreboard(int p1Score, int p2Score);
 	//Function to pass values from GameLogic
-	void SetScoreToPrint(int nPlayers, int p1score, int p2score = 0);
+	//void SetScoreToPrint(int nPlayers, int p1score, int p2score = 0);
 
 	int usedMeshesP1;
 	int usedMeshesP2;
@@ -54,14 +59,15 @@ private:
 	//Values passed from GameLogic
 	int scoreP1;
 	int scoreP2;
-	int Nplayers;
+	//int Nplayers;
 
 	//From : https://obtalk.wordpress.com/2013/02/28/c-count-the-number-of-digits-in-an-integer/
 	//To count how many digits in an integer
 	int countDigits(int number);
-
 	void digitsToVector(int number, vector<int> scoreDigits);
 
-	vector<int> p1;
-	vector<int> p2;
+
+
+	//vector<int> p1;
+	//vector<int> p2;
 };

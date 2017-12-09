@@ -123,18 +123,45 @@ void GameLogicMgr::UpdatePowerBar(Player player)
 	}
 }
 
-// When a player finishes, mark their total time
-void GameLogicMgr::SetEndTime(Player &player)
+// Called when a player finishes, sets their end score
+void GameLogicMgr::SetScore(Player &player)
 {
-	player.totalTime = elapsedTime;
+	// Only occur once; the first time this is called, player.gameOver will be false
+	if (!player.gameOver)
+	{
+		// Set end time
+		player.totalTime = elapsedTime;
+		// Set final score - multiply time by strokes. Divide by 10 for smaller form
+		player.finalScore = floor((player.totalTime * player.strokeCounter) / 10);
+
+	}	
+}
+
+// Print final scores of player(s)
+void GameLogicMgr::ShowEndgameScoreboard(vector<Player> players)
+{
+	// If 1 player mode, print only p1 score
+	if (players.size() == 1)
+	{
+		// Invoke UI to set hud textures for player score
+		uiMgr.p1GameScoreboard(players[0].finalScore);
+	}
+	// Else if 2 player mode, print both player scores
+	else if (players.size() == 2)
+	{
+		uiMgr.p2GameScoreboard(players[0].finalScore, players[1].finalScore);
+	}
 }
 
 // Used in demo (no leaderboard yet)
 void GameLogicMgr::PrintPlayerScore(Player player)
 {
+	// Assume: P1 reaches end of level before P2
+	// Then: player param given is player one
 	// Print score for this player
 	switch (player.id)
 	{
+	// This will be p1
 	case 1:
 	{
 		if (!p1Finished)
@@ -142,6 +169,7 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 			cout << "##### Player " << player.id << " #####" << endl;
 			cout << "Total time: " << player.totalTime << " seconds" << endl;
 			cout << "Total strokes: " << player.strokeCounter << endl;
+			// P1 score is set
 			p1Score = player.totalTime * player.strokeCounter;
 			cout << "Final score: " << p1Score << endl;
 			// Set bool for this player to finished 
@@ -151,6 +179,7 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 		}
 		break;
 	}
+	// Since it's p1, this won't run...
 	case 2:
 	{
 		if (!p2Finished)
@@ -158,18 +187,20 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 			cout << "##### Player " << player.id << " #####" << endl;
 			cout << "Total time: " << player.totalTime << " seconds" << endl;
 			cout << "Total strokes: " << player.strokeCounter << endl;
+			// Therefore p2 is not set, because he hasn't finished
 			p2Score = player.totalTime * player.strokeCounter;
 			cout << "Final score: " << p2Score << endl;
 			// Set bool for this player to finished 
 			p2Finished = true;
 		}
-	}
+	} // end p2 endgame scoring
 		break;
 	default: cout << "Error in GameLogicMgr::PrintPlayerScore" << endl; break;
-	}
+	} // end switch on this given player id
 	
 
 	// if 2 players and both players finished, compute and print score
+	
 	if (p1Finished && p2Finished && !gameEnded)
 	{
 		if (p1Score > p2Score)
@@ -183,7 +214,7 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 		gameEnded = true;
 	}
 
-	uiMgr.SetScoreToPrint(players, p1Score, p2Score);
+	//uiMgr.SetScoreToPrint(players, p1Score, p2Score);
 	
 }
 

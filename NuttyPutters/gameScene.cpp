@@ -1349,31 +1349,35 @@ void gameScene::CheckLoadNextLevel()
 		if (players[i].ballInHole && players[i].transform.getPos().y < -450.0f) // Abritrary time period before tp
 		{
 			// If finished last level
-			if (currentLevel == numLevels - 1 && !changedLevel)
+			if (currentLevel == numLevels - 1 && !changedLevel) // don't end after just changing
 			{
-				// This player's game is over! (Locks their camera)
+				// Calculate this players final score
+				gameLogicMgr.SetScore(players[i]);
+
+
+				// This player's game is over! (Locks their camera, prevents score being reset)
 				players[i].gameOver = true;
 
 
-				// Stop camera from following player
-				players[i].camFollow = false;
-
-				// Update the total time count for this player 
-				gameLogicMgr.SetEndTime(players[i]);
-
 				// Print game score for this player
-				gameLogicMgr.PrintPlayerScore(players[i]);
+				//gameLogicMgr.PrintPlayerScore(players[i]);
 
-				// Check if both players game over, that's the real gameOver
+				// If 2 players, check if both players game over, that's the real gameOver
 				if (numPlayers == 2 && players[i * -1 + 1].gameOver)
 				{
 					// Flip flag
 					gameEnded = true;
+					// Both players' score are set, print them
+					gameLogicMgr.ShowEndgameScoreboard(players); // pass in players list
+
 				}
 				// Or it's just one player
 				else if (numPlayers == 1)
 				{
+					// Flip flag
 					gameEnded = true;
+					// Player's score is set, print it
+					gameLogicMgr.ShowEndgameScoreboard(players); // pass in players list
 				}
 
 
@@ -1491,7 +1495,7 @@ void gameScene::Update(GLFWwindow* window)
 	// Update chase cams
 	if (numPlayers == 1)
 	{	// Only follow if not just finished the last level
-		if (players[0].camFollow)
+		if (!players[0].gameOver)
 		{
 			windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
 		}
@@ -1501,13 +1505,13 @@ void gameScene::Update(GLFWwindow* window)
 	else if (numPlayers == 2)
 	{
 		// Only follow if not just finished the last level
-		if (players[0].camFollow)
+		if (!players[0].gameOver)
 		{
 			windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
 		}
 		windowMgr::getInstance()->chaseCams[0]->update(0.00001);
 		// Only follow if not just finished the last level
-		if (players[1].camFollow)
+		if (!players[1].gameOver)
 		{
 			windowMgr::getInstance()->chaseCams[1]->move(players[1].transform.getPos(), players[1].transform.getRot());
 		}
@@ -1711,8 +1715,7 @@ void gameScene::Render(GLFWwindow* window)
 				windowMgr::getInstance()->meshes.at(i)->Draw();
 			}
 		}
-
-	}
+	} // end if paused is true
 	//HUD for end game
 	//if game has ended for both players
 	else if (gameEnded)

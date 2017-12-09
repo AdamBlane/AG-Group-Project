@@ -164,6 +164,9 @@ void windowMgr::LoadAssets()
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		player1ScoreMeshes.push_back(mesh);
+
+	// This is the same mesh used for p2. So, in a 2player game player 1 has his 
+	// mesh reset because p2 then uses it
 		player2ScoreMeshes.push_back(mesh);
 	}
 
