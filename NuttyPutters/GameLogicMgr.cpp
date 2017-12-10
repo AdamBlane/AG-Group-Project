@@ -143,6 +143,19 @@ void GameLogicMgr::ShowEndgameScoreboard(vector<Player> players)
 	// If 1 player mode, print only p1 score
 	if (players.size() == 1)
 	{
+		//Counting how many digits score has
+		int countP1Score = uiMgr.countDigits(players[0].finalScore);
+		//If the count of digits for p1 score is higher than the digit limit allowed (default 7)
+		if (countP1Score > digitLimitForScore)
+		{
+			//for each digit above the limit
+			for (int i = digitLimitForScore + 1; i < countP1Score; i++)
+			{
+				//divide score by 10
+				players[0].finalScore /= 10;
+			}
+		}
+
 		// Invoke UI to set hud textures for player score
 		uiMgr.p1GameScoreboard(players[0].finalScore);
 		p1Score = players[0].finalScore;
@@ -150,6 +163,49 @@ void GameLogicMgr::ShowEndgameScoreboard(vector<Player> players)
 	// Else if 2 player mode, print both player scores
 	else if (players.size() == 2)
 	{
+		//Counting how many digits both score have
+		int countP1Score = uiMgr.countDigits(players[0].finalScore);
+		int countP2Score = uiMgr.countDigits(players[1].finalScore);
+
+		//I know it's nasty :(
+
+		//I'm separating the cases because it needs to take into account the score with the highest digit and 
+		//divide both scores for each digit over the digit limit
+
+		//If the count of digits for p1 score is higher than the digit limit allowed (default 7)
+		if (countP1Score > digitLimitForScore)
+		{
+			//for each digit over the digit limit
+			for (int i = digitLimitForScore + 1; i < countP1Score; i++)
+			{
+				//divide score of player with exceding digits by 10
+				players[0].finalScore /= 10;
+
+				//doing the same for other player, but dividing it only it it is equal or higher than 10
+				if (players[1].finalScore >= 10)
+				{
+					players[1].finalScore /= 10;
+				}
+			}
+		}
+		//If the count of digits for p2 score is higher than the digit limit allowed (default 7)
+		else if (countP2Score > digitLimitForScore)
+		{
+			//for each digit over the digit limit
+
+			for (int i = digitLimitForScore + 1; i < countP2Score; i++)
+			{
+				//divide score of player with exceding digits by 10
+				players[1].finalScore /= 10;
+
+				//doing the same for other player, but dividing it only it it is equal or higher than 10
+				if (players[0].finalScore >= 10)
+				{
+					players[0].finalScore /= 10;
+				}
+			}
+		}
+
 		uiMgr.p2GameScoreboard(players[0].finalScore, players[1].finalScore);
 		p1Score = players[0].finalScore;
 		p2Score = players[1].finalScore;

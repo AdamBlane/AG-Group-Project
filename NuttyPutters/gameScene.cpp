@@ -55,6 +55,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// MONDAY DEMO 
 	continuePressed = true;
 	paused = false;
+	gameEnded = false;
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -776,6 +777,7 @@ void gameScene::Pause(GLFWwindow* window)
 		if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 		{
 			Track_mouse(window);
+		}
     }
 		// If user on coontrol screen
 		if (doesUserWantControls)
@@ -1217,6 +1219,16 @@ void gameScene::Input(GLFWwindow* window)
 			}
 		} // End if (p is released)
 
+	}
+
+	// IF THE GAME IS ENDED --> allow to go back to main menu
+	if (gameEnded)
+	{
+		// if controller button is pressed
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]] || glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][0]))
+		{
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+		}
 	}
 
 
@@ -1766,9 +1778,9 @@ void gameScene::Render(GLFWwindow* window)
 		if (numPlayers == 1)
 		{
 			//render background for player score
-			windowMgr::getInstance()->meshes.at(13)->thisTexture.Bind(0);
+			windowMgr::getInstance()->winConditionsMeshes.at(0)->thisTexture.Bind(0);
 			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(13)->Draw();
+			windowMgr::getInstance()->winConditionsMeshes.at(0)->Draw();
 
 			//render numbers for printing the score on screen
 			for (int i = 0; i < gameLogicMgr.uiMgr.usedMeshesP1; i++)
@@ -1787,26 +1799,26 @@ void gameScene::Render(GLFWwindow* window)
 			if (gameLogicMgr.p1Score > gameLogicMgr.p2Score)
 			{
 				//printing background with "Player 2 won"
-				windowMgr::getInstance()->meshes.at(14)->thisTexture.Bind(0);
+				windowMgr::getInstance()->winConditionsMeshes.at(2)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-				windowMgr::getInstance()->meshes.at(14)->Draw();
+				windowMgr::getInstance()->winConditionsMeshes.at(2)->Draw();
 
 			}
 			//if p2 has higher score than p1 ->> p1 won
 			else if (gameLogicMgr.p2Score > gameLogicMgr.p1Score)
 			{
 				//printing background with "Player 1 won"
-				windowMgr::getInstance()->meshes.at(13)->thisTexture.Bind(0);
+				windowMgr::getInstance()->winConditionsMeshes.at(1)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-				windowMgr::getInstance()->meshes.at(13)->Draw();
+				windowMgr::getInstance()->winConditionsMeshes.at(1)->Draw();
 			}
 			//if players have same score
 			else if (gameLogicMgr.p1Score == gameLogicMgr.p2Score)
 			{
 				//printing background with "it's a draw"
-				windowMgr::getInstance()->meshes.at(15)->thisTexture.Bind(0);
+				windowMgr::getInstance()->winConditionsMeshes.at(3)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-				windowMgr::getInstance()->meshes.at(15)->Draw();
+				windowMgr::getInstance()->winConditionsMeshes.at(3)->Draw();
 			}
 			//End of IF statements
 
@@ -1825,6 +1837,9 @@ void gameScene::Render(GLFWwindow* window)
 				windowMgr::getInstance()->player2ScoreMeshes.at(i)->Draw();
 			}
 		}
+		windowMgr::getInstance()->meshes.at(16)->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+		windowMgr::getInstance()->meshes.at(16)->Draw();
 	}
 	else if (!gameEnded)
 	{
@@ -1889,7 +1904,7 @@ void gameScene::Render(GLFWwindow* window)
 	windowMgr::getInstance()->spaceShip->Draw();
 
 	// Draw 2 Player stuff
-	if (numPlayers == 2 && paused != true)
+	if (numPlayers == 2 && paused != true && !gameEnded)
 	{
 		// Render player 2
 		windowMgr::getInstance()->textures["playerBlueTexture"]->Bind(0);
@@ -1952,7 +1967,7 @@ void gameScene::Render(GLFWwindow* window)
 	// ################### PLAYER 2 SCREEN ################### //
 
 
-	if (numPlayers == 2 && paused != true)
+	if (numPlayers == 2 && paused != true && !gameEnded)
 	{
 		// Player 2 has the right hand vertical half of the screen
 		glViewport(windowMgr::getInstance()->width / 2, 0, windowMgr::getInstance()->width / 2, windowMgr::getInstance()->height);

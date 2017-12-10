@@ -41,6 +41,18 @@ void UI::p1GameScoreboard(int score)
 		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetPos(vec3(pos + ((ratio.x / 4.0f) * c), 0.0f, 0.0f));
 		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetTexture(windowMgr::getInstance()->numberTextures.at(thisNum));
 	}
+
+	//BUTTON TO GO TO MAIN MENU
+	windowMgr::getInstance()->meshes.at(16)->SetScale(2.8f, 0.4f);
+	windowMgr::getInstance()->meshes.at(16)->SetPos(vec3(0.0f, -1.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(16)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
+
+	//SCORE SCREEN HUD
+	//Single player
+	//BackGround
+	windowMgr::getInstance()->winConditionsMeshes.at(0)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->winConditionsMeshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->winConditionsMeshes.at(0)->SetTexture(windowMgr::getInstance()->textures["onePlayerScore"]);
 }
 
 // Sets endgame scoreboard for 2p game
@@ -91,6 +103,26 @@ void UI::p2GameScoreboard(int p1Score, int p2Score)
 		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetPos(vec3(pos2 + ((ratio.x / 4.0f) * c), -0.30f, 0.0f));
 		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetTexture(windowMgr::getInstance()->numberTextures.at(thisNum));
 	}
+
+	//BUTTON TO GO TO MAIN MENU
+	windowMgr::getInstance()->meshes.at(16)->SetScale(2.8f, 0.4f);
+	windowMgr::getInstance()->meshes.at(16)->SetPos(vec3(0.0f, -1.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(16)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
+
+	//SCORE SCREEN HUD
+	//Multiplayer
+	//Background p1 wins
+	windowMgr::getInstance()->winConditionsMeshes.at(1)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->winConditionsMeshes.at(1)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->winConditionsMeshes.at(1)->SetTexture(windowMgr::getInstance()->textures["MultPlayerP1Win"]);
+	//Background p2 wins
+	windowMgr::getInstance()->winConditionsMeshes.at(2)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->winConditionsMeshes.at(2)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->winConditionsMeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["MultPlayerP2Win"]);
+	//Background draw
+	windowMgr::getInstance()->winConditionsMeshes.at(3)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->winConditionsMeshes.at(3)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->winConditionsMeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["MultPlayerDraw"]);
 
 }
 
@@ -278,13 +310,6 @@ void UI::p1Setup()
 	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(0.0f, -0.9f, 0.0f));
 	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
   
-	//SCORE SCREEN HUD
-	//Single player
-	//BackGround
-	windowMgr::getInstance()->meshes.at(13)->SetScale(9.0f, 5.0f);
-	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(0.0f, 0.0f, -1.0f));
-	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["onePlayerScore"]);
-
 
 	// Resume
 	windowMgr::getInstance()->meshes.at(9)->SetScale(4.2f, 0.7f);
@@ -383,21 +408,6 @@ void UI::p2Setup()
 		else
 			windowMgr::getInstance()->worldClock.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 	}
-
-	//SCORE SCREEN HUD
-	//Multiplayer
-	//Background p1 wins
-	windowMgr::getInstance()->meshes.at(13)->SetScale(9.0f, 5.0f);
-	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(0.0f, 0.0f, -1.0f));
-	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["MultPlayerP1Win"]);
-	//Background p1 wins
-	windowMgr::getInstance()->meshes.at(14)->SetScale(9.0f, 5.0f);
-	windowMgr::getInstance()->meshes.at(14)->SetPos(vec3(0.0f, 0.0f, -1.0f));
-	windowMgr::getInstance()->meshes.at(14)->SetTexture(windowMgr::getInstance()->textures["MultPlayerP2Win"]);	
-	//Background draw
-	windowMgr::getInstance()->meshes.at(15)->SetScale(9.0f, 5.0f);
-	windowMgr::getInstance()->meshes.at(15)->SetPos(vec3(0.0f, 0.0f, -1.0f));
-	windowMgr::getInstance()->meshes.at(15)->SetTexture(windowMgr::getInstance()->textures["MultPlayerDraw"]);
 }
 
 // Update game clock - only applies to 1 player mode
