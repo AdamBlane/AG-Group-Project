@@ -172,6 +172,7 @@ void windowMgr::LoadAssets()
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f);
 
 		player2ScoreMeshes.push_back(mesh);
+	}
 
 	// Controller meshes used throughout the game
 	for (int i = 0; i < 42; ++i)
