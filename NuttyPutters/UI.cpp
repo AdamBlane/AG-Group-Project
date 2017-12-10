@@ -23,10 +23,17 @@ void UI::PauseScreen()
 void UI::p1GameScoreboard(string score)
 {
 	// Aspect ratio for scaling textures
-	vec2 ratio = vec2(1.0f, 0.25f);
+	vec2 ratio = vec2(2.0f, 0.50f);
 
 	//this is used to move position according to how many digits the score has --> to have it centered
-	float pos = (ratio.x / 4.0f);
+	float pos = 0.0f;
+	if (score.length() > 1)
+	{
+		for (int i = 1; i < score.length(); i++)
+		{
+			pos -= (ratio.x / 4.0f);
+		}
+	}
 
 	//setting used meshes to score length to retrieve number of meshes to be rendered
 	usedMeshesP1 = score.length();
@@ -37,14 +44,10 @@ void UI::p1GameScoreboard(string score)
 		int thisNum = score[c] - 48;
 
 		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetScale(ratio.x, ratio.y);
-		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetPos(vec3(pos + ((ratio.x / 4.0f) * c), 0.0f, 0.0f));
+		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetPos(vec3(pos, 0.0f, 0.0f));
 		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetTexture(windowMgr::getInstance()->numberTextures.at(thisNum));
+		pos += (ratio.x / 4.0f);
 	}
-
-	//BUTTON TO GO TO MAIN MENU
-	windowMgr::getInstance()->meshes.at(16)->SetScale(2.8f, 0.4f);
-	windowMgr::getInstance()->meshes.at(16)->SetPos(vec3(0.0f, -1.0f, 0.0f));
-	windowMgr::getInstance()->meshes.at(16)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
 
 	//SCORE SCREEN HUD
 	//Single player
@@ -97,11 +100,6 @@ void UI::p2GameScoreboard(string p1Score, string p2Score)
 		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetPos(vec3(pos2 + ((ratio.x / 4.0f) * c), -0.30f, 0.0f));
 		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetTexture(windowMgr::getInstance()->numberTextures.at(thisNum));
 	}
-
-	//BUTTON TO GO TO MAIN MENU
-	windowMgr::getInstance()->meshes.at(16)->SetScale(2.8f, 0.4f);
-	windowMgr::getInstance()->meshes.at(16)->SetPos(vec3(0.0f, -1.0f, 0.0f));
-	windowMgr::getInstance()->meshes.at(16)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
 
 	//SCORE SCREEN HUD
 	//Multiplayer
