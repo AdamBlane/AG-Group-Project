@@ -409,38 +409,27 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("backBtnSelected", backBtnSelected));
 	// Timer numbers
 	Texture* zeroLbl = new Texture("..\\NuttyPutters\\nzero.png");
-	//textures.insert(std::pair<std::string, Texture*>("zeroLbl", zeroLbl));
 	numberTextures.push_back(zeroLbl);
 	Texture* oneLbl = new Texture("..\\NuttyPutters\\none.png");
-	//textures.insert(std::pair<std::string, Texture*>("oneLbl", oneLbl));
 	numberTextures.push_back(oneLbl);
 	Texture* twoLbl = new Texture("..\\NuttyPutters\\ntwo.png");
-	//textures.insert(std::pair<std::string, Texture*>("twoLbl", twoLbl));
 	numberTextures.push_back(twoLbl);
 	Texture* threeLbl = new Texture("..\\NuttyPutters\\nthree.png");
-	//textures.insert(std::pair<std::string, Texture*>("threeLbl", threeLbl));
 	numberTextures.push_back(threeLbl);
 	Texture* fourLbl = new Texture("..\\NuttyPutters\\nfour.png");
-	//textures.insert(std::pair<std::string, Texture*>("fourLbl", fourLbl));
 	numberTextures.push_back(fourLbl);
 	Texture* fiveLbl = new Texture("..\\NuttyPutters\\nfive.png");
-	//textures.insert(std::pair<std::string, Texture*>("fiveLbl", fiveLbl));
 	numberTextures.push_back(fiveLbl);
 	Texture* sixLbl = new Texture("..\\NuttyPutters\\nsix.png");
-	//textures.insert(std::pair<std::string, Texture*>("sixLbl", sixLbl));
 	numberTextures.push_back(sixLbl);
 	Texture* sevenLbl = new Texture("..\\NuttyPutters\\nseven.png");
-	//textures.insert(std::pair<std::string, Texture*>("sevenLbl", sevenLbl));
 	numberTextures.push_back(sevenLbl);
 	Texture* eightLbl = new Texture("..\\NuttyPutters\\neight.png");
-	//textures.insert(std::pair<std::string, Texture*>("eightLbl", eightLbl));
 	numberTextures.push_back(eightLbl);
 	Texture* nineLbl = new Texture("..\\NuttyPutters\\nnine.png");
-	//textures.insert(std::pair<std::string, Texture*>("nineLbl", nineLbl));
 	numberTextures.push_back(nineLbl);
-	Texture* semiColonLbl = new Texture("..\\NuttyPutters\\semicolon.png");
-	//textures.insert(std::pair<std::string, Texture*>("semiColonLbl", semiColonLbl));
-	numberTextures.push_back(semiColonLbl);
+	Texture* colonLbl = new Texture("..\\NuttyPutters\\colon.png");
+	numberTextures.push_back(colonLbl);
 
 	// Game information
 	Texture* parFourLbl = new Texture("..\\NuttyPutters\\par4.png");

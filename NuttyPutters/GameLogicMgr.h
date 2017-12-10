@@ -29,7 +29,7 @@ public:
 	int startTime;
 	int lastFrameTime;
 	int elapsedTime;
-
+	int pauseStartTime, pauseDuration;
 
 
 	// Setup start of game HUD
@@ -37,7 +37,8 @@ public:
 
 	// Start game clock
 	void StartGameClock();
-
+	void PauseGameClock();
+	void UnpauseGameClock();
 	// Called when player stroke counter incremented
 	void PlayerFired(Player &player);
 

@@ -57,32 +57,16 @@ void GameLogicMgr::StartGameClock()
 	startTime = glfwGetTime();
 }
 
-// Called after a player fired a shot
-// Checks against stroke limit if this is 1 player mode
-// Updates UI to refelct increase to strokeCounter
-void GameLogicMgr::PlayerFired(Player &player)
+// Marks pause start time
+void GameLogicMgr::PauseGameClock()
 {
-	// Only allows for 2 digits of stroke count
-	if (player.strokeCounter < 100)
-	{
-		// Is this a 1 player game? 
-		if (players == 1)
-		{
-			// If so, need to check for fail condition (no more shots allowed)
-			// TODO
+	pauseStartTime = glfwGetTime();
+}
 
-			// Update UI - tell it which player to update for and its stroke value
-			uiMgr.UpdateStrokeCounter(player.id - 1, player.strokeCounter);
-		}
-		else if (players == 2)
-		{
-
-			// Update UI
-			uiMgr.UpdateStrokeCounter(player.id - 1, player.strokeCounter);
-		}
-	}
-	
-
+// Set pause duration
+void GameLogicMgr::UnpauseGameClock()
+{
+	pauseDuration = glfwGetTime() - pauseStartTime;
 }
 
 // Keep clocks ticking...
@@ -90,8 +74,9 @@ void GameLogicMgr::UpdateClock()
 {
 	// Update elapsed timer clock
 	// Time from current subtract start time
+
 	lastFrameTime = elapsedTime;
-	elapsedTime = glfwGetTime() - startTime;
+	elapsedTime = glfwGetTime() - startTime - pauseDuration;
 	
 	// No longer have time limit in 1p mode; using world clock in both modes
 	// Work out how much time is left given this game's time limit
@@ -133,6 +118,34 @@ void GameLogicMgr::UpdatePowerBar(Player player)
 			windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(-0.12 + (player.power / 23), -1.67f, 0.0f));
 		}
 	}
+}
+
+// Called after a player fired a shot
+// Checks against stroke limit if this is 1 player mode
+// Updates UI to refelct increase to strokeCounter
+void GameLogicMgr::PlayerFired(Player &player)
+{
+	// Only allows for 2 digits of stroke count
+	if (player.strokeCounter < 100)
+	{
+		// Is this a 1 player game? 
+		if (players == 1)
+		{
+			// If so, need to check for fail condition (no more shots allowed)
+			// TODO
+
+			// Update UI - tell it which player to update for and its stroke value
+			uiMgr.UpdateStrokeCounter(player.id - 1, player.strokeCounter);
+		}
+		else if (players == 2)
+		{
+
+			// Update UI
+			uiMgr.UpdateStrokeCounter(player.id - 1, player.strokeCounter);
+		}
+	}
+
+
 }
 
 // Called when a player finishes, sets their end score

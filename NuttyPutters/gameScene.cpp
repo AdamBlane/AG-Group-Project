@@ -560,9 +560,6 @@ void gameScene::SetupWorldClock()
 
 }
 
-// Sets up world clock on level load
-
-
 // Called from pause menu; screenshots and saves current level to file
 void gameScene::Save_Level(GLFWwindow* win)
 {
@@ -869,13 +866,16 @@ void gameScene::Pause(GLFWwindow* window)
 	keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
 												 //Render(window);
 
-												 // Change to pause target cam
+	 // Change to pause target cam
 	cameraType = 2;
 	// Flip paused bool
 	paused = true;
 
 	// Show mouse while paused
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+	// Pause game clock
+	gameLogicMgr.PauseGameClock();
 
 	while (paused)
 	{
@@ -999,7 +999,11 @@ void gameScene::Pause(GLFWwindow* window)
 		Render(window); // Render it
 
 	}//endloop
-	cout << "\nUnpaused" << endl;
+	
+	// Unpause clocks
+	gameLogicMgr.UnpauseGameClock();
+	
+	std::cout << "\nUnpaused" << std::endl;
 }
 
 // Act on input
@@ -1634,7 +1638,7 @@ void gameScene::Update(GLFWwindow* window)
 
 
 	// Update game clock
-	if (!gameEnded)
+	if (!gameEnded && !paused)
 		gameLogicMgr.UpdateClock();
 
 
