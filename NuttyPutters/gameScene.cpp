@@ -771,13 +771,13 @@ void gameScene::Pause(GLFWwindow* window)
 		// Mouse tracking function
 		Track_mouse(window);
 		// If user on coontrol screen
-		if (doesUserWantControls)
-		{
-			windowMgr::getInstance()->ControlsInputKeyboard();
-			windowMgr::getInstance()->ControlsInputController();
-			windowMgr::getInstance()->ControlsTrackMouse();
-			cout << "Input" << endl;
-		}
+		//if (doesUserWantControls)
+		//{
+		//	windowMgr::getInstance()->ControlsInputKeyboard();
+		//	windowMgr::getInstance()->ControlsInputController();
+		//	windowMgr::getInstance()->ControlsTrackMouse();
+		//	cout << "Input" << endl;
+		//}
 
 		// Item selection
 		if (glfwGetKey(window, GLFW_KEY_ENTER))

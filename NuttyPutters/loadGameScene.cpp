@@ -12,27 +12,35 @@ loadGameScene::~loadGameScene() { }
 void loadGameScene::Init(GLFWwindow* win)
 {
 	// MONDAY DEMO PRINT COMMANDS
-	cout << "\nLOAD GAME SCREEN CONTROLS:" << endl;
-	cout << "Up & Down arrows move through images" << endl;
-	cout << "Left & Right arrows move through pages of images" << endl;
-	cout << "Enter loads selected level" << endl;
-	cout << "B goes back to main menu" << endl;
+	//cout << "\nLOAD GAME SCREEN CONTROLS:" << endl;
+	//cout << "Up & Down arrows move through images" << endl;
+	//cout << "Left & Right arrows move through pages of images" << endl;
+	//cout << "Enter loads selected level" << endl;
+	//cout << "B goes back to main menu" << endl;
 
 	// Set initial button press bools to false
 	upPressed = downPressed = leftPressed = rightPressed = enterPressed = mouseLpressed = false;
 	// Set initial values for navigation variables
 	lastImageSelected = currentImageSelected = savesImagesIndex = enterCooldown =  0;
-	// Set initial current page value
+	// Set initial current image page value
 	currentPage = 1;
 	
 	// Set background mesh properties
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
 	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
-	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["loadGameBackground"]);
+	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
+	// Set mesh properties for left and right arrows
+	windowMgr::getInstance()->meshes.at(1)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-3.0f, 0.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
+	// Right
+	windowMgr::getInstance()->meshes.at(2)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(3.0f, 0.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
 
 	// Set image viewer properties
 	// Create image meshes
-	int imCount = 1;
+	int imCount = 0;
 	// Setup meshes
 	for (int x = -1; x < 2; ++x)
 	{
@@ -41,8 +49,8 @@ void loadGameScene::Init(GLFWwindow* win)
 			float xPos, yPos;
 			xPos = (x*w);
 			yPos = (y*h) + 0.3f;
-			windowMgr::getInstance()->meshes.at(imCount)->SetPos(vec3(xPos, yPos, 0));
-			windowMgr::getInstance()->meshes.at(imCount)->SetScale(w, h);
+			windowMgr::getInstance()->imagePanelMeshes.at(imCount)->SetPos(vec3(xPos, yPos, 0));
+			windowMgr::getInstance()->imagePanelMeshes.at(imCount)->SetScale(w, h);
 			imCount++;
 		}
 	}
@@ -62,11 +70,11 @@ void loadGameScene::Init(GLFWwindow* win)
 	// Draw the saved image textures onto image meshes
 	for (int i = 0; i < limit; i++)
 	{
-		windowMgr::getInstance()->meshes.at(diff + i)->SetTexture(windowMgr::getInstance()->savesImages.at(i));
+		windowMgr::getInstance()->imagePanelMeshes.at(i)->SetTexture(windowMgr::getInstance()->savesImages.at(i));
 	}
 	
 	// Show first image as selected
-	windowMgr::getInstance()->meshes.at(diff)->SetScale(selectedW, selectedH);
+	windowMgr::getInstance()->imagePanelMeshes.at(0)->SetScale(selectedW, selectedH);
 
 
 	// Read all saved seeds
@@ -95,7 +103,6 @@ void loadGameScene::Loop(GLFWwindow* win)
 	Update(win);
 	// Render
 	Render(win);
-
 
 }
 
@@ -127,13 +134,13 @@ void loadGameScene::NextPage()
 	for (int i = 0; i < limit; ++i)
 	{
 		// 1 + since background is taken, at 0
-		windowMgr::getInstance()->meshes.at(diff + i)->SetTexture(windowMgr::getInstance()->savesImages.at(savesImagesIndex + i));
+		windowMgr::getInstance()->imagePanelMeshes.at(i)->SetTexture(windowMgr::getInstance()->savesImages.at(savesImagesIndex + i));
 	}
 
 	// Clear the rest from previous page
 	for (int i = limit; i < 9; ++i)
 	{
-		windowMgr::getInstance()->meshes.at(diff + i)->SetTexture(windowMgr::getInstance()->textures["startBackground"]);
+		windowMgr::getInstance()->imagePanelMeshes.at(i)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
 	}
 }
 
@@ -150,19 +157,26 @@ void loadGameScene::LastPage()
 	savesImagesIndex = ((currentPage - 1) * 9) + 8;
 
 
-	// We know there is a full page of images to show, from curIndex - 8 to curIndex
-	for (int i = savesImagesIndex - 8; i < savesImagesIndex + 1; ++i)
+	// We know there is a full page of images to show, from curIndex - 8 to curIndex 
+	int startIndex = savesImagesIndex - 8;
+	int endIndex = savesImagesIndex + 1;
+	for (int i = 0; i < 9; i++)
 	{
-		windowMgr::getInstance()->meshes.at(diff + i)->SetTexture(windowMgr::getInstance()->savesImages.at(i));
+		windowMgr::getInstance()->imagePanelMeshes.at(i)->SetTexture(windowMgr::getInstance()->savesImages.at(startIndex));
+		startIndex++;
 	}
+	//for (int i = savesImagesIndex - 8; i < savesImagesIndex + 1; ++i)
+	//{
+	//	windowMgr::getInstance()->imagePanelMeshes.at(i)->SetTexture(windowMgr::getInstance()->savesImages.at(i));
+	//}
 }
 
 // Resizes the current and last selected image mesh
 void loadGameScene::ResizeCurLastSelected()
 {
 	// Resize this and last choice
-	windowMgr::getInstance()->meshes.at(diff + currentImageSelected)->SetScale(selectedW, selectedH);
-	windowMgr::getInstance()->meshes.at(diff + lastImageSelected)->SetScale(w, h);
+	windowMgr::getInstance()->imagePanelMeshes.at(currentImageSelected)->SetScale(selectedW, selectedH);
+	windowMgr::getInstance()->imagePanelMeshes.at(lastImageSelected)->SetScale(w, h);
 }
 
 // Act on input
@@ -465,11 +479,17 @@ void loadGameScene::Render(GLFWwindow* win)
 	glDepthRange(0, 0.01);
 	// Render all meshes & their textures
 	// iter limit is slightly magic - number of meshes this scene requires
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 		windowMgr::getInstance()->meshes.at(i)->Draw();
+	}
+	for (auto &m : windowMgr::getInstance()->imagePanelMeshes)
+	{
+		m->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+		m->Draw();
 	}
 
 	// Reset the depth range to allow for objects at a distance to be rendered

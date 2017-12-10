@@ -44,12 +44,14 @@ class windowMgr
 		bool upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 		bool mouseLpressed;
 		
-		// All textures in the game stored here
+		// Most textures in the game stored here
 		map<std::string, Texture*> textures;
 		// All number textures stored here
 		vector<Texture*> numberTextures;
 		// This stores images of saved levels
 		vector<Texture*> savesImages;
+		// This stores meshes used in load game image viewer panel
+		vector<Mesh*> imagePanelMeshes;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
 
