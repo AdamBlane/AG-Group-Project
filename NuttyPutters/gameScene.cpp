@@ -1494,7 +1494,7 @@ void gameScene::SpatialPartitioningUpdate()
 		for (auto &p : players)
 		{
 			// Is this player on this tile?
-			if (t->isPlayerOnTile(p.transform.getPos()))
+			if (t->isPlayerOnTile(p))
 			{
 				// Update player's personal current tile property
 				p.currentTile = tileTracker;
@@ -1609,6 +1609,7 @@ void gameScene::CheckLoadNextLevel()
 			// Ensure player lands on start tile
 			players[i].transform.getPos().x = i * 2.0f;
 			players[i].transform.getPos().z = 0.0f;
+			players[i].floorLevel = 0.5f + players[i].radius;
 			// Allow level changing for next level
 			changedLevel = false;
 			// Change pause cam properties to match with this level
@@ -1715,7 +1716,7 @@ void gameScene::Update(GLFWwindow* window)
 		{
 			// Work out whether to apply gravity or not (is player on the floor/in air)
 			// Update player's floor level for this tile - this tile floor level + 0.5 (half tile thickness) + player radius
-			p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
+			//p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;
 			physicsSystem.ApplyGravity(p, p.floorLevel);
 
 			// If time to perform another physics step																						 // Perform physics step	
