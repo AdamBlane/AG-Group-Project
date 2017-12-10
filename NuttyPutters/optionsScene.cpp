@@ -9,40 +9,35 @@ optionsScene::~optionsScene() { }
 
 void optionsScene::Track_Mouse(GLFWwindow *window)
 {
-	glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
-	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
-	if ((windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale)
-		&& (windowMgr::getInstance()->mouse_y >= 59 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale))
+	if ((windowMgr::getInstance()->mouse_x >= 393 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1203 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 79 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 816 * windowMgr::getInstance()->windowScale))
 	{
 		previousMenuItem = currentMenuItem;
-		if (windowMgr::getInstance()->mouse_y <= 200 * windowMgr::getInstance()->windowScale)
+		if (windowMgr::getInstance()->mouse_y <= 187 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 1;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 322 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 2;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 456 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 449 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 3;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 580 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 589 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 4;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 706 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 5;
 		}
-			ChangeTexutes(window);
-	}
-	else if ((windowMgr::getInstance()->mouse_x >= 439 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1429 * windowMgr::getInstance()->windowScale)
-		&& (windowMgr::getInstance()->mouse_y >= 711 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 839 * windowMgr::getInstance()->windowScale))
-	{
-		previousMenuItem = currentMenuItem;
-		//highlights the back button
-		currentMenuItem = 6;
+		else if ((windowMgr::getInstance()->mouse_y <= 816 * windowMgr::getInstance()->windowScale))
+		{
+			//highlights the back button
+			currentMenuItem = 6;
+		}
 		ChangeTexutes(window);
 	}
 }
@@ -218,7 +213,7 @@ void optionsScene::Loop(GLFWwindow * win)
 	windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
 	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 	//tracks mouse
-	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x && windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 	{
 		Track_Mouse(win);
 	}
@@ -228,6 +223,79 @@ void optionsScene::Loop(GLFWwindow * win)
 
 void optionsScene::Input(GLFWwindow* win)
 {
+	// Get the state of controller one
+	controllerOne = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &controllerOneButtonCount);
+	// If controller 1 is connected, run controller input loop for p1 only
+	if (controllerOne != NULL)
+	{
+		// Get axes details
+		controllerOneAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &controllerOneAxisCount);
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+		{
+			windowMgr::getInstance()->upCotn = true;
+		}
+
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+		{
+			if (windowMgr::getInstance()->upCotn)
+			{
+				previousMenuItem = currentMenuItem;
+				if (currentMenuItem == 1)
+				{
+					currentMenuItem = 6;
+				}
+				else if (currentMenuItem == 0)
+				{
+					currentMenuItem = 6;
+				}
+				else
+				{
+					currentMenuItem--;
+				}
+				ChangeTexutes(win);
+				windowMgr::getInstance()->upCotn = false;
+			}
+		}
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]])
+		{
+			windowMgr::getInstance()->downCotn = true;
+		}
+
+		if ((GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]]))
+		{
+			if (windowMgr::getInstance()->downCotn)
+			{
+				previousMenuItem = currentMenuItem;
+				if (currentMenuItem == 6)
+				{
+					currentMenuItem = 1;
+				}
+				else
+				{
+					currentMenuItem++;
+				}
+
+				windowMgr::getInstance()->downCotn = false;
+				ChangeTexutes(win);
+			}
+		}
+
+		// When Fire is realesed
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]])
+		{
+			windowMgr::getInstance()->enterCotn = true;
+		}
+		if ((GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]]))
+		{
+			if (windowMgr::getInstance()->enterCotn)
+			{
+				Click_or_Enter(win);
+				windowMgr::getInstance()->enterCotn = false;
+				ChangeTexutes(win);
+			}
+		}
+
+	}
 	switch (windowMgr::getInstance()->button_manager)
 	{
 		case 0:
@@ -350,5 +418,6 @@ void optionsScene::Render(GLFWwindow* win)
 	windowMgr::getInstance()->textureShader->Bind();
 
 	glfwSwapBuffers(win);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
 }

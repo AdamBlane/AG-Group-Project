@@ -1813,8 +1813,16 @@ void windowMgr::ControlsTrackClick()
 			cout << "Outputting control for keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
 			cout << "Outputting control for keyboard two " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
 		}
-		// Change back to main menu
-		//windowMgr::getInstance()->sceneManager.changeScene(1);
+		// 
+		if (returnToGame)
+		{
+			doesUserWantControls = false;
+		}
+		else
+		{
+			// Change back to main menu
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+		}
 		break;
 		//left arrow function
 	case 4:
