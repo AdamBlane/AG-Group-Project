@@ -42,6 +42,7 @@ class windowMgr
 		int PosX, PosY;
 		// Input - prevent input code from reocurring every frame button is held
 		bool upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+		bool upCotn, downCotn, leftCotn, rightCotn, enterCotn;
 		bool mouseLpressed;
 		
 		// All textures in the game stored here

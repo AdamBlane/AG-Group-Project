@@ -31,7 +31,12 @@ public:
 	Transform optionSceneTransform;
 
 	float total_time = 0.0f;
+
 	int previousMenuItem, currentMenuItem;
+	int controllerOneButtonCount;
+	const unsigned char *controllerOne;
+	int controllerOneAxisCount;
+	const float *controllerOneAxis;
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);

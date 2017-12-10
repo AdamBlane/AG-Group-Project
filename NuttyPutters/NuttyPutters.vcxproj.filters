@@ -48,9 +48,6 @@
     <ClCompile Include="loadGameScene.cpp">
       <Filter>Source Files\Scene Files</Filter>
     </ClCompile>
-    <ClCompile Include="startScene.cpp">
-      <Filter>Source Files\Scene Files</Filter>
-    </ClCompile>
     <ClCompile Include="playerSelectScene.cpp">
       <Filter>Source Files\Scene Files</Filter>
     </ClCompile>
@@ -110,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="GameLogicMgr.cpp">
       <Filter>Source Files\Game Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="startScene.cpp">
+      <Filter>Source Files\Scene Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
