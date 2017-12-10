@@ -188,8 +188,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	SetupWorldClock();
 	// Set dt based on player count
-	dt = (playerCount * 0.01) - 0.002;
-	//dt = 0.012;
+	//dt = (playerCount * 0.01) - 0.002;
+	dt = 0.012;
 
 
 	
@@ -481,7 +481,7 @@ void gameScene::SetupWorldClock()
 				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
 			// Set pos
-			trans.getPos() = (vec3((endPos.x + 5.0f) - (i * 2.5), 4.0f, endPos.z));
+			trans.getPos() = (vec3((endPos.x + 5.0f) - (i * 2.5), 2.0f, endPos.z));
 			// Then rotate based on direction of end hole
 			trans.getRot().y = 3.14159;
 
@@ -503,7 +503,7 @@ void gameScene::SetupWorldClock()
 				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
 			// Set pos
-			trans.getPos() = (vec3((endPos.x - 5.0f) + (i * 2.5), 4.0f, endPos.z));
+			trans.getPos() = (vec3((endPos.x - 5.0f) + (i * 2.5), 2.0f, endPos.z));
 			// Then rotate based on direction of end hole
 			// Auto spawns correct rotation when dir is up
 
@@ -525,7 +525,7 @@ void gameScene::SetupWorldClock()
 				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
 			// Set pos
-			trans.getPos() = (vec3(endPos.x, 4.0f, (endPos.z + 5.0f) - (i * 2.5)));
+			trans.getPos() = (vec3(endPos.x, 2.0f, (endPos.z + 5.0f) - (i * 2.5)));
 			// Then rotate based on direction of end hole
 			trans.getRot().y = 1.5708;
 
@@ -547,7 +547,7 @@ void gameScene::SetupWorldClock()
 				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
 			// Set pos
-			trans.getPos() = (vec3(endPos.x, 4.0f, (endPos.z - 5.0f) + (i * 2.5)));
+			trans.getPos() = (vec3(endPos.x, 2.0f, (endPos.z - 5.0f) + (i * 2.5)));
 			// Then rotate based on direction of end hole
 			trans.getRot().y = -1.5708;
 
