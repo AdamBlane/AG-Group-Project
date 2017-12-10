@@ -188,8 +188,8 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	SetupPickupCrates();
 
 	// Set dt based on player count
-	//dt = (playerCount * 0.01) - 0.002;
-	dt = 0.012;
+	dt = (playerCount * 0.01) - 0.002;
+	//dt = 0.012;
 
 
 	// Start game logic mgr
