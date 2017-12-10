@@ -403,6 +403,8 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("controlsBtnUnselected", controlsBtnUnselected));
 	Texture* backBtnUnselected = new Texture("..\\NuttyPutters\\controller\\backUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("backBtnUnselected", backBtnUnselected));
+	Texture* backRed = new Texture("..\\NuttyPutters\\controller\\backred.png");
+	textures.insert(std::pair<std::string, Texture*>("backRed", backRed));
 	Texture* backBtnSelected = new Texture("..\\NuttyPutters\\controller\\backSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("backBtnSelected", backBtnSelected));
 	// Timer numbers
@@ -1828,33 +1830,60 @@ void windowMgr::ControlsTrackClick()
 		ControlsButtonsSetup();
 		break;
 	case 3:
-		// Set the output file
-		outputFileP1Xbox.open("..\\NuttyPutters\\input\\p1XboxController.txt");
-		outputFileP2Xbox.open("..\\NuttyPutters\\input\\p2XboxController.txt");
-		outputFileP1Keyboard.open("..\\NuttyPutters\\input\\p1Keyboard.txt");
-		outputFileP2Keyboard.open("..\\NuttyPutters\\input\\p2Keyboard.txt");
-		// Loop through total number of entries 
-		for (int l = 0; l < 10; l++)
+		// Check to see if the buttons dont have set binding then
+		// Find if there are any functions which dont have buttons for player keyboard 0 - KeyP1Function will produce a value other than 10 if a function is empty
+		keyP1FunctionEmpty = std::distance(windowMgr::getInstance()->playerKeyboardControls[0], std::find(windowMgr::getInstance()->playerKeyboardControls[0], windowMgr::getInstance()->playerKeyboardControls[0] + 10, 999));
+
+		// PLAYER KEYBOARD 1
+		keyP2FunctionEmpty = std::distance(windowMgr::getInstance()->playerKeyboardControls[1], std::find(windowMgr::getInstance()->playerKeyboardControls[1], windowMgr::getInstance()->playerKeyboardControls[1] + 10, 999));
+
+		// XBOX CONTROLLER 0
+		xboxP1FunctionEmpty = std::distance(windowMgr::getInstance()->playerXboxControls[0], std::find(windowMgr::getInstance()->playerXboxControls[0], windowMgr::getInstance()->playerXboxControls[0] + 10, 99));
+
+		// XBOX CONTROLLER 1
+		xboxP2FunctionEmpty = std::distance(windowMgr::getInstance()->playerXboxControls[1], std::find(windowMgr::getInstance()->playerXboxControls[1], windowMgr::getInstance()->playerXboxControls[1] + 10, 99));
+
+		if ((keyP1FunctionEmpty + keyP2FunctionEmpty + xboxP1FunctionEmpty + xboxP2FunctionEmpty) != 40)
 		{
-			// Output the values to the output file
-			outputFileP1Xbox << windowMgr::getInstance()->playerXboxControls[0][l] << endl;
-			outputFileP2Xbox << windowMgr::getInstance()->playerXboxControls[1][l] << endl;
-			outputFileP1Keyboard << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
-			outputFileP2Keyboard << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
-			cout << "Outputting control for controller one " << windowMgr::getInstance()->playerXboxControls[0][l] << endl;
-			cout << "Outputting control for controller two " << windowMgr::getInstance()->playerXboxControls[1][l] << endl;
-			cout << "Outputting control for keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
-			cout << "Outputting control for keyboard two " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
+			//windowMgr::getInstance()->controllerMeshes.at(23)->SetTexture(windowMgr::getInstance()->textures["backRed"]);
+
+			windowMgr::getInstance()->controllerMeshes.at(23)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
+			cout << "Some functions dont have buttons assigned" << endl;
 		}
-		// 
-		if (returnToGame)
-		{
-			doesUserWantControls = false;
-		}
+		// Else if all the actions have buttons then 
 		else
 		{
-			// Change back to main menu
-			windowMgr::getInstance()->sceneManager.changeScene(1);
+			// Set the output file
+			outputFileP1Xbox.open("..\\NuttyPutters\\input\\p1XboxController.txt");
+			outputFileP2Xbox.open("..\\NuttyPutters\\input\\p2XboxController.txt");
+			outputFileP1Keyboard.open("..\\NuttyPutters\\input\\p1Keyboard.txt");
+			outputFileP2Keyboard.open("..\\NuttyPutters\\input\\p2Keyboard.txt");
+			// Loop through total number of entries 
+			for (int l = 0; l < 10; l++)
+			{
+				// Output the values to the output file
+				outputFileP1Xbox << windowMgr::getInstance()->playerXboxControls[0][l] << endl;
+				outputFileP2Xbox << windowMgr::getInstance()->playerXboxControls[1][l] << endl;
+				outputFileP1Keyboard << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
+				outputFileP2Keyboard << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
+				//cout << "Outputting control for controller one " << windowMgr::getInstance()->playerXboxControls[0][l] << endl;
+				//cout << "Outputting control for controller two " << windowMgr::getInstance()->playerXboxControls[1][l] << endl;
+				//cout << "Outputting control for keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
+				//cout << "Outputting control for keyboard two " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
+			}
+
+			// Check if by pressing the back button, does the app need to return to main menu or the game
+			// If reutrn to game is true then
+			if (returnToGame)
+			{
+				// Set does user want controls to false meaning in game scene .cpp the controls render loop will be ignored
+				doesUserWantControls = false;
+			}
+			else
+			{
+				// Change back to main menu
+				windowMgr::getInstance()->sceneManager.changeScene(1);
+			}
 		}
 		break;
 		//left arrow function
@@ -2926,7 +2955,7 @@ void windowMgr::ControlsInputKeyboard()
 	}
 	if (!glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) && keyboardButtonPressed[93])
 	{
-		ControlsUpdateKeyboard(93, 230);
+		ControlsUpdateKeyboard(93, 247);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) && !keyboardButtonPressed[94])
@@ -2935,7 +2964,7 @@ void windowMgr::ControlsInputKeyboard()
 	}
 	if (!glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) && keyboardButtonPressed[94])
 	{
-		ControlsUpdateKeyboard(94, 230);
+		ControlsUpdateKeyboard(94, 247);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_LEFT_ALT) && !keyboardButtonPressed[95])
@@ -2944,7 +2973,7 @@ void windowMgr::ControlsInputKeyboard()
 	}
 	if (!glfwGetKey(win, GLFW_KEY_LEFT_ALT) && keyboardButtonPressed[95])
 	{
-		ControlsUpdateKeyboard(95, 230);
+		ControlsUpdateKeyboard(95, 247);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_RIGHT_SHIFT) && !keyboardButtonPressed[96])
@@ -2953,7 +2982,7 @@ void windowMgr::ControlsInputKeyboard()
 	}
 	if (!glfwGetKey(win, GLFW_KEY_RIGHT_SHIFT) && keyboardButtonPressed[96])
 	{
-		ControlsUpdateKeyboard(96, 230);
+		ControlsUpdateKeyboard(96, 247);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_RIGHT_CONTROL) && !keyboardButtonPressed[97])
@@ -2962,7 +2991,7 @@ void windowMgr::ControlsInputKeyboard()
 	}
 	if (!glfwGetKey(win, GLFW_KEY_RIGHT_CONTROL) && keyboardButtonPressed[97])
 	{
-		ControlsUpdateKeyboard(97, 230);
+		ControlsUpdateKeyboard(97, 247);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_RIGHT_ALT) && !keyboardButtonPressed[98])
@@ -2971,7 +3000,7 @@ void windowMgr::ControlsInputKeyboard()
 	}
 	if (!glfwGetKey(win, GLFW_KEY_RIGHT_ALT) && keyboardButtonPressed[98])
 	{
-		ControlsUpdateKeyboard(98, 230);
+		ControlsUpdateKeyboard(98, 247);
 	}
 
 	if (glfwGetKey(win, GLFW_KEY_SPACE) && !keyboardButtonPressed[99])
@@ -3138,14 +3167,14 @@ void windowMgr::ControlsUpdateKeyboard(int keyboardButtonNumber, int additionalN
 	{
 		// Find the index of the gameKeyboardFunctions which has a value of 999
 		indexAt99 = std::distance(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], std::find(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], windowMgr::getInstance()->playerKeyboardControls[playerTab - 1] + 10, 999));
-		// Find the index of the gameKeyboardFunctions which is assigned to the button that has just been pressed
+		// Find the index of the function which is assigned to the button that has just been pressed
 		indexAtKey = std::distance(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], std::find(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], windowMgr::getInstance()->playerKeyboardControls[playerTab - 1] + 10, keyboardButtonNumber + additionalNumber));
-		// Check if button just pressed has a function assigned to it
+		// Check if button just pressed has a function assigned to it ------- player/GLFW button input key
 		if (windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAtKey] == keyboardButtonNumber + additionalNumber)
 		{
 			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-			windowMgr::getInstance()->controllerMeshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAtKey] = 999;
+			windowMgr::getInstance()->controllerMeshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]); // Updates appripriate mesh with ???
+			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAtKey] = 999; 
 		}
 
 		// Make the original empty function equal to the button
