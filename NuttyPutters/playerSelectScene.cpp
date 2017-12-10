@@ -254,11 +254,9 @@ void playerSelectScene::ChangeTexutes(GLFWwindow *win)
 		//Update textures based on what number is selected
 	case 1:
 		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
-		selectedPlayers = 1; // Set selected player to 1, used in game scene
 		break;
 	case 2:
 		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
-		selectedPlayers = 2; // Set selected player to 2, used in game scene
 		break;
 	}
 	switch (numberOfHoles)

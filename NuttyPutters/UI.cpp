@@ -401,10 +401,3 @@ void UI::UpdateStrokeCounter(int playerIndex, int strokeCounter)
 	}
 
 }
-
-
-
-
-
-
-
