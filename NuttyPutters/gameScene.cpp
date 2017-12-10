@@ -774,6 +774,7 @@ void gameScene::Pause(GLFWwindow* window)
 		glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 		//tracks mouse
 		// If user on coontrol screen
+
 		if (windowMgr::getInstance()->doesUserWantControls)
 		{
 			windowMgr::getInstance()->ControlsInputKeyboard();
@@ -787,6 +788,7 @@ void gameScene::Pause(GLFWwindow* window)
 			Track_mouse(window);
 		}
 		//************************** KEYBOARD MOVEMENT //
+
 		if (glfwGetKey(window, GLFW_KEY_ENTER))
 		{
 			windowMgr::getInstance()->enterPressed = true;
