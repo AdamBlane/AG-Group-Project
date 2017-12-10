@@ -88,7 +88,7 @@ public:
 	bool continuePressed, resetPressed = false;
 
 	// If the user selects the controls option in the pause screen
-	bool doesUserWantControls = false;
+	//bool doesUserWantControls = false;
 
 	// Setup GLFW joystick button input - required for doing anything with buttons
 	int controllerOneButtonCount;
