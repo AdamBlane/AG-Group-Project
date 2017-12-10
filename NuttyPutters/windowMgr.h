@@ -298,6 +298,8 @@ class windowMgr
 		bool isFunctionEmptyKeyboard = false; // Used for remapping the keyboard
 		bool keyboardButtonPressed[100] = { false }; // Stores all the booleans for button pressing on keyboard
 		bool buttonPressed[18] = { false }; // Stores all the booleans for button pressing on controller
+		bool doesUserWantControls = false; // Boolean for the controls menu in game - if set to true and back is pressed return to the game
+		bool returnToGame = false;
 
 		// Setup initial textures
 		void ControlsTextureSetup();
