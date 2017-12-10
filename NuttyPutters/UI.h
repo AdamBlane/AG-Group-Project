@@ -41,6 +41,7 @@ class UI
 	void UpdateWorldClock(int time);
 	// Increment stroke counter for a player
 	void UpdateStrokeCounter(int playerIndex, int strokeCount);
+
 	// Sets pause screen mesh properties
 	void PauseScreen();
 
@@ -70,4 +71,5 @@ private:
 
 	//vector<int> p1;
 	//vector<int> p2;
+
 };

@@ -24,13 +24,6 @@ public:
 	// Deconstructor
 	~highscoreScene();
 
-	// Used to lock framerate
-	double lastFrame = 0;
-	double thisFrame = glfwGetTime();
-	float dt = 0.016; // Lock to 60fps
-
-	Transform optionSceneTransform;
-
 	bool buttonPressed[18] = { false };
 	bool isFunctionEmpty = false;
 	bool isFunctionEmptyKeyboard = false;
@@ -38,8 +31,6 @@ public:
 	int indexAt99 = 0;
 	int indexAtButton = 0;
 	int indexAtKey = 0;
-	int playerForController = 1;
-	int playerTab = 1; // Set and keep track of what tab we are on - ie player one or two. One by default.
 
 	bool keyboardButtonPressed[100] = { false };
 
@@ -193,9 +184,9 @@ public:
 	//Tracks Mouse
 	void Track_Mouse(GLFWwindow* win);
 	//Render
-	void Render(GLFWwindow* window);
+	void Render(GLFWwindow* win);
 	// For mouse button actions
-	void Click(GLFWwindow* window);
+	void Click(GLFWwindow* win);
 	// Load unqiue player buttons
-	void InitPlayerButtons(GLFWwindow* window);
+	void InitPlayerButtons(GLFWwindow* win);
 };
