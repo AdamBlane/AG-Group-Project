@@ -42,9 +42,11 @@ void UI::p1Setup()
 	windowMgr::getInstance()->meshes.at(8)->SetScale(0.2f, 0.2f);
 	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(3.0f, -1.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
+
 	// Resume
 	windowMgr::getInstance()->meshes.at(9)->SetScale(4.2f, 0.7f);
 	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0.0f, 1.2f, 0.0f));
+
 	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
 	// Save
 	windowMgr::getInstance()->meshes.at(10)->SetScale(4.2f, 0.7f);
@@ -107,9 +109,11 @@ void UI::p2Setup()
 	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.0f, -1.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
   
+
 	// Resume
 	windowMgr::getInstance()->meshes.at(8)->SetScale(4.2f, 0.7f);
 	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0.0f, 1.2f, 0.0f));
+
 	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
 	// Save
 	windowMgr::getInstance()->meshes.at(9)->SetScale(4.2f, 0.7f);

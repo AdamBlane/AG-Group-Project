@@ -51,16 +51,21 @@ bool BaseTile::SphereRectCollision(Player player, vec3 rectCenter, vec3 rectSize
 // Returns true if player is on this tile
 bool BaseTile::isPlayerOnTile(vec3 playerPos)
 {
-	// Match on x first
-	if (playerPos.x > thisCoords.x - 5 && playerPos.x < thisCoords.x + 5)
+	// Look at player height first (could be below tile)
+	if (playerPos.y >= floorLevel)
 	{
-		// Then on z
-		if (playerPos.z > thisCoords.z - 5 && playerPos.z < thisCoords.z + 5)
+		// Match on x first
+		if (playerPos.x > thisCoords.x - 5 && playerPos.x < thisCoords.x + 5)
 		{
-			// Player is on this tile
-			return true;
+			// Then on z
+			if (playerPos.z > thisCoords.z - 5 && playerPos.z < thisCoords.z + 5)
+			{
+				// Player is on this tile
+				return true;
+			}
 		}
 	}
+
 	return false;
 }
 
@@ -102,6 +107,7 @@ void StartTile::CheckCollisions(Player &player)
 // Collision check for straight vertical tile
 void StraightTile_V::CheckCollisions(Player &player)
 {
+
 	// Check on X axis - boundaries either side
 	if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 	{

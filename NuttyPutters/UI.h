@@ -41,5 +41,4 @@ class UI
 	void UpdateWorldClock(int time);
 	// Increment stroke counter for a player
 	void UpdateStrokeCounter(int playerIndex, int strokeCount);
-	void PauseScreen();
 };

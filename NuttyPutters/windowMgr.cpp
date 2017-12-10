@@ -174,7 +174,7 @@ void windowMgr::LoadAssets()
 	p1ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	p2ArrowMesh = new Mesh(Mesh::CUBOID, vec3(1.8f, 3.6f, 0.0f), 3.0f, 0.5f, 0.5f);
 	// Pickup crate meshes - no more than 5 in any given level
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		Transform trans;
 		pickupCrateTransforms.push_back(trans);
@@ -241,8 +241,12 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("playerSelectBackground", playerSelectBackground));
 	Texture* playersLabel = new Texture("..\\NuttyPutters\\players.png");
 	textures.insert(std::pair<std::string, Texture*>("playersLabel", playersLabel));
+	Texture* playersSelected = new Texture("..\\NuttyPutters\\playersUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("playersSelected", playersSelected));
 	Texture* numberOfLevels = new Texture("..\\NuttyPutters\\numberoflevels.png");
 	textures.insert(std::pair<std::string, Texture*>("numberOfLevels", numberOfLevels));
+	Texture* numberOfLevelsSelected = new Texture("..\\NuttyPutters\\numberoflevelsUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("numberOfLevelsSelected", numberOfLevelsSelected));
 	Texture* oneBtnUnselected = new Texture("..\\NuttyPutters\\none.png");
 	textures.insert(std::pair<std::string, Texture*>("oneBtnUnselected", oneBtnUnselected));
 	Texture* oneBtnSelected = new Texture("..\\NuttyPutters\\noneUnderlined.png");
@@ -253,6 +257,8 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("twoBtnSelected", twoBtnSelected));
 	Texture* difficultyLabel = new Texture("..\\NuttyPutters\\difficulty.png");
 	textures.insert(std::pair<std::string, Texture*>("difficultyLabel", difficultyLabel));
+	Texture* difficultySelected = new Texture("..\\NuttyPutters\\difficultyUnderlined.png");
+	textures.insert(std::pair<std::string, Texture*>("difficultySelected", difficultySelected));
 	Texture* easyBtnUnselected = new Texture("..\\NuttyPutters\\easy.png");
 	textures.insert(std::pair<std::string, Texture*>("easyBtnUnselected", easyBtnUnselected));
 	Texture* easyBtnSelected = new Texture("..\\NuttyPutters\\easyUnderlined.png");
