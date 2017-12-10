@@ -363,7 +363,7 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("playerOneLbl", playerOneLbl));
 	Texture* playerTwoLbl = new Texture("..\\NuttyPutters\\playertwo.png");
 	textures.insert(std::pair<std::string, Texture*>("playerTwoLbl", playerTwoLbl));
-	Texture* powerLbl = new Texture("..\\NuttyPutters\\power.png");
+	Texture* powerLbl = new Texture("..\\NuttyPutters\\powerbar.png");
 	textures.insert(std::pair<std::string, Texture*>("powerLbl", powerLbl));
 	Texture* powerIndicator = new Texture("..\\NuttyPutters\\powerIndicator.png");
 	textures.insert(std::pair<std::string, Texture*>("powerIndicator", powerIndicator));
