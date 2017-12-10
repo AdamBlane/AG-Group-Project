@@ -144,6 +144,7 @@ void GameLogicMgr::ShowEndgameScoreboard(vector<Player> players)
 	if (players.size() == 1)
 	{
 		//Counting how many digits score has
+		// Convert to string here, number of digits is string.length()
 		int countP1Score = uiMgr.countDigits(players[0].finalScore);
 		//If the count of digits for p1 score is higher than the digit limit allowed (default 7)
 		if (countP1Score > digitLimitForScore)
