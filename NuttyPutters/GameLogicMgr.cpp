@@ -105,18 +105,33 @@ void GameLogicMgr::UpdateClock()
 	}
 }
 
-
 // Update power bar
 void GameLogicMgr::UpdatePowerBar(Player player)
 {
-	// Check which player this is
-	if (player.id == 1)
+	// If amount of players in game is euqal to 1 then - require because player one behaviour is different for both players
+	if (players == 1)
 	{
-		// Update p1 power bar
+		// Check which player this is
+		if (player.id == 1)
+		{
+			// Update p1 power bar
+			windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(0.88 + (player.power /23), -1.47f, 0.0f));
+		}
 	}
-	else if (player.id == 2)
+	// Else if to players in game 
+	else
 	{
-		// Update p2 power bar
+		// Check which player this is
+		if (player.id == 1)
+		{
+			// Update p1 power bar
+			windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(-0.12 + (player.power / 15.5), -1.67f, 0.0f));
+		}
+		else if (player.id == 2)
+		{
+			// Update p2 power bar
+			windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(-0.12 + (player.power / 23), -1.67f, 0.0f));
+		}
 	}
 }
 
