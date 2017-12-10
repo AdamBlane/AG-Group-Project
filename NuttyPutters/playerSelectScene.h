@@ -33,6 +33,11 @@ public:
 	float total_time = 0.0f;
 	int previousMenuItem, currentMenuItem;
 
+	int controllerOneButtonCount;
+	const unsigned char *controllerOne;
+	int controllerOneAxisCount;
+	const float *controllerOneAxis;
+
 	// Booleans for key pressing - used to make sure players cant change options rapidly
 	bool keyDown = false;
 	bool keyUp = false;
@@ -55,11 +60,12 @@ public:
 	int playerSelect = 1;
 	int difficultySelect = 1;
 	int buttonSelect = 1;
-	int playerChoice = 0;
-	int difficultyChoice = 0;
+	int playerChoice = 1;
+	int difficultyChoice = 1;
 	int numberOfHoles = 1;
 
-
+	bool leftbutton, rightbutton;
+	int selection;
 
 	// Draw stuff
 	void Loop(GLFWwindow* win);
@@ -74,6 +80,7 @@ public:
 	//to track and change textures
 	void ChangeTexutes(GLFWwindow* win);
 	//for action keys
-	void Click_or_Enter(GLFWwindow* window);
+	void Click_Right(GLFWwindow* window);
+	void Click_Left(GLFWwindow* window);
 	void Track_Mouse(GLFWwindow* win);
 };

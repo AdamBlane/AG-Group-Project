@@ -28,8 +28,16 @@ void highscoreScene::Loop(GLFWwindow * win)
 
 	// Update
 	Update(win);
-	//Tracks Mouse 
-	Track_Mouse(win);
+	//code to disable mouse
+	windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
+	windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
+	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	//tracks mouse
+	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+	{
+		Track_Mouse(win);
+	}
+
 	// Render
 	Render(win);
 }
@@ -37,6 +45,39 @@ void highscoreScene::Loop(GLFWwindow * win)
 //tracks mouse
 void highscoreScene::Track_Mouse(GLFWwindow * win)
 {
+	if ((windowMgr::getInstance()->mouse_y >= 13 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 94 * windowMgr::getInstance()->windowScale))
+	{
+		//this is to highlightplayer 1
+		if (windowMgr::getInstance()->mouse_x <= 524 && windowMgr::getInstance()->mouse_x >= 203)
+		{
+			windowMgr::getInstance()->button_manager = 1;
+		}
+		//this is to highlight player 2
+		else if (windowMgr::getInstance()->mouse_x <= 965 && windowMgr::getInstance()->mouse_x >= 631)
+		{
+			windowMgr::getInstance()->button_manager = 2;
+		}
+	}
+	//this is for main menu button
+	else if ((windowMgr::getInstance()->mouse_x >= 1086 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1469 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 809 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 877 * windowMgr::getInstance()->windowScale))
+	{
+		windowMgr::getInstance()->button_manager = 3;
+	}
+	//this is for main menu button
+	else if ((windowMgr::getInstance()->mouse_y >= 703 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 758 * windowMgr::getInstance()->windowScale))
+	{
+		//this is to highlights left arrow
+		if (windowMgr::getInstance()->mouse_x >= 1127 && windowMgr::getInstance()->mouse_x <= 1203)
+		{
+			windowMgr::getInstance()->button_manager = 4;
+		}
+		//this is to highlight right arrow
+		else if (windowMgr::getInstance()->mouse_x >= 1351 && windowMgr::getInstance()->mouse_x <= 1429)
+		{
+			windowMgr::getInstance()->button_manager = 5;
+		}
+	}
 	windowMgr::getInstance()->ControlsTrackMouse();
 }
 
