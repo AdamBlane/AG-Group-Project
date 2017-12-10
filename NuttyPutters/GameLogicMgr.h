@@ -21,6 +21,7 @@ public:
 	int timeLimit;
 	bool p1Finished, p2Finished;
 	int p1Score, p2Score;
+	int digitLimitForScore = 7;
 	bool gameEnded = false;
 
 
@@ -38,7 +39,7 @@ public:
 	void StartGameClock();
 
 	// Called when player stroke counter incremented
-	void PlayerFired(int playerIndex, Player &player);
+	void PlayerFired(Player &player);
 
 	// Keep clock ticking
 	void Update();
