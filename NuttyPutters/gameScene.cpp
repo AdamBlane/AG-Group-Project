@@ -56,6 +56,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	continuePressed = true;
 	paused = false;
 	gameEnded = false;
+
 	// Set GL properties 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -68,9 +69,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
 
 	// DEMO ON MONDAY PRINT STATEMENTS
-	cout << "\nGAME CONTROLS:" << endl;
-	cout << "Pause - P" << endl;
-	cout << "Reset Player 1 position - R" << endl;
+	//cout << "\nGAME CONTROLS:" << endl;
+	//cout << "Pause - P" << endl;
+	//cout << "Reset Player 1 position - R" << endl;
 
 	// LEVEL GEN	
 	//ofstream seeds("seeds16.csv", ofstream::app);
@@ -149,11 +150,11 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
 	windowMgr::getInstance()->spaceShip->SetTexture(windowMgr::getInstance()->spaceShipTex);
 
-	// TESTING spaceship
-	spaceTrans.getPos() = vec3(0.0f, 10.0f, 0.0f);
+	// Spaceship properties
+	spaceTrans.getPos() = vec3(10.0f, 100.0f, 0.0f);
 	spaceTrans.getScale() = vec3(6.0f);
 
-	//windowMgr::getInstance()->spaceShip->SetTexture
+	
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
@@ -164,8 +165,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 	// Setup wormhole stuff for both players (regardless of player mode)
 	Transform wormholeTransform;
-	// Place under end hole
-	//wormholeTransform.getPos() = masterAlgTiles[currentLevel].back()->thisCoords;
 	wormholeTransform.getPos().y = -489;
 	// To face upwards
 	wormholeTransform.getRot().x = -1.5708;
@@ -183,18 +182,23 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	wormholeTransform2.getScale() = vec3(0);
 	wormholeTransforms.push_back(wormholeTransform2);
 
-	//wormholeTransform.getScale() = vec3(1);
+
 	// Set pickup crate properties
 	SetupPickupCrates();
 
+	SetupWorldClock();
 	// Set dt based on player count
 	dt = (playerCount * 0.01) - 0.002;
 	//dt = 0.012;
 
 
-	// Start game logic mgr
-	// Pass in end hole position for two player mode
-	gameLogicMgr.Setup(numPlayers, courseSize);
+	
+	// Perform game logic and UI setup
+	// World clock should appear over end hole - pass in end hole position and direction
+
+
+	gameLogicMgr.Setup(numPlayers);
+
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -453,6 +457,112 @@ void gameScene::SetupPickupCrates()
 	}
 }
 
+// Sets up world clock on level load
+void gameScene::SetupWorldClock()
+{
+	// Clear from any previous level
+	worldClockTransforms.clear();
+	// Set position of clock to just above end hole
+	vec3 endPos = masterAlgTiles[currentLevel].back()->thisCoords;
+	// Find direction of end hole
+	string dir;
+	// Hacking this for now
+	if (masterAlgTiles[currentLevel].back()->outDir.going_down)
+	{
+		dir = "down";
+		// Setup world clock initial texture values, and transform values
+		for (int i = 0; i < windowMgr::getInstance()->worldClockMeshes.size(); i++)
+		{
+			Transform trans;
+			trans.getScale() = vec3(1);
+			if (i == 2) // Put colon in middle
+				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
+			else
+				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+			// Set pos
+			trans.getPos() = (vec3((endPos.x + 5.0f) - (i * 2.5), 4.0f, endPos.z));
+			// Then rotate based on direction of end hole
+			trans.getRot().y = 3.14159;
+
+			// Add to list
+			worldClockTransforms.push_back(trans);
+		}
+	}
+	else if (masterAlgTiles[currentLevel].back()->outDir.going_up)
+	{
+		dir = "up";
+		// Setup world clock initial texture values, and transform values
+		for (int i = 0; i < windowMgr::getInstance()->worldClockMeshes.size(); i++)
+		{
+			Transform trans;
+			trans.getScale() = vec3(1);
+			if (i == 2) // Put colon in middle
+				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
+			else
+				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+			// Set pos
+			trans.getPos() = (vec3((endPos.x - 5.0f) + (i * 2.5), 4.0f, endPos.z));
+			// Then rotate based on direction of end hole
+			// Auto spawns correct rotation when dir is up
+
+			// Add to list
+			worldClockTransforms.push_back(trans);
+		}
+	}	
+	else if (masterAlgTiles[currentLevel].back()->outDir.going_left)
+	{
+		dir = "left";
+		// Setup world clock initial texture values, and transform values
+		for (int i = 0; i < windowMgr::getInstance()->worldClockMeshes.size(); i++)
+		{
+			Transform trans;
+			trans.getScale() = vec3(1);
+			if (i == 2) // Put colon in middle
+				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
+			else
+				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+			// Set pos
+			trans.getPos() = (vec3(endPos.x, 4.0f, (endPos.z + 5.0f) - (i * 2.5)));
+			// Then rotate based on direction of end hole
+			trans.getRot().y = 1.5708;
+
+			// Add to list
+			worldClockTransforms.push_back(trans);
+		}
+	}
+	else if (masterAlgTiles[currentLevel].back()->outDir.going_right)
+	{
+		dir = "right";
+		// Setup world clock initial texture values, and transform values
+		for (int i = 0; i < windowMgr::getInstance()->worldClockMeshes.size(); i++)
+		{
+			Transform trans;
+			trans.getScale() = vec3(1);
+			if (i == 2) // Put colon in middle
+				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
+			else
+				windowMgr::getInstance()->worldClockMeshes.at(i)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+
+			// Set pos
+			trans.getPos() = (vec3(endPos.x, 4.0f, (endPos.z - 5.0f) + (i * 2.5)));
+			// Then rotate based on direction of end hole
+			trans.getRot().y = -1.5708;
+
+			// Add to list
+			worldClockTransforms.push_back(trans);
+		}
+	}
+
+	cout << dir << endl;
+
+}
+
+// Sets up world clock on level load
+
+
 // Called from pause menu; screenshots and saves current level to file
 void gameScene::Save_Level(GLFWwindow* win)
 {
@@ -689,7 +799,7 @@ void gameScene::FirePress(Player &p)
 		}
 	}
 
-	cout << p.power << endl;
+	//cout << p.power << endl;
 	// Update power bar indicator
 	gameLogicMgr.UpdatePowerBar(p);
 
@@ -788,7 +898,7 @@ void gameScene::Pause(GLFWwindow* window)
 			windowMgr::getInstance()->ControlsInputController();
 			windowMgr::getInstance()->ControlsTrackMouse();
 			windowMgr::getInstance()->returnToGame = true;
-			cout << "Input" << endl;
+			//cout << "Input" << endl;
 		}
 		else if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x && windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 		{
@@ -1466,6 +1576,8 @@ void gameScene::CheckLoadNextLevel()
 					changedLevel = true;
 					// Respawn pickup crates
 					SetupPickupCrates();
+					// Reset world clock
+					SetupWorldClock();
 				}
 			}
 
@@ -1523,7 +1635,7 @@ void gameScene::Update(GLFWwindow* window)
 
 	// Update game clock
 	if (!gameEnded)
-		gameLogicMgr.Update();
+		gameLogicMgr.UpdateClock();
 
 
 	// Free cam stuff
@@ -1590,6 +1702,7 @@ void gameScene::Update(GLFWwindow* window)
 	//cout << "FPS:" << fps << endl;
 
 
+
 	// Update each player
 	for (auto &p : players)
 	{
@@ -1614,8 +1727,6 @@ void gameScene::Update(GLFWwindow* window)
 		// Update p arrow mesh position to follow player
 		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
 	}
-
-
 
 }
 
@@ -1863,7 +1974,6 @@ void gameScene::Render(GLFWwindow* window)
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 				m->Draw();
 			}
-			// Render HUD clock for p1
 		}
 		// 2P Game Mode: Normal, unpaused, gameplay
 		else
@@ -1892,7 +2002,6 @@ void gameScene::Render(GLFWwindow* window)
 	// Bind texture shader
 	windowMgr::getInstance()->textureShader->Bind();
 
-
 	// DRAW WORMHOLES
 	for (int i = 0; i < wormholeTransforms.size(); i++)
 	{
@@ -1900,8 +2009,6 @@ void gameScene::Render(GLFWwindow* window)
 		windowMgr::getInstance()->textureShader->Update(wormholeTransforms[i], mvp);
 		windowMgr::getInstance()->wormholeMeshes[i]->Draw();
 	}
-
-
 
 	// DRAW all level tiles
 	for (auto &t : masterTiles[currentLevel])
@@ -1913,6 +2020,14 @@ void gameScene::Render(GLFWwindow* window)
 	//{
 	//	t.drawTile(windowMgr::getInstance()->textureShader, mvp);
 	//}
+
+	// Draw world clock
+	for (int i = 0; i < worldClockTransforms.size(); i++)
+	{
+		windowMgr::getInstance()->worldClockMeshes[i]->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(worldClockTransforms[i], mvp);
+		windowMgr::getInstance()->worldClockMeshes[i]->Draw();
+	}
 
 	windowMgr::getInstance()->spaceShip->thisTexture.Bind(0);
 	windowMgr::getInstance()->textureShader->Update(spaceTrans, mvp);
@@ -1928,13 +2043,7 @@ void gameScene::Render(GLFWwindow* window)
 		// Putting the above code below the arrow rendering gives odd behaviour of arrow
 		// Perhaps due to reuse of texture being rebound?
 
-		// Draw world clock
-		for (auto &m : windowMgr::getInstance()->worldClock)
-		{
-			m->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
-			m->Draw();
-		}
+
 
 		// Draw pickup crates
 		for (auto &ppi : pickupPositionIndices)
@@ -1960,11 +2069,6 @@ void gameScene::Render(GLFWwindow* window)
 	players[0].arrowTransform.setRot(glm::vec3(0, -players[0].chaseCamAngle - 1.5708, 0));
 
 
-
-	// TEST
-	//windowMgr::getInstance()->reboundEffectMesh->thisTexture.Bind(0);
-	//windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
-	//windowMgr::getInstance()->reboundEffectMesh->Draw();
 
 	// If ball is not moving draw arrow (ie dont draw arrow when ball moving as not needed)
 	if (!players[0].isMoving) // was !golfBallMoving
@@ -2023,12 +2127,12 @@ void gameScene::Render(GLFWwindow* window)
 		// Bind texture shader
 		windowMgr::getInstance()->textureShader->Bind();
 
-		// DRAW WORLD CLOCK
-		for (auto &m : windowMgr::getInstance()->worldClock)
+		// Draw world clock
+		for (int i = 0; i < worldClockTransforms.size(); i++)
 		{
-			m->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, mvp2);
-			m->Draw();
+			windowMgr::getInstance()->worldClockMeshes[i]->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(worldClockTransforms[i], mvp2);
+			windowMgr::getInstance()->worldClockMeshes[i]->Draw();
 		}
 
 		// Draw pickup crates

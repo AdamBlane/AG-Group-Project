@@ -33,7 +33,7 @@ public:
 
 
 	// Setup start of game HUD
-	void Setup(int numPlayers, int diff);
+	void Setup(int numPlayers);
 
 	// Start game clock
 	void StartGameClock();
@@ -42,7 +42,7 @@ public:
 	void PlayerFired(Player &player);
 
 	// Keep clock ticking
-	void Update();
+	void UpdateClock();
 
 
 	// Update user power bar
