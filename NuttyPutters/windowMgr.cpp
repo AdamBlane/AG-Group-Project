@@ -152,12 +152,14 @@ void windowMgr::LoadAssets()
 	wormholeMeshes.push_back(wormholeMesh);
 	wormholeMeshes.push_back(wormholeMesh2);
 
+	// 2D Meshes
 	// Initialise general use HUD meshes
 	for (int i = 0; i < 45; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
 	}
+	// Setup player meshes
 	for (int i = 0; i < 4; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); 
@@ -165,21 +167,28 @@ void windowMgr::LoadAssets()
 		Mesh* mesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f);
 		p2HUDmeshes.push_back(mesh2);
 	}
+	// Setup HUD clock meshes
+	for (int i = 0; i < 5; i++)
+	{
+		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f);
+		HUDclockMeshes.push_back(mesh);
+	}
 
-	//Meshes used for printing score 
+	//Meshes used for printing p1 score 
 	for (int i = 0; i < 20; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		player1ScoreMeshes.push_back(mesh);
 	}
 
+	//Meshes used for printing p2 score 
 	for (int i = 0; i < 20; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f);
-
 		player2ScoreMeshes.push_back(mesh);
 	}
 
+	// Different scoreboard backgrounds
 	for (int i = 0; i < 4; ++i)
 	{
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f);
@@ -209,9 +218,14 @@ void windowMgr::LoadAssets()
 		imagePanelMeshes.push_back(mesh);
 	}
 		
+	// World clock meshes
+	for (int i = 0; i < 5; i++)
+	{
+		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 4.0f, 0.0f), 5.0f, 5.0f);
+		worldClockMeshes.push_back(mesh);
+	}
 
-
-	// Initialise unique meshes
+	// 3D Meshes
 	// Player meshes
 	player1Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
 	player2Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
@@ -225,16 +239,11 @@ void windowMgr::LoadAssets()
 		pickupCrateMeshes.push_back(new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f, 1.0f));
 	}
 
-	// World clock meshes
-	for (int i = 0; i < 5; i++)
-	{
-		Mesh* mesh = new Mesh(Mesh::CUBOID, vec3(-5.0f + (i * 2.5), 8.0f, 0.0f), 5.0f, 5.0f, 5.0f);
-		worldClock.push_back(mesh);
-	}
+
 
 	///////////////////// SPACESHIP ///////////////////
-	spaceShip = new Mesh("..\\NuttyPutters\\sphere.obj");
-	spaceShipTex = new Texture("..\\NuttyPutters\\tex.png");
+	spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");
+	spaceShipTex = new Texture("..\\NuttyPutters\\DiffuseTexture.png");
 
 	// ############################ TEXTURES ############################
 

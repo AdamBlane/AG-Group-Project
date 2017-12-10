@@ -35,6 +35,8 @@ class UI
 	// Sets up basic HUD layout 
 	void p1Setup();
 	void p2Setup();
+	// Sets up game clock mesh
+	void SetupClock();
 	// Update game clock
 	void UpdateHUDClock(int time);
 	// Update world clock
