@@ -132,7 +132,7 @@ void GameLogicMgr::SetScore(Player &player)
 		// Set end time
 		player.totalTime = elapsedTime;
 		// Set final score - multiply time by strokes. Divide by 10 for smaller form
-		player.finalScore = floor((player.totalTime * player.strokeCounter) / 10);
+		player.finalScore = (player.totalTime * player.strokeCounter) / 10;
 
 	}	
 }
@@ -145,11 +145,14 @@ void GameLogicMgr::ShowEndgameScoreboard(vector<Player> players)
 	{
 		// Invoke UI to set hud textures for player score
 		uiMgr.p1GameScoreboard(players[0].finalScore);
+		p1Score = players[0].finalScore;
 	}
 	// Else if 2 player mode, print both player scores
 	else if (players.size() == 2)
 	{
 		uiMgr.p2GameScoreboard(players[0].finalScore, players[1].finalScore);
+		p1Score = players[0].finalScore;
+		p2Score = players[1].finalScore;
 	}
 }
 

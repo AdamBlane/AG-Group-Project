@@ -47,10 +47,10 @@ void UI::p2GameScoreboard(int p1Score, int p2Score)
 {
 	// Aspect ratio for scaling textures
 	vec2 ratio = vec2(1.0f, 0.25f);
-
 	// Player 1
+	scoreP1 = p1Score;
 	// Convert int score to string
-	string score1 = to_string(p1Score);
+	string score1 = to_string(scoreP1);
 	// HUD mesh positions
 	float pos1 = 1 - (ratio.x / 4.0f);
 	for (int i = 1; i < score1.length(); i++)
@@ -70,6 +70,7 @@ void UI::p2GameScoreboard(int p1Score, int p2Score)
 	}
 
 	// Player 2
+	scoreP2 = p2Score;
 	// Convert to string
 	string score2 = to_string(scoreP2);
 	// HUD mesh positions
@@ -86,7 +87,7 @@ void UI::p2GameScoreboard(int p1Score, int p2Score)
 		int thisNum = score2[c] - 48;
 
 		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetScale(ratio.x, ratio.y);
-		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetPos(vec3(pos2 + ((ratio.x / 4.0f) * c), -0.50f, 0.0f));
+		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetPos(vec3(pos2 + ((ratio.x / 4.0f) * c), -0.30f, 0.0f));
 		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetTexture(windowMgr::getInstance()->numberTextures.at(thisNum));
 	}
 
