@@ -85,7 +85,10 @@ public:
 
 	// Prevent saving same level more than once
 	bool levelSaved = false;
-	bool continuePressed, resetPressed = false;;
+	bool continuePressed, resetPressed = false;
+
+	// If the user selects the controls option in the pause screen
+	bool doesUserWantControls = false;
 
 	// Setup GLFW joystick button input - required for doing anything with buttons
 	int controllerOneButtonCount;
