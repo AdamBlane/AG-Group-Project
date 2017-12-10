@@ -553,14 +553,14 @@ void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 
 		// Save this level 
 	case 2:
-		//Save_Level(win);
+		Save_Level(win);
 		break;
 		// Exit to main menu
 		//This case resets the scene to an empty screen
 	case 3:
 		// Setup control screen meshes
 		// gameLogicMgr.ShowControlScreen -> UImgr.ShowControlScreen
-		doesUserWantControls = true;
+		windowMgr::getInstance()->doesUserWantControls = true;
 		break;
 	case 4:
 		// glLoadIdentity(); might need this later
@@ -774,22 +774,28 @@ void gameScene::Pause(GLFWwindow* window)
 		windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
 		glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 		//tracks mouse
+
 		if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 		{
 			Track_mouse(window);
 		}
-    }
+
 		// If user on coontrol screen
-		if (doesUserWantControls)
+
+		if (windowMgr::getInstance()->doesUserWantControls)
 		{
 			windowMgr::getInstance()->ControlsInputKeyboard();
 			windowMgr::getInstance()->ControlsInputController();
 			windowMgr::getInstance()->ControlsTrackMouse();
+			windowMgr::getInstance()->returnToGame = true;
 			cout << "Input" << endl;
+		}
+		else if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x && windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+		{
+			Track_mouse(window);
+		}
+		//************************** KEYBOARD MOVEMENT //
 
-
-
-		// Item selection
 		if (glfwGetKey(window, GLFW_KEY_ENTER))
 		{
 			windowMgr::getInstance()->enterPressed = true;
@@ -799,13 +805,14 @@ void gameScene::Pause(GLFWwindow* window)
 			if (windowMgr::getInstance()->enterPressed)
 			{
 				// If clicking save level, don't unpause
-				if (currentMenuItem != 2)
-					//paused = false;
-
+				if (currentMenuItem != 2 && currentMenuItem != 3)
+				{
+					paused = false;
+				}
 				// Perform action clicked
 				Click_Or_Enter(window, paused);
 				// Flip flag
-				//windowMgr::getInstance()->enterPressed = false;
+				windowMgr::getInstance()->enterPressed = false;
 			}
 		}
 
@@ -817,12 +824,12 @@ void gameScene::Pause(GLFWwindow* window)
 		{
 			if (windowMgr::getInstance()->mouseLpressed)
 			{
-				if (currentMenuItem != 2)
+				if (currentMenuItem != 2 && currentMenuItem != 3)
 				{
-					//paused = false;
+					paused = false;
 				}
 				Click_Or_Enter(window, paused);
-				//windowMgr::getInstance()->mouseLpressed = false;
+				windowMgr::getInstance()->mouseLpressed = false;
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_UP))
@@ -848,7 +855,7 @@ void gameScene::Pause(GLFWwindow* window)
 					currentMenuItem--;
 				}
 				ChangeTextures(window);
-				//windowMgr::getInstance()->upPressed = false;
+				windowMgr::getInstance()->upPressed = false;
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN))
@@ -869,10 +876,11 @@ void gameScene::Pause(GLFWwindow* window)
 				{
 					currentMenuItem++;
 				}
-				//windowMgr::getInstance()->downPressed = false;
+				windowMgr::getInstance()->downPressed = false;
 				ChangeTextures(window);
 			}
 		}
+		//*********************************** KEYBOARD MOVEMENT END//
 		// Increase time delay tracker (prevents enter/Lclick reoccuring from last scene)
 		if (total_time <= 5.0f)
 		{
@@ -1741,7 +1749,7 @@ void gameScene::Render(GLFWwindow* window)
 	// Display HUD (exact meshes to draw depend on player count)
 	if (paused == true)
 	{
-		if (doesUserWantControls)
+		if (windowMgr::getInstance()->doesUserWantControls)
 		{
 			for (int i = 1; i < 42; i++)
 			{
@@ -1750,22 +1758,25 @@ void gameScene::Render(GLFWwindow* window)
 				windowMgr::getInstance()->controllerMeshes.at(i)->Draw();
 			}
 		}
-		else if (numPlayers == 1)
+		else
 		{
-			for (int i = 9; i <= 13; i++)
+			if (numPlayers == 1)
 			{
-				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-				windowMgr::getInstance()->meshes.at(i)->Draw();
+				for (int i = 9; i <= 13; i++)
+				{
+					windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+					windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+					windowMgr::getInstance()->meshes.at(i)->Draw();
+				}
 			}
-		}
-		else if (numPlayers == 2)
-		{
-			for (int i = 8; i <= 12; i++)
+			else if (numPlayers == 2)
 			{
-				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-				windowMgr::getInstance()->meshes.at(i)->Draw();
+				for (int i = 8; i <= 12; i++)
+				{
+					windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+					windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+					windowMgr::getInstance()->meshes.at(i)->Draw();
+				}
 			}
 		}
 
@@ -1845,11 +1856,11 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		if (numPlayers == 1)
 		{
-			for (int i = 0; i < 9; i++)
+			for (auto &m : windowMgr::getInstance()->p1HUDmeshes)
 			{
-				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				m->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-				windowMgr::getInstance()->meshes.at(i)->Draw();
+				m->Draw();
 			}
 		}
 		else

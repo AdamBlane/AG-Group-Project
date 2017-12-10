@@ -126,13 +126,7 @@ void windowMgr::LoadAssets()
 	chaseCams.push_back(p2ChaseCam);
 
 
-	Mesh* wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
-	Mesh* wormholeMesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
-	wormholeTexture = new Texture("..\\NuttyPutters\\wormhole.jpg");
-	wormholeMesh->SetTexture(wormholeTexture);
-	wormholeMesh2->SetTexture(wormholeTexture);
-	wormholeMeshes.push_back(wormholeMesh);
-	wormholeMeshes.push_back(wormholeMesh2);
+	
 	// ############################ AUDIO ############################
 	// Init fmod system
 	FMOD::System_Create(&system);
@@ -150,7 +144,13 @@ void windowMgr::LoadAssets()
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
 
 	// ############################ MESHES ############################
-
+	Mesh* wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+	Mesh* wormholeMesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+	wormholeTexture = new Texture("..\\NuttyPutters\\wormhole.jpg");
+	wormholeMesh->SetTexture(wormholeTexture);
+	wormholeMesh2->SetTexture(wormholeTexture);
+	wormholeMeshes.push_back(wormholeMesh);
+	wormholeMeshes.push_back(wormholeMesh2);
 
 	// Initialise general use HUD meshes
 	for (int i = 0; i < 45; ++i)
@@ -158,7 +158,13 @@ void windowMgr::LoadAssets()
 		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		meshes.push_back(mesh);
 	}
-
+	for (int i = 0; i < 4; ++i)
+	{
+		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); 
+		p1HUDmeshes.push_back(mesh);
+		Mesh* mesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f);
+		p2HUDmeshes.push_back(mesh2);
+	}
 
 	//Meshes used for printing score 
 	for (int i = 0; i < 20; ++i)
@@ -186,8 +192,15 @@ void windowMgr::LoadAssets()
 	{
 		Mesh* conmeshes = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		controllerMeshes.push_back(conmeshes);
-
 	}
+
+	// Image viewer panel meshes used in load game scene
+	for (int i = 0; i < 9; i++)
+	{
+		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+		imagePanelMeshes.push_back(mesh);
+	}
+		
 
 
 	// Initialise unique meshes
@@ -1813,8 +1826,16 @@ void windowMgr::ControlsTrackClick()
 			cout << "Outputting control for keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
 			cout << "Outputting control for keyboard two " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
 		}
-		// Change back to main menu
-		//windowMgr::getInstance()->sceneManager.changeScene(1);
+		// 
+		if (returnToGame)
+		{
+			doesUserWantControls = false;
+		}
+		else
+		{
+			// Change back to main menu
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+		}
 		break;
 		//left arrow function
 	case 4:
