@@ -242,7 +242,7 @@ void windowMgr::LoadAssets()
 
 
 	///////////////////// SPACESHIP ///////////////////
-	spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");
+	//spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");
 	spaceShipTex = new Texture("..\\NuttyPutters\\DiffuseTexture.png");
 
 	// ############################ TEXTURES ############################
@@ -641,7 +641,7 @@ void windowMgr::LoadAssets()
 	{
 		// Assign the psoition, score and name to the arrays from the file
 		playerOneXboxFile >> playerXboxControls[0][l];
-		cout << "Controller one " << playerXboxControls[0][l] << endl;
+		//cout << "Controller one " << playerXboxControls[0][l] << endl;
 	}
 
 	//*************XBOX PLAYER TWO *****************//
@@ -673,7 +673,7 @@ void windowMgr::LoadAssets()
 	{
 		// Assign the psoition, score and name to the arrays from the file
 		playerTwoXboxFile >> playerXboxControls[1][l];
-		cout << "Controller two " << playerXboxControls[1][l] << endl;
+		//cout << "Controller two " << playerXboxControls[1][l] << endl;
 	}
 
 	//*************KEYBOARD PLAYER ONE *****************//
@@ -706,7 +706,7 @@ void windowMgr::LoadAssets()
 		// Assign the psoition, score and name to the arrays from the file
 		playerOneKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[0][l];
 		// Output them to the screen
-		cout << "Keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
+		//cout << "Keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
 	}
 
 	//*************KEYBOARD PLAYER TWO *****************//
@@ -739,7 +739,7 @@ void windowMgr::LoadAssets()
 		// Assign the psoition, score and name to the arrays from the file
 		playerTwoKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[1][l];
 		// Output them to the screen
-		cout << "Keyboard 2 " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
+		//cout << "Keyboard 2 " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
 	}
 
 
@@ -1607,6 +1607,10 @@ void windowMgr::ControlsButtonsSetup()
 		{
 			windowMgr::getInstance()->controllerMeshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[99]);
 		}
+		else if (windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][allKeyboardFunctions] == 999) // SPACE
+		{
+			windowMgr::getInstance()->controllerMeshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+		}
 	}
 
 	//******CONTROLLER SETUP*************//
@@ -1872,8 +1876,8 @@ void windowMgr::ControlsTrackClick()
 				outputFileP2Keyboard << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
 				//cout << "Outputting control for controller one " << windowMgr::getInstance()->playerXboxControls[0][l] << endl;
 				//cout << "Outputting control for controller two " << windowMgr::getInstance()->playerXboxControls[1][l] << endl;
-				//cout << "Outputting control for keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
-				//cout << "Outputting control for keyboard two " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
+				cout << "Outputting control for keyboard one. Function  " << l  << " " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
+				cout << "Outputting control for keyboard two. Function  " << l << " " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
 			}
 
 			// Check if by pressing the back button, does the app need to return to main menu or the game
@@ -3172,13 +3176,20 @@ void windowMgr::ControlsUpdateKeyboard(int keyboardButtonNumber, int additionalN
 		// Find the index of the gameKeyboardFunctions which has a value of 999
 		indexAt99 = std::distance(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], std::find(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], windowMgr::getInstance()->playerKeyboardControls[playerTab - 1] + 10, 999));
 		// Find the index of the function which is assigned to the button that has just been pressed
-		indexAtKey = std::distance(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], std::find(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], windowMgr::getInstance()->playerKeyboardControls[playerTab - 1] + 10, keyboardButtonNumber + additionalNumber));
+		indexAtKey1 = std::distance(windowMgr::getInstance()->playerKeyboardControls[0], std::find(windowMgr::getInstance()->playerKeyboardControls[0], windowMgr::getInstance()->playerKeyboardControls[0] + 10, keyboardButtonNumber + additionalNumber));
+		indexAtKey2 = std::distance(windowMgr::getInstance()->playerKeyboardControls[1], std::find(windowMgr::getInstance()->playerKeyboardControls[1], windowMgr::getInstance()->playerKeyboardControls[1] + 10, keyboardButtonNumber + additionalNumber));
 		// Check if button just pressed has a function assigned to it ------- player/GLFW button input key
-		if (windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAtKey] == keyboardButtonNumber + additionalNumber)
+		if ((windowMgr::getInstance()->playerKeyboardControls[0][indexAtKey1] == keyboardButtonNumber + additionalNumber))
 		{
 			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-			windowMgr::getInstance()->controllerMeshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]); // Updates appripriate mesh with ???
-			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAtKey] = 999; 
+			windowMgr::getInstance()->controllerMeshes.at(27 + indexAtKey1)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]); // Updates appripriate mesh with ???
+			windowMgr::getInstance()->playerKeyboardControls[0][indexAtKey1] = 999;
+		}
+		else if ((windowMgr::getInstance()->playerKeyboardControls[1][indexAtKey2] == keyboardButtonNumber + additionalNumber))
+		{
+			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+			windowMgr::getInstance()->controllerMeshes.at(27 + indexAtKey2)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]); // Updates appripriate mesh with ???
+			windowMgr::getInstance()->playerKeyboardControls[1][indexAtKey2] = 999;
 		}
 
 		// Make the original empty function equal to the button
@@ -3186,16 +3197,21 @@ void windowMgr::ControlsUpdateKeyboard(int keyboardButtonNumber, int additionalN
 		windowMgr::getInstance()->controllerMeshes.at(27 + indexAt99)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[keyboardButtonNumber]);
 
 		// Check if a function is equal to 99
-		if (windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][0] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][1] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][2] == 999 ||
-			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][3] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][4] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][5] == 999 ||
-			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][6] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][7] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][8] == 999 ||
-			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][9] == 999)
+		if (windowMgr::getInstance()->playerKeyboardControls[0][0] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][1] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][2] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[0][3] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][4] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][5] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[0][6] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][7] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][8] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[0][9] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][0] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][1] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][2] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[1][3] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][4] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][5] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[1][6] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][7] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][8] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[1][9] == 999)
 		{
 			isFunctionEmptyKeyboard = true; // Set bool to true if a function is empty
+			cout << "Good" << endl;
 		}
 		else
 		{
 			isFunctionEmptyKeyboard = false; // Set bool to false if no function is empty
+			cout << "Bad" << endl;
 		}
 	}
 	else

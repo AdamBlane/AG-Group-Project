@@ -304,6 +304,8 @@ class windowMgr
 		int indexAt99 = 0; // Used for remapping the keyboard
 		int indexAtButton = 0; // Used for remapping the keyboard
 		int indexAtKey = 0; // Used for remapping the keyboard
+		int indexAtKey1 = 0; // Used for remapping the keyboard
+		int indexAtKey2 = 0; // Used for remapping the keyboard
 		bool isFunctionEmpty = false; // Used for remapping the keyboard
 		bool isFunctionEmptyKeyboard = false; // Used for remapping the keyboard
 		bool keyboardButtonPressed[100] = { false }; // Stores all the booleans for button pressing on keyboard
