@@ -57,7 +57,7 @@ void GameLogicMgr::StartGameClock()
 // Called after a player fired a shot
 // Checks against stroke limit if this is 1 player mode
 // Updates UI to refelct increase to strokeCounter
-void GameLogicMgr::PlayerFired(int playerIndex, Player &player)
+void GameLogicMgr::PlayerFired(Player &player)
 {
 	// Only allows for 2 digits of stroke count
 	if (player.strokeCounter < 100)
@@ -69,13 +69,13 @@ void GameLogicMgr::PlayerFired(int playerIndex, Player &player)
 			// TODO
 
 			// Update UI - tell it which player to update for and its stroke value
-			uiMgr.UpdateStrokeCounter(playerIndex, player.strokeCounter);
+			uiMgr.UpdateStrokeCounter(player.id - 1, player.strokeCounter);
 		}
 		else if (players == 2)
 		{
 
 			// Update UI
-			uiMgr.UpdateStrokeCounter(playerIndex, player.strokeCounter);
+			uiMgr.UpdateStrokeCounter(player.id - 1, player.strokeCounter);
 		}
 	}
 	

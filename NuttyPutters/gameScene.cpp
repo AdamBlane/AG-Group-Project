@@ -741,7 +741,7 @@ void gameScene::FireRelease(Player &p)
 	// Increment player stroke counter
 	p.strokeCounter++;
 	// Get game logic to call UI update to reflect updated stroke counter
-	gameLogicMgr.PlayerFired(p.id - 1, p);
+	gameLogicMgr.PlayerFired(p);
 	// And we're off! 
 	p.isMoving = true;
 
@@ -1732,6 +1732,7 @@ void gameScene::Render(GLFWwindow* window)
 	// Display HUD (exact meshes to draw depend on player count)
 	if (paused == true)
 	{
+		// If clicked on control option in pause screen, show control option screen
 		if (windowMgr::getInstance()->doesUserWantControls)
 		{
 			for (int i = 1; i < 42; i++)
@@ -1741,6 +1742,7 @@ void gameScene::Render(GLFWwindow* window)
 				windowMgr::getInstance()->controllerMeshes.at(i)->Draw();
 			}
 		}
+		// Otherwise show pause screen meshes
 		else
 		{
 			if (numPlayers == 1)
@@ -1834,7 +1836,20 @@ void gameScene::Render(GLFWwindow* window)
 	}
 	else if (!gameEnded)
 	{
+		// 1P Game Mode: Normal, unpaused, gameplay
 		if (numPlayers == 1)
+		{
+			// render HUD meshes for p1
+			for (auto &m : windowMgr::getInstance()->p1HUDmeshes)
+			{
+				m->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				m->Draw();
+			}
+			// Render HUD clock for p1
+		}
+		// 2P Game Mode: Normal, unpaused, gameplay
+		else
 		{
 			for (auto &m : windowMgr::getInstance()->p1HUDmeshes)
 			{
@@ -1842,15 +1857,7 @@ void gameScene::Render(GLFWwindow* window)
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 				m->Draw();
 			}
-		}
-		else
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-				windowMgr::getInstance()->meshes.at(i)->Draw();
-			}
+
 		}
 	}
 
@@ -1968,15 +1975,20 @@ void gameScene::Render(GLFWwindow* window)
 
 		// Render player 2's chase camera
 		mvp2 = windowMgr::getInstance()->chaseCams[1]->get_Projection() * windowMgr::getInstance()->chaseCams[1]->get_View();
-
+		// Set depth range for hud rendering
 		glDepthRange(0, 0.01);
 
-		// TODO HUD stuff
-		for (int i = 4; i < 8; i++)
+
+		// Only render if game hasn't ended
+		if (!gameEnded)
 		{
-			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(i)->Draw();
+			// Show p2 hud meshes
+			for (auto &m : windowMgr::getInstance()->p2HUDmeshes)
+			{
+				m->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				m->Draw();
+			}
 		}
 
 

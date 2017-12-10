@@ -38,7 +38,7 @@ public:
 	void StartGameClock();
 
 	// Called when player stroke counter incremented
-	void PlayerFired(int playerIndex, Player &player);
+	void PlayerFired(Player &player);
 
 	// Keep clock ticking
 	void Update();
