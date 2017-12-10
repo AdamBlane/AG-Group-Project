@@ -776,7 +776,7 @@ void gameScene::Pause(GLFWwindow* window)
 		if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 		{
 			Track_mouse(window);
-    }
+	    }
 		// If user on coontrol screen
 		if (doesUserWantControls)
 		{
@@ -786,7 +786,7 @@ void gameScene::Pause(GLFWwindow* window)
 			cout << "Input" << endl;
 
 
-
+		}
 		// Item selection
 		if (glfwGetKey(window, GLFW_KEY_ENTER))
 		{
@@ -803,7 +803,7 @@ void gameScene::Pause(GLFWwindow* window)
 				// Perform action clicked
 				Click_Or_Enter(window, paused);
 				// Flip flag
-				//windowMgr::getInstance()->enterPressed = false;
+				windowMgr::getInstance()->enterPressed = false;
 			}
 		}
 
@@ -817,10 +817,10 @@ void gameScene::Pause(GLFWwindow* window)
 			{
 				if (currentMenuItem != 2)
 				{
-					//paused = false;
+					paused = false;
 				}
 				Click_Or_Enter(window, paused);
-				//windowMgr::getInstance()->mouseLpressed = false;
+				windowMgr::getInstance()->mouseLpressed = false;
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_UP))
@@ -846,7 +846,7 @@ void gameScene::Pause(GLFWwindow* window)
 					currentMenuItem--;
 				}
 				ChangeTextures(window);
-				//windowMgr::getInstance()->upPressed = false;
+				windowMgr::getInstance()->upPressed = false;
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN))
@@ -867,7 +867,7 @@ void gameScene::Pause(GLFWwindow* window)
 				{
 					currentMenuItem++;
 				}
-				//windowMgr::getInstance()->downPressed = false;
+				windowMgr::getInstance()->downPressed = false;
 				ChangeTextures(window);
 			}
 		}
