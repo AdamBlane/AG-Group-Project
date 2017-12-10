@@ -344,7 +344,7 @@ vector<int> courseGenV2::SetupSeed(string seed, int courseLength)
 	if (seed == "seed") // it's the default value
 	{
 		// Insert start
-		levelSeed.push_back(0);
+		//levelSeed.push_back(0);
 
 		// Seeds file to read
 		ifstream seedsFile;
