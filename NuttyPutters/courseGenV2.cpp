@@ -399,7 +399,6 @@ vector<int> courseGenV2::SetupSeed(string seed, int courseLength)
 		//levelSeed.push_back(9);
 
 
-
 		//levelSeed.push_back(0);
 		//levelSeed.push_back(4);
 		//levelSeed.push_back(5);

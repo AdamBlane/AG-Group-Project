@@ -70,7 +70,7 @@ public:
 	Texture skyTex;
 
 	// Setter for mesh texture takes in a pointer to texture
-	void SetTexture(Texture* tex) { thisTexture = *tex; }
+ 	void SetTexture(Texture* tex) { thisTexture = *tex; }
 
 	// Setter for mesh scale
 	void SetScale(GLfloat size1, GLfloat size2 = 1.0f, GLfloat size3 = 1.0f);

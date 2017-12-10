@@ -54,6 +54,14 @@ class windowMgr
 		// General use HUD meshes
 		vector<Mesh*> meshes;
 
+		//Score numbers
+		vector<Mesh*> player1ScoreMeshes;
+		vector<Mesh*> player2ScoreMeshes;
+
+		// Meshes 
+		vector<Mesh*> controllerMeshes;
+
+
 		// 2P variant world clock meshes
 		vector<Mesh*> worldClock;
 		// Skybox vars
@@ -282,5 +290,29 @@ class windowMgr
 		// On window close
 		void CleanUp();
 
+		// FOR CONTROLS
+		int playerTab = 1; // Set and keep track of what tab we are on - ie player one or two. One by default.
+		int indexAt99 = 0; // Used for remapping the keyboard
+		int indexAtButton = 0; // Used for remapping the keyboard
+		int indexAtKey = 0; // Used for remapping the keyboard
+		bool isFunctionEmpty = false; // Used for remapping the keyboard
+		bool isFunctionEmptyKeyboard = false; // Used for remapping the keyboard
+		bool keyboardButtonPressed[100] = { false }; // Stores all the booleans for button pressing on keyboard
+		bool buttonPressed[18] = { false }; // Stores all the booleans for button pressing on controller
+
+		// Setup initial textures
+		void ControlsTextureSetup();
+		// Setup initial buttons
+		void ControlsButtonsSetup();
+		// Track mouse
+		void ControlsTrackMouse();
+		// Track click
+		void ControlsTrackClick();
+		// Input from keyboard
+		void ControlsInputKeyboard();
+		// Input from controller
+		void ControlsInputController();
+		// Update keyboard keys
+		void ControlsUpdateKeyboard(int keyboardButtonNumber, int additionalNumber);
 };
 

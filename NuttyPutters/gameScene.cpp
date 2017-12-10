@@ -85,9 +85,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	//	seeds << endl;
 	//	algTiles.clear();
 	//}
-	 
-
-	
 
 
 
@@ -197,8 +194,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Start game logic mgr
 	// Pass in end hole position for two player mode
 	gameLogicMgr.Setup(numPlayers, courseSize);
-
-
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -519,21 +514,25 @@ void gameScene::Track_mouse(GLFWwindow* win)
 		&& (windowMgr::getInstance()->mouse_y >= 200 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale))
 	{
 		previousMenuItem = currentMenuItem;
-		if (windowMgr::getInstance()->mouse_y <= 332 * windowMgr::getInstance()->windowScale)
+		if (windowMgr::getInstance()->mouse_y <= 255 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 1;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 456 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 380 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 2;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 580 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 505 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 3;
 		}
-		else if (windowMgr::getInstance()->mouse_y <= 710 * windowMgr::getInstance()->windowScale)
+		else if (windowMgr::getInstance()->mouse_y <= 645 * windowMgr::getInstance()->windowScale)
 		{
 			currentMenuItem = 4;
+		}
+		else if (windowMgr::getInstance()->mouse_y <= 800 * windowMgr::getInstance()->windowScale)
+		{
+			currentMenuItem = 5;
 		}
 		ChangeTextures(win);
 	}
@@ -553,16 +552,21 @@ void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 
 		// Save this level 
 	case 2:
-		Save_Level(win);
+		//Save_Level(win);
 		break;
 		// Exit to main menu
 		//This case resets the scene to an empty screen
 	case 3:
+		// Setup control screen meshes
+		// gameLogicMgr.ShowControlScreen -> UImgr.ShowControlScreen
+		doesUserWantControls = true;
+		break;
+	case 4:
 		// glLoadIdentity(); might need this later
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 		break;
 		// Exit Game
-	case 4:
+	case 5:
 		// Scene 0 is no scene - it runs winMgr.CleanUp() and closes app
 		windowMgr::getInstance()->sceneManager.changeScene(0);
 		break;
@@ -612,10 +616,13 @@ void gameScene::ChangeTextures(GLFWwindow * win)
 		windowMgr::getInstance()->meshes.at(1 + a)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
 		break;
 	case 3:
-		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["controlsBtnUnselected"]);
 		break;
 	case 4:
-		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+		break;
+	case 5:
+		windowMgr::getInstance()->meshes.at(4 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
 		break;
 	}
 	switch (currentMenuItem)
@@ -628,10 +635,13 @@ void gameScene::ChangeTextures(GLFWwindow * win)
 		windowMgr::getInstance()->meshes.at(1 + a)->SetTexture(windowMgr::getInstance()->textures["saveBtnSelected"]);
 		break;
 	case 3:
-		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnSelected"]);
+		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["controlsBtnSelected"]);
 		break;
 	case 4:
-		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnSelected"]);
+		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnSelected"]);
+		break;
+	case 5:
+		windowMgr::getInstance()->meshes.at(4 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnSelected"]);
 		break;
 	}
 
@@ -766,7 +776,16 @@ void gameScene::Pause(GLFWwindow* window)
 		if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 		{
 			Track_mouse(window);
-		}
+    }
+		// If user on coontrol screen
+		if (doesUserWantControls)
+		{
+			windowMgr::getInstance()->ControlsInputKeyboard();
+			windowMgr::getInstance()->ControlsInputController();
+			windowMgr::getInstance()->ControlsTrackMouse();
+			cout << "Input" << endl;
+
+
 
 		// Item selection
 		if (glfwGetKey(window, GLFW_KEY_ENTER))
@@ -779,12 +798,12 @@ void gameScene::Pause(GLFWwindow* window)
 			{
 				// If clicking save level, don't unpause
 				if (currentMenuItem != 2)
-					paused = false;
+					//paused = false;
 
 				// Perform action clicked
 				Click_Or_Enter(window, paused);
 				// Flip flag
-				windowMgr::getInstance()->enterPressed = false;
+				//windowMgr::getInstance()->enterPressed = false;
 			}
 		}
 
@@ -798,10 +817,10 @@ void gameScene::Pause(GLFWwindow* window)
 			{
 				if (currentMenuItem != 2)
 				{
-					paused = false;
+					//paused = false;
 				}
 				Click_Or_Enter(window, paused);
-				windowMgr::getInstance()->mouseLpressed = false;
+				//windowMgr::getInstance()->mouseLpressed = false;
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_UP))
@@ -816,18 +835,18 @@ void gameScene::Pause(GLFWwindow* window)
 				previousMenuItem = currentMenuItem;
 				if (currentMenuItem == 1)
 				{
-					currentMenuItem = 4;
+					currentMenuItem = 5;
 				}
 				else if (currentMenuItem == 0)
 				{
-					currentMenuItem = 4;
+					currentMenuItem = 5;
 				}
 				else
 				{
 					currentMenuItem--;
 				}
 				ChangeTextures(window);
-				windowMgr::getInstance()->upPressed = false;
+				//windowMgr::getInstance()->upPressed = false;
 			}
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN))
@@ -840,7 +859,7 @@ void gameScene::Pause(GLFWwindow* window)
 			previousMenuItem = currentMenuItem;
 			if (windowMgr::getInstance()->downPressed)
 			{
-				if (currentMenuItem == 4)
+				if (currentMenuItem == 5)
 				{
 					currentMenuItem = 1;
 				}
@@ -848,7 +867,7 @@ void gameScene::Pause(GLFWwindow* window)
 				{
 					currentMenuItem++;
 				}
-				windowMgr::getInstance()->downPressed = false;
+				//windowMgr::getInstance()->downPressed = false;
 				ChangeTextures(window);
 			}
 		}
@@ -866,7 +885,6 @@ void gameScene::Pause(GLFWwindow* window)
 // Act on input
 void gameScene::Input(GLFWwindow* window)
 {
-
 	// These functions are for debugging, to be excluded from final game
 	// REST POSITION FUNCTION
 	if (glfwGetKey(window, GLFW_KEY_R))
@@ -977,7 +995,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// Pause
-		if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][2]))
+		if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[p.id - 1][2]) && !gameEnded)
 		{
 			Pause(window);
 		}
@@ -1104,7 +1122,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// Pause
-		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][2]])
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][2]] && !gameEnded)
 		{
 			Pause(window);
 		}
@@ -1231,7 +1249,7 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 		// Pause
-		if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][2]])
+		if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][2]] && !gameEnded)
 		{
 			Pause(window);
 		}
@@ -1363,31 +1381,35 @@ void gameScene::CheckLoadNextLevel()
 		if (players[i].ballInHole && players[i].transform.getPos().y < -450.0f) // Abritrary time period before tp
 		{
 			// If finished last level
-			if (currentLevel == numLevels - 1 && !changedLevel)
+			if (currentLevel == numLevels - 1 && !changedLevel) // don't end after just changing
 			{
-				// This player's game is over! (Locks their camera)
+				// Calculate this players final score
+				gameLogicMgr.SetScore(players[i]);
+
+
+				// This player's game is over! (Locks their camera, prevents score being reset)
 				players[i].gameOver = true;
-				
 
-				// Stop camera from following player
-				players[i].camFollow = false;
-				
-				// Update the total time count for this player 
-				gameLogicMgr.SetEndTime(players[i]);
-				
+
 				// Print game score for this player
-				gameLogicMgr.PrintPlayerScore(players[i]);
+				//gameLogicMgr.PrintPlayerScore(players[i]);
 
-				// Check if both players game over, that's the real gameOver
+				// If 2 players, check if both players game over, that's the real gameOver
 				if (numPlayers == 2 && players[i * -1 + 1].gameOver)
 				{
 					// Flip flag
 					gameEnded = true;
+					// Both players' score are set, print them
+					gameLogicMgr.ShowEndgameScoreboard(players); // pass in players list
+
 				}
 				// Or it's just one player
 				else if (numPlayers == 1)
 				{
+					// Flip flag
 					gameEnded = true;
+					// Player's score is set, print it
+					gameLogicMgr.ShowEndgameScoreboard(players); // pass in players list
 				}
 
 
@@ -1505,7 +1527,7 @@ void gameScene::Update(GLFWwindow* window)
 	// Update chase cams
 	if (numPlayers == 1)
 	{	// Only follow if not just finished the last level
-		if (players[0].camFollow)
+		if (!players[0].gameOver)
 		{
 			windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
 		}
@@ -1515,13 +1537,13 @@ void gameScene::Update(GLFWwindow* window)
 	else if (numPlayers == 2)
 	{
 		// Only follow if not just finished the last level
-		if (players[0].camFollow)
+		if (!players[0].gameOver)
 		{
 			windowMgr::getInstance()->chaseCams[0]->move(players[0].transform.getPos(), players[0].transform.getRot());
 		}
 		windowMgr::getInstance()->chaseCams[0]->update(0.00001);
 		// Only follow if not just finished the last level
-		if (players[1].camFollow)
+		if (!players[1].gameOver)
 		{
 			windowMgr::getInstance()->chaseCams[1]->move(players[1].transform.getPos(), players[1].transform.getRot());
 		}
@@ -1667,7 +1689,8 @@ void gameScene::Collisions()
 void gameScene::Render(GLFWwindow* window)
 {
 	// Check whether to render for 1 or 2 players
-	if (numPlayers == 1 || paused == true)
+	// if the game has ended, reset viewport to normal
+	if (numPlayers == 1 || paused == true || gameEnded)
 	{
 		glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 	}
@@ -1706,46 +1729,124 @@ void gameScene::Render(GLFWwindow* window)
 	// Display HUD (exact meshes to draw depend on player count)
 	if (paused == true)
 	{
+		if (doesUserWantControls)
+		{
+			for (int i = 1; i < 42; i++)
+			{
+				windowMgr::getInstance()->controllerMeshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->controllerMeshes.at(i)->Draw();
+			}
+		}
+		else if (numPlayers == 1)
+		{
+			for (int i = 9; i <= 13; i++)
+			{
+				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(i)->Draw();
+			}
+		}
+		else if (numPlayers == 2)
+		{
+			for (int i = 8; i <= 12; i++)
+			{
+				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(i)->Draw();
+			}
+		}
+
+	} // end if paused is true
+	//HUD for end game
+	//if game has ended for both players
+	else if (gameEnded)
+	{
+		//if number of players is 1
 		if (numPlayers == 1)
 		{
-			for (int i = 9; i <= 12; i++)
+			//render background for player score
+			windowMgr::getInstance()->meshes.at(13)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->meshes.at(13)->Draw();
+
+			//render numbers for printing the score on screen
+			for (int i = 0; i < gameLogicMgr.uiMgr.usedMeshesP1; i++)
+			{
+				windowMgr::getInstance()->player1ScoreMeshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->player1ScoreMeshes.at(i)->Draw();
+			}
+		}
+		//if number of players is 2
+		else if (numPlayers == 2)
+		{
+			//Checks what winning condition is satisfied
+
+			//if p1 has higher score than p2 ->> p2 won
+			if (gameLogicMgr.p1Score > gameLogicMgr.p2Score)
+			{
+				//printing background with "Player 2 won"
+				windowMgr::getInstance()->meshes.at(14)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(14)->Draw();
+
+			}
+			//if p2 has higher score than p1 ->> p1 won
+			else if (gameLogicMgr.p2Score > gameLogicMgr.p1Score)
+			{
+				//printing background with "Player 1 won"
+				windowMgr::getInstance()->meshes.at(13)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(13)->Draw();
+			}
+			//if players have same score
+			else if (gameLogicMgr.p1Score == gameLogicMgr.p2Score)
+			{
+				//printing background with "it's a draw"
+				windowMgr::getInstance()->meshes.at(15)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->meshes.at(15)->Draw();
+			}
+			//End of IF statements
+
+			//printing score for player 1, getting size from UI
+			for (int i = 0; i < gameLogicMgr.uiMgr.usedMeshesP1; i++)
+			{
+				windowMgr::getInstance()->player1ScoreMeshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->player1ScoreMeshes.at(i)->Draw();
+			}
+			//printing score for player 2, getting size from UI
+			for (int i = 0; i < gameLogicMgr.uiMgr.usedMeshesP2; i++)
+			{
+				windowMgr::getInstance()->player2ScoreMeshes.at(i)->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->player2ScoreMeshes.at(i)->Draw();
+			}
+		}
+	}
+	else if (!gameEnded)
+	{
+		if (numPlayers == 1)
+		{
+			for (int i = 0; i < 9; i++)
 			{
 				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 				windowMgr::getInstance()->meshes.at(i)->Draw();
 			}
 		}
-		if (numPlayers == 2)
+		else
 		{
-			for (int i = 8; i <= 11; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
 				windowMgr::getInstance()->meshes.at(i)->Draw();
 			}
 		}
-
 	}
-	else if (numPlayers == 1)
-	{
-		for (int i = 0; i < 9; i++)
-		{
-			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(i)->Draw();
-		}
-	}
-	else // its 2 player
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-			windowMgr::getInstance()->meshes.at(i)->Draw();
-		}
-	}
-
-
 
 	// Reset the depth range to allow for objects at a distance to be rendered
 	glDepthRange(0.01, 1.0);
@@ -1947,8 +2048,6 @@ void gameScene::Render(GLFWwindow* window)
 			windowMgr::getInstance()->p2ArrowMesh->Draw();
 		}
 	}
-
-
 
 	// Fully reset depth range for next frame - REQUIRED
 	glDepthRange(0, 1.0);

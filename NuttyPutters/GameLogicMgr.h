@@ -48,8 +48,11 @@ public:
 	void UpdatePowerBar(Player player);
 
 	// When a player finishes, mark their total time
-	void SetEndTime(Player &player);
+	void SetScore(Player &player);
 	
+	// Print final scores of player(s)
+	void ShowEndgameScoreboard(vector<Player> players);
+
 	// Used for demo on 4th
 	void PrintPlayerScore(Player player);
 
