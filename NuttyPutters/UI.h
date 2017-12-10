@@ -55,6 +55,11 @@ class UI
 	int usedMeshesP1;
 	int usedMeshesP2;
 
+	//From : https://obtalk.wordpress.com/2013/02/28/c-count-the-number-of-digits-in-an-integer/
+	//To count how many digits in an integer
+	int countDigits(int number);
+
+
 private:
 
 	//Values passed from GameLogic
@@ -62,14 +67,8 @@ private:
 	int scoreP2;
 	//int Nplayers;
 
-	//From : https://obtalk.wordpress.com/2013/02/28/c-count-the-number-of-digits-in-an-integer/
-	//To count how many digits in an integer
-	int countDigits(int number);
+
 	void digitsToVector(int number, vector<int> scoreDigits);
 
-
-
-	//vector<int> p1;
-	//vector<int> p2;
 
 };

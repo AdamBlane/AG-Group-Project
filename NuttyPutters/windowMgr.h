@@ -61,6 +61,7 @@ class windowMgr
 		//Score numbers
 		vector<Mesh*> player1ScoreMeshes;
 		vector<Mesh*> player2ScoreMeshes;
+		vector<Mesh*> winConditionsMeshes;
 
 		// Meshes 
 		vector<Mesh*> controllerMeshes;

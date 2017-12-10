@@ -21,6 +21,7 @@ public:
 	int timeLimit;
 	bool p1Finished, p2Finished;
 	int p1Score, p2Score;
+	int digitLimitForScore = 7;
 	bool gameEnded = false;
 
 

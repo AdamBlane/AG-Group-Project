@@ -180,6 +180,13 @@ void windowMgr::LoadAssets()
 		player2ScoreMeshes.push_back(mesh);
 	}
 
+	for (int i = 0; i < 4; ++i)
+	{
+		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f);
+
+		winConditionsMeshes.push_back(mesh);
+	}
+
 	// Controller meshes used throughout the game
 	for (int i = 0; i < 42; ++i)
 	{
