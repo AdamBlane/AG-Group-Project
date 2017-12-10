@@ -55,8 +55,11 @@ class windowMgr
 		vector<Mesh*> imagePanelMeshes;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
+		// Player one and two gameplayer meshes; stroke counter and power bar
 		vector<Mesh*> p1HUDmeshes;
 		vector<Mesh*> p2HUDmeshes;
+		// Player one mode game clock meshes
+		vector<Mesh*> HUDclockMeshes;
 
 		//Score numbers
 		vector<Mesh*> player1ScoreMeshes;
@@ -69,7 +72,7 @@ class windowMgr
 		vector<Mesh*> startGameMeshes;
 
 		// 2P variant world clock meshes
-		vector<Mesh*> worldClock;
+		vector<Mesh*> worldClockMeshes;
 		// Skybox vars
 		Texture* skyboxTexture;
 		Mesh* skyboxMesh;

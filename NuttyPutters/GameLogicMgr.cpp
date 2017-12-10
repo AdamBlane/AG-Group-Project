@@ -4,34 +4,35 @@
 #include "windowMgr.h"
 
 // Setup start of game HUD
-void GameLogicMgr::Setup(int numPlayers, int diff)
+void GameLogicMgr::Setup(int numPlayers)
 {
 	// Set number of players this game
 	players = numPlayers;
 	gameEnded = false;
 
+	// Deprecated - not enforcing time limit anymore
 	// Set this level time limit in seconds
-	switch (diff)
-	{
-	// Easy 
-	case 8:
-		// decide easy time limit
-		timeLimit = 90;
-		break;
-	// Medium
-	case 12:
-		// decide med time limit
-		timeLimit = 120;
-		break;
-	case 16:
-		// decide hard time limit
-		timeLimit = 180;
-		break;
-	default: 
-		// decide default behaviour
-		timeLimit = 120;
-		break;
-	}
+	//switch (diff) diff was number of tiles
+	//{
+	//// Easy 
+	//case 8:
+	//	// decide easy time limit
+	//	timeLimit = 90;
+	//	break;
+	//// Medium
+	//case 12:
+	//	// decide med time limit
+	//	timeLimit = 120;
+	//	break;
+	//case 16:
+	//	// decide hard time limit
+	//	timeLimit = 180;
+	//	break;
+	//default: 
+	//	// decide default behaviour
+	//	timeLimit = 120;
+	//	break;
+	//}
 
 	// Invoke UImgr to perform its setup
 	if (players == 1)
@@ -43,7 +44,9 @@ void GameLogicMgr::Setup(int numPlayers, int diff)
 		uiMgr.p2Setup();
 	
 	}
-
+	
+	// Setup game clock
+	//uiMgr.SetupClock(endHolePos, endHoleDir);
 
 }
 
@@ -83,28 +86,22 @@ void GameLogicMgr::PlayerFired(Player &player)
 }
 
 // Keep clocks ticking...
-void GameLogicMgr::Update()
+void GameLogicMgr::UpdateClock()
 {
 	// Update elapsed timer clock
 	// Time from current subtract start time
 	lastFrameTime = elapsedTime;
 	elapsedTime = glfwGetTime() - startTime;
 	
+	// No longer have time limit in 1p mode; using world clock in both modes
+	// Work out how much time is left given this game's time limit
+	//int timeRemaining = timeLimit - elapsedTime;
+	//uiMgr.UpdateHUDClock(timeRemaining);
+
 	// Only update the UI every second
-	if (elapsedTime > lastFrameTime)
+	if (elapsedTime > lastFrameTime && !gameEnded)
 	{
-		// TODO - P1 - check if time is up
-		if (players == 1 && !gameEnded)
-		{
-			// Work out how much time is left given this game's time limit
-			int timeRemaining = timeLimit - elapsedTime;
-			uiMgr.UpdateHUDClock(timeRemaining);
-		}
-		else if (players == 2 && !gameEnded)
-		{
-			uiMgr.UpdateWorldClock(elapsedTime);
-		}
-		
+		uiMgr.UpdateWorldClock(elapsedTime);	
 	}
 }
 

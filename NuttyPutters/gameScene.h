@@ -79,7 +79,8 @@ public:
 	vector<int> pickupPositionIndices;
 	// Holds two wormhole transforms
 	vector<Transform> wormholeTransforms;
-
+	// Holds the world clock transforms
+	vector<Transform> worldClockTransforms;
 
 	vec3 prevPos = vec3(0);
 
@@ -131,7 +132,8 @@ public:
 	void SetupTilesToBeDrawn();
 	// Sets up pickup crates for a level
 	void SetupPickupCrates();
-
+	// Sets up world clock on level load
+	void SetupWorldClock();
 
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);
