@@ -20,7 +20,7 @@ void UI::PauseScreen()
 }
 
 // Sets endgame scoreboard for 1p game
-void UI::p1GameScoreboard(int score)
+void UI::p1GameScoreboard(string score)
 {
 	// Aspect ratio for scaling textures
 	vec2 ratio = vec2(1.0f, 0.25f);
@@ -28,14 +28,13 @@ void UI::p1GameScoreboard(int score)
 	//this is used to move position according to how many digits the score has --> to have it centered
 	float pos = (ratio.x / 4.0f);
 
-	// Convert to string
-	string scoreStr = to_string(score);
-	usedMeshesP1 = scoreStr.length();
+	//setting used meshes to score length to retrieve number of meshes to be rendered
+	usedMeshesP1 = score.length();
 	// For each character in the score string
-	for (int c = 0; c < scoreStr.length(); c++)
+	for (int c = 0; c < score.length(); c++)
 	{
 		// Convert to int, set mesh as approrpiate
-		int thisNum = scoreStr[c] - 48;
+		int thisNum = score[c] - 48;
 
 		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetScale(ratio.x, ratio.y);
 		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetPos(vec3(pos + ((ratio.x / 4.0f) * c), 0.0f, 0.0f));
@@ -56,26 +55,24 @@ void UI::p1GameScoreboard(int score)
 }
 
 // Sets endgame scoreboard for 2p game
-void UI::p2GameScoreboard(int p1Score, int p2Score)
+void UI::p2GameScoreboard(string p1Score, string p2Score)
 {
 	// Aspect ratio for scaling textures
 	vec2 ratio = vec2(1.0f, 0.25f);
 	// Player 1
-	scoreP1 = p1Score;
-	// Convert int score to string
-	string score1 = to_string(scoreP1);
+
 	// HUD mesh positions
 	float pos1 = 1 - (ratio.x / 4.0f);
-	for (int i = 1; i < score1.length(); i++)
+	for (int i = 1; i < p1Score.length(); i++)
 	{
 		pos1 -= (ratio.x / 4.0f);
 	}
-	usedMeshesP1 = score1.length();
+	usedMeshesP1 = p1Score.length();
 	// For each character in the score string
-	for (int c = 0; c < score1.length(); c++)
+	for (int c = 0; c < p1Score.length(); c++)
 	{
 		// Convert to int, set mesh as approrpiate
-		int thisNum = score1[c] - 48;
+		int thisNum = p1Score[c] - 48;
 
 		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetScale(ratio.x, ratio.y);
 		windowMgr::getInstance()->player1ScoreMeshes.at(c)->SetPos(vec3(pos1 + ((ratio.x / 4.0f) * c), 0.0f, 0.0f));
@@ -83,21 +80,18 @@ void UI::p2GameScoreboard(int p1Score, int p2Score)
 	}
 
 	// Player 2
-	scoreP2 = p2Score;
-	// Convert to string
-	string score2 = to_string(scoreP2);
 	// HUD mesh positions
 	float pos2 = 1 - (ratio.x / 4.0f);
-	for (int i = 1; i < score2.length(); i++)
+	for (int i = 1; i < p2Score.length(); i++)
 	{
 		pos2 -= (ratio.x / 4.0f);
 	}
-	usedMeshesP2 = score2.length();
+	usedMeshesP2 = p2Score.length();
 	// For each character in the score string
-	for (int c = 0; c < score2.length(); c++)
+	for (int c = 0; c < p2Score.length(); c++)
 	{
 		// Convert to int, set mesh as approrpiate
-		int thisNum = score2[c] - 48;
+		int thisNum = p2Score[c] - 48;
 
 		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetScale(ratio.x, ratio.y);
 		windowMgr::getInstance()->player2ScoreMeshes.at(c)->SetPos(vec3(pos2 + ((ratio.x / 4.0f) * c), -0.30f, 0.0f));
@@ -125,8 +119,6 @@ void UI::p2GameScoreboard(int p1Score, int p2Score)
 	windowMgr::getInstance()->winConditionsMeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["MultPlayerDraw"]);
 
 }
-
-
 
 // Sets up basic HUD layout for 1 player game
 void UI::p1Setup()
