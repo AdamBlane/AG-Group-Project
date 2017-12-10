@@ -1830,11 +1830,11 @@ void gameScene::Render(GLFWwindow* window)
 	{
 		if (numPlayers == 1)
 		{
-			for (int i = 0; i < 9; i++)
+			for (auto &m : windowMgr::getInstance()->p1HUDmeshes)
 			{
-				windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+				m->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-				windowMgr::getInstance()->meshes.at(i)->Draw();
+				m->Draw();
 			}
 		}
 		else

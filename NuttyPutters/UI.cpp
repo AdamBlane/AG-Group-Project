@@ -224,13 +224,13 @@ void UI::p1Setup()
 {
 
 	// Stroke labels
-	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	windowMgr::getInstance()->p1HUDmeshes.at(0)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->p1HUDmeshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->p1HUDmeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
-	windowMgr::getInstance()->meshes.at(1)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	windowMgr::getInstance()->p1HUDmeshes.at(1)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->p1HUDmeshes.at(1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
+	windowMgr::getInstance()->p1HUDmeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
 	// Timer seconds digit
 	windowMgr::getInstance()->meshes.at(5)->SetScale(0.25f, 0.25f);
@@ -253,13 +253,13 @@ void UI::p1Setup()
 	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(3.05f, 1.7f, 0.0f));
 	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
     // Power bar
-	windowMgr::getInstance()->meshes.at(7)->SetScale(0.8f, 0.8f);
-	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.0f, -1.0f, -0.1f));
-	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
+	windowMgr::getInstance()->p1HUDmeshes.at(2)->SetScale(0.8f, 0.8f);
+	windowMgr::getInstance()->p1HUDmeshes.at(2)->SetPos(vec3(3.0f, -1.0f, -0.1f));
+	windowMgr::getInstance()->p1HUDmeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
 	// Power indicator
-	windowMgr::getInstance()->meshes.at(8)->SetScale(0.2f, 0.2f);
-	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
+	windowMgr::getInstance()->p1HUDmeshes.at(3)->SetScale(0.2f, 0.2f);
+	windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->p1HUDmeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
 
   
 	windowMgr::getInstance()->meshes.at(9)->SetScale(1.8f, 0.6f);
