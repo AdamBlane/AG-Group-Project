@@ -308,10 +308,12 @@ void loadGameScene::Click_or_Enter(GLFWwindow* win)
 				enterPressed = false; // Suspect this is unnecessary
 									  // Current seed is index of seeds list, send as optional param
 									  // 6 is game scene
-									  // 12 is course length
+									  // first number is course length (number of digits in seed)
+				int courseLength = seeds.at(savesImagesIndex).length();
+
 									  // playerCount is number of players
 									  // 1 is number of levels this game
-				windowMgr::getInstance()->sceneManager.changeScene(6, 12, playerCount, 1, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)	
+				windowMgr::getInstance()->sceneManager.changeScene(6, courseLength, playerCount, 1, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)	
 				break;
 		}
 	}

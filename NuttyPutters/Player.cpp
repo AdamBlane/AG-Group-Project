@@ -12,6 +12,7 @@ Player::Player(string inputConfigFilePath)
 
 	// First set necessary vars
 	power = 0.0f;
+	floorLevel = 0.5f + radius;
 	// Open the file for reading
 	ifstream inputConfig(inputConfigFilePath);
 	// First read in every line found

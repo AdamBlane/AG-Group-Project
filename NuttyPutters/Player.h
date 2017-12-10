@@ -25,7 +25,7 @@ public:
 	// Movement
 	int currentTile = 0; // For spatial partitioning
 	int jumpCounter = 0;
-	float floorLevel;
+	float floorLevel = 0.5f;
 	bool isMoving = false; // Physics is only applied when moving
 	bool ballInHole = false; // Has the player reached end hole
 	bool isFalling = false;

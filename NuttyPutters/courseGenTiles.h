@@ -38,7 +38,7 @@ public:
 	// This tile's position, the next tile's position
 	vec3 thisCoords;
 	vec3 nextCoords;
-	float floorLevel = 0.0f;
+	const float floorLevel = 0.0f;
 	// Each tile is identified by a number
 	int id;
 	// Tiles have a size (10x10 currently)
@@ -56,7 +56,7 @@ public:
 
 	
 	// Returns true if player is within tile bounds
-	bool isPlayerOnTile(vec3 playerPos);
+	bool isPlayerOnTile(Player &player);
 
 	// Perform collisions checks
 	virtual void CheckCollisions(Player &player) = 0;

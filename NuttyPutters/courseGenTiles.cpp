@@ -47,24 +47,26 @@ bool BaseTile::SphereRectCollision(Player player, vec3 rectCenter, vec3 rectSize
 	return (cornerDistance_sq < (player.radius * player.radius));
 }
 
-// This is called on each tile; spatial partitioning method
-// Returns true if player is on this tile
-bool BaseTile::isPlayerOnTile(vec3 playerPos)
+// This is called on each tile; spatial partitioning method, returns true if player is on this tile
+bool BaseTile::isPlayerOnTile(Player &player)
 {
 	// Look at player height first (could be below tile)
-	if (playerPos.y >= floorLevel)
+	if (player.transform.getPos().y >= floorLevel + 0.5f)
 	{
+		//player.floorLevel = 0.5f + player.radius;
 		// Match on x first
-		if (playerPos.x > thisCoords.x - 5 && playerPos.x < thisCoords.x + 5)
+		if (player.transform.getPos().x > thisCoords.x - 5 && player.transform.getPos().x < thisCoords.x + 5)
 		{
 			// Then on z
-			if (playerPos.z > thisCoords.z - 5 && playerPos.z < thisCoords.z + 5)
+			if (player.transform.getPos().z > thisCoords.z - 5 && player.transform.getPos().z < thisCoords.z + 5)
 			{
 				// Player is on this tile
 				return true;
 			}
 		}
 	}
+	//else
+	//	player.floorLevel = -490.0f;
 
 	return false;
 }
@@ -398,17 +400,21 @@ float DownRampDown::SetPlayerHeight(Player player)
 
 void Bridge_V::CheckCollisions(Player &player)
 {
+	// If player isn't on bridge
 	if (player.transform.getPos().x > thisCoords.x + (0.75 + (player.radius / 3)) ||
 		player.transform.getPos().x < thisCoords.x - (0.75 - (player.radius / 3)))
 	{
-		floorLevel = -490.0f;
+		// Set floor level to bottom of skybox
+		player.floorLevel = -490.0f; 
 	}
 	else
-		floorLevel = 0.0f;
+		// Otherwise, floor is that of bridge (0.5 is thickness)
+		player.floorLevel = 0.5f + player.radius;
 }
 // Affect floor level when player is on this tile
 void GapTile::CheckCollisions(Player &player)
 {
+	
 	vec3 boxPos = vec3(thisCoords.x, thisCoords.y + 0.5f, thisCoords.z);
 	vec3 boxSize = vec3(1.5f - (player.radius / 3), 0.5f, 1.5f - (player.radius / 3));
 
@@ -416,13 +422,13 @@ void GapTile::CheckCollisions(Player &player)
 
 	if (intersect)
 	{
-		floorLevel = -0.5f;
+		// On tile, set floor level accordingly
+		player.floorLevel = 0.0f + player.radius;
 	}
 	else
 	{
-		// Player keeps track of floor level of tile its on
-		// So set floor level to bottom of skybox! 
- 		floorLevel = -490.0f;
+		// Off tile, set floor to skybox
+ 		player.floorLevel = -490.0f;
 	}
 }
 
@@ -570,11 +576,12 @@ void EndTile::CheckCollisions(Player &player)
 			// Flip flag
 			player.ballInHole = true;
 			// Set floor level to bottom of skybox
-			floorLevel = -490.0f;
+			player.floorLevel = -490.0f;
 		}
 
 	}
 	else if (!player.ballInHole)
-		floorLevel = 0.0f;
+		// Not ended yet, remain on tile
+		player.floorLevel = 0.5f + player.radius;
 
 }
