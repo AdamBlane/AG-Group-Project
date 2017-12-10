@@ -216,43 +216,43 @@ void UI::p1Setup()
 void UI::p2Setup()
 {
 	// P1 Stroke labels
-	windowMgr::getInstance()->meshes.at(0)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	windowMgr::getInstance()->p1HUDmeshes.at(0)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->p1HUDmeshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->p1HUDmeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
-	windowMgr::getInstance()->meshes.at(1)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	windowMgr::getInstance()->p1HUDmeshes.at(1)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->p1HUDmeshes.at(1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
+	windowMgr::getInstance()->p1HUDmeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 		
 	// Power bar
-	windowMgr::getInstance()->meshes.at(2)->SetScale(0.8f, 0.8f);
-	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(3.0f, -1.0f, -0.1f));
-	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
+	windowMgr::getInstance()->p1HUDmeshes.at(2)->SetScale(0.8f, 0.8f);
+	windowMgr::getInstance()->p1HUDmeshes.at(2)->SetPos(vec3(3.0f, -1.0f, -0.1f));
+	windowMgr::getInstance()->p1HUDmeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
 
 	// Power indicator
-	windowMgr::getInstance()->meshes.at(3)->SetScale(0.2f, 0.2f);
-	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
+	windowMgr::getInstance()->p1HUDmeshes.at(3)->SetScale(0.2f, 0.2f);
+	windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->p1HUDmeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
 
 	// World clock setup - appear behind end hole
 	// P2 Stroke Labels
-	windowMgr::getInstance()->meshes.at(4)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	windowMgr::getInstance()->p2HUDmeshes.at(0)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->p2HUDmeshes.at(0)->SetPos(vec3(-3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->p2HUDmeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
-	windowMgr::getInstance()->meshes.at(5)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
+	windowMgr::getInstance()->p2HUDmeshes.at(1)->SetScale(0.5f, 0.5f);
+	windowMgr::getInstance()->p2HUDmeshes.at(1)->SetPos(vec3(-2.5f, -1.5f, 0.0f));
+	windowMgr::getInstance()->p2HUDmeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
 
 	// Power bar
-	windowMgr::getInstance()->meshes.at(6)->SetScale(0.8f, 0.8f);
-	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(3.0f, -1.0f, -0.1f));
-	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
+	windowMgr::getInstance()->p2HUDmeshes.at(2)->SetScale(0.8f, 0.8f);
+	windowMgr::getInstance()->p2HUDmeshes.at(2)->SetPos(vec3(3.0f, -1.0f, -0.1f));
+	windowMgr::getInstance()->p2HUDmeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
 
 	// Power indicator
-	windowMgr::getInstance()->meshes.at(7)->SetScale(0.2f, 0.2f);
-	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(3.0f, -1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
+	windowMgr::getInstance()->p2HUDmeshes.at(3)->SetScale(0.2f, 0.2f);
+	windowMgr::getInstance()->p2HUDmeshes.at(3)->SetPos(vec3(3.0f, -1.5f, 0.0f));
+	windowMgr::getInstance()->p2HUDmeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
   
 
 	// Resume
@@ -351,17 +351,17 @@ void UI::UpdateStrokeCounter(int playerIndex, int strokeCounter)
 	if (playerIndex == 0)
 	{
 		// Update 10s
-		windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
+		windowMgr::getInstance()->p1HUDmeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
 		// Update 1s
-		windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
+		windowMgr::getInstance()->p1HUDmeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
 	}
 	// P2
 	else if (playerIndex == 1)
 	{
 		// Update 10s
-		windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
+		windowMgr::getInstance()->p2HUDmeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(tens));
 		// Update 1s
-		windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
+		windowMgr::getInstance()->p2HUDmeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(ones));
 	}
 
 }
