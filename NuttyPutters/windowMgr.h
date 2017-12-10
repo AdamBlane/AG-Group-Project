@@ -308,6 +308,13 @@ class windowMgr
 		bool doesUserWantControls = false; // Boolean for the controls menu in game - if set to true and back is pressed return to the game
 		bool returnToGame = false;
 
+		int xboxP1FunctionEmpty = false;
+		int xboxP2FunctionEmpty = false;
+		int keyP1FunctionEmpty = false;
+		int keyP2FunctionEmpty = false;
+		float total_time = 0.0f;
+		bool redTextureSet = false;
+
 		// Setup initial textures
 		void ControlsTextureSetup();
 		// Setup initial buttons
