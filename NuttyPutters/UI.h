@@ -46,9 +46,9 @@ class UI
 	void PauseScreen();
 
 	// Render endgame scoreboard for 1p game
-	void p1GameScoreboard(int score);
+	void p1GameScoreboard(string score);
 	// Render endgame scoreboard for 2p game
-	void p2GameScoreboard(int p1Score, int p2Score);
+	void p2GameScoreboard(string p1Score, string p2Score);
 	//Function to pass values from GameLogic
 	//void SetScoreToPrint(int nPlayers, int p1score, int p2score = 0);
 
@@ -57,7 +57,7 @@ class UI
 
 	//From : https://obtalk.wordpress.com/2013/02/28/c-count-the-number-of-digits-in-an-integer/
 	//To count how many digits in an integer
-	int countDigits(int number);
+	//int countDigits(int number);
 
 
 private:

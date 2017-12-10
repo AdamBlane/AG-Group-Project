@@ -144,7 +144,9 @@ void GameLogicMgr::ShowEndgameScoreboard(vector<Player> players)
 	if (players.size() == 1)
 	{
 		//Counting how many digits score has
-		int countP1Score = uiMgr.countDigits(players[0].finalScore);
+		// Convert to string here, number of digits is string.length()
+		string scoreStr = to_string(players[0].finalScore);
+		int countP1Score = scoreStr.length();
 		//If the count of digits for p1 score is higher than the digit limit allowed (default 7)
 		if (countP1Score > digitLimitForScore)
 		{
@@ -157,15 +159,17 @@ void GameLogicMgr::ShowEndgameScoreboard(vector<Player> players)
 		}
 
 		// Invoke UI to set hud textures for player score
-		uiMgr.p1GameScoreboard(players[0].finalScore);
+		uiMgr.p1GameScoreboard(scoreStr);
 		p1Score = players[0].finalScore;
 	}
 	// Else if 2 player mode, print both player scores
 	else if (players.size() == 2)
 	{
+		string scoreStr1 = to_string(players[0].finalScore);
+		string scoreStr2 = to_string(players[1].finalScore);
 		//Counting how many digits both score have
-		int countP1Score = uiMgr.countDigits(players[0].finalScore);
-		int countP2Score = uiMgr.countDigits(players[1].finalScore);
+		int countP1Score = scoreStr1.length();
+		int countP2Score = scoreStr2.length();
 
 		//I know it's nasty :(
 
@@ -206,7 +210,7 @@ void GameLogicMgr::ShowEndgameScoreboard(vector<Player> players)
 			}
 		}
 
-		uiMgr.p2GameScoreboard(players[0].finalScore, players[1].finalScore);
+		uiMgr.p2GameScoreboard(scoreStr1, scoreStr2);
 		p1Score = players[0].finalScore;
 		p2Score = players[1].finalScore;
 	}

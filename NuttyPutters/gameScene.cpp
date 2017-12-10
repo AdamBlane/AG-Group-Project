@@ -1850,9 +1850,6 @@ void gameScene::Render(GLFWwindow* window)
 				windowMgr::getInstance()->player2ScoreMeshes.at(i)->Draw();
 			}
 		}
-		windowMgr::getInstance()->meshes.at(16)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(16)->Draw();
 	}
 	else if (!gameEnded)
 	{
