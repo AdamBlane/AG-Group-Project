@@ -29,7 +29,6 @@ public:
 	bool isMoving = false; // Physics is only applied when moving
 	bool ballInHole = false; // Has the player reached end hole
 	bool isFalling = false;
-	bool camFollow = true;
 	double chaseCamAngle;
 	 
 	// Gameplay
@@ -37,6 +36,7 @@ public:
 	int strokeCounter = 0;
 	int currentPowerup = 0;
 	int totalTime = 0;
+	int finalScore = 0;
 	bool gameOver = false;
 	// Input
 	// Action isPressed flags
