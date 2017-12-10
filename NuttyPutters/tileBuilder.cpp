@@ -81,49 +81,49 @@ void Tile::startTile()
 	windowMgr::getInstance()->tileMeshes.at(0)->SetTexture(windowMgr::getInstance()->tileTextures["floorGrass"]);
 	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(0));
 
-	////Side border on left
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
+	//Side border on left
+	windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
 
-	for (int i = 0; i < 10; i++)
-	{
-		//left
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(20 + i));
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	//left
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(20 + i));
 
-		//Side border on right
-		windowMgr::getInstance()->tileMeshes.at(31 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(31 + i)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
-		windowMgr::getInstance()->tileMeshes.at(31 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(31 + i));
+	//	//Side border on right
+	//	windowMgr::getInstance()->tileMeshes.at(31 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(31 + i)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
+	//	windowMgr::getInstance()->tileMeshes.at(31 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(31 + i));
 
-	}
+	//}
 
-	////Side border on right
-	//windowMgr::getInstance()->tileMeshes.at(2)->SetScale(measures.y, measures.y, measures.z);
-	//windowMgr::getInstance()->tileMeshes.at(2)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
-	//windowMgr::getInstance()->tileMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(2));
+	//Side border on right
+	windowMgr::getInstance()->tileMeshes.at(2)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(2)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(2));
 
-	for (int i = 0; i < 9; i++)
-	{
-		//border closing the start tile
-		windowMgr::getInstance()->tileMeshes.at(40 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(40 + i)->SetPos(vec3((tilePos.x - 4.5) + i, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
-		windowMgr::getInstance()->tileMeshes.at(40 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(40 + i));
+	//for (int i = 0; i < 9; i++)
+	//{
+	//	//border closing the start tile
+	//	windowMgr::getInstance()->tileMeshes.at(40 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(40 + i)->SetPos(vec3((tilePos.x - 4.5) + i, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
+	//	windowMgr::getInstance()->tileMeshes.at(40 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(40 + i));
 
-	}
+	//}
 
-	////border closing the start tile
-	//windowMgr::getInstance()->tileMeshes.at(3)->SetScale(measures.x - (measures.y * 2), measures.y, measures.y);
-	//windowMgr::getInstance()->tileMeshes.at(3)->SetPos(vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
-	//windowMgr::getInstance()->tileMeshes.at(3)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(3));
+	//border closing the start tile
+	windowMgr::getInstance()->tileMeshes.at(3)->SetScale(measures.x - (measures.y * 2), measures.y, measures.y);
+	windowMgr::getInstance()->tileMeshes.at(3)->SetPos(vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
+	windowMgr::getInstance()->tileMeshes.at(3)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(3));
 }
 
 void Tile::endTile()
@@ -136,48 +136,48 @@ void Tile::endTile()
 	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(6));
 
 
-	for (int i = 0; i < 10; i++)
-	{
-		//left
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(20 + i));
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	//left
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(20 + i));
 
-		//Side border on right
-		windowMgr::getInstance()->tileMeshes.at(31 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(31 + i)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
-		windowMgr::getInstance()->tileMeshes.at(31 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(31 + i));
+	//	//Side border on right
+	//	windowMgr::getInstance()->tileMeshes.at(31 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(31 + i)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
+	//	windowMgr::getInstance()->tileMeshes.at(31 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(31 + i));
 
-	}
+	//}
 
-	////Side border on left
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
+	//Side border on left
+	windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
 
-	////Side border on right
-	//windowMgr::getInstance()->tileMeshes.at(2)->SetScale(measures.y, measures.y, measures.z);
-	//windowMgr::getInstance()->tileMeshes.at(2)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
-	//windowMgr::getInstance()->tileMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(2));
+	//Side border on right
+	windowMgr::getInstance()->tileMeshes.at(2)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(2)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(2));
 
-	for (int i = 0; i < 9; i++)
-	{
-		//Border on the end tile and corner
-		windowMgr::getInstance()->tileMeshes.at(50 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(50 + i)->SetPos(vec3((tilePos.x - 4.5) + i, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
-		windowMgr::getInstance()->tileMeshes.at(50 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(50 + i));
+	//for (int i = 0; i < 9; i++)
+	//{
+	//	//Border on the end tile and corner
+	//	windowMgr::getInstance()->tileMeshes.at(50 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(50 + i)->SetPos(vec3((tilePos.x - 4.5) + i, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
+	//	windowMgr::getInstance()->tileMeshes.at(50 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(50 + i));
 
-	}
-	////Border on the end tile and corner
-	//windowMgr::getInstance()->tileMeshes.at(3)->SetScale(measures.x - (measures.y * 2), measures.y, measures.y);
-	//windowMgr::getInstance()->tileMeshes.at(3)->SetPos(vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
-	//windowMgr::getInstance()->tileMeshes.at(3)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(3));
+	//}
+	//Border on the end tile and corner
+	windowMgr::getInstance()->tileMeshes.at(3)->SetScale(measures.x - (measures.y * 2), measures.y, measures.y);
+	windowMgr::getInstance()->tileMeshes.at(3)->SetPos(vec3(tilePos.x, tilePos.y + measures.y, tilePos.z + ((measures.x - measures.y) / 2)));
+	windowMgr::getInstance()->tileMeshes.at(3)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(3));
 }
 
 void Tile::straightTile()
@@ -191,31 +191,31 @@ void Tile::straightTile()
 	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(0));
 
 	//Side border on left
-	for (int i = 0; i < 10; i++)
-	{
-		//left
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(20 + i));
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	//left
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(20 + i));
 
-		//right
-		windowMgr::getInstance()->tileMeshes.at(31 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(31 + i)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
-		windowMgr::getInstance()->tileMeshes.at(31 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(31 + i));
+	//	//right
+	//	windowMgr::getInstance()->tileMeshes.at(31 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(31 + i)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
+	//	windowMgr::getInstance()->tileMeshes.at(31 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(31 + i));
 
-	}
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
+	//}
+	windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
 
 	//Side border on right
-	//windowMgr::getInstance()->tileMeshes.at(2)->SetScale(measures.y, measures.y, measures.z);
-	//windowMgr::getInstance()->tileMeshes.at(2)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
-	//windowMgr::getInstance()->tileMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(2));
+	windowMgr::getInstance()->tileMeshes.at(2)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(2)->SetPos(vec3(tilePos.x + ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(2)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(2));
 }
 
 void Tile::sceneryTile()
@@ -309,21 +309,21 @@ void Tile::bridgeTile()
 	//windowMgr::getInstance()->planeMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["waterBridge"]);
 	//tileContent.push_back(windowMgr::getInstance()->planeMeshes.at(1));
 
-	for (int i = 0; i < 10; i++)
-	{
-		//Bridge
-		windowMgr::getInstance()->obstacleMeshes.at(15 + i)->SetScale(ballSizeMargin, measures.y, measures.y);
-		windowMgr::getInstance()->obstacleMeshes.at(15 + i)->SetPos(vec3(tilePos.x, tilePos.y, (tilePos.z - 4.5) + i));
-		windowMgr::getInstance()->obstacleMeshes.at(15 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(15 + i));
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	//Bridge
+	//	windowMgr::getInstance()->obstacleMeshes.at(15 + i)->SetScale(ballSizeMargin, measures.y, measures.y);
+	//	windowMgr::getInstance()->obstacleMeshes.at(15 + i)->SetPos(vec3(tilePos.x, tilePos.y, (tilePos.z - 4.5) + i));
+	//	windowMgr::getInstance()->obstacleMeshes.at(15 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(15 + i));
 
-	}
+	//}
 
-	////BRIDGE
-	//windowMgr::getInstance()->obstacleMeshes.at(8)->SetScale(ballSizeMargin, measures.y, measures.z);
-	//windowMgr::getInstance()->obstacleMeshes.at(8)->SetPos(tilePos);
-	//windowMgr::getInstance()->obstacleMeshes.at(8)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(8));
+	//BRIDGE
+	windowMgr::getInstance()->obstacleMeshes.at(8)->SetScale(ballSizeMargin, measures.y, measures.z);
+	windowMgr::getInstance()->obstacleMeshes.at(8)->SetPos(tilePos);
+	windowMgr::getInstance()->obstacleMeshes.at(8)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->obstacleMeshes.at(8));
 
 	////BORDERS
 	//windowMgr::getInstance()->tileMeshes.at(9)->SetScale(measures.y, measures.y * 2, measures.z);
@@ -357,33 +357,33 @@ void Tile::cornerTile()
 	windowMgr::getInstance()->tileMeshes.at(0)->SetTexture(windowMgr::getInstance()->tileTextures["floorGrass"]);
 	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(0));
 
-	for (int i = 0; i < 10; i++)
-	{
-		//left
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
-		windowMgr::getInstance()->tileMeshes.at(20 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(20 + i));
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	//left
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, (tilePos.z - 4.5) + i));
+	//	windowMgr::getInstance()->tileMeshes.at(20 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(20 + i));
 
-		//Border on the end tile and corner
-		windowMgr::getInstance()->tileMeshes.at(60 + i)->SetScale(measures.y, measures.y, measures.y);
-		windowMgr::getInstance()->tileMeshes.at(60 + i)->SetPos(vec3((tilePos.x - 4.5) + i, tilePos.y + measures.y, tilePos.z - ((measures.x - measures.y) / 2)));
-		windowMgr::getInstance()->tileMeshes.at(60 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-		tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(60 + i));
-	}
+	//	//Border on the end tile and corner
+	//	windowMgr::getInstance()->tileMeshes.at(60 + i)->SetScale(measures.y, measures.y, measures.y);
+	//	windowMgr::getInstance()->tileMeshes.at(60 + i)->SetPos(vec3((tilePos.x - 4.5) + i, tilePos.y + measures.y, tilePos.z - ((measures.x - measures.y) / 2)));
+	//	windowMgr::getInstance()->tileMeshes.at(60 + i)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	//	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(60 + i));
+	//}
 
 
-	////Side border on left
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
-	//windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
+	//Side border on left
+	windowMgr::getInstance()->tileMeshes.at(1)->SetScale(measures.y, measures.y, measures.z);
+	windowMgr::getInstance()->tileMeshes.at(1)->SetPos(vec3(tilePos.x - ((measures.x - measures.y) / 2), tilePos.y + measures.y, tilePos.z));
+	windowMgr::getInstance()->tileMeshes.at(1)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(1));
 
-	////Border on the end tile and corner
-	//windowMgr::getInstance()->tileMeshes.at(4)->SetScale(measures.x - measures.y, measures.y, measures.y);
-	//windowMgr::getInstance()->tileMeshes.at(4)->SetPos(vec3(tilePos.x + (measures.y / 2), tilePos.y + measures.y, tilePos.z - ((measures.x - measures.y) / 2)));
-	//windowMgr::getInstance()->tileMeshes.at(4)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
-	//tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(4));
+	//Border on the end tile and corner
+	windowMgr::getInstance()->tileMeshes.at(4)->SetScale(measures.x - measures.y, measures.y, measures.y);
+	windowMgr::getInstance()->tileMeshes.at(4)->SetPos(vec3(tilePos.x + (measures.y / 2), tilePos.y + measures.y, tilePos.z - ((measures.x - measures.y) / 2)));
+	windowMgr::getInstance()->tileMeshes.at(4)->SetTexture(windowMgr::getInstance()->tileTextures["tileWood"]);
+	tileContent.push_back(windowMgr::getInstance()->tileMeshes.at(4));
 
 
 	//tiny box for corner

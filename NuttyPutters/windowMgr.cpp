@@ -221,7 +221,7 @@ void windowMgr::LoadAssets()
 	// World clock meshes
 	for (int i = 0; i < 5; i++)
 	{
-		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 4.0f, 0.0f), 5.0f, 5.0f);
+		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 2.0f, 0.0f), 5.0f, 5.0f);
 		worldClockMeshes.push_back(mesh);
 	}
 
