@@ -78,7 +78,7 @@ void loadGameScene::Init(GLFWwindow* win)
 			xPos = (x*w);
 			yPos = (y*h) + 0.3f;
 			windowMgr::getInstance()->imagePanelMeshes.at(imCount)->SetPos(vec3(xPos, yPos + 0.2f, 0));
-			cout << yPos << endl;
+			//cout << yPos << endl;
 			windowMgr::getInstance()->imagePanelMeshes.at(imCount)->SetScale(w, h);
 			imCount++;
 		}
@@ -119,9 +119,11 @@ void loadGameScene::Init(GLFWwindow* win)
 	}
 
 }
+
+
 void loadGameScene::Track_Mouse(GLFWwindow* win) 
 {
-	cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
+	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
 	// If mouse pos falls within button area...
 	// Using hardcoded values since we can't match up coord systems (meshes origin is window centre measured in floats, cursor pos origin it top left measured in pixels)
 	// Left column
@@ -309,11 +311,15 @@ void loadGameScene::Click_or_Enter(GLFWwindow* win)
 									  // Current seed is index of seeds list, send as optional param
 									  // 6 is game scene
 									  // first number is course length (number of digits in seed)
-				int courseLength = seeds.at(savesImagesIndex).length();
+				if (seeds.size() > savesImagesIndex)
+				{
+					int courseLength = seeds.at(savesImagesIndex).length();
 
-									  // playerCount is number of players
-									  // 1 is number of levels this game
-				windowMgr::getInstance()->sceneManager.changeScene(6, courseLength, playerCount, 1, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)	
+					// playerCount is number of players
+					// 1 is number of levels this game
+					windowMgr::getInstance()->sceneManager.changeScene(6, courseLength, playerCount, 1, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)	
+
+				}
 				break;
 		}
 	}

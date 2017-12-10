@@ -577,15 +577,7 @@ void gameScene::Save_Level(GLFWwindow* win)
 		cout << "Level saved" << endl;
 		levelSaved = true;
 
-		// Also save image of level
-		// Alt press below ensures only game window is captured
-		keybd_event(VK_MENU, 0, 0, 0); //Alt Press
-		keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
-		keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
-		keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
-
-
-													 //// The above saves the game window capture to clipboard
+												 //// The above saves the game window capture to clipboard
 													 //// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
 		HWND hwnd = GetDesktopWindow();
 		if (!OpenClipboard(hwnd))
@@ -858,13 +850,37 @@ void gameScene::FireRelease(Player &p)
 // Pause functionality here
 void gameScene::Pause(GLFWwindow* window)
 {
+	// Perform a cheeky wee render
 	// Quick screenshot - need to do this twice; once here, again on Save
 	// Alt press below ensures only game window is captured
 	keybd_event(VK_MENU, 0, 0, 0); //Alt Press
 	keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
 	keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
 	keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
-												 //Render(window);
+	keybd_event(VK_MENU, 0, 0, 0); //Alt Press
+	keybd_event(VK_SNAPSHOT, 0, 0, 0); //PrntScrn Press
+	keybd_event(VK_SNAPSHOT, 0, KEYEVENTF_KEYUP, 0); //PrntScrn Release
+	keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); //Alt Release
+	glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
+	mat4 mvp;
+	mvp = windowMgr::getInstance()->PAUSEtargetCam->get_Projection() * windowMgr::getInstance()->PAUSEtargetCam->get_View();
+	//// Skybox 
+	windowMgr::getInstance()->skyboxShader->Bind();
+	windowMgr::getInstance()->skyboxShader->Update(windowMgr::getInstance()->texShaderTransform, mvp);
+	windowMgr::getInstance()->skyboxMesh->Draw();
+	// Bind texture shader
+	windowMgr::getInstance()->textureShader->Bind();
+	// DRAW all level tiles
+	for (auto &t : masterTiles[currentLevel])
+	{
+		t.drawTile(windowMgr::getInstance()->textureShader, mvp);
+	}
+	glDepthRange(0, 1.0);
+	glfwSwapBuffers(window);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glfwPollEvents();
+
+
 
 	 // Change to pause target cam
 	cameraType = 2;
