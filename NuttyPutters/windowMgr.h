@@ -58,9 +58,10 @@ class windowMgr
 		vector<Mesh*> player1ScoreMeshes;
 		vector<Mesh*> player2ScoreMeshes;
 
-		// Meshes 
+		// Meshes vector for controller 
 		vector<Mesh*> controllerMeshes;
-
+		// Meshes vector for start game scene
+		vector<Mesh*> startGameMeshes;
 
 		// 2P variant world clock meshes
 		vector<Mesh*> worldClock;

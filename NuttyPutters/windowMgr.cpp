@@ -179,6 +179,13 @@ void windowMgr::LoadAssets()
 	{
 		Mesh* conmeshes = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		controllerMeshes.push_back(conmeshes);
+	}
+
+	// Controller meshes used throughout the game
+	for (int i = 0; i < 8; ++i)
+	{
+		Mesh* startmesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+		startGameMeshes.push_back(startmesh);
 
 	}
 
@@ -903,7 +910,7 @@ void windowMgr::ControlsTextureSetup()
 	// Set scale, position and size of various meshes - all unique
 	// Set background
 	windowMgr::getInstance()->controllerMeshes.at(0)->SetScale(9.0f, 5.0f);
-	windowMgr::getInstance()->controllerMeshes.at(0)->SetPos(vec3(0.0f, 0.0f, 0.0f));
+	windowMgr::getInstance()->controllerMeshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
 	windowMgr::getInstance()->controllerMeshes.at(0)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
 	// Set action label
 	windowMgr::getInstance()->controllerMeshes.at(1)->SetScale(1.6f, 0.4f);

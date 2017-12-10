@@ -53,54 +53,54 @@ void startScene::ChangeTexutes(GLFWwindow * win)
 	{
 		//cases for the buttons to switch to each screen
 		case 1:
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+			windowMgr::getInstance()->startGameMeshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
 			break;
 
 		case 2:
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+			windowMgr::getInstance()->startGameMeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
 			break;
 
 		case 3:
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+			windowMgr::getInstance()->startGameMeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
 			break;
 
 		case 4:
-			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+			windowMgr::getInstance()->startGameMeshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
 			break;
 
 		case 5:
-			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+			windowMgr::getInstance()->startGameMeshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
 			break;
 
 		case 6:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
+			windowMgr::getInstance()->startGameMeshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
 			break;
 	}
 	switch (currentMenuItem)
 	{
 		//cases for the buttons to switch to each screen
 		case 1:
-			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
+			windowMgr::getInstance()->startGameMeshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
 			break;
 
 		case 2:
-			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnSelected"]);
+			windowMgr::getInstance()->startGameMeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnSelected"]);
 			break;
 
 		case 3:
-			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnSelected"]);
+			windowMgr::getInstance()->startGameMeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnSelected"]);
 			break;
 
 		case 4:
-			windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnSelected"]);
+			windowMgr::getInstance()->startGameMeshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnSelected"]);
 			break;
 
 		case 5:
-			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnSelected"]);
+			windowMgr::getInstance()->startGameMeshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnSelected"]);
 			break;
 
 		case 6:
-			windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnSelected"]);
+			windowMgr::getInstance()->startGameMeshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnSelected"]);
 			break;
 	}
 
@@ -135,32 +135,32 @@ void startScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->button_manager = 0;
 	// Background image will never change so setup here
 	// Doesn't matter which mesh we use so pick first in list - set its scale, pos and texture
-	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
-	windowMgr::getInstance()->meshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
-	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
+	windowMgr::getInstance()->startGameMeshes.at(0)->SetScale(9.0f, 5.0f);
+	windowMgr::getInstance()->startGameMeshes.at(0)->SetPos(vec3(0.0f, 0.0f, -1.0f));
+	windowMgr::getInstance()->startGameMeshes.at(0)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
 
 	// Perform setup of initial button configs - (un)selected textures
-	// Pick next item in meshes list (increment the number by 1 each time)
-	windowMgr::getInstance()->meshes.at(1)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(0.0f, 1.5f, 0.0f));
-	windowMgr::getInstance()->meshes.at(2)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(0.0f, 0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(3)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(0.0f, 0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(4)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.0f, -0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(5)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(0.0f, -0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(6)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(0.0f, -1.5f, 0.0f));
+	// Pick next item in startGameMeshes list (increment the number by 1 each time)
+	windowMgr::getInstance()->startGameMeshes.at(1)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->startGameMeshes.at(1)->SetPos(vec3(0.0f, 1.5f, 0.0f));
+	windowMgr::getInstance()->startGameMeshes.at(2)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->startGameMeshes.at(2)->SetPos(vec3(0.0f, 0.9f, 0.0f));
+	windowMgr::getInstance()->startGameMeshes.at(3)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->startGameMeshes.at(3)->SetPos(vec3(0.0f, 0.3f, 0.0f));
+	windowMgr::getInstance()->startGameMeshes.at(4)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->startGameMeshes.at(4)->SetPos(vec3(0.0f, -0.3f, 0.0f));
+	windowMgr::getInstance()->startGameMeshes.at(5)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->startGameMeshes.at(5)->SetPos(vec3(0.0f, -0.9f, 0.0f));
+	windowMgr::getInstance()->startGameMeshes.at(6)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->startGameMeshes.at(6)->SetPos(vec3(0.0f, -1.5f, 0.0f));
 
 
-	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
-	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
-	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
-	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
-	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
-	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
+	windowMgr::getInstance()->startGameMeshes.at(1)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+	windowMgr::getInstance()->startGameMeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["loadGameBtnUnselected"]);
+	windowMgr::getInstance()->startGameMeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["highscoresBtnUnselected"]);
+	windowMgr::getInstance()->startGameMeshes.at(4)->SetTexture(windowMgr::getInstance()->textures["optionsBtnUnselected"]);
+	windowMgr::getInstance()->startGameMeshes.at(5)->SetTexture(windowMgr::getInstance()->textures["internetBtnUnselected"]);
+	windowMgr::getInstance()->startGameMeshes.at(6)->SetTexture(windowMgr::getInstance()->textures["exitBtnUnselected"]);
 }
 		
 
@@ -407,13 +407,16 @@ void startScene::Render(GLFWwindow* win)
 	glDepthRange(0, 0.01);
 
 	if (loaded)
-	// Bind, update and draw HUD elements
-	for (int a = 0; a < 7; a++)
 	{
-		windowMgr::getInstance()->meshes.at(a)->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-		windowMgr::getInstance()->meshes.at(a)->Draw();
+		// Bind, update and draw HUD elements
+		for (int a = 0; a < 7; a++)
+		{
+			windowMgr::getInstance()->startGameMeshes.at(a)->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			windowMgr::getInstance()->startGameMeshes.at(a)->Draw();
+		}
 	}
+	// If not loaded, show splash screen
 	else
 	{
 		windowMgr::getInstance()->meshes.at(0)->thisTexture.Bind(0);
