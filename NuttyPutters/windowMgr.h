@@ -45,12 +45,14 @@ class windowMgr
 		bool upCotn, downCotn, leftCotn, rightCotn, enterCotn;
 		bool mouseLpressed;
 		
-		// All textures in the game stored here
+		// Most textures in the game stored here
 		map<std::string, Texture*> textures;
 		// All number textures stored here
 		vector<Texture*> numberTextures;
 		// This stores images of saved levels
 		vector<Texture*> savesImages;
+		// This stores meshes used in load game image viewer panel
+		vector<Mesh*> imagePanelMeshes;
 		// General use HUD meshes
 		vector<Mesh*> meshes;
 		vector<Mesh*> p1HUDmeshes;
@@ -301,6 +303,8 @@ class windowMgr
 		bool isFunctionEmptyKeyboard = false; // Used for remapping the keyboard
 		bool keyboardButtonPressed[100] = { false }; // Stores all the booleans for button pressing on keyboard
 		bool buttonPressed[18] = { false }; // Stores all the booleans for button pressing on controller
+		bool doesUserWantControls = false; // Boolean for the controls menu in game - if set to true and back is pressed return to the game
+		bool returnToGame = false;
 
 		// Setup initial textures
 		void ControlsTextureSetup();

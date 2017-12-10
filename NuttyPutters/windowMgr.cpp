@@ -185,8 +185,15 @@ void windowMgr::LoadAssets()
 	{
 		Mesh* conmeshes = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		controllerMeshes.push_back(conmeshes);
-
 	}
+
+	// Image viewer panel meshes used in load game scene
+	for (int i = 0; i < 9; i++)
+	{
+		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+		imagePanelMeshes.push_back(mesh);
+	}
+		
 
 
 	// Initialise unique meshes
@@ -1812,8 +1819,16 @@ void windowMgr::ControlsTrackClick()
 			cout << "Outputting control for keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
 			cout << "Outputting control for keyboard two " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
 		}
-		// Change back to main menu
-		//windowMgr::getInstance()->sceneManager.changeScene(1);
+		// 
+		if (returnToGame)
+		{
+			doesUserWantControls = false;
+		}
+		else
+		{
+			// Change back to main menu
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+		}
 		break;
 		//left arrow function
 	case 4:
