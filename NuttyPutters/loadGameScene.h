@@ -49,11 +49,15 @@ public:
 	// Width and height of image meshes
 	float w = 1.8f, h = 1.0f;	
 	float selectedW = 1.6f, selectedH = 0.9f;
+	float hoverW = 1.7f, hoverH = 0.95f;
 	// Background	0
+	int Menuselection ,prevselection;
+	int selection, otherprevselection , OtherSelection;
 
-
-
-
+	int controllerOneButtonCount;
+	const unsigned char *controllerOne;
+	int controllerOneAxisCount;
+	const float *controllerOneAxis;
 	
 	// Setup
 	void Init(GLFWwindow* win);
@@ -71,5 +75,12 @@ public:
 	void Update(GLFWwindow* window);
 	// Render
 	void Render(GLFWwindow* window);
-
+	//Tracks mouse
+	void Track_Mouse(GLFWwindow* win);
+	//Tracks the action
+	void Click_or_Enter(GLFWwindow* win);
+	void Down();
+	void Up();
+	void Left();
+	void Right();
 };

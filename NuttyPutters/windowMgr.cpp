@@ -738,6 +738,10 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("leftLbl", leftLbl));
 	Texture* downLbl = new Texture("..\\NuttyPutters\\Controller\\down.png");
 	textures.insert(std::pair<std::string, Texture*>("downLbl", downLbl));
+	Texture* highleftLbl = new Texture("..\\NuttyPutters\\Controller\\highleft.png");
+	textures.insert(std::pair<std::string, Texture*>("highleftLbl", highleftLbl));
+	Texture* highrightLbl = new Texture("..\\NuttyPutters\\Controller\\highright .png");
+	textures.insert(std::pair<std::string, Texture*>("highrightLbl", highrightLbl));
 	Texture* rightLbl = new Texture("..\\NuttyPutters\\Controller\\right.png");
 	textures.insert(std::pair<std::string, Texture*>("rightLbl", rightLbl));
 	Texture* jumpLbl = new Texture("..\\NuttyPutters\\Controller\\jump.png");

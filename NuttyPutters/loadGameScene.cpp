@@ -31,13 +31,41 @@ void loadGameScene::Init(GLFWwindow* win)
 	windowMgr::getInstance()->meshes.at(0)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
 	// Set mesh properties for left and right arrows
 	windowMgr::getInstance()->meshes.at(1)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-3.0f, 0.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-3.0f, 0.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
 	// Right
 	windowMgr::getInstance()->meshes.at(2)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(3.0f, 0.0f, 0.0f));
+	windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(3.0f, 0.5f, 0.0f));
 	windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
 
+	// Set up players label
+	windowMgr::getInstance()->meshes.at(3)->SetScale(2.625f, 0.375f);
+	windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(-1.0f, -1.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["playersLabel"]);
+
+	////// Set up one players label/button
+	windowMgr::getInstance()->meshes.at(4)->SetScale(0.375f, 0.375f);
+	windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(0.4f, -1.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
+
+	////// Set up two players label/button
+	windowMgr::getInstance()->meshes.at(5)->SetScale(1.5f, 0.375f);
+	windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(0.8f, -1.3f, 0.0f));
+	windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
+
+	windowMgr::getInstance()->meshes.at(6)->SetScale(0.375f, 0.375f);
+	windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(1.2f, -1.3f, 0.0));
+	windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
+
+	//// Set up main menu label
+	windowMgr::getInstance()->meshes.at(7)->SetScale(2.625f, 0.375f);
+	windowMgr::getInstance()->meshes.at(7)->SetPos(vec3(1.50f, -1.8f, 0.0));
+	windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+
+	//// Set up main menu label
+	windowMgr::getInstance()->meshes.at(8)->SetScale(2.625f, 0.375f);
+	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(-1.5f, -1.8f, 0.0));
+	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 	// Set image viewer properties
 	// Create image meshes
 	int imCount = 0;
@@ -49,7 +77,8 @@ void loadGameScene::Init(GLFWwindow* win)
 			float xPos, yPos;
 			xPos = (x*w);
 			yPos = (y*h) + 0.3f;
-			windowMgr::getInstance()->imagePanelMeshes.at(imCount)->SetPos(vec3(xPos, yPos, 0));
+			windowMgr::getInstance()->imagePanelMeshes.at(imCount)->SetPos(vec3(xPos, yPos + 0.2f, 0));
+			cout << yPos << endl;
 			windowMgr::getInstance()->imagePanelMeshes.at(imCount)->SetScale(w, h);
 			imCount++;
 		}
@@ -90,6 +119,204 @@ void loadGameScene::Init(GLFWwindow* win)
 	}
 
 }
+void loadGameScene::Track_Mouse(GLFWwindow* win) 
+{
+	cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
+	// If mouse pos falls within button area...
+	// Using hardcoded values since we can't match up coord systems (meshes origin is window centre measured in floats, cursor pos origin it top left measured in pixels)
+	// Left column
+	prevselection = Menuselection;
+	if (OtherSelection != 8 || OtherSelection != 15)
+	{
+		otherprevselection = OtherSelection;
+	}
+	if(windowMgr::getInstance()->mouse_x >= 214 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_x <= 1385 * windowMgr::getInstance()->windowScale 
+		&& windowMgr::getInstance()->mouse_y >= 14 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_y <= 666 * windowMgr::getInstance()->windowScale)
+	{
+		if (windowMgr::getInstance()->mouse_x >= 214 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_x <= 604 * windowMgr::getInstance()->windowScale)
+		{
+			if (windowMgr::getInstance()->mouse_y <= 231 * windowMgr::getInstance()->windowScale)
+			{
+				selection = 0;
+			}
+			// Middle 
+			else if (windowMgr::getInstance()->mouse_y <= 450 * windowMgr::getInstance()->windowScale)
+			{
+				selection = 1;
+			}
+			// Bottom
+			else if (windowMgr::getInstance()->mouse_y <= 666 * windowMgr::getInstance()->windowScale)
+			{
+				selection = 2;
+			}
+		}
+		else if (windowMgr::getInstance()->mouse_x >= 604 * windowMgr::getInstance()->windowScale && (windowMgr::getInstance()->mouse_x <= 995 * windowMgr::getInstance()->windowScale))
+		{
+			// Top image mesh
+			if (windowMgr::getInstance()->mouse_y <= 231 * windowMgr::getInstance()->windowScale )
+			{
+				selection = 3;
+			}
+			// Middle 
+			else if (windowMgr::getInstance()->mouse_y <= 450 * windowMgr::getInstance()->windowScale)
+			{
+				selection = 4;
+			}
+			// Bottom
+			else if (windowMgr::getInstance()->mouse_y <= 666 * windowMgr::getInstance()->windowScale)
+			{
+				selection = 5;
+			}
+		} // end for loop middle column
+		  // Right column
+		else if ((windowMgr::getInstance()->mouse_x >= 996 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1385 * windowMgr::getInstance()->windowScale))
+		{
+			// Top image mesh
+			if (windowMgr::getInstance()->mouse_y >= 14 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_y <= 231 * windowMgr::getInstance()->windowScale)
+			{
+				selection = 6;
+			}
+			// Middle 
+			else if (windowMgr::getInstance()->mouse_y <= 450 * windowMgr::getInstance()->windowScale)
+			{
+				selection = 7;
+			}
+			// Bottom
+			else if (windowMgr::getInstance()->mouse_y <= 666 * windowMgr::getInstance()->windowScale)
+			{
+				selection = 8;
+			}
+		} // end for loop right column
+	}
+	else if ((windowMgr::getInstance()->mouse_y >= 303 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_y <= 375 * windowMgr::getInstance()->windowScale))
+	{
+		// Left Arrow
+		if ((windowMgr::getInstance()->mouse_x >= 98 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_x <= 192 * windowMgr::getInstance()->windowScale))
+		{
+			selection = 9;
+		}
+		// Right Arrow
+		else if (windowMgr::getInstance()->mouse_x >= 1407 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_x <= 1502 * windowMgr::getInstance()->windowScale)
+		{
+			selection = 10;
+		}
+	}
+	else if ((windowMgr::getInstance()->mouse_y >= 704 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_y <= 757 * windowMgr::getInstance()->windowScale))
+	{
+		// Top image mesh
+		if ((windowMgr::getInstance()->mouse_x >= 853 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_x <= 919 * windowMgr::getInstance()->windowScale))
+		{
+			selection = 11;
+		}
+		// Middle 
+		else if (windowMgr::getInstance()->mouse_x >= 1027 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_x <= 1099 * windowMgr::getInstance()->windowScale)
+		{
+			selection = 12;
+		}
+	}
+	else if ((windowMgr::getInstance()->mouse_y >= 811 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_y <= 864 * windowMgr::getInstance()->windowScale))
+	{
+		// Top image mesh
+		if ((windowMgr::getInstance()->mouse_x >=222 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_x <= 721 * windowMgr::getInstance()->windowScale))
+		{
+			selection = 13;
+		}
+		// Middle 
+		else if (windowMgr::getInstance()->mouse_x >= 867 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_x <= 1380 * windowMgr::getInstance()->windowScale)
+		{
+			selection = 14;
+		}
+	}
+	if (selection <= 8)
+	{
+		Menuselection = selection;
+	}
+	else 
+	{
+		Menuselection = 9;
+	}
+	if (selection >= 9)
+	{
+		OtherSelection = selection;
+	}
+	else
+	{
+		OtherSelection = 8;
+	}
+}
+
+void loadGameScene::Click_or_Enter(GLFWwindow* win)
+{
+	if (selection <= 8)
+	{
+		lastImageSelected = currentImageSelected;
+		currentImageSelected = selection;
+		savesImagesIndex = (currentPage - 1) * 9 + currentImageSelected;
+		// Resize this and last choice
+		windowMgr::getInstance()->imagePanelMeshes.at(lastImageSelected)->SetScale(w, h);
+		windowMgr::getInstance()->imagePanelMeshes.at(currentImageSelected)->SetScale(selectedW, selectedH);
+		//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
+	}
+	else 
+	{
+		switch (selection)
+		{
+			case 10:
+				if (currentPage < (int)pageCount)
+				{
+					// Show last page
+					NextPage();
+				}
+				break;
+			case 9:
+				if (currentPage > 1)
+				{
+					// Show last page
+					LastPage();
+					// Resize this and last choice
+				}
+				break;
+			case 11:
+				// If button selected is button 4 - main menu - then wrap around to button 1
+				if (playerCount == 1)
+				{
+					playerCount = 2;
+				}
+				// else keep going down
+				else
+				{
+					playerCount--;
+				}
+				break;
+			case 12:
+				// If button selected is button 4 - main menu - then wrap around to button 1
+				if (playerCount == 2)
+				{
+					playerCount = 1;
+				}
+				// else keep going down
+				else
+				{
+					playerCount++;
+				}
+				break;
+			case 13:	
+				// Access singleton instance to update it's sceneManager's state
+				windowMgr::getInstance()->sceneManager.changeScene(1);
+				break;
+			case 14:
+				enterPressed = false; // Suspect this is unnecessary
+									  // Current seed is index of seeds list, send as optional param
+									  // 6 is game scene
+									  // 12 is course length
+									  // playerCount is number of players
+									  // 1 is number of levels this game
+				windowMgr::getInstance()->sceneManager.changeScene(6, 12, playerCount, 1, seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)	
+				break;
+		}
+	}
+
+}
 
 // Main loop
 void loadGameScene::Loop(GLFWwindow* win)
@@ -101,11 +328,19 @@ void loadGameScene::Loop(GLFWwindow* win)
 	Input(win);
 	//upadate
 	Update(win);
+	//code to disable mouse
+	windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
+	windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
+	glfwGetCursorPos(win, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
+	//tracks mouse
+	if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
+	{
+		Track_Mouse(win);
+	}
 	// Render
 	Render(win);
 
 }
-
 // Redraws next/last page of images onto image viewer meshes
 void loadGameScene::NextPage()
 {
@@ -174,26 +409,383 @@ void loadGameScene::LastPage()
 // Resizes the current and last selected image mesh
 void loadGameScene::ResizeCurLastSelected()
 {
-	// Resize this and last choice
-	windowMgr::getInstance()->imagePanelMeshes.at(currentImageSelected)->SetScale(selectedW, selectedH);
-	windowMgr::getInstance()->imagePanelMeshes.at(lastImageSelected)->SetScale(w, h);
-}
+	if (Menuselection != currentImageSelected)
+	{
+		if (Menuselection != 9)
+		{
+			// Resize this and last choice
+			windowMgr::getInstance()->imagePanelMeshes.at(Menuselection)->SetScale(hoverW, hoverH);
+		}
+	}
+	//windowMgr::getInstance()->imagePanelMeshes.at(lastImageSelected)->SetScale(w, h);
+	// Resize this and last choice]
+	if (prevselection != currentImageSelected)
+	{
+		if (prevselection == 9) 
+		{
 
+		}
+		else if (prevselection != Menuselection)
+		{
+			windowMgr::getInstance()->imagePanelMeshes.at(prevselection)->SetScale(w, h);
+		}
+	}
+	switch (playerCount) 
+	{
+		case 1:
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["oneBtnUnselected"]);
+			break;
+		case 2:
+			windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->textures["twoBtnUnselected"]);
+			break;
+	}
+	switch (OtherSelection) 
+	{
+		case 8:
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["playersLabel"]);
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
+			break;
+		case 9:
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["highleftLbl"]);
+			break;
+		case 10:
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["highrightLbl"]);
+			break;
+		 case 15:
+			 windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["playersSelected"]);
+			 break;
+		 case 14:
+			 windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
+			 break;
+		 case 13:
+			 windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
+			 break;
+
+	}
+	switch (otherprevselection)
+	{
+		case 9:
+			windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
+			break;
+		case 10:
+			windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
+			break;
+		case 15:
+			windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->textures["playersLabel"]);
+			break;
+		case 13:
+			windowMgr::getInstance()->meshes.at(7)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+			break;
+		case 14:
+			windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
+			break;
+
+	}
+
+}
+void loadGameScene::Left()
+{
+	prevselection = Menuselection;
+	if (OtherSelection != 8)
+	{
+		otherprevselection = OtherSelection;
+	}
+	if (selection == 0 || selection == 1 || selection == 2)
+	{
+		selection = 9;
+	}
+	else if (selection == 9)
+	{
+		selection = 10;
+	}
+	else if (selection == 10)
+	{
+		selection = 7;
+	}
+	else if (selection == 14)
+	{
+		selection = 13;
+	}
+	else if (selection == 13)
+	{
+		selection = 14;
+	}
+	else if (selection == 15)
+	{
+		// If button selected is button 4 - main menu - then wrap around to button 1
+		if (playerCount == 1)
+		{
+			playerCount = 2;
+		}
+		// else keep going down
+		else
+		{
+			playerCount--;
+		}
+	}
+	else
+	{
+		selection -= 3;
+	}
+	if (selection <= 8)
+	{
+		Menuselection = selection;
+	}
+	else
+	{
+		Menuselection = 9;
+	}
+	if (selection >= 9)
+	{
+		OtherSelection = selection;
+	}
+	else
+	{
+		OtherSelection = 8;
+	}
+}
+void loadGameScene::Right()
+{
+	prevselection = Menuselection;
+	if (OtherSelection != 8)
+	{
+		otherprevselection = OtherSelection;
+	}
+	if (selection == 8 || selection == 7 || selection == 6)
+	{
+		selection = 10;
+	}
+	else if (selection == 10 )
+	{
+		selection = 9;
+	}
+	else if (selection == 9)
+	{
+		selection = 1;
+	}
+	else if (selection == 15)
+	{
+		// If button selected is button 4 - main menu - then wrap around to button 1
+		if (playerCount == 2)
+		{
+			playerCount = 1;
+		}
+		// else keep going down
+		else
+		{
+			playerCount++;
+		}
+	}
+	else if (selection == 14)
+	{
+		selection = 13;
+	}
+	else if (selection == 13)
+	{
+		selection = 14;
+	}
+	else
+	{
+		selection += 3;
+	}
+	if (selection <= 8)
+	{
+		Menuselection = selection;
+	}
+	else
+	{
+		Menuselection = 9;
+	}
+	if (selection >= 9)
+	{
+		OtherSelection = selection;
+	}
+	else
+	{
+		OtherSelection = 8;
+	}
+}
+void loadGameScene::Down() 
+{
+	prevselection = Menuselection;
+	if (OtherSelection != 8)
+	{
+		otherprevselection = OtherSelection;
+	}
+	if (selection == 8 || selection == 5 || selection == 2)
+	{
+		selection = 15;
+	}
+	else if (selection == 13 || selection == 14)
+	{
+		selection = 0;
+	}
+	else if (selection == 15)
+	{
+		selection = 13;
+	}
+	else if (selection == 9)
+	{
+		selection = 2;
+	}
+	else if (selection == 10)
+	{
+		selection = 8;
+	}
+	else
+	{
+		selection++;
+	}
+	if (selection <= 8)
+	{
+		Menuselection = selection;
+	}
+	else
+	{
+		Menuselection = 9;
+	}
+	if (selection >= 9)
+	{
+		OtherSelection = selection;
+	}
+	else
+	{
+		OtherSelection = 8;
+	}
+}
+void loadGameScene::Up()
+{
+	prevselection = Menuselection;
+	if (OtherSelection != 8)
+	{
+		otherprevselection = OtherSelection;
+	}
+	if (selection == 0 || selection == 3 || selection == 6)
+	{
+		selection = 13;
+	}
+	else if (selection == 13 || selection == 14)
+	{
+		selection = 15;
+	}
+	else if (selection == 15)
+	{
+		selection = 2;
+	}
+	else if (selection == 9)
+	{
+		selection = 0;
+	}
+	else if (selection == 10)
+	{
+		selection = 6;
+	}
+	else
+	{
+		selection--;
+	}
+	if (selection <= 8)
+	{
+		Menuselection = selection;
+	}
+	else
+	{
+		Menuselection = 9;
+	}
+	if (selection >= 9)
+	{
+		OtherSelection = selection;
+	}
+	else
+	{
+		OtherSelection = 8;
+	}
+}
 // Act on input
 void loadGameScene::Input(GLFWwindow* win)
 {
-	// Where is the mouse? 
-	double xPos, yPos;
-	glfwGetCursorPos(win, &xPos, &yPos);
-	//cout << xPos << " : " << yPos << endl;
+	// Get the state of controller one
+	controllerOne = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &controllerOneButtonCount);
+	// If controller 1 is connected, run controller input loop for p1 only
+	if (controllerOne != NULL)
+	{
+		// Get axes details
+		controllerOneAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &controllerOneAxisCount);
+		// If right key is pressed set keyLeft to true
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][4]])
+		{
+			windowMgr::getInstance()->leftCotn = true;
+		}
+		// If leftKey is true and left key is not pressed then
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][4]] && windowMgr::getInstance()->leftCotn)
+		{
+			Left();
+			// Reset keyLeft to false
+			windowMgr::getInstance()->leftCotn = false;
+		}
 
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][6]])
+		{
+			windowMgr::getInstance()->rightCotn = true;
+		}
+		// If leftKey is true and left key is not pressed then
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][6]] && windowMgr::getInstance()->rightCotn)
+		{
+			Right();
+			// Reset keyLeft to false
+			windowMgr::getInstance()->rightCotn = false;
+		}
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+		{
+			windowMgr::getInstance()->upCotn = true;
+		}
+
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+		{
+			if (windowMgr::getInstance()->upCotn)
+			{
+				Up();
+				windowMgr::getInstance()->upCotn = false;
+			}
+		}
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]])
+		{
+			windowMgr::getInstance()->downCotn = true;
+		}
+
+		if ((GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]]))
+		{
+			if (windowMgr::getInstance()->downCotn)
+			{
+				Down();
+				windowMgr::getInstance()->downCotn = false;
+			}
+		}
+
+		// When Fire is realesed
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]])
+		{
+			windowMgr::getInstance()->enterCotn = true;
+		}
+		if ((GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]]))
+		{
+			if (windowMgr::getInstance()->enterCotn)
+			{
+				Click_or_Enter(win);
+				windowMgr::getInstance()->enterCotn = false;
+			}
+		}
+	}
+	//cout << xPos << " : " << yPos << endl;
 	// B goes back to main menu screen
 	if (glfwGetKey(win, GLFW_KEY_B))
 	{
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(1);
 	}
-
 	// Mouse input
 	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT))
 	{
@@ -203,120 +795,11 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		if (mouseLpressed)
 		{
-			// Where is the mouse? 
-			double xPos, yPos;
-			glfwGetCursorPos(win, &xPos, &yPos);
-
-			// If mouse pos falls within button area...
-			// Using hardcoded values since we can't match up coord systems (meshes origin is window centre measured in floats, cursor pos origin it top left measured in pixels)
-			// Left column
-			if (xPos > 214 * windowMgr::getInstance()->width / 1600.0 && xPos < 604)
-			{
-				// Top image mesh
-				if (yPos > 59 && yPos < 276)
-				{
-					lastImageSelected = currentImageSelected;
-					currentImageSelected = 0;
-					savesImagesIndex = (currentPage - 1) * 9;
-					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-				// Middle 
-				else if (yPos > 275 * windowMgr::getInstance()->width / 1600.0 && yPos < 492)
-				{
-					lastImageSelected = currentImageSelected;
-					currentImageSelected = 1;
-					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-				// Bottom
-				else if (yPos > 491 * windowMgr::getInstance()->width / 1600.0  && yPos < 709)
-				{
-					lastImageSelected = currentImageSelected;
-					currentImageSelected = 2;
-					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-			} // end for loop first column
-			// Middle column
-			else if (xPos > 604 * windowMgr::getInstance()->width / 1600.0 && xPos < 996)
-			{
-				// Top image mesh
-				if (yPos > 59 && yPos < 276)
-				{
-					lastImageSelected = currentImageSelected;
-					currentImageSelected = 3;
-					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-				// Middle 
-				else if (yPos > 275 * windowMgr::getInstance()->width / 1600.0 && yPos < 492)
-				{
-					lastImageSelected = currentImageSelected;
-					currentImageSelected = 4;
-					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-				// Bottom
-				else if (yPos > 491 * windowMgr::getInstance()->width / 1600.0  && yPos < 709)
-				{
-					lastImageSelected = currentImageSelected;
-					currentImageSelected = 5;
-					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-			} // end for loop middle column
-			  // Right column
-			else if (xPos > 995 * windowMgr::getInstance()->width / 1600.0 && xPos < 1385)
-			{
-				// Top image mesh
-				if (yPos > 59 && yPos < 276)
-				{
-					lastImageSelected = currentImageSelected;
-					currentImageSelected = 6;
-					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-				// Middle 
-				else if (yPos > 275 * windowMgr::getInstance()->width / 1600.0 && yPos < 492)
-				{
-					lastImageSelected = currentImageSelected;
-					currentImageSelected = 7;
-					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-				// Bottom
-				else if (yPos > 491 * windowMgr::getInstance()->width / 1600.0  && yPos < 709)
-				{
-					lastImageSelected = currentImageSelected;
-					currentImageSelected = 8;
-					savesImagesIndex = ((currentPage - 1) * 9) + currentImageSelected;
-					//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-			} // end for loop right column
+			Click_or_Enter(win);
 			mouseLpressed = false;
 		}
 
 	}
-
-
 	// IMAGE MESH NAVIGATION
 	// Go back/up an image mesh
 	if (glfwGetKey(win, GLFW_KEY_UP))
@@ -328,30 +811,7 @@ void loadGameScene::Input(GLFWwindow* win)
 		// Only if left was just released...
 		if (upPressed)
 		{	
-			// Have we reached first image mesh? 
-			if (currentImageSelected == 0)
-			{
-				// Is there a page before to show?
-				if (currentPage > 1)
-				{
-					// Show last page
-					LastPage();
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-			}
-			// Reduce current seed count if not at min
-			else if (currentImageSelected > 0)
-			{
-				lastImageSelected = currentImageSelected;
-				currentImageSelected--;
-				savesImagesIndex--;
-				//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-				// Resize this and last choice
-				ResizeCurLastSelected();
-			}
-
-
+			Up();
 			upPressed = false;
 		}
 	}
@@ -365,36 +825,11 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		if (downPressed)
 		{
-			// Have we reached last image mesh?
-			if (currentImageSelected == 8)
-			{
-				// Is there another page to show? 
-				if (currentPage < (int)pageCount)
-				{
-					// Show next page
-					NextPage();
-					// Resize this and last choice
-					ResizeCurLastSelected();
-				}
-			}
-			// Increment current seed count if not at last image mesh
-			else if (currentImageSelected < 8)
-			{
-				lastImageSelected = currentImageSelected;
-				currentImageSelected++;
-				savesImagesIndex++;
-				//cout << "Current: " << currentImageSelected << " Last: " << lastImageSelected << endl;
-				// Resize this and last choice
-				ResizeCurLastSelected();
-			}
-
-
-
+			Down();
 			downPressed = false;
 		}
 
 	}
-	
 	// View next page
 	if (glfwGetKey(win, GLFW_KEY_RIGHT))
 	{
@@ -404,16 +839,10 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		if (rightPressed)
 		{
-			if (currentPage < (int)pageCount)
-			{
-				// Show last page
-				NextPage();
-				// Resize this and last choice
-				ResizeCurLastSelected();
-			}
-
+			Right();
+			rightPressed = false;
 		}
-		rightPressed = false;
+		
 	}
 	// View last page
 	if (glfwGetKey(win, GLFW_KEY_LEFT))
@@ -424,18 +853,10 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		if (leftPressed)
 		{
-			if (currentPage > 1)
-			{
-				// Show last page
-				LastPage();
-				// Resize this and last choice
-				ResizeCurLastSelected();
-			}
-
-		}
-		leftPressed = false;
-	}
-	
+			Left();
+			leftPressed = false;
+		}		
+	}	
 	// Select this level to load
 	if (glfwGetKey(win, GLFW_KEY_ENTER) && enterCooldown > enterCooldownMax)
 	{
@@ -451,7 +872,7 @@ void loadGameScene::Input(GLFWwindow* win)
 			// 12 is course length
 			// playerCount is number of players
 			// 1 is number of levels this game
-			windowMgr::getInstance()->sceneManager.changeScene(6, 12, playerCount, 1,seeds.at(savesImagesIndex)); // 12 is mandatory course lenght (to be disregarded dw)		
+			Click_or_Enter(win); // 12 is mandatory course lenght (to be disregarded dw)		
 		}
 	}
 	
@@ -468,6 +889,8 @@ void loadGameScene::Update(GLFWwindow* win)
 	{
 		enterCooldown++;
 	}
+	
+	ResizeCurLastSelected();
 }
 
 // Draw stuff
@@ -479,7 +902,7 @@ void loadGameScene::Render(GLFWwindow* win)
 	glDepthRange(0, 0.01);
 	// Render all meshes & their textures
 	// iter limit is slightly magic - number of meshes this scene requires
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i <= 8; i++)
 	{
 		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
