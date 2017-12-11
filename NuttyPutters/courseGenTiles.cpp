@@ -74,6 +74,9 @@ bool BaseTile::isPlayerOnTile(Player &player)
 // Collision check for start tile
 void StartTile::CheckCollisions(Player &player)
 {
+	// Reset player floor level in case just came from gap/bridge tile
+	if (player.transform.getPos().y >= 0.5f)
+		player.floorLevel = 0.5f + player.radius;
 	// Check on X axis - boundaries either side
 	if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 	{
@@ -102,14 +105,15 @@ void StartTile::CheckCollisions(Player &player)
 		player.velocity.z = -player.velocity.z;
 		// Play SFX
 		windowMgr::getInstance()->PlayThisSound("golfBallWoodHit");
-
 	}
 }
 
 // Collision check for straight vertical tile
 void StraightTile_V::CheckCollisions(Player &player)
 {
-
+	// Reset player floor level in case just came from gap/bridge tile
+	if (player.transform.getPos().y >= 0.5f)
+		player.floorLevel = 0.5f + player.radius;
 	// Check on X axis - boundaries either side
 	if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 	{
@@ -136,6 +140,9 @@ void StraightTile_V::CheckCollisions(Player &player)
 // Collision check for straight horizontal tile
 void StraightTile_H::CheckCollisions(Player &player)
 {
+	// Reset player floor level in case just came from gap/bridge tile
+	if (player.transform.getPos().y >= 0.5f)
+		player.floorLevel = 0.5f + player.radius;
 	// Check on X axis - boundaries either side
 	if (player.transform.getPos().z > thisCoords.z + (4 - player.radius))
 	{
@@ -163,6 +170,9 @@ void StraightTile_H::CheckCollisions(Player &player)
 // Collision check for bottom left corner tile
 void CornerTile_BL::CheckCollisions(Player &player)
 {
+	// Reset player floor level in case just came from gap/bridge tile
+	if (player.transform.getPos().y >= 0.5f)
+		player.floorLevel = 0.5f + player.radius;
 	// Check on X axis - left boundary
 	if (player.transform.getPos().x < thisCoords.x - (4 - player.radius))
 	{
@@ -213,6 +223,9 @@ void CornerTile_BL::CheckCollisions(Player &player)
 // Collision check for bottom right corner tile
 void CornerTile_BR::CheckCollisions(Player &player)
 {
+	// Reset player floor level in case just came from gap/bridge tile
+	if (player.transform.getPos().y >= 0.5f)
+		player.floorLevel = 0.5f + player.radius;
 	// Axis seems odd since tile has been rotated
 	// Check on X axis - left boundary
 	if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
@@ -264,6 +277,9 @@ void CornerTile_BR::CheckCollisions(Player &player)
 // Collision check for top left corner tile
 void CornerTile_TL::CheckCollisions(Player &player)
 {
+	// Reset player floor level in case just came from gap/bridge tile
+	if (player.transform.getPos().y >= 0.5f)
+		player.floorLevel = 0.5f + player.radius;
 	// Axis seems odd since tile has been rotated
 	// Check on X axis - left boundary
 	if (player.transform.getPos().x < thisCoords.x - (4 - player.radius))
@@ -315,7 +331,12 @@ void CornerTile_TL::CheckCollisions(Player &player)
 // Collision check for top right corner tile
 void CornerTile_TR::CheckCollisions(Player &player)
 {
-	// Axis seems odd since tile has been rotated
+	// Reset player floor level in case just came from gap/bridge tile
+	if (player.transform.getPos().y >= 0.5f)
+		player.floorLevel = 0.5f + player.radius;
+	// Reset player floor level in case just came from gap/bridge tile
+	if (player.transform.getPos().y >= 0.5f)
+		player.floorLevel = 0.5f + player.radius;
 	// Check on X axis - right boundary
 	if (player.transform.getPos().x > thisCoords.x + (4 - player.radius))
 	{
@@ -435,6 +456,9 @@ void GapTile::CheckCollisions(Player &player)
 // Collisions check for end tile
 void EndTile::CheckCollisions(Player &player)
 {
+	// Reset player floor level in case just came from gap/bridge tile
+	//if (player.transform.getPos().y >= 0.5f)
+	//	player.floorLevel = 0.5f + player.radius;
 	// Based on velocity
 	if (outDir.going_up)
 	{
