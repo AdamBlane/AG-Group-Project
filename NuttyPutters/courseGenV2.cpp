@@ -344,66 +344,66 @@ vector<int> courseGenV2::SetupSeed(string seed, int courseLength)
 	if (seed == "seed") // it's the default value
 	{
 		// Insert start
-		//levelSeed.push_back(0);
+		levelSeed.push_back(0);
 
 		// Seeds file to read
-		//ifstream seedsFile;
-		//// Number of available seeds in that file
-		//int seedsCount;
-		//// Open seeds file (different file for each difficulty)
-		//if (courseLength == 8)
-		//{
-		//	seedsFile.open("seeds8.csv");
-		//	// There are 3000 lines in this file
-		//	seedsCount = 2999;
-		//}
-		//else if (courseLength == 12)
-		//{
-		//	seedsFile.open("seeds12.csv");
-		//	// There are 256 lines in this file
-		//	seedsCount = 255;
-		//}
-		//else if (courseLength == 16)
-		//{
-		//	seedsFile.open("seeds16.csv");
-		//	// There are 66 lines in this file
-		//	seedsCount = 65;
-		//}
-		//
+		ifstream seedsFile;
+		// Number of available seeds in that file
+		int seedsCount;
+		// Open seeds file (different file for each difficulty)
+		if (courseLength == 8)
+		{
+			seedsFile.open("seeds8.csv");
+			// There are 3000 lines in this file
+			seedsCount = 2999;
+		}
+		else if (courseLength == 12)
+		{
+			seedsFile.open("seeds12.csv");
+			// There are 256 lines in this file
+			seedsCount = 255;
+		}
+		else if (courseLength == 16)
+		{
+			seedsFile.open("seeds16.csv");
+			// There are 66 lines in this file
+			seedsCount = 65;
+		}
+		
 
-		//// pick random number in that range
-		//default_random_engine rng(random_device{}());
-		//uniform_int_distribution<int> distribution(1, seedsCount);
-		//int choice = distribution(rng);
-		//cout << choice << endl;
-		//// read that line
-		//string line;
-		//for (int l = 0; l < choice; ++l)
-		//{
-		//	getline(seedsFile, line);
-		//} // last iteration will be on desired line, so line should be correct seed now
-		//  // parse seed into array
-		//for (int c = 0; c < line.length(); ++c)
-		//{
-		//	// Convert each character in string to int
-		//	levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
-		//}
-
-
+		// pick random number in that range
+		default_random_engine rng(random_device{}());
+		uniform_int_distribution<int> distribution(1, seedsCount);
+		int choice = distribution(rng);
+		cout << choice << endl;
+		// read that line
+		string line;
+		for (int l = 0; l < choice; ++l)
+		{
+			getline(seedsFile, line);
+		} // last iteration will be on desired line, so line should be correct seed now
+		  // parse seed into array
+		for (int c = 0; c < line.length(); ++c)
+		{
+			// Convert each character in string to int
+			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
+		}
 
 
-		levelSeed.push_back(0);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(1);
-		levelSeed.push_back(7);
-		levelSeed.push_back(7);
-		levelSeed.push_back(9);
+
+
+		//levelSeed.push_back(0);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(1);
+		//levelSeed.push_back(7);
+		//levelSeed.push_back(7);
+		//levelSeed.push_back(9);
 
 	} // end if seed is default
 	else // this has been given a seed value
