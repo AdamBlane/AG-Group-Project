@@ -111,10 +111,18 @@ public:
 	int previousMenuItem, currentMenuItem;
 	bool paused = false;
 
+
 	// Spaceship properties
 	vector<Transform> spaceshipTransforms;
 	// Spaceship ranges
 	
+
+
+	// Transform for Planets
+	Transform alienPlanetTrans;
+	Transform galaxyPlanetTrans;
+	Transform gasPlanetTrans;
+	Transform lavaPlanetTrans;
 
 	// Camera variables
 	double camSpeed = 2.0;
