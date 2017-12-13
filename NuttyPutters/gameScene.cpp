@@ -1049,8 +1049,10 @@ void gameScene::Pause(GLFWwindow* window)
 			{
 				if (players[0].firePressedC)
 				{
-					// Paused is false, click or enter? 
-					paused = false;
+					if (currentMenuItem != 2 && currentMenuItem != 3)
+					{
+						paused = false;
+					}
 					Click_Or_Enter(window, paused);
 					players[0].firePressedC = false;
 				}
