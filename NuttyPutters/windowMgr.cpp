@@ -253,17 +253,17 @@ void windowMgr::LoadAssets()
 
 
 	///////////////////// PLANETS ///////////////////
-	alienPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	alienPlanet = new Mesh("..\\NuttyPutters\\sphere.obj");
 	alienPlanetTex = new Texture("..\\NuttyPutters\\alienPlanet.png");
 
-	galaxyPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	galaxyPlanet = new Mesh("..\\NuttyPutters\\sphere.obj");
 	galaxyPlanetTex = new Texture("..\\NuttyPutters\\galaxyPlanet.png");
 
-	gasPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	gasPlanet = new Mesh("..\\NuttyPutters\\sphere.obj");
 	gasPlanetTex = new Texture("..\\NuttyPutters\\gasPlanet.png");
 
 
-	lavaPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	lavaPlanet = new Mesh("..\\NuttyPutters\\sphere.obj");
 	lavaPlanetTex = new Texture("..\\NuttyPutters\\lavaPlanet.png");
 
 	// ############################ TEXTURES ############################
@@ -273,6 +273,10 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("startGameBtnSelected", startGameBtnSelected));
 	Texture* startGameBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\startUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("startGameBtnUnselected", startGameBtnUnselected));
+	Texture* startgameSelected = new Texture("..\\NuttyPutters\\startgameSelected.png");
+	textures.insert(std::pair<std::string, Texture*>("startgameSelected", startgameSelected));
+	Texture* startgameUnselected = new Texture("..\\NuttyPutters\\startgameUnselected.png");
+	textures.insert(std::pair<std::string, Texture*>("startgameUnselected", startgameUnselected));
 	Texture* loadGameBtnSelected = new Texture("..\\NuttyPutters\\Mainmenu\\loadSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("loadGameBtnSelected", loadGameBtnSelected));
 	Texture* loadGameBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\loadUnselected.png");

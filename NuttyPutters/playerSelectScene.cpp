@@ -56,7 +56,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 	//cout << "Enter selects highlighted button" << endl;
 
 	// Reset button navigation to first item
-	buttonSelect = 1;
+	currentMenuItem = 1;
 	// Set the HUDs and labels - all have unique positions and scales so all lines below are required
 	// Set the background
 	windowMgr::getInstance()->meshes.at(0)->SetScale(9.0f, 5.0f);
@@ -66,7 +66,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 	// Set up players label
 	windowMgr::getInstance()->meshes.at(1)->SetScale(3.5f, 0.5f);
 	windowMgr::getInstance()->meshes.at(1)->SetPos(vec3(-1.0f, 1.7, 0.0));
-	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["playersLabel"]);
+	windowMgr::getInstance()->meshes.at(1)->SetTexture(windowMgr::getInstance()->textures["playersSelected"]);
 
 	////// Set up one players label/button
 	windowMgr::getInstance()->meshes.at(2)->SetScale(0.5f, 0.5f);
@@ -125,7 +125,7 @@ void playerSelectScene::Init(GLFWwindow * win)
 	//// Set up start label
 	windowMgr::getInstance()->meshes.at(13)->SetScale(3.5f, 0.5f);
 	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(-1.5f, -0.4, 0.0));
-	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["startgameUnselected"]);
 
 	//// Set up main menu label
 	windowMgr::getInstance()->meshes.at(14)->SetScale(3.5f, 0.5f);
@@ -159,6 +159,7 @@ void playerSelectScene::Loop(GLFWwindow * win)
 	// Render
 	Render(win);
 }
+
 void playerSelectScene::Click_Right(GLFWwindow *win)
 {
 	switch (currentMenuItem)
@@ -203,6 +204,7 @@ void playerSelectScene::Click_Right(GLFWwindow *win)
 	}
 	ChangeTexutes(win);
 }
+
 void playerSelectScene::Click_Left(GLFWwindow *win)
 {
 	switch (currentMenuItem)
@@ -247,6 +249,7 @@ void playerSelectScene::Click_Left(GLFWwindow *win)
 	}
 	ChangeTexutes(win);
 }
+
 void playerSelectScene::ChangeTexutes(GLFWwindow *win)
 {
 	switch (playerSelect)
@@ -319,7 +322,7 @@ void playerSelectScene::ChangeTexutes(GLFWwindow *win)
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["numberOfLevels"]);
 		break;
 	case 4:
-		windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["startGameBtnUnselected"]);
+		windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["startgameUnselected"]);
 		break;
 	case 5:
 		windowMgr::getInstance()->meshes.at(14)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
@@ -338,7 +341,7 @@ void playerSelectScene::ChangeTexutes(GLFWwindow *win)
 		windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["numberOfLevelsSelected"]);
 		break;
 	case 4:
-		windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["startGameBtnSelected"]);
+		windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["startgameSelected"]);
 		break;
 	case 5:
 		windowMgr::getInstance()->meshes.at(14)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnSelected"]);
@@ -538,6 +541,7 @@ void playerSelectScene::Input(GLFWwindow* win)
 		// Reset keyEnter
 		keyEnter = false;
 	}
+
 	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 	{
 		windowMgr::getInstance()->upPressed = true;
