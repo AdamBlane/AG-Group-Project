@@ -2027,7 +2027,7 @@ void gameScene::Render(GLFWwindow* window)
 		// If clicked on control option in pause screen, show control option screen
 		if (windowMgr::getInstance()->doesUserWantControls)
 		{
-			for (int i = 1; i < 42; i++)
+			for (int i = 1; i < 38; i++)
 			{
 				windowMgr::getInstance()->controllerMeshes.at(i)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);

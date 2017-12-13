@@ -301,10 +301,14 @@ class windowMgr
 
 		// FOR CONTROLS
 		int playerTab = 1; // Set and keep track of what tab we are on - ie player one or two. One by default.
-		int indexAt99 = 0; // Used for remapping the keyboard
+		int indexAt99 = 0;
+		int indexOfButtonPressedPlayer1 = 0; // Used for remapping the keyboard
+		int indexOfButtonPressedPlayer2 = 0; // Used for remapping the keyboard
 		int indexAtButton = 0; // Used for remapping the keyboard
 		int indexAtKey = 0; // Used for remapping the keyboard
 		bool isFunctionEmpty = false; // Used for remapping the keyboard
+		int indexAt999Player1 = 0; // Used for remapping the keyboard
+		int indexAt999Player2 = 0; // Used for remapping the keyboard
 		bool isFunctionEmptyKeyboard = false; // Used for remapping the keyboard
 		bool keyboardButtonPressed[100] = { false }; // Stores all the booleans for button pressing on keyboard
 		bool buttonPressed[18] = { false }; // Stores all the booleans for button pressing on controller
