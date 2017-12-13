@@ -242,7 +242,7 @@ void windowMgr::LoadAssets()
 
 
 	///////////////////// SPACESHIP ///////////////////
-	spaceShip = new Mesh("..\\NuttyPutters\\sphere.obj");
+	spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");
 	spaceShipTex = new Texture("..\\NuttyPutters\\DiffuseTexture.png");
 
 	// ############################ TEXTURES ############################
@@ -630,7 +630,7 @@ void windowMgr::LoadAssets()
 	{
 		// Assign the psoition, score and name to the arrays from the file
 		playerOneXboxFile >> playerXboxControls[0][l];
-		cout << "Controller one " << playerXboxControls[0][l] << endl;
+		//cout << "Controller one " << playerXboxControls[0][l] << endl;
 	}
 
 	//*************XBOX PLAYER TWO *****************//
@@ -662,7 +662,7 @@ void windowMgr::LoadAssets()
 	{
 		// Assign the psoition, score and name to the arrays from the file
 		playerTwoXboxFile >> playerXboxControls[1][l];
-		cout << "Controller two " << playerXboxControls[1][l] << endl;
+		//cout << "Controller two " << playerXboxControls[1][l] << endl;
 	}
 
 	//*************KEYBOARD PLAYER ONE *****************//
@@ -695,7 +695,7 @@ void windowMgr::LoadAssets()
 		// Assign the psoition, score and name to the arrays from the file
 		playerOneKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[0][l];
 		// Output them to the screen
-		cout << "Keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
+		//cout << "Keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
 	}
 
 	//*************KEYBOARD PLAYER TWO *****************//
@@ -728,7 +728,7 @@ void windowMgr::LoadAssets()
 		// Assign the psoition, score and name to the arrays from the file
 		playerTwoKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[1][l];
 		// Output them to the screen
-		cout << "Keyboard 2 " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
+		//cout << "Keyboard 2 " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
 	}
 
 
@@ -1600,7 +1600,7 @@ void windowMgr::ControlsButtonsSetup()
 		// If the amount of buttons detected is equal to 18 then 
 		if (buttonCount == 18)
 		{
-			cout << "Controller type = PS4! " << endl;
+			//cout << "Controller type = PS4! " << endl;
 			// For all the fucntions 
 			for (int allFunctions = 0; allFunctions < 10; allFunctions++)
 			{
@@ -1681,7 +1681,7 @@ void windowMgr::ControlsButtonsSetup()
 		}
 		else
 		{
-			cout << "Controller type = XBOX360 OR OTHER! " << endl;
+			//cout << "Controller type = XBOX360 OR OTHER! " << endl;
 			// Setup the functions/buttons for xbox controller - the function being the index and button being the equal value
 			// For all the buttons in the game 
 			for (int allFunctions = 0; allFunctions < 10; allFunctions++)
@@ -1853,7 +1853,6 @@ void windowMgr::ControlsTrackClick()
 				windowMgr::getInstance()->sceneManager.changeScene(1);
 			}
 		}
-		break;
 	}
 }
 
@@ -2799,7 +2798,7 @@ void windowMgr::ControlsInputController()
 				if (GLFW_PRESS == buttons[buttonNumber] && !buttonPressed[buttonNumber])
 				{
 					buttonPressed[buttonNumber] = true;
-					cout << "Button Pressed: " << buttonNumber << endl;
+					//cout << "Button Pressed: " << buttonNumber << endl;
 				}
 
 				// If a button has just been pressed and is longer being pressed then
@@ -2865,7 +2864,7 @@ void windowMgr::ControlsInputController()
 				if (GLFW_PRESS == buttons[buttonNumber] && !buttonPressed[buttonNumber])
 				{
 					buttonPressed[buttonNumber] = true;
-					cout << "Button Pressed on Xbox: " << buttonNumber << endl;
+					//cout << "Button Pressed on Xbox: " << buttonNumber << endl;
 				}
 
 				// If a button has just been pressed and is longer being pressed then
