@@ -789,7 +789,7 @@ void loadGameScene::Input(GLFWwindow* win)
 	}
 	//cout << xPos << " : " << yPos << endl;
 	// B goes back to main menu screen
-	if (glfwGetKey(win, GLFW_KEY_B))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][1]))
 	{
 		// Access singleton instance to update it's sceneManager's state
 		windowMgr::getInstance()->sceneManager.changeScene(1);
@@ -810,11 +810,11 @@ void loadGameScene::Input(GLFWwindow* win)
 	}
 	// IMAGE MESH NAVIGATION
 	// Go back/up an image mesh
-	if (glfwGetKey(win, GLFW_KEY_UP))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 	{
 		upPressed = true;
 	}
-	if (!glfwGetKey(win, GLFW_KEY_UP))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 	{
 		// Only if left was just released...
 		if (upPressed)
@@ -825,11 +825,11 @@ void loadGameScene::Input(GLFWwindow* win)
 	}
 
 	// Go along/down an image mesh
-	if (glfwGetKey(win, GLFW_KEY_DOWN))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 	{
 		downPressed = true;
 	}
-	if (!glfwGetKey(win, GLFW_KEY_DOWN))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 	{
 		if (downPressed)
 		{
@@ -839,11 +839,11 @@ void loadGameScene::Input(GLFWwindow* win)
 
 	}
 	// View next page
-	if (glfwGetKey(win, GLFW_KEY_RIGHT))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][6]))
 	{
 		rightPressed = true;
 	}
-	if (!glfwGetKey(win, GLFW_KEY_RIGHT))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][6]))
 	{
 		if (rightPressed)
 		{
@@ -853,11 +853,11 @@ void loadGameScene::Input(GLFWwindow* win)
 		
 	}
 	// View last page
-	if (glfwGetKey(win, GLFW_KEY_LEFT))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][4]))
 	{
 		leftPressed = true;
 	}
-	if (!glfwGetKey(win, GLFW_KEY_LEFT))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][4]))
 	{
 		if (leftPressed)
 		{
@@ -866,11 +866,11 @@ void loadGameScene::Input(GLFWwindow* win)
 		}		
 	}	
 	// Select this level to load
-	if (glfwGetKey(win, GLFW_KEY_ENTER) && enterCooldown > enterCooldownMax)
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]) && enterCooldown > enterCooldownMax)
 	{
 		enterPressed = true;
 	}
-	if (!glfwGetKey(win, GLFW_KEY_ENTER))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]))
 	{
 		if (enterPressed)
 		{
