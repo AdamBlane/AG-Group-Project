@@ -66,7 +66,7 @@ void GameLogicMgr::PauseGameClock()
 // Set pause duration
 void GameLogicMgr::UnpauseGameClock()
 {
-	pauseDuration = glfwGetTime() - pauseStartTime;
+	pauseDuration += glfwGetTime() - pauseStartTime;
 }
 
 // Keep clocks ticking...
@@ -76,8 +76,10 @@ void GameLogicMgr::UpdateClock()
 	// Time from current subtract start time
 
 	lastFrameTime = elapsedTime;
-	elapsedTime = glfwGetTime() - startTime - pauseDuration;
-	
+	elapsedTime = glfwGetTime() - startTime;
+	elapsedTime -= pauseDuration;
+	//pauseStartTime = pauseDuration = 0;
+
 	// No longer have time limit in 1p mode; using world clock in both modes
 	// Work out how much time is left given this game's time limit
 	//int timeRemaining = timeLimit - elapsedTime;
@@ -86,7 +88,7 @@ void GameLogicMgr::UpdateClock()
 	// Only update the UI every second
 	if (elapsedTime > lastFrameTime && !gameEnded)
 	{
-		uiMgr.UpdateWorldClock(elapsedTime);	
+		uiMgr.UpdateWorldClock(abs(elapsedTime));	
 	}
 }
 
