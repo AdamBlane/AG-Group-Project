@@ -54,6 +54,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 {
 	// MONDAY DEMO 
 	continuePressed = true;
+
 	paused = false;
 	gameEnded = false;
 
@@ -151,9 +152,10 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->spaceShip->SetTexture(windowMgr::getInstance()->spaceShipTex);
 
 	// Spaceship properties
-	spaceTrans.getPos() = vec3(10.0f, 100.0f, 0.0f);
+	spaceTrans.getPos() = vec3(0.0f, 10.0f, 0.0f);
 	spaceTrans.getScale() = vec3(6.0f);
 
+	spaceTrans.getRot().y = -1.5708;
 
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
@@ -198,10 +200,12 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 
 	gameLogicMgr.Setup(numPlayers);
-
+	gameLogicMgr.StartGameClock();
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
 }
 
 // Loads either random level of certain size, or level by seed
@@ -670,8 +674,6 @@ void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 		// Scene 0 is no scene - it runs winMgr.CleanUp() and closes app
 		windowMgr::getInstance()->sceneManager.changeScene(0);
 		break;
-
-
 	}
 }
 
@@ -900,14 +902,12 @@ void gameScene::Pause(GLFWwindow* window)
 		windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
 		glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 		//tracks mouse
-
 		if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 		{
 			Track_mouse(window);
 		}
 
 		// If user on coontrol screen
-
 		if (windowMgr::getInstance()->doesUserWantControls)
 		{
 			windowMgr::getInstance()->ControlsInputKeyboard();
@@ -936,7 +936,7 @@ void gameScene::Pause(GLFWwindow* window)
 					paused = false;
 				}
 				// Perform action clicked
-				Click_Or_Enter(window, paused);
+				Click_Or_Enter(window, paused); // why pass paused? 
 				// Flip flag
 				windowMgr::getInstance()->enterPressed = false;
 			}
@@ -958,11 +958,11 @@ void gameScene::Pause(GLFWwindow* window)
 				windowMgr::getInstance()->mouseLpressed = false;
 			}
 		}
+		
 		if (glfwGetKey(window, GLFW_KEY_UP))
 		{
 			windowMgr::getInstance()->upPressed = true;
 		}
-
 		if (!glfwGetKey(window, GLFW_KEY_UP))
 		{
 			if (windowMgr::getInstance()->upPressed)
@@ -984,11 +984,11 @@ void gameScene::Pause(GLFWwindow* window)
 				windowMgr::getInstance()->upPressed = false;
 			}
 		}
+
 		if (glfwGetKey(window, GLFW_KEY_DOWN))
 		{
 			windowMgr::getInstance()->downPressed = true;
 		}
-
 		if (!glfwGetKey(window, GLFW_KEY_DOWN))
 		{
 			previousMenuItem = currentMenuItem;
@@ -1007,6 +1007,133 @@ void gameScene::Pause(GLFWwindow* window)
 			}
 		}
 		//*********************************** KEYBOARD MOVEMENT END//
+		// P1 controller input section
+		// Get the state of controller one
+		controllerOne = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &controllerOneButtonCount);
+		// If controller 1 is connected, run controller input loop for p1 only
+		if (controllerOne != NULL)
+		{
+			// Get axes details
+			controllerOneAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &controllerOneAxisCount);
+
+		
+			// Enter
+			if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]])
+			{
+				players[0].firePressedC = true;
+			}
+			if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]])
+			{
+				if (players[0].firePressedC)
+				{
+					// Paused is false, click or enter? 
+					paused = false;
+					Click_Or_Enter(window, paused);
+					players[0].firePressedC = false;
+				}
+			}
+			// Up
+			if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+			{
+				players[0].upPressedC = true;
+			}
+			if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][3]])
+			{
+				if (players[0].upPressedC)
+				{
+					// Paused is false, click or enter? 
+					previousMenuItem = currentMenuItem;
+					if (currentMenuItem == 1)
+					{
+						currentMenuItem = 5;
+					}
+					else if (currentMenuItem == 0)
+					{
+						currentMenuItem = 5;
+					}
+					else
+					{
+						currentMenuItem--;
+					}
+					ChangeTextures(window);
+					players[0].upPressedC = false;
+				}
+			}
+			// Down
+			if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]])
+			{
+				players[0].downPressedC = true;
+			}
+			if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][5]])
+			{
+				if (players[0].downPressedC)
+				{
+					// Paused is false, click or enter? 
+					if (currentMenuItem == 5)
+					{
+						currentMenuItem = 1;
+					}
+					else
+					{
+						currentMenuItem++;
+					}
+					ChangeTextures(window);
+					players[0].downPressedC = false;
+				}
+			}
+		}// end p1 pause controls
+		// P2 controller input section
+		// Get the state of controller two
+		controllerTwo = glfwGetJoystickButtons(GLFW_JOYSTICK_2, &controllerTwoButtonCount);
+		// If controller 2 is connected  (& there are 2 players) run controller input loop for p2
+		if (controllerTwo != NULL && numPlayers == 2)
+		{
+			// Get axes details of second controller
+			controllerTwoAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_2, &controllerTwoAxisCount);
+
+			// Fire/Select
+			if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][0]])
+			{
+				players[1].firePressedC = true;
+			}
+			if (GLFW_RELEASE == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][0]])
+			{
+				if (players[1].firePressedC)
+				{
+					// pause/click or enter
+					players[1].firePressedC = false;
+				}
+			}
+
+			// Up
+			if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][3]])
+			{
+				players[1].upPressedC = true;
+			}
+			if (GLFW_RELEASE == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][3]])
+			{
+				if (players[1].upPressedC)
+				{
+					// pause/click or enter
+					players[1].upPressedC = false;
+				}
+			}
+
+			// Down 
+			if (GLFW_PRESS == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][5]])
+			{
+				players[1].downPressedC = true;
+			}
+			if (GLFW_RELEASE == controllerTwo[windowMgr::getInstance()->playerXboxControls[1][5]])
+			{
+				if (players[1].downPressedC)
+				{
+					// pause/click or enter
+					players[1].downPressedC = false;
+				}
+			}
+		} // end p2 pause controls
+
 		// Increase time delay tracker (prevents enter/Lclick reoccuring from last scene)
 		if (total_time <= 5.0f)
 		{
@@ -1027,23 +1154,23 @@ void gameScene::Input(GLFWwindow* window)
 {
 	// These functions are for debugging, to be excluded from final game
 	// REST POSITION FUNCTION
-	if (glfwGetKey(window, GLFW_KEY_R))
-	{
-		resetPressed = true;
-	}
-	if (!glfwGetKey(window, GLFW_KEY_R))
-	{
-		if (resetPressed)
-		{
-			cout << "Player 1 position reset" << endl;
-			// Move player 1 to center of tile
-			players[0].transform.getPos() = (vec3(masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.x, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.y + 0.5 + players[0].radius, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.z));
-			// Consider setting velocity to 0 
+	//if (glfwGetKey(window, GLFW_KEY_R))
+	//{
+	//	resetPressed = true;
+	//}
+	//if (!glfwGetKey(window, GLFW_KEY_R))
+	//{
+	//	if (resetPressed)
+	//	{
+	//		cout << "Player 1 position reset" << endl;
+	//		// Move player 1 to center of tile
+	//		players[0].transform.getPos() = (vec3(masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.x, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.y + 0.5 + players[0].radius, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.z));
+	//		// Consider setting velocity to 0 
 
-			// Flip flag
-			resetPressed = false;
-		}
-	}
+	//		// Flip flag
+	//		resetPressed = false;
+	//	}
+	//}
 
 	// If button one is pressed change to free camera
 	if (glfwGetKey(window, GLFW_KEY_1))
@@ -1142,12 +1269,12 @@ void gameScene::Input(GLFWwindow* window)
 
 
 		// If the X button is pressed then continue on with game -used for HUD elements
-		if (glfwGetKey(window, GLFW_KEY_X))
-		{
-			continuePressed = true;
-			// Start game timer
-			gameLogicMgr.StartGameClock();
-		}
+		//if (glfwGetKey(window, GLFW_KEY_X))
+		//{
+		//	continuePressed = true;
+		//	// Start game timer
+		//	gameLogicMgr.StartGameClock();
+		//}
 
 
 		// CHASE CAM controls
@@ -1269,12 +1396,12 @@ void gameScene::Input(GLFWwindow* window)
 
 
 		// If the X button is pressed then continue on with game -used for HUD elements
-		if (glfwGetKey(window, GLFW_KEY_X))
-		{
-			continuePressed = true;
-			// Start game timer
-			gameLogicMgr.StartGameClock();
-		}
+		//if (glfwGetKey(window, GLFW_KEY_X))
+		//{
+		//	continuePressed = true;
+		//	// Start game timer
+		//	gameLogicMgr.StartGameClock();
+		//}
 
 
 		// CHASE CAM controls
@@ -1414,13 +1541,13 @@ void gameScene::Input(GLFWwindow* window)
 		}
 
 
-		// If the X button is pressed then continue on with game -used for HUD elements
-		if (glfwGetKey(window, GLFW_KEY_X))
-		{
-			continuePressed = true;
-			// Start game timer
-			gameLogicMgr.StartGameClock();
-		}
+		//// If the X button is pressed then continue on with game -used for HUD elements
+		//if (glfwGetKey(window, GLFW_KEY_X))
+		//{
+		//	continuePressed = true;
+		//	// Start game timer
+		//	gameLogicMgr.StartGameClock();
+		//}
 
 
 		// CHASE CAM controls
@@ -1640,6 +1767,10 @@ void gameScene::CheckLoadNextLevel()
 			// Change pause cam properties to match with this level
 			windowMgr::getInstance()->PAUSEtargetCam->set_Posistion(pauseCamLevelProperties[currentLevel * 2]);
 			windowMgr::getInstance()->PAUSEtargetCam->set_Target(pauseCamLevelProperties[currentLevel * 2 + 1]);
+			// Reset player size to default
+			players[i].transform.getScale() = vec3(0.5);
+			players[i].radius = 0.5;
+			players[i].mass = 1.2;
 		}
 	}
 
@@ -1654,6 +1785,9 @@ void gameScene::Update(GLFWwindow* window)
 		float yRot = t.getRot().y + 1.0f * dt;
 		t.setRot(vec3(0.0f, yRot, 0.0f));
 	}
+
+	// Move spaceship
+	spaceTrans.getPos().x -= 0.3f;
 
 	// Check whether to load next level, pass in player
 	CheckLoadNextLevel();
