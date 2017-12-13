@@ -220,8 +220,14 @@ void windowMgr::LoadAssets()
 	{
 		Mesh* startmesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 		startGameMeshes.push_back(startmesh);
-  }
+    }
 
+	// Pause screen meshes
+	for (int i = 0; i < 5; i++)
+	{
+		Mesh* pauseMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
+		pauseScreenMeshes.push_back(pauseMesh);
+	}
 
 	// Image viewer panel meshes used in load game scene
 	for (int i = 0; i < 9; i++)

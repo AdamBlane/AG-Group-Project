@@ -24,105 +24,6 @@ void UI::p1Setup()
 	windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(0.88f, -1.47f, 0.0f));
 	windowMgr::getInstance()->p1HUDmeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
 
-
-
-
-
-	// Timer seconds digit
-	//windowMgr::getInstance()->meshes.at(5)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->meshes.at(5)->SetPos(vec3(2.8f, 1.7f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(5)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	// Timer tens digit
-  //windowMgr::getInstance()->meshes.at(4)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->meshes.at(4)->SetPos(vec3(2.95f, 1.7f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	// Timer minutes digit
-	//windowMgr::getInstance()->meshes.at(3)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->meshes.at(3)->SetPos(vec3(3.15f, 1.7f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	// Timer tens of minutes digit
-	//windowMgr::getInstance()->meshes.at(2)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->meshes.at(2)->SetPos(vec3(3.3f, 1.7f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	// Timer semi colon
-	//windowMgr::getInstance()->meshes.at(6)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->meshes.at(6)->SetPos(vec3(3.05f, 1.7f, 0.0f));
-	//windowMgr::getInstance()->meshes.at(6)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
-    // Power bar
-	//windowMgr::getInstance()->p1HUDmeshes.at(2)->SetScale(2.4f, 0.4f);
-	//windowMgr::getInstance()->p1HUDmeshes.at(2)->SetPos(vec3(2.0f, -1.5f, -0.1f));
-	//windowMgr::getInstance()->p1HUDmeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["powerLbl"]);
-	// Power indicator
-	//windowMgr::getInstance()->p1HUDmeshes.at(3)->SetScale(0.05f, 0.27f);
-	//windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(0.88f, -1.47f, 0.0f));
-	//windowMgr::getInstance()->p1HUDmeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
-	
-
-	// Deprecated - using world clock for both modes now not HUD clock
-	/*
-	// Timer seconds digit
-	//windowMgr::getInstance()->HUDclockMeshes.at(0)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->HUDclockMeshes.at(0)->SetPos(vec3(2.95f, 1.7f, 0.0f));	
-	//windowMgr::getInstance()->HUDclockMeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	//// Timer tens digit
-	//windowMgr::getInstance()->HUDclockMeshes.at(1)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->HUDclockMeshes.at(1)->SetPos(vec3(2.8f, 1.7f, 0.0f));
-	//windowMgr::getInstance()->HUDclockMeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	//// Timer minutes digit
-	//windowMgr::getInstance()->HUDclockMeshes.at(2)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->HUDclockMeshes.at(2)->SetPos(vec3(3.15f, 1.7f, 0.0f));
-	//windowMgr::getInstance()->HUDclockMeshes.at(2)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	//// Timer tens of minutes digit
-	//windowMgr::getInstance()->HUDclockMeshes.at(3)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->HUDclockMeshes.at(3)->SetPos(vec3(3.3f, 1.7f, 0.0f));
-	//windowMgr::getInstance()->HUDclockMeshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(0));
-	//// Timer semi colon
-	//windowMgr::getInstance()->HUDclockMeshes.at(4)->SetScale(0.25f, 0.25f);
-	//windowMgr::getInstance()->HUDclockMeshes.at(4)->SetPos(vec3(3.05f, 1.7f, 0.0f));
-	//windowMgr::getInstance()->HUDclockMeshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(10));
-	*/
-
-
-	// Pause menu stuff
-	windowMgr::getInstance()->meshes.at(9)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0.0f, 0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
-
-	windowMgr::getInstance()->meshes.at(10)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, 0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
-
-	windowMgr::getInstance()->meshes.at(11)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(0.0f, -0.3f, 0.0f));
-	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
-
-	windowMgr::getInstance()->meshes.at(12)->SetScale(1.8f, 0.6f);
-	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(0.0f, -0.9f, 0.0f));
-	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
-
-
-	// Resume
-	windowMgr::getInstance()->meshes.at(9)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0.0f, 1.2f, 0.0f));
-
-	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
-	// Save
-	windowMgr::getInstance()->meshes.at(10)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, 0.6f, 0.0f));
-	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
-	// Controls
-	windowMgr::getInstance()->meshes.at(11)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(0.0f, 0.0f, 0.0f));
-	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["controlsBtnUnselected"]);
-	// Main menu
-	windowMgr::getInstance()->meshes.at(12)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(0.0f, -0.6f, 0.0f));
-	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
-	// Exit
-	windowMgr::getInstance()->meshes.at(13)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(13)->SetPos(vec3(0.0f, -1.2f, 0.0f));
-	windowMgr::getInstance()->meshes.at(13)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
-
 }
 
 // Sets up basic HUD layout for 2 player game
@@ -166,30 +67,75 @@ void UI::p2Setup()
 	windowMgr::getInstance()->p2HUDmeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["powerIndicator"]);
 
 
-	// Resume
-	windowMgr::getInstance()->meshes.at(8)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0.0f, 1.2f, 0.0f));
+	//// Resume
+	//windowMgr::getInstance()->meshes.at(8)->SetScale(4.2f, 0.7f);
+	//windowMgr::getInstance()->meshes.at(8)->SetPos(vec3(0.0f, 1.2f, 0.0f));
 
-	windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
-	// Save
-	windowMgr::getInstance()->meshes.at(9)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0.0f, 0.6f, 0.0f));
-	windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
-	// Controls
-	windowMgr::getInstance()->meshes.at(10)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, 0.0f, 0.0f));
-	windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["controlsBtnUnselected"]);
-	// Main menu
-	windowMgr::getInstance()->meshes.at(11)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(0.0f, -0.6f, 0.0f));
-	windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
-	// Exit
-	windowMgr::getInstance()->meshes.at(12)->SetScale(4.2f, 0.7f);
-	windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(0.0f, -1.2f, 0.0f));
-	windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);;
+	//windowMgr::getInstance()->meshes.at(8)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
+	//// Save
+	//windowMgr::getInstance()->meshes.at(9)->SetScale(4.2f, 0.7f);
+	//windowMgr::getInstance()->meshes.at(9)->SetPos(vec3(0.0f, 0.6f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(9)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+	//// Controls
+	//windowMgr::getInstance()->meshes.at(10)->SetScale(4.2f, 0.7f);
+	//windowMgr::getInstance()->meshes.at(10)->SetPos(vec3(0.0f, 0.0f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(10)->SetTexture(windowMgr::getInstance()->textures["controlsBtnUnselected"]);
+	//// Main menu
+	//windowMgr::getInstance()->meshes.at(11)->SetScale(4.2f, 0.7f);
+	//windowMgr::getInstance()->meshes.at(11)->SetPos(vec3(0.0f, -0.6f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(11)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+	//// Exit
+	//windowMgr::getInstance()->meshes.at(12)->SetScale(4.2f, 0.7f);
+	//windowMgr::getInstance()->meshes.at(12)->SetPos(vec3(0.0f, -1.2f, 0.0f));
+	//windowMgr::getInstance()->meshes.at(12)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);;
 
 }
 
+// Sets up pause screen meshes
+void UI::SetupPauseScreen()
+{
+	// Pause menu stuff
+	//windowMgr::getInstance()->pauseScreenMeshes.at(0)->SetScale(1.8f, 0.6f);
+	//windowMgr::getInstance()->pauseScreenMeshes.at(0)->SetPos(vec3(0.0f, 0.9f, 0.0f));
+	//windowMgr::getInstance()->pauseScreenMeshes.at(0)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
+
+	//windowMgr::getInstance()->pauseScreenMeshes.at(1)->SetScale(1.8f, 0.6f);
+	//windowMgr::getInstance()->pauseScreenMeshes.at(1)->SetPos(vec3(0.0f, 0.3f, 0.0f));
+	//windowMgr::getInstance()->pauseScreenMeshes.at(1)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+
+	//windowMgr::getInstance()->pauseScreenMeshes.at(2)->SetScale(1.8f, 0.6f);
+	//windowMgr::getInstance()->pauseScreenMeshes.at(2)->SetPos(vec3(0.0f, -0.3f, 0.0f));
+	//windowMgr::getInstance()->pauseScreenMeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+
+	//windowMgr::getInstance()->pauseScreenMeshes.at(3)->SetScale(1.8f, 0.6f);
+	//windowMgr::getInstance()->pauseScreenMeshes.at(3)->SetPos(vec3(0.0f, -0.9f, 0.0f));
+	//windowMgr::getInstance()->pauseScreenMeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+
+
+	// Resume
+	windowMgr::getInstance()->pauseScreenMeshes.at(0)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->pauseScreenMeshes.at(0)->SetPos(vec3(0.0f, 1.2f, 0.0f));
+	windowMgr::getInstance()->pauseScreenMeshes.at(0)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
+	// Save
+	windowMgr::getInstance()->pauseScreenMeshes.at(1)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->pauseScreenMeshes.at(1)->SetPos(vec3(0.0f, 0.6f, 0.0f));
+	windowMgr::getInstance()->pauseScreenMeshes.at(1)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+	// Controls
+	windowMgr::getInstance()->pauseScreenMeshes.at(2)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->pauseScreenMeshes.at(2)->SetPos(vec3(0.0f, 0.0f, 0.0f));
+	windowMgr::getInstance()->pauseScreenMeshes.at(2)->SetTexture(windowMgr::getInstance()->textures["controlsBtnUnselected"]);
+	// Main menu
+	windowMgr::getInstance()->pauseScreenMeshes.at(3)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->pauseScreenMeshes.at(3)->SetPos(vec3(0.0f, -0.6f, 0.0f));
+	windowMgr::getInstance()->pauseScreenMeshes.at(3)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+	// Exit
+	windowMgr::getInstance()->pauseScreenMeshes.at(4)->SetScale(4.2f, 0.7f);
+	windowMgr::getInstance()->pauseScreenMeshes.at(4)->SetPos(vec3(0.0f, -1.2f, 0.0f));
+	windowMgr::getInstance()->pauseScreenMeshes.at(4)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+
+}
+
+// Set world clock initial properties
 void UI::SetupClock()
 {
 	// Set initial textures:
