@@ -455,12 +455,12 @@ void playerSelectScene::Input(GLFWwindow* win)
 
 	}
 		// If right key is pressed set keyLeft to true
-	if (glfwGetKey(win, GLFW_KEY_LEFT))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][4]))
 	{
 		keyLeft = true;
 	}
 	// If leftKey is true and left key is not pressed then
-	if (keyLeft && !glfwGetKey(win, GLFW_KEY_LEFT))
+	if (keyLeft && !glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][4]))
 	{
 		Click_Left(win);
 		// Reset keyLeft to false
@@ -468,19 +468,19 @@ void playerSelectScene::Input(GLFWwindow* win)
 	}
 
 	// If right key is pressed set keyRight to true
-	if (glfwGetKey(win, GLFW_KEY_RIGHT))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][6]))
 	{
 		keyRight = true;
 	}
 	// If keyRight is true and right is not pressed then
-	if (keyRight && !glfwGetKey(win, GLFW_KEY_RIGHT))
+	if (keyRight && !glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][6]))
 	{
 		Click_Right(win);
 		// Reset keyRight
 		keyRight = false;
 	}
 
-	if (glfwGetKey(win, GLFW_KEY_ENTER))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]))
 	{
 		keyEnter = true;
 	}
@@ -523,7 +523,7 @@ void playerSelectScene::Input(GLFWwindow* win)
 		}
 	}
 	// If key enter equals true and enter is not pressed then
-	if (keyEnter && !glfwGetKey(win, GLFW_KEY_ENTER))
+	if (keyEnter && !glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]))
 	{
 		// If button select is 3 then start the game
 		if (currentMenuItem == 4)
@@ -538,12 +538,12 @@ void playerSelectScene::Input(GLFWwindow* win)
 		// Reset keyEnter
 		keyEnter = false;
 	}
-	if (glfwGetKey(win, GLFW_KEY_UP))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 	{
 		windowMgr::getInstance()->upPressed = true;
 	}
 
-	if (!glfwGetKey(win, GLFW_KEY_UP))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 	{
 		if (windowMgr::getInstance()->upPressed)
 		{
@@ -564,12 +564,12 @@ void playerSelectScene::Input(GLFWwindow* win)
 			windowMgr::getInstance()->upPressed = false;
 		}
 	}
-	if (glfwGetKey(win, GLFW_KEY_DOWN))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 	{
 		windowMgr::getInstance()->downPressed = true;
 	}
 
-	if (!glfwGetKey(win, GLFW_KEY_DOWN))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 	{
 		previousMenuItem = currentMenuItem;
 		if (windowMgr::getInstance()->downPressed)

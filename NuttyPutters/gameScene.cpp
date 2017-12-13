@@ -145,7 +145,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 		// Add to players list
 		players.push_back(player);
 	}
-	
+
 	// Assign arrow textures for both player arrows
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
@@ -154,8 +154,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Spaceship properties
 	spaceTrans.getPos() = vec3(0.0f, 10.0f, 0.0f);
 	spaceTrans.getScale() = vec3(6.0f);
+
 	spaceTrans.getRot().y = -1.5708;
-	
+
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
 	windowMgr::getInstance()->freeCam->set_Posistion(vec3(0, 10, -10));
@@ -193,7 +194,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	dt = 0.012;
 
 
-	
+
 	// Perform game logic and UI setup
 	// World clock should appear over end hole - pass in end hole position and direction
 
@@ -513,7 +514,7 @@ void gameScene::SetupWorldClock()
 			// Add to list
 			worldClockTransforms.push_back(trans);
 		}
-	}	
+	}
 	else if (masterAlgTiles[currentLevel].back()->outDir.going_left)
 	{
 		dir = "left";
@@ -580,8 +581,8 @@ void gameScene::Save_Level(GLFWwindow* win)
 		cout << "Level saved" << endl;
 		levelSaved = true;
 
-												 //// The above saves the game window capture to clipboard
-													 //// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
+		//// The above saves the game window capture to clipboard
+			//// Retrieve image from clipboard, taken from https://www.experts-exchange.com/questions/24769725/Saving-a-clipboard-print-screen-image-to-disk-in-a-jpg-or-bmp-file-format.html
 		HWND hwnd = GetDesktopWindow();
 		if (!OpenClipboard(hwnd))
 			cout << "Error with HWND" << endl;
@@ -1141,10 +1142,10 @@ void gameScene::Pause(GLFWwindow* window)
 		Render(window); // Render it
 
 	}//endloop
-	
+
 	// Unpause clocks
 	gameLogicMgr.UnpauseGameClock();
-	
+
 	std::cout << "\nUnpaused" << std::endl;
 }
 
@@ -1489,9 +1490,18 @@ void gameScene::Input(GLFWwindow* window)
 	if (gameEnded)
 	{
 		// if controller button is pressed
-		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]] || glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][0]))
+		if (controllerOne != NULL)
+		{
+			if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]] || glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][0]))
+			{
+				windowMgr::getInstance()->sceneManager.changeScene(1);
+				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			}
+		}
+		else if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][0]))
 		{
 			windowMgr::getInstance()->sceneManager.changeScene(1);
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
 	}
 

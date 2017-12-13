@@ -299,11 +299,11 @@ void startScene::Input(GLFWwindow * win)
 
 	}
 
-	if (glfwGetKey(win, GLFW_KEY_ENTER))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]))
 	{
 		windowMgr::getInstance()->enterPressed = true;
 	}
-	if (!glfwGetKey(win, GLFW_KEY_ENTER) && total_time >= 5.0f)
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]) && total_time >= 5.0f)
 	{
 		if (windowMgr::getInstance()->enterPressed)
 		{
@@ -323,12 +323,12 @@ void startScene::Input(GLFWwindow * win)
 			windowMgr::getInstance()->mouseLpressed = false;
 		}
 	}
-	if (glfwGetKey(win, GLFW_KEY_UP))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 	{
 		windowMgr::getInstance()->upPressed = true;
 	}
 
-	if (!glfwGetKey(win, GLFW_KEY_UP))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 	{
 		if (windowMgr::getInstance()->upPressed)
 		{
@@ -351,12 +351,12 @@ void startScene::Input(GLFWwindow * win)
 	}
 	
 	// On down press
-	if (glfwGetKey(win, GLFW_KEY_DOWN))
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 	{
 		windowMgr::getInstance()->downPressed = true;
 	}
 
-	if (!glfwGetKey(win, GLFW_KEY_DOWN))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 	{
 		previousMenuItem = currentMenuItem;
 		if (windowMgr::getInstance()->downPressed)
