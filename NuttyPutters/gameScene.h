@@ -10,7 +10,7 @@
 #include <windows.h>
 #include <atlimage.h>
 #include <gdiplusimaging.h>
-
+#include <thread>
 // Internals
 
 #include "Shader.h"
@@ -111,7 +111,10 @@ public:
 	int previousMenuItem, currentMenuItem;
 	bool paused = false;
 
-	Transform spaceTrans;
+	// Spaceship properties
+	vector<Transform> spaceshipTransforms;
+	// Spaceship ranges
+	
 
 	// Camera variables
 	double camSpeed = 2.0;
@@ -148,6 +151,8 @@ public:
 	void SpatialPartitioningUpdate();
 	// Will load next level if conditions are met
 	void CheckLoadNextLevel();
+	// Handles spaceship logic
+	void ThreadSpaceship(int id);
 	// Keep clocks ticking, update cameras and positions
 	void Update(GLFWwindow* window);
 	// Check for player collisions
