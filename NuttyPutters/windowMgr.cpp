@@ -255,6 +255,7 @@ void windowMgr::LoadAssets()
 	gasPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
 	gasPlanetTex = new Texture("..\\NuttyPutters\\gasPlanet.png");
 
+
 	lavaPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
 	lavaPlanetTex = new Texture("..\\NuttyPutters\\lavaPlanet.png");
 
