@@ -152,9 +152,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->spaceShip->SetTexture(windowMgr::getInstance()->spaceShipTex);
 
 	// Spaceship properties
-	spaceTrans.getPos() = vec3(10.0f, 100.0f, 0.0f);
+	spaceTrans.getPos() = vec3(0.0f, 10.0f, 0.0f);
 	spaceTrans.getScale() = vec3(6.0f);
-
+	spaceTrans.getRot().y = -1.5708;
 	
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
@@ -1172,64 +1172,64 @@ void gameScene::Input(GLFWwindow* window)
 	//}
 
 	// If button one is pressed change to free camera
-	//if (glfwGetKey(window, GLFW_KEY_1))
-	//{
-	//	// Set camera version to free camera
-	//	cout << "Free Camera selected" << endl;
-	//	cameraType = 0;
-	//	// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
-	//	windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->chaseCams[0]->get_Posistion());
-	//}
+	if (glfwGetKey(window, GLFW_KEY_1))
+	{
+		// Set camera version to free camera
+		cout << "Free Camera selected" << endl;
+		cameraType = 0;
+		// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
+		windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->chaseCams[0]->get_Posistion());
+	}
 
 	// If button two is pressed change to chase camera
-	//if (glfwGetKey(window, GLFW_KEY_2))
-	//{
-	//	// Set camera version to chase camera
-	//	cout << "Chase Camera selected" << endl;
-	//	cameraType = 1;
-	//}
+	if (glfwGetKey(window, GLFW_KEY_2))
+	{
+		// Set camera version to chase camera
+		cout << "Chase Camera selected" << endl;
+		cameraType = 1;
+	}
 
 	// FREE CAM controls
-	//if (cameraType == 0)
-	//{
-	//	// Create vector to apply to current cam pos
-	//	vec3 freeCamPos = vec3(0, 0, 0);
+	if (cameraType == 0)
+	{
+		// Create vector to apply to current cam pos
+		vec3 freeCamPos = vec3(0, 0, 0);
 
-	//	// Camera controls
-	//	if (glfwGetKey(window, GLFW_KEY_W))
-	//	{
-	//		freeCamPos = (vec3(0, 0, camSpeed * dt));
-	//	}
-	//	if (glfwGetKey(window, GLFW_KEY_A))
-	//	{
-	//		freeCamPos = (vec3(-camSpeed * dt, 0, 0));
-	//	}
-	//	if (glfwGetKey(window, GLFW_KEY_S))
-	//	{
-	//		freeCamPos = (vec3(0, 0, -camSpeed * dt));
-	//	}
-	//	if (glfwGetKey(window, GLFW_KEY_D))
-	//	{
-	//		freeCamPos = (vec3(camSpeed * dt, 0, 0));
-	//	}
-	//	if (glfwGetKey(window, GLFW_KEY_Q))
-	//	{
-	//		freeCamPos = (vec3(0, camSpeed * dt, 0));
-	//	}
-	//	if (glfwGetKey(window, GLFW_KEY_E))
-	//	{
-	//		freeCamPos = (vec3(0, -camSpeed * dt, 0));
-	//	}
-	//	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
-	//	{
-	//		camSpeed = 10.0f;
-	//	}
-	//	else
-	//		camSpeed = 2.0f;
+		// Camera controls
+		if (glfwGetKey(window, GLFW_KEY_W))
+		{
+			freeCamPos = (vec3(0, 0, camSpeed * dt));
+		}
+		if (glfwGetKey(window, GLFW_KEY_A))
+		{
+			freeCamPos = (vec3(-camSpeed * dt, 0, 0));
+		}
+		if (glfwGetKey(window, GLFW_KEY_S))
+		{
+			freeCamPos = (vec3(0, 0, -camSpeed * dt));
+		}
+		if (glfwGetKey(window, GLFW_KEY_D))
+		{
+			freeCamPos = (vec3(camSpeed * dt, 0, 0));
+		}
+		if (glfwGetKey(window, GLFW_KEY_Q))
+		{
+			freeCamPos = (vec3(0, camSpeed * dt, 0));
+		}
+		if (glfwGetKey(window, GLFW_KEY_E))
+		{
+			freeCamPos = (vec3(0, -camSpeed * dt, 0));
+		}
+		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
+		{
+			camSpeed = 10.0f;
+		}
+		else
+			camSpeed = 2.0f;
 
-	//	// Move camera by new pos after input
-	//	windowMgr::getInstance()->freeCam->move(freeCamPos);
-	//}
+		// Move camera by new pos after input
+		windowMgr::getInstance()->freeCam->move(freeCamPos);
+	}
 
 	// INPUT LOOPS:
 	// 1 - Keyboard input for both players (always runs)
@@ -1775,6 +1775,9 @@ void gameScene::Update(GLFWwindow* window)
 		float yRot = t.getRot().y + 1.0f * dt;
 		t.setRot(vec3(0.0f, yRot, 0.0f));
 	}
+
+	// Move spaceship
+	spaceTrans.getPos().x -= 0.3f;
 
 	// Check whether to load next level, pass in player
 	CheckLoadNextLevel();
