@@ -242,7 +242,7 @@ void windowMgr::LoadAssets()
 
 
 	///////////////////// SPACESHIP ///////////////////
-	spaceShip = new Mesh("..\\NuttyPutters\\arrow.obj");
+	spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");
 	spaceShipTex = new Texture("..\\NuttyPutters\\DiffuseTexture.png");
 
 	// ############################ TEXTURES ############################
