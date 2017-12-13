@@ -99,6 +99,18 @@ GLFWwindow* windowMgr::Init()
 
 void windowMgr::LoadAssets()
 {
+	// Spawn and detach spaceship threads
+	for (int i = 0; i < threadCount; i++)
+	{
+		// Create spaceship transform first, add to list
+		Transform spaceshipTransform;
+		spaceshipTransform.getScale() = vec3(6.0f);
+		spaceshipTransforms.push_back(spaceshipTransform);
+		// Create thread, pass in i to assign id (lookup index of spaceshipTransforms)
+		thread spaceshipThread(&windowMgr::ThreadSpaceship, this, i);
+		spaceshipThread.detach();
+	}
+
 	// Setup skybox shader
 	skyboxShader = new Shader("..\\NuttyPutters\\skyShader");
 	// Target camera for pause
@@ -253,17 +265,17 @@ void windowMgr::LoadAssets()
 
 
 	///////////////////// PLANETS ///////////////////
-	alienPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	alienPlanet = new Mesh("..\\NuttyPutters\\sphere.obj");
 	alienPlanetTex = new Texture("..\\NuttyPutters\\alienPlanet.png");
 
-	galaxyPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	galaxyPlanet = new Mesh("..\\NuttyPutters\\sphere.obj");
 	galaxyPlanetTex = new Texture("..\\NuttyPutters\\galaxyPlanet.png");
 
-	gasPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	gasPlanet = new Mesh("..\\NuttyPutters\\sphere.obj");
 	gasPlanetTex = new Texture("..\\NuttyPutters\\gasPlanet.png");
 
 
-	lavaPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	lavaPlanet = new Mesh("..\\NuttyPutters\\sphere.obj");
 	lavaPlanetTex = new Texture("..\\NuttyPutters\\lavaPlanet.png");
 
 	// ############################ TEXTURES ############################
@@ -895,6 +907,121 @@ void windowMgr::ThreadPlaySound(FMOD::System* system, FMOD::Sound* sound)
 	system->playSound(sound, NULL, false, NULL);
 }
 
+// Handles spaceship logic
+void windowMgr::ThreadSpaceship(int id)
+{
+	// Spaceship always moves forward. Move until route length is met, 
+	// then teleport back to start (negative route length). Route length must be
+	// at least width of skybox (500) - rng the extra (within range)
+	cout << "hi from thread " << id << endl;
+	// Create random engine 	
+	default_random_engine rng(random_device{}());
+	// Create range for additional route length
+	uniform_int_distribution<int> routeLengthDistro(500, 1200);
+	// Pick a random value within range, add to the skybox width
+	//float routeLength = (float)500 + routeLengthDistro(rng);
+
+
+	// Spaceship properties - id given is index to look at in spaceshipTransforms
+	uniform_int_distribution<int> yPosDistro;
+	// Act on id - different behaviours for each (so hacky to have all here)
+	if (id == 0)
+	{
+		// Pick a random value within range, add to the skybox width
+		float routeLength = (float)500 + routeLengthDistro(rng);
+		// Set y position range
+		yPosDistro = uniform_int_distribution<int>(15, 35);
+		// randomise y pos within given range
+		float yPos = yPosDistro(rng);
+		// Set start position (negative route length, randomised y pos)
+		spaceshipTransforms[id].getPos() = vec3(-routeLength, yPos, 0.0f);
+		// Rotate to face forward (this ship goes up on x)
+		spaceshipTransforms[id].getRot().y = 1.5708;
+		// Keep this thread alive until the game ends
+		while (true)
+		{
+			// Travel until route length reached
+			if (spaceshipTransforms[id].getPos().x < routeLength)
+			{
+				spaceshipTransforms[id].getPos().x += 0.0001f;
+			}
+			else // Spaceship has travelled farther than route length
+			{
+				// Teleport to negative route length (prevent turning ship)
+				spaceshipTransforms[id].getPos().x = -routeLength;
+				// Assign a new route length
+				float routeLength = (float)500 + routeLengthDistro(rng);
+				// Assign new y position
+				yPos = yPosDistro(rng);
+				spaceshipTransforms[id].getPos() = vec3(-routeLength, yPos, 0.0f);
+			}
+		}
+	}
+	else if (id == 1)
+	{
+		// Pick a random value within range, add to the skybox width
+		float routeLength = (float)500 + routeLengthDistro(rng);
+		// Set y position range
+		yPosDistro = uniform_int_distribution<int>(45, 60);
+		// randomise y pos within given range
+		float yPos = yPosDistro(rng);
+		// Set start pos to route length end point
+		spaceshipTransforms[id].getPos() = vec3(routeLength, yPos, 0.0f);
+		// Rotate to face forward (this ship goes down on x)
+		spaceshipTransforms[id].getRot().y = -1.5708;
+		// Keep this thread alive until the game ends
+		while (true)
+		{
+			// Travel until route length reached
+			if (spaceshipTransforms[id].getPos().x > -routeLength)
+			{
+				spaceshipTransforms[id].getPos().x -= 0.0001f;
+			}
+			else // Spaceship has travelled farther than route length
+			{
+				// Teleport to negative route length (prevent turning ship)
+				spaceshipTransforms[id].getPos().x = routeLength;
+				// Assign a new route length
+				float routeLength = (float)500 + routeLengthDistro(rng);
+				// Assign new y position
+				yPos = yPosDistro(rng);
+				spaceshipTransforms[id].getPos() = vec3(routeLength, yPos, 0.0f);
+			}
+		}
+	}
+	else if (id == 2)
+	{
+		// Pick a random value within range, add to the skybox width
+		float routeLength = (float)500 + routeLengthDistro(rng);
+		// Set y position range
+		yPosDistro = uniform_int_distribution<int>(15, 35);
+		// randomise y pos within given range
+		float yPos = yPosDistro(rng);
+		spaceshipTransforms[id].getPos() = vec3(0.0f, -yPos, -routeLength); // negative y
+		// Rotate to face forward (this ship goes down on x)
+		//spaceshipTransforms[id].getRot().y = -1.5708;
+		// Keep this thread alive until the game ends
+		while (true)
+		{
+			// Travel until route length reached
+			if (spaceshipTransforms[id].getPos().z < routeLength)
+			{
+				spaceshipTransforms[id].getPos().z += 0.0001f;
+			}
+			else // Spaceship has travelled farther than route length
+			{
+				// Teleport to negative route length (prevent turning ship)
+				spaceshipTransforms[id].getPos().x = -routeLength;
+				// Assign a new route length
+				float routeLength = (float)500 + routeLengthDistro(rng);
+				// Assign new y position
+				yPos = yPosDistro(rng);
+				spaceshipTransforms[id].getPos() = vec3(0.0f, -yPos, -routeLength);
+			}
+		}
+	}
+	
+}
 
 // Switches on current scene, calls on appropriate file to render/read input
 void windowMgr::Update()

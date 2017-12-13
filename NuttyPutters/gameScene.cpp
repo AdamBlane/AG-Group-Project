@@ -151,16 +151,6 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
 	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
 	
-  // Spawn and detach spaceship threads
-	for (int i = 0; i < 1; i++)
-	{
-		// Create spaceship transform first, add to list
-		Transform spaceshipTransform;
-		spaceshipTransforms.push_back(spaceshipTransform);
-		// Create thread, pass in i to assign id (lookup index of spaceshipTransforms)
-		thread spaceshipThread(&gameScene::ThreadSpaceship, this, i);
-		spaceshipThread.detach();
-	}
 
 
 	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowBlueTexture"]);
@@ -1806,41 +1796,6 @@ void gameScene::CheckLoadNextLevel()
 
 }
 
-// Handles spaceship logic
-void gameScene::ThreadSpaceship(int id)
-{
-	// Spaceship always moves forward. Move until route length is met, 
-	// then teleport back to start (negative route length). Route length must be
-	// at least width of skybox (500) - rng the extra (within range)
-
-	// Create random engine 	
-	default_random_engine rng(random_device{}());
-	// Create range for additional route length
-	uniform_int_distribution<int> distro(500, 1500);
-	// Spaceship properties - id given is index to look at in spaceshipTransforms
-	spaceshipTransforms[id].getPos() = vec3(0.0f, 25.0f, 0.0f);
-	spaceshipTransforms[id].getScale() = vec3(6.0f);
-	spaceshipTransforms[id].getRot().y = 1.5708;
-
-	// Pick a random value within range, add to the skybox width
-	float routeLength = (float)500 + distro(rng);
-	// Keep this thread alive until the game ends
-	while (!gameEnded)
-	{
-		// Travel until route length reached
-		if (spaceshipTransforms[id].getPos().x < routeLength)
-		{
-			spaceshipTransforms[id].getPos().x += 0.0001f;
-		}
-		else // Spaceship has travelled farther than route length
-		{
-			spaceshipTransforms[id].getPos().x = -routeLength;
-			// Assign a new route length
-			float routeLength = (float)500 + distro(rng);
-		}
-	}
-
-}
 
 // Update player positions, spatitial partitioning, check for level changeover
 void gameScene::Update(GLFWwindow* window)
@@ -1851,9 +1806,17 @@ void gameScene::Update(GLFWwindow* window)
 		float yRot = t.getRot().y + 1.0f * dt;
 		t.setRot(vec3(0.0f, yRot, 0.0f));
 	}
+	// Rotate planets
+	float alienRot = alienPlanetTrans.getRot().y + 0.05f * dt;
+	alienPlanetTrans.setRot(vec3(0.0f, alienRot, 0.0f));
+	float galaxyRot = galaxyPlanetTrans.getRot().y + 0.025f * dt;
+	galaxyPlanetTrans.setRot(vec3(0.0f, galaxyRot, 0.0f));
+	float gasRot = gasPlanetTrans.getRot().y + 0.04f * dt;
+	gasPlanetTrans.setRot(vec3(0.0f, gasRot, 0.0f));
+	float lavaRot = lavaPlanetTrans.getRot().y + 0.03 * dt;
+	lavaPlanetTrans.setRot(vec3(0.0f, lavaRot, 0.0f));
 
-	// Move spaceship
-	//spaceTrans.getPos().x -= 0.3f;
+	
 
 	// Check whether to load next level, pass in player
 	CheckLoadNextLevel();
@@ -2261,10 +2224,10 @@ void gameScene::Render(GLFWwindow* window)
 
 
 	// Draw spaceships!
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < windowMgr::getInstance()->threadCount; i++)
 	{
 		windowMgr::getInstance()->spaceshipMeshes[i]->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(spaceshipTransforms[i], mvp);
+		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[i], mvp);
 		windowMgr::getInstance()->spaceshipMeshes[i]->Draw();
 	}
 
