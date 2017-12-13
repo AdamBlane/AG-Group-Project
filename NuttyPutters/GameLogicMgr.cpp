@@ -311,6 +311,9 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 // Randomly choose and assign a power to player
 void GameLogicMgr::RandomPowerup(Player &player)
 {
+	// Player receives bonus for taking pickup
+	player.totalTime -= 20;
+
 	// Pick random number between 1 and number of available pickups 
 	default_random_engine rng(random_device{}());
 	uniform_int_distribution<int> distribution(1, 2);
