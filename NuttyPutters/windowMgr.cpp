@@ -242,9 +242,15 @@ void windowMgr::LoadAssets()
 
 
 	///////////////////// SPACESHIP ///////////////////
+	spaceshipTexture = new Texture("..\\NuttyPutters\\DiffuseTexture.png");
+	/*spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");*/
+	for (int i = 0; i < 8; i++)
+	{
+		Mesh* spaceship = new Mesh("..\\NuttyPutters\\DroidFighter.obj");
+		spaceship->SetTexture(spaceshipTexture);
+		spaceshipMeshes.push_back(spaceship);
+	}
 
-	spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");
-	spaceShipTex = new Texture("..\\NuttyPutters\\DiffuseTexture.png");
 
 	///////////////////// PLANETS ///////////////////
 	alienPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");

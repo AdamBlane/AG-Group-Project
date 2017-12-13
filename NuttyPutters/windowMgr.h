@@ -89,9 +89,13 @@ class windowMgr
 		Mesh* p2ArrowMesh;
 
 	
-		// Spaceship
-		Mesh* spaceShip;
-		Texture* spaceShipTex;
+
+        // Spaceship
+		Texture* spaceshipTexture;
+		vector<Mesh*> spaceshipMeshes;
+		
+
+
 		//Planets
 		Mesh* alienPlanet;
 		Texture* alienPlanetTex;
@@ -104,6 +108,7 @@ class windowMgr
 
 		Mesh* lavaPlanet;
 		Texture* lavaPlanetTex;
+
 	  
 		// Pickup crates for 2p mode
 		vector<Mesh*> pickupCrateMeshes;
