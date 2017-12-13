@@ -119,7 +119,7 @@ void highscoreScene::Render(GLFWwindow* win)
 	// Set depth range to near to allow for HUD elements to be rendered and drawn
 	glDepthRange(0, 0.01);
 
-	for (int i = 0; i < 42; i++)
+	for (int i = 0; i < 38; i++)
 	{
 		windowMgr::getInstance()->controllerMeshes.at(i)->thisTexture.Bind(0);
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);

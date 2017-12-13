@@ -115,7 +115,7 @@ void GameLogicMgr::UpdatePowerBar(Player player)
 		else if (player.id == 2)
 		{
 			// Update p2 power bar
-			windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(-0.12 + (player.power / 23), -1.67f, 0.0f));
+			windowMgr::getInstance()->p2HUDmeshes.at(3)->SetPos(vec3(-0.12 + (player.power / 15.5), -1.67f, 0.0f));
 		}
 	}
 }
