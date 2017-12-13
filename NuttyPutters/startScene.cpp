@@ -283,7 +283,7 @@ void startScene::Input(GLFWwindow * win)
 		}
 
 		// When Fire is realesed
-		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]])
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]] && total_time >= 5.0f)
 		{
 			windowMgr::getInstance()->enterCotn = true;
 		}
