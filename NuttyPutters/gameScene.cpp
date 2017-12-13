@@ -54,6 +54,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 {
 	// MONDAY DEMO 
 	continuePressed = true;
+
 	paused = false;
 	gameEnded = false;
 
@@ -198,10 +199,12 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 
 
 	gameLogicMgr.Setup(numPlayers);
-
+	gameLogicMgr.StartGameClock();
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
 }
 
 // Loads either random level of certain size, or level by seed
@@ -900,7 +903,6 @@ void gameScene::Pause(GLFWwindow* window)
 		windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
 		glfwGetCursorPos(window, &windowMgr::getInstance()->mouse_x, &windowMgr::getInstance()->mouse_y);
 		//tracks mouse
-
 		if (windowMgr::getInstance()->previous_mouse_x != windowMgr::getInstance()->mouse_x || windowMgr::getInstance()->previous_mouse_y != windowMgr::getInstance()->mouse_y)
 		{
 			Track_mouse(window);
@@ -1027,83 +1029,83 @@ void gameScene::Input(GLFWwindow* window)
 {
 	// These functions are for debugging, to be excluded from final game
 	// REST POSITION FUNCTION
-	if (glfwGetKey(window, GLFW_KEY_R))
-	{
-		resetPressed = true;
-	}
-	if (!glfwGetKey(window, GLFW_KEY_R))
-	{
-		if (resetPressed)
-		{
-			cout << "Player 1 position reset" << endl;
-			// Move player 1 to center of tile
-			players[0].transform.getPos() = (vec3(masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.x, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.y + 0.5 + players[0].radius, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.z));
-			// Consider setting velocity to 0 
+	//if (glfwGetKey(window, GLFW_KEY_R))
+	//{
+	//	resetPressed = true;
+	//}
+	//if (!glfwGetKey(window, GLFW_KEY_R))
+	//{
+	//	if (resetPressed)
+	//	{
+	//		cout << "Player 1 position reset" << endl;
+	//		// Move player 1 to center of tile
+	//		players[0].transform.getPos() = (vec3(masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.x, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.y + 0.5 + players[0].radius, masterAlgTiles[currentLevel].at(players[0].currentTile)->thisCoords.z));
+	//		// Consider setting velocity to 0 
 
-			// Flip flag
-			resetPressed = false;
-		}
-	}
+	//		// Flip flag
+	//		resetPressed = false;
+	//	}
+	//}
 
 	// If button one is pressed change to free camera
-	if (glfwGetKey(window, GLFW_KEY_1))
-	{
-		// Set camera version to free camera
-		cout << "Free Camera selected" << endl;
-		cameraType = 0;
-		// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
-		windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->chaseCams[0]->get_Posistion());
-	}
+	//if (glfwGetKey(window, GLFW_KEY_1))
+	//{
+	//	// Set camera version to free camera
+	//	cout << "Free Camera selected" << endl;
+	//	cameraType = 0;
+	//	// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
+	//	windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->chaseCams[0]->get_Posistion());
+	//}
 
 	// If button two is pressed change to chase camera
-	if (glfwGetKey(window, GLFW_KEY_2))
-	{
-		// Set camera version to chase camera
-		cout << "Chase Camera selected" << endl;
-		cameraType = 1;
-	}
+	//if (glfwGetKey(window, GLFW_KEY_2))
+	//{
+	//	// Set camera version to chase camera
+	//	cout << "Chase Camera selected" << endl;
+	//	cameraType = 1;
+	//}
 
 	// FREE CAM controls
-	if (cameraType == 0)
-	{
-		// Create vector to apply to current cam pos
-		vec3 freeCamPos = vec3(0, 0, 0);
+	//if (cameraType == 0)
+	//{
+	//	// Create vector to apply to current cam pos
+	//	vec3 freeCamPos = vec3(0, 0, 0);
 
-		// Camera controls
-		if (glfwGetKey(window, GLFW_KEY_W))
-		{
-			freeCamPos = (vec3(0, 0, camSpeed * dt));
-		}
-		if (glfwGetKey(window, GLFW_KEY_A))
-		{
-			freeCamPos = (vec3(-camSpeed * dt, 0, 0));
-		}
-		if (glfwGetKey(window, GLFW_KEY_S))
-		{
-			freeCamPos = (vec3(0, 0, -camSpeed * dt));
-		}
-		if (glfwGetKey(window, GLFW_KEY_D))
-		{
-			freeCamPos = (vec3(camSpeed * dt, 0, 0));
-		}
-		if (glfwGetKey(window, GLFW_KEY_Q))
-		{
-			freeCamPos = (vec3(0, camSpeed * dt, 0));
-		}
-		if (glfwGetKey(window, GLFW_KEY_E))
-		{
-			freeCamPos = (vec3(0, -camSpeed * dt, 0));
-		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
-		{
-			camSpeed = 10.0f;
-		}
-		else
-			camSpeed = 2.0f;
+	//	// Camera controls
+	//	if (glfwGetKey(window, GLFW_KEY_W))
+	//	{
+	//		freeCamPos = (vec3(0, 0, camSpeed * dt));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_A))
+	//	{
+	//		freeCamPos = (vec3(-camSpeed * dt, 0, 0));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_S))
+	//	{
+	//		freeCamPos = (vec3(0, 0, -camSpeed * dt));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_D))
+	//	{
+	//		freeCamPos = (vec3(camSpeed * dt, 0, 0));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_Q))
+	//	{
+	//		freeCamPos = (vec3(0, camSpeed * dt, 0));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_E))
+	//	{
+	//		freeCamPos = (vec3(0, -camSpeed * dt, 0));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
+	//	{
+	//		camSpeed = 10.0f;
+	//	}
+	//	else
+	//		camSpeed = 2.0f;
 
-		// Move camera by new pos after input
-		windowMgr::getInstance()->freeCam->move(freeCamPos);
-	}
+	//	// Move camera by new pos after input
+	//	windowMgr::getInstance()->freeCam->move(freeCamPos);
+	//}
 
 	// INPUT LOOPS:
 	// 1 - Keyboard input for both players (always runs)
@@ -1142,12 +1144,12 @@ void gameScene::Input(GLFWwindow* window)
 
 
 		// If the X button is pressed then continue on with game -used for HUD elements
-		if (glfwGetKey(window, GLFW_KEY_X))
-		{
-			continuePressed = true;
-			// Start game timer
-			gameLogicMgr.StartGameClock();
-		}
+		//if (glfwGetKey(window, GLFW_KEY_X))
+		//{
+		//	continuePressed = true;
+		//	// Start game timer
+		//	gameLogicMgr.StartGameClock();
+		//}
 
 
 		// CHASE CAM controls
@@ -1269,12 +1271,12 @@ void gameScene::Input(GLFWwindow* window)
 
 
 		// If the X button is pressed then continue on with game -used for HUD elements
-		if (glfwGetKey(window, GLFW_KEY_X))
-		{
-			continuePressed = true;
-			// Start game timer
-			gameLogicMgr.StartGameClock();
-		}
+		//if (glfwGetKey(window, GLFW_KEY_X))
+		//{
+		//	continuePressed = true;
+		//	// Start game timer
+		//	gameLogicMgr.StartGameClock();
+		//}
 
 
 		// CHASE CAM controls

@@ -125,6 +125,8 @@ void startScene::FirstTimeInit(GLFWwindow* win)
 
 void startScene::Init(GLFWwindow* win)
 {
+	// Show mouse
+	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	// Set initial button press bools to false
 	windowMgr::getInstance()->upPressed = windowMgr::getInstance()->downPressed = windowMgr::getInstance()->leftPressed = windowMgr::getInstance()->rightPressed = windowMgr::getInstance()->enterPressed = windowMgr::getInstance()->mouseLpressed = false;
 

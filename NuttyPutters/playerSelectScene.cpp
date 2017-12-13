@@ -8,7 +8,7 @@ playerSelectScene::~playerSelectScene() { }
 
 void playerSelectScene::Track_Mouse(GLFWwindow *window)
 {
-	cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
+	//cout << windowMgr::getInstance()->mouse_x << " " << windowMgr::getInstance()->mouse_y << endl;
 	if (windowMgr::getInstance()->mouse_y <= 114 * windowMgr::getInstance()->windowScale && windowMgr::getInstance()->mouse_y >= 45 * windowMgr::getInstance()->windowScale)
 	{
 		selection = 1;
@@ -49,11 +49,11 @@ void playerSelectScene::Track_Mouse(GLFWwindow *window)
 void playerSelectScene::Init(GLFWwindow * win)
 {
 	// MONDAY DEMO PRINT COMMANDS
-	cout << "\nPLAYER SELECT SCREEN CONTROLS:" << endl;
-	cout << "Up/Down arrows moves to last/next row of buttons" << endl;
-	cout << "Left/Right arrows changes that rows options (player count/difficulty)" << endl;
-	cout << "Easy/Med/Hard chooses to play 2/4/6 levels" << endl;
-	cout << "Enter selects highlighted button" << endl;
+	//cout << "\nPLAYER SELECT SCREEN CONTROLS:" << endl;
+	//cout << "Up/Down arrows moves to last/next row of buttons" << endl;
+	//cout << "Left/Right arrows changes that rows options (player count/difficulty)" << endl;
+	//cout << "Easy/Med/Hard chooses to play 2/4/6 levels" << endl;
+	//cout << "Enter selects highlighted button" << endl;
 
 	// Reset button navigation to first item
 	buttonSelect = 1;
