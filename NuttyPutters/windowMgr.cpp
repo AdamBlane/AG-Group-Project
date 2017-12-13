@@ -934,11 +934,11 @@ void windowMgr::ThreadSpaceship(int id)
 		// Pick a random value within range, add to the skybox width
 		float routeLength = (float)500 + routeLengthDistro(rng);
 		// Set y position range
-		yPosDistro = uniform_int_distribution<int>(15, 35);
+		yPosDistro = uniform_int_distribution<int>(15, 25);
 		// randomise y pos within given range
 		float yPos = yPosDistro(rng);
 		// Set start position (negative route length, randomised y pos)
-		spaceshipTransforms[id].getPos() = vec3(-routeLength, yPos, 0.0f);
+		spaceshipTransforms[id].getPos() = vec3(-routeLength, yPos, -100.0f);
 		// Rotate to face forward (this ship goes up on x)
 		spaceshipTransforms[id].getRot().y = 1.5708;
 		// Keep this thread alive until the game ends
