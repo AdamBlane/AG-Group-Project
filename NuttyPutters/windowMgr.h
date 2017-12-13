@@ -71,7 +71,9 @@ class windowMgr
 		vector<Mesh*> controllerMeshes;
 		// Meshes vector for start game scene
 		vector<Mesh*> startGameMeshes;
-
+		// Pause screen meshes container
+		vector<Mesh*> pauseScreenMeshes;
+		
 		// 2P variant world clock meshes
 		vector<Mesh*> worldClockMeshes;
 		// Skybox vars

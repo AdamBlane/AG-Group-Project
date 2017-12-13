@@ -721,51 +721,43 @@ void gameScene::Loop(GLFWwindow* window)
 // Textures
 void gameScene::ChangeTextures(GLFWwindow * win)
 {
-	int a;
-	if (numPlayers == 1)
-	{
-		a = 9;
-	}
-	else if (numPlayers == 2)
-	{
-		a = 8;
-	}
+
 	switch (previousMenuItem)
 	{
 		//cases for the buttons to switch to each screen
 	case 1:
-		windowMgr::getInstance()->meshes.at(0 + a)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[0]->SetTexture(windowMgr::getInstance()->textures["unpauseBtnUnselected"]);
 		break;
 	case 2:
-		windowMgr::getInstance()->meshes.at(1 + a)->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[1]->SetTexture(windowMgr::getInstance()->textures["saveBtnUnselected"]);
 		break;
 	case 3:
-		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["controlsBtnUnselected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[2]->SetTexture(windowMgr::getInstance()->textures["controlsBtnUnselected"]);
 		break;
 	case 4:
-		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[3]->SetTexture(windowMgr::getInstance()->textures["menuBtnUnselected"]);
 		break;
 	case 5:
-		windowMgr::getInstance()->meshes.at(4 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[4]->SetTexture(windowMgr::getInstance()->textures["exitgameBtnUnselected"]);
 		break;
 	}
 	switch (currentMenuItem)
 	{
 		//cases for the buttons to switch to each screen
 	case 1:
-		windowMgr::getInstance()->meshes.at(0 + a)->SetTexture(windowMgr::getInstance()->textures["unpauseBtnSelected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[0]->SetTexture(windowMgr::getInstance()->textures["unpauseBtnSelected"]);
 		break;
 	case 2:
-		windowMgr::getInstance()->meshes.at(1 + a)->SetTexture(windowMgr::getInstance()->textures["saveBtnSelected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[1]->SetTexture(windowMgr::getInstance()->textures["saveBtnSelected"]);
 		break;
 	case 3:
-		windowMgr::getInstance()->meshes.at(2 + a)->SetTexture(windowMgr::getInstance()->textures["controlsBtnSelected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[2]->SetTexture(windowMgr::getInstance()->textures["controlsBtnSelected"]);
 		break;
 	case 4:
-		windowMgr::getInstance()->meshes.at(3 + a)->SetTexture(windowMgr::getInstance()->textures["menuBtnSelected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[3]->SetTexture(windowMgr::getInstance()->textures["menuBtnSelected"]);
 		break;
 	case 5:
-		windowMgr::getInstance()->meshes.at(4 + a)->SetTexture(windowMgr::getInstance()->textures["exitgameBtnSelected"]);
+		windowMgr::getInstance()->pauseScreenMeshes[4]->SetTexture(windowMgr::getInstance()->textures["exitgameBtnSelected"]);
 		break;
 	}
 
@@ -2072,24 +2064,30 @@ void gameScene::Render(GLFWwindow* window)
 		// Otherwise show pause screen meshes
 		else
 		{
-			if (numPlayers == 1)
+			for (int i = 0; i < windowMgr::getInstance()->pauseScreenMeshes.size(); i++)
 			{
-				for (int i = 9; i <= 13; i++)
-				{
-					windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-					windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-					windowMgr::getInstance()->meshes.at(i)->Draw();
-				}
+				windowMgr::getInstance()->pauseScreenMeshes[i]->thisTexture.Bind(0);
+				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+				windowMgr::getInstance()->pauseScreenMeshes[i]->Draw();
 			}
-			else if (numPlayers == 2)
-			{
-				for (int i = 8; i <= 12; i++)
-				{
-					windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
-					windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
-					windowMgr::getInstance()->meshes.at(i)->Draw();
-				}
-			}
+			//if (numPlayers == 1)
+			//{
+			//	for (int i = 9; i <= 13; i++)
+			//	{
+			//		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			//		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			//		windowMgr::getInstance()->meshes.at(i)->Draw();
+			//	}
+			//}
+			//else if (numPlayers == 2)
+			//{
+			//	for (int i = 8; i <= 12; i++)
+			//	{
+			//		windowMgr::getInstance()->meshes.at(i)->thisTexture.Bind(0);
+			//		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
+			//		windowMgr::getInstance()->meshes.at(i)->Draw();
+			//	}
+			//}
 		}
 
 	} // end if paused is true

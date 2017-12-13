@@ -34,6 +34,9 @@ void GameLogicMgr::Setup(int numPlayers)
 	//	break;
 	//}
 
+	// Setup pause screen
+	uiMgr.SetupPauseScreen();
+
 	// Invoke UImgr to perform its setup
 	if (players == 1)
 	{
