@@ -285,6 +285,10 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("startGameBtnSelected", startGameBtnSelected));
 	Texture* startGameBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\startUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("startGameBtnUnselected", startGameBtnUnselected));
+	Texture* startgameSelected = new Texture("..\\NuttyPutters\\startgameSelected.png");
+	textures.insert(std::pair<std::string, Texture*>("startgameSelected", startgameSelected));
+	Texture* startgameUnselected = new Texture("..\\NuttyPutters\\startgameUnselected.png");
+	textures.insert(std::pair<std::string, Texture*>("startgameUnselected", startgameUnselected));
 	Texture* loadGameBtnSelected = new Texture("..\\NuttyPutters\\Mainmenu\\loadSelected.png");
 	textures.insert(std::pair<std::string, Texture*>("loadGameBtnSelected", loadGameBtnSelected));
 	Texture* loadGameBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\loadUnselected.png");

@@ -55,6 +55,9 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// MONDAY DEMO 
 	continuePressed = true;
 
+	// Set the current menu item to resume
+	currentMenuItem = 1;
+
 	paused = false;
 	gameEnded = false;
 
@@ -681,8 +684,7 @@ void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 		// Exit to main menu
 		//This case resets the scene to an empty screen
 	case 3:
-		// Setup control screen meshes
-		// gameLogicMgr.ShowControlScreen -> UImgr.ShowControlScreen
+		// Setup control screen meshes - setting this variable to true will trigger the controls screen to appear
 		windowMgr::getInstance()->doesUserWantControls = true;
 		break;
 	case 4:
@@ -917,6 +919,7 @@ void gameScene::Pause(GLFWwindow* window)
 
 	while (paused)
 	{
+		cout << "Paused" << endl;
 		//code to disable mouse
 		windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
 		windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
@@ -941,12 +944,12 @@ void gameScene::Pause(GLFWwindow* window)
 			Track_mouse(window);
 		}
 		//************************** KEYBOARD MOVEMENT //
-
-		if (glfwGetKey(window, GLFW_KEY_ENTER))
+		// If the select key is pressed 
+		if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][0]))
 		{
 			windowMgr::getInstance()->enterPressed = true;
 		}
-		if (!glfwGetKey(window, GLFW_KEY_ENTER) && total_time >= 5.0f)
+		if (!glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][0]) && total_time >= 5.0f)
 		{
 			if (windowMgr::getInstance()->enterPressed)
 			{
@@ -979,11 +982,11 @@ void gameScene::Pause(GLFWwindow* window)
 			}
 		}
 		
-		if (glfwGetKey(window, GLFW_KEY_UP))
+		if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 		{
 			windowMgr::getInstance()->upPressed = true;
 		}
-		if (!glfwGetKey(window, GLFW_KEY_UP))
+		if (!glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 		{
 			if (windowMgr::getInstance()->upPressed)
 			{
@@ -1005,11 +1008,11 @@ void gameScene::Pause(GLFWwindow* window)
 			}
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_DOWN))
+		if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 		{
 			windowMgr::getInstance()->downPressed = true;
 		}
-		if (!glfwGetKey(window, GLFW_KEY_DOWN))
+		if (!glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 		{
 			previousMenuItem = currentMenuItem;
 			if (windowMgr::getInstance()->downPressed)
@@ -1795,6 +1798,7 @@ void gameScene::CheckLoadNextLevel()
 	}
 
 }
+
 
 
 // Update player positions, spatitial partitioning, check for level changeover
