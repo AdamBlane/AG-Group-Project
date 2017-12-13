@@ -432,7 +432,16 @@ void startScene::Render(GLFWwindow* win)
 	// HUD RENDERING ENDED - THANK YOU AND HAVE A NICE DAY
 
 	// Render any background stuff if required here
-
+	if (loaded)
+	{
+		// Draw spaceships!
+		for (int i = 0; i < windowMgr::getInstance()->threadCount; i++)
+		{
+			windowMgr::getInstance()->spaceshipMeshes[i]->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[i], hudVP);
+			windowMgr::getInstance()->spaceshipMeshes[i]->Draw();
+		}
+	}
 	// Fully reset depth range for next frame - REQUIRED
 	glDepthRange(0, 1.0);
 
