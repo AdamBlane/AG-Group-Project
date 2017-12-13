@@ -1907,11 +1907,11 @@ void gameScene::Update(GLFWwindow* window)
 			double speed = p.velocity.length();
 			if (speed > 0)
 			{
-				p.transform.getRot() -= rot * speed * dt;
+				p.transform.getRot() += rot * speed * dt;
 			}
 			else if (speed < 0)
 			{
-				p.transform.getRot() += rot * speed * dt;
+				p.transform.getRot() -= rot * speed * dt;
 			}
 			
 

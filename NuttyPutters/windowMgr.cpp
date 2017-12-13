@@ -315,16 +315,20 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("exitBtnSelected", exitBtnSelected));
 	Texture* exitBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\exitUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("exitBtnUnselected", exitBtnUnselected));
+
+	Texture* transBackground = new Texture("..\\NuttyPutters\\trans.png");
+	textures.insert(std::pair<std::string, Texture*>("transBackground", transBackground));
 	// Read saves file for file names of saves images
 	ifstream saves("saves.csv");
 	while (!saves.eof())
 	{
-		string texturePath = "..\\NuttyPutters\\savesImages\\";
+		string texturePath = "..\\NuttyPutters\\savesImages\\0";
 		string seed;
 		getline(saves, seed); // TODO prevent this from picking up whitespace/empty cells
 		texturePath += seed + ".bmp";
 		if (seed != "") // In case it reads cells with only whitespace
 		{
+			// Check for double 0
 			// Create a texture for that image
 			Texture* texture = new Texture(texturePath);
 			// Add to saves images list
@@ -923,7 +927,7 @@ void windowMgr::ThreadSpaceship(int id)
 	// Spaceship always moves forward. Move until route length is met, 
 	// then teleport back to start (negative route length). Route length must be
 	// at least width of skybox (500) - rng the extra (within range)
-	cout << "hi from thread " << id << endl;
+
 	// Create random engine 	
 	default_random_engine rng(random_device{}());
 	// Create range for additional route length

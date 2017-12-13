@@ -55,6 +55,8 @@ public:
 	const unsigned char *controllerOne;
 	int controllerOneAxisCount;
 	const float *controllerOneAxis;
+
+
 	// Main logic loop for this scene
 	void Loop(GLFWwindow* win);
 	// Input 
