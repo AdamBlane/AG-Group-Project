@@ -31,7 +31,7 @@ public:
 
 
 	float total_time = 0.0f;
-	int previousMenuItem, currentMenuItem;
+	int previousMenuItem, currentMenuItem = 1;
 
 	int controllerOneButtonCount;
 	const unsigned char *controllerOne;
