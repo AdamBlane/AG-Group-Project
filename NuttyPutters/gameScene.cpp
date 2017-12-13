@@ -1787,7 +1787,7 @@ void gameScene::Update(GLFWwindow* window)
 	}
 
 	// Move spaceship
-	spaceTrans.getPos().x -= 0.3f;
+	//spaceTrans.getPos().x -= 0.3f;
 
 	// Check whether to load next level, pass in player
 	CheckLoadNextLevel();
