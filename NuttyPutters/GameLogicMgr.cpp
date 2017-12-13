@@ -66,7 +66,7 @@ void GameLogicMgr::PauseGameClock()
 // Set pause duration
 void GameLogicMgr::UnpauseGameClock()
 {
-	pauseDuration = glfwGetTime() - pauseStartTime;
+	pauseDuration += glfwGetTime() - pauseStartTime;
 }
 
 // Keep clocks ticking...
@@ -76,8 +76,10 @@ void GameLogicMgr::UpdateClock()
 	// Time from current subtract start time
 
 	lastFrameTime = elapsedTime;
-	elapsedTime = glfwGetTime() - startTime - pauseDuration;
-	
+	elapsedTime = glfwGetTime() - startTime;
+	elapsedTime -= pauseDuration;
+	//pauseStartTime = pauseDuration = 0;
+
 	// No longer have time limit in 1p mode; using world clock in both modes
 	// Work out how much time is left given this game's time limit
 	//int timeRemaining = timeLimit - elapsedTime;
@@ -86,7 +88,7 @@ void GameLogicMgr::UpdateClock()
 	// Only update the UI every second
 	if (elapsedTime > lastFrameTime && !gameEnded)
 	{
-		uiMgr.UpdateWorldClock(elapsedTime);	
+		uiMgr.UpdateWorldClock(abs(elapsedTime));	
 	}
 }
 
@@ -115,7 +117,7 @@ void GameLogicMgr::UpdatePowerBar(Player player)
 		else if (player.id == 2)
 		{
 			// Update p2 power bar
-			windowMgr::getInstance()->p1HUDmeshes.at(3)->SetPos(vec3(-0.12 + (player.power / 23), -1.67f, 0.0f));
+			windowMgr::getInstance()->p2HUDmeshes.at(3)->SetPos(vec3(-0.12 + (player.power / 15.5), -1.67f, 0.0f));
 		}
 	}
 }
@@ -309,6 +311,9 @@ void GameLogicMgr::PrintPlayerScore(Player player)
 // Randomly choose and assign a power to player
 void GameLogicMgr::RandomPowerup(Player &player)
 {
+	// Player receives bonus for taking pickup
+	player.totalTime -= 20;
+
 	// Pick random number between 1 and number of available pickups 
 	default_random_engine rng(random_device{}());
 	uniform_int_distribution<int> distribution(1, 2);

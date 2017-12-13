@@ -242,7 +242,8 @@ void windowMgr::LoadAssets()
 
 
 	///////////////////// SPACESHIP ///////////////////
-	spaceShip = new Mesh("..\\NuttyPutters\\sphere.obj");
+
+	spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");
 	spaceShipTex = new Texture("..\\NuttyPutters\\DiffuseTexture.png");
 
 	///////////////////// PLANETS ///////////////////
@@ -649,7 +650,7 @@ void windowMgr::LoadAssets()
 	{
 		// Assign the psoition, score and name to the arrays from the file
 		playerOneXboxFile >> playerXboxControls[0][l];
-		cout << "Controller one " << playerXboxControls[0][l] << endl;
+		//cout << "Controller one " << playerXboxControls[0][l] << endl;
 	}
 
 	//*************XBOX PLAYER TWO *****************//
@@ -681,7 +682,7 @@ void windowMgr::LoadAssets()
 	{
 		// Assign the psoition, score and name to the arrays from the file
 		playerTwoXboxFile >> playerXboxControls[1][l];
-		cout << "Controller two " << playerXboxControls[1][l] << endl;
+		//cout << "Controller two " << playerXboxControls[1][l] << endl;
 	}
 
 	//*************KEYBOARD PLAYER ONE *****************//
@@ -714,7 +715,7 @@ void windowMgr::LoadAssets()
 		// Assign the psoition, score and name to the arrays from the file
 		playerOneKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[0][l];
 		// Output them to the screen
-		cout << "Keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
+		//cout << "Keyboard one " << windowMgr::getInstance()->playerKeyboardControls[0][l] << endl;
 	}
 
 	//*************KEYBOARD PLAYER TWO *****************//
@@ -747,7 +748,7 @@ void windowMgr::LoadAssets()
 		// Assign the psoition, score and name to the arrays from the file
 		playerTwoKeyboardFile >> windowMgr::getInstance()->playerKeyboardControls[1][l];
 		// Output them to the screen
-		cout << "Keyboard 2 " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
+		//cout << "Keyboard 2 " << windowMgr::getInstance()->playerKeyboardControls[1][l] << endl;
 	}
 
 
@@ -1098,27 +1099,12 @@ void windowMgr::ControlsTextureSetup()
 	// Zoom out keyboard
 	windowMgr::getInstance()->controllerMeshes.at(36)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->controllerMeshes.at(36)->SetPos(vec3(0.5f, -1.81, 0.0f));
-	// Player using controller one
-	windowMgr::getInstance()->controllerMeshes.at(37)->SetScale(2.4f, 0.6f);
-	windowMgr::getInstance()->controllerMeshes.at(37)->SetPos(vec3(2.2f, -0.81f, 0.0f));
-	windowMgr::getInstance()->controllerMeshes.at(37)->SetTexture(windowMgr::getInstance()->textures["sensitivityLbl"]);
-	// Set left arrow label
-	windowMgr::getInstance()->controllerMeshes.at(39)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->controllerMeshes.at(39)->SetPos(vec3(1.7f, -1.25, 0.0));
-	windowMgr::getInstance()->controllerMeshes.at(39)->SetTexture(windowMgr::getInstance()->textures["leftLbl"]);
-	// Set right arrow label
-	windowMgr::getInstance()->controllerMeshes.at(40)->SetScale(0.5f, 0.5f);
-	windowMgr::getInstance()->controllerMeshes.at(40)->SetPos(vec3(2.7f, -1.25, 0.0));
-	windowMgr::getInstance()->controllerMeshes.at(40)->SetTexture(windowMgr::getInstance()->textures["rightLbl"]);
 	// Select an option label 
-	windowMgr::getInstance()->controllerMeshes.at(41)->SetScale(2.0f, 1.6f);
-	windowMgr::getInstance()->controllerMeshes.at(41)->SetPos(vec3(2.2f, 0.7, 0.0));
-	windowMgr::getInstance()->controllerMeshes.at(41)->SetTexture(windowMgr::getInstance()->textures["selectOptionLbl"]);
+	windowMgr::getInstance()->controllerMeshes.at(37)->SetScale(2.0f, 1.6f);
+	windowMgr::getInstance()->controllerMeshes.at(37)->SetPos(vec3(2.2f, 0.7, 0.0));
+	windowMgr::getInstance()->controllerMeshes.at(37)->SetTexture(windowMgr::getInstance()->textures["selectOptionLbl"]);
 
-	// Set the sensitivity value based on the 
-	windowMgr::getInstance()->controllerMeshes.at(38)->SetScale(1.8f, 0.45f);
-	windowMgr::getInstance()->controllerMeshes.at(38)->SetPos(vec3(2.2f, -1.25, 0.0));
-
+	// If player tab is equal to one then 
 	if (playerTab == 1)
 	{
 		switch (windowMgr::getInstance()->playerOneSensitivity)
@@ -1615,6 +1601,10 @@ void windowMgr::ControlsButtonsSetup()
 		{
 			windowMgr::getInstance()->controllerMeshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[99]);
 		}
+		else  // question marks
+		{
+			windowMgr::getInstance()->controllerMeshes.at(27 + allKeyboardFunctions)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+		}
 	}
 
 	//******CONTROLLER SETUP*************//
@@ -1630,7 +1620,7 @@ void windowMgr::ControlsButtonsSetup()
 		// If the amount of buttons detected is equal to 18 then 
 		if (buttonCount == 18)
 		{
-			cout << "Controller type = PS4! " << endl;
+			//cout << "Controller type = PS4! " << endl;
 			// For all the fucntions 
 			for (int allFunctions = 0; allFunctions < 10; allFunctions++)
 			{
@@ -1711,7 +1701,7 @@ void windowMgr::ControlsButtonsSetup()
 		}
 		else
 		{
-			cout << "Controller type = XBOX360 OR OTHER! " << endl;
+			//cout << "Controller type = XBOX360 OR OTHER! " << endl;
 			// Setup the functions/buttons for xbox controller - the function being the index and button being the equal value
 			// For all the buttons in the game 
 			for (int allFunctions = 0; allFunctions < 10; allFunctions++)
@@ -1801,20 +1791,6 @@ void windowMgr::ControlsTrackMouse()
 	{
 		windowMgr::getInstance()->button_manager = 3;
 	}
-	//this is for main menu button
-	else if ((windowMgr::getInstance()->mouse_y >= 703 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 758 * windowMgr::getInstance()->windowScale))
-	{
-		//this is to highlights left arrow
-		if (windowMgr::getInstance()->mouse_x >= 1127 && windowMgr::getInstance()->mouse_x <= 1203)
-		{
-			windowMgr::getInstance()->button_manager = 4;
-		}
-		//this is to highlight right arrow
-		else if (windowMgr::getInstance()->mouse_x >= 1351 && windowMgr::getInstance()->mouse_x <= 1429)
-		{
-			windowMgr::getInstance()->button_manager = 5;
-		}
-	}
 }
 
 void windowMgr::ControlsTrackClick()
@@ -1897,211 +1873,6 @@ void windowMgr::ControlsTrackClick()
 				windowMgr::getInstance()->sceneManager.changeScene(1);
 			}
 		}
-		break;
-		//left arrow function
-	case 4:
-		// Switch statements to select the sensitivity - currently 1 to 9
-		if (playerTab == 1)
-		{
-			windowMgr::getInstance()->playerOneSensitivity -= 1;
-			if (windowMgr::getInstance()->playerOneSensitivity == 0)
-			{
-				windowMgr::getInstance()->playerOneSensitivity = 9;
-			}
-			switch (windowMgr::getInstance()->playerOneSensitivity)
-			{
-			case 1:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-				windowMgr::getInstance()->playerOneSensitivity = 1;
-				break;
-			case 2:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-				windowMgr::getInstance()->playerOneSensitivity = 2;
-				break;
-			case 3:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
-				windowMgr::getInstance()->playerOneSensitivity = 3;
-				break;
-			case 4:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
-				windowMgr::getInstance()->playerOneSensitivity = 4;
-				break;
-			case 5:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
-				windowMgr::getInstance()->playerOneSensitivity = 5;
-				break;
-			case 6:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
-				windowMgr::getInstance()->playerOneSensitivity = 6;
-				break;
-			case 7:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
-				windowMgr::getInstance()->playerOneSensitivity = 7;
-				break;
-			case 8:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
-				windowMgr::getInstance()->playerOneSensitivity = 8;
-				break;
-			case 9:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
-				windowMgr::getInstance()->playerOneSensitivity = 9;
-				break;
-			}
-		}
-
-		if (playerTab == 2)
-		{
-			windowMgr::getInstance()->playerTwoSensitivity -= 1;
-			if (windowMgr::getInstance()->playerTwoSensitivity == 0)
-			{
-				windowMgr::getInstance()->playerTwoSensitivity = 9;
-			}
-			switch (windowMgr::getInstance()->playerTwoSensitivity)
-			{
-			case 1:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-				windowMgr::getInstance()->playerTwoSensitivity = 1;
-				break;
-			case 2:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-				windowMgr::getInstance()->playerTwoSensitivity = 2;
-				break;
-			case 3:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
-				windowMgr::getInstance()->playerTwoSensitivity = 3;
-				break;
-			case 4:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
-				windowMgr::getInstance()->playerTwoSensitivity = 4;
-				break;
-			case 5:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
-				windowMgr::getInstance()->playerTwoSensitivity = 5;
-				break;
-			case 6:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
-				windowMgr::getInstance()->playerTwoSensitivity = 6;
-				break;
-			case 7:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
-				windowMgr::getInstance()->playerTwoSensitivity = 7;
-				break;
-			case 8:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
-				windowMgr::getInstance()->playerTwoSensitivity = 8;
-				break;
-			case 9:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
-				windowMgr::getInstance()->playerTwoSensitivity = 9;
-				break;
-			}
-		}
-		cout << "Left with value of: " << windowMgr::getInstance()->playerOneSensitivity << endl;
-		break;
-		//right arrow functio
-	case 5:
-		if (playerTab == 1)
-		{
-			windowMgr::getInstance()->playerOneSensitivity += 1;
-
-			if (windowMgr::getInstance()->playerOneSensitivity == 10)
-			{
-				windowMgr::getInstance()->playerOneSensitivity = 1;
-			}
-
-			switch (windowMgr::getInstance()->playerOneSensitivity)
-			{
-			case 1:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-				windowMgr::getInstance()->playerOneSensitivity = 1;
-				break;
-			case 2:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-				windowMgr::getInstance()->playerOneSensitivity = 2;
-				break;
-			case 3:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
-				windowMgr::getInstance()->playerOneSensitivity = 3;
-				break;
-			case 4:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
-				windowMgr::getInstance()->playerOneSensitivity = 4;
-				break;
-			case 5:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
-				windowMgr::getInstance()->playerOneSensitivity = 5;
-				break;
-			case 6:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
-				windowMgr::getInstance()->playerOneSensitivity = 6;
-				break;
-			case 7:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
-				windowMgr::getInstance()->playerOneSensitivity = 7;
-				break;
-			case 8:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
-				windowMgr::getInstance()->playerOneSensitivity = 8;
-				break;
-			case 9:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
-				windowMgr::getInstance()->playerOneSensitivity = 9;
-				break;
-			}
-
-
-		}
-
-		if (playerTab == 2)
-		{
-			windowMgr::getInstance()->playerTwoSensitivity += 1;
-			if (windowMgr::getInstance()->playerOneSensitivity == 10)
-			{
-				windowMgr::getInstance()->playerOneSensitivity = 1;
-			}
-
-			switch (windowMgr::getInstance()->playerTwoSensitivity)
-			{
-			case 1:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-				windowMgr::getInstance()->playerTwoSensitivity = 1;
-				break;
-			case 2:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-				windowMgr::getInstance()->playerTwoSensitivity = 2;
-				break;
-			case 3:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
-				windowMgr::getInstance()->playerTwoSensitivity = 3;
-				break;
-			case 4:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
-				windowMgr::getInstance()->playerTwoSensitivity = 4;
-				break;
-			case 5:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
-				windowMgr::getInstance()->playerTwoSensitivity = 5;
-				break;
-			case 6:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
-				windowMgr::getInstance()->playerTwoSensitivity = 6;
-				break;
-			case 7:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
-				windowMgr::getInstance()->playerTwoSensitivity = 7;
-				break;
-			case 8:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
-				windowMgr::getInstance()->playerTwoSensitivity = 8;
-				break;
-			case 9:
-				windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
-				windowMgr::getInstance()->playerTwoSensitivity = 9;
-				break;
-			}
-		}
-		cout << "Right with value of: " << windowMgr::getInstance()->playerOneSensitivity << endl;
-		break;
 	}
 }
 
@@ -3047,7 +2818,7 @@ void windowMgr::ControlsInputController()
 				if (GLFW_PRESS == buttons[buttonNumber] && !buttonPressed[buttonNumber])
 				{
 					buttonPressed[buttonNumber] = true;
-					cout << "Button Pressed: " << buttonNumber << endl;
+					//cout << "Button Pressed: " << buttonNumber << endl;
 				}
 
 				// If a button has just been pressed and is longer being pressed then
@@ -3113,7 +2884,7 @@ void windowMgr::ControlsInputController()
 				if (GLFW_PRESS == buttons[buttonNumber] && !buttonPressed[buttonNumber])
 				{
 					buttonPressed[buttonNumber] = true;
-					cout << "Button Pressed on Xbox: " << buttonNumber << endl;
+					//cout << "Button Pressed on Xbox: " << buttonNumber << endl;
 				}
 
 				// If a button has just been pressed and is longer being pressed then
@@ -3178,32 +2949,49 @@ void windowMgr::ControlsUpdateKeyboard(int keyboardButtonNumber, int additionalN
 	if (isFunctionEmptyKeyboard) // Check if there is an empty keyboard function
 	{
 		// Find the index of the gameKeyboardFunctions which has a value of 999
-		indexAt99 = std::distance(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], std::find(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], windowMgr::getInstance()->playerKeyboardControls[playerTab - 1] + 10, 999));
-		// Find the index of the function which is assigned to the button that has just been pressed
-		indexAtKey = std::distance(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], std::find(windowMgr::getInstance()->playerKeyboardControls[playerTab - 1], windowMgr::getInstance()->playerKeyboardControls[playerTab - 1] + 10, keyboardButtonNumber + additionalNumber));
-		// Check if button just pressed has a function assigned to it ------- player/GLFW button input key
-		if (windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAtKey] == keyboardButtonNumber + additionalNumber)
+		indexAt999Player1 = std::distance(windowMgr::getInstance()->playerKeyboardControls[0], std::find(windowMgr::getInstance()->playerKeyboardControls[0], windowMgr::getInstance()->playerKeyboardControls[0] + 10, 999));
+		indexAt999Player2 = std::distance(windowMgr::getInstance()->playerKeyboardControls[1], std::find(windowMgr::getInstance()->playerKeyboardControls[1], windowMgr::getInstance()->playerKeyboardControls[1] + 10, 999));
+		// Check if the button which has just been pressed has a function assigned to it and find the index
+		indexOfButtonPressedPlayer1 = std::distance(windowMgr::getInstance()->playerKeyboardControls[0], std::find(windowMgr::getInstance()->playerKeyboardControls[0], windowMgr::getInstance()->playerKeyboardControls[0] + 10, keyboardButtonNumber + additionalNumber));
+		indexOfButtonPressedPlayer2 = std::distance(windowMgr::getInstance()->playerKeyboardControls[1], std::find(windowMgr::getInstance()->playerKeyboardControls[1], windowMgr::getInstance()->playerKeyboardControls[1] + 10, keyboardButtonNumber + additionalNumber));
+		
+		// If player tab equals one then 
+		if (playerTab == 1)
 		{
-			// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-			windowMgr::getInstance()->controllerMeshes.at(27 + indexAtKey)->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]); // Updates appripriate mesh with ???
-			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAtKey] = 999; 
+			// If value is 10 for indexOfButtonPressed for both arrays then that means the button just pressed is not assigned to the function - set the button pressed to the empty function
+			if (indexOfButtonPressedPlayer1 == 10 && indexOfButtonPressedPlayer2 == 10)
+			{
+				windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAt999Player1] = keyboardButtonNumber + additionalNumber;
+				windowMgr::getInstance()->controllerMeshes.at(27 + indexAt999Player1)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[keyboardButtonNumber]);
+			}
+		}
+		// else if player tab equals two then
+		else
+		{
+			// If value is 10 for indexOfButtonPressed for both arrays then that means the button just pressed is not assigned to the function - set the button pressed to the empty function
+			if (indexOfButtonPressedPlayer2 == 10 && indexOfButtonPressedPlayer1 == 10)
+			{
+				windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAt999Player2] = keyboardButtonNumber + additionalNumber;
+				windowMgr::getInstance()->controllerMeshes.at(27 + indexAt999Player2)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[keyboardButtonNumber]);
+			}
 		}
 
-		// Make the original empty function equal to the button
-		windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][indexAt99] = keyboardButtonNumber + additionalNumber;
-		windowMgr::getInstance()->controllerMeshes.at(27 + indexAt99)->SetTexture(windowMgr::getInstance()->buttonsKeyboardOne[keyboardButtonNumber]);
-
 		// Check if a function is equal to 99
-		if (windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][0] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][1] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][2] == 999 ||
-			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][3] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][4] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][5] == 999 ||
-			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][6] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][7] == 999 || windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][8] == 999 ||
-			windowMgr::getInstance()->playerKeyboardControls[playerTab - 1][9] == 999)
+		if (windowMgr::getInstance()->playerKeyboardControls[0][0] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][1] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][2] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[0][3] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][4] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][5] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[0][6] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][7] == 999 || windowMgr::getInstance()->playerKeyboardControls[0][8] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[0][9] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][0] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][1] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][2] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[1][3] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][4] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][5] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[1][6] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][7] == 999 || windowMgr::getInstance()->playerKeyboardControls[1][8] == 999 ||
+			windowMgr::getInstance()->playerKeyboardControls[1][9] == 999)
 		{
 			isFunctionEmptyKeyboard = true; // Set bool to true if a function is empty
+			//cout << "A function is empty!" << endl;
 		}
 		else
 		{
 			isFunctionEmptyKeyboard = false; // Set bool to false if no function is empty
+			//cout << "No functions are empty!" << endl;
 		}
 	}
 	else
