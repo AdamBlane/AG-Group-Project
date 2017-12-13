@@ -60,6 +60,8 @@ public:
 	GameLogicMgr gameLogicMgr;
 	// Handles physics logic
 	Physics physicsSystem;
+	// Number of threads being used
+	int threadCount = 2;
 
 	// GAME VARIABLES
 	// List of all level seeds, this is used to create algTiles list
@@ -113,9 +115,8 @@ public:
 
 
 	// Spaceship properties
-	vector<Transform> spaceshipTransforms;
-	// Spaceship ranges
-	
+
+
 
 
 	// Transform for Planets
@@ -159,8 +160,6 @@ public:
 	void SpatialPartitioningUpdate();
 	// Will load next level if conditions are met
 	void CheckLoadNextLevel();
-	// Handles spaceship logic
-	void ThreadSpaceship(int id);
 	// Keep clocks ticking, update cameras and positions
 	void Update(GLFWwindow* window);
 	// Check for player collisions

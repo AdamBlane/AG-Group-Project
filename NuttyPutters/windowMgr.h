@@ -44,7 +44,8 @@ class windowMgr
 		bool upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 		bool upCotn, downCotn, leftCotn, rightCotn, enterCotn;
 		bool mouseLpressed;
-		
+		// Number of threads being used for spaceships
+		int threadCount = 3;
 		// Most textures in the game stored here
 		map<std::string, Texture*> textures;
 		// All number textures stored here
@@ -93,7 +94,7 @@ class windowMgr
         // Spaceship
 		Texture* spaceshipTexture;
 		vector<Mesh*> spaceshipMeshes;
-		
+		vector<Transform> spaceshipTransforms;
 
 
 		//Planets
@@ -311,6 +312,8 @@ class windowMgr
 		void PlayThisSound(string sound); // string is key for sfx map
 		// Actual thread function that plays the sound
 		void ThreadPlaySound(FMOD::System* system, FMOD::Sound* sound);
+		// Handles spaceship logic
+		void ThreadSpaceship(int id);
 		// Game update loop
 		void Update();
 		// On window close
