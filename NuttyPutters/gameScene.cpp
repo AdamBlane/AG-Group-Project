@@ -147,15 +147,37 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	}
 
 	// Assign arrow textures for both player arrows
-	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerBlueTexture"]); //?
-	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["playerRedTexture"]);
-	windowMgr::getInstance()->spaceShip->SetTexture(windowMgr::getInstance()->spaceShipTex);
+	windowMgr::getInstance()->p1ArrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowBlueTexture"]);
+	windowMgr::getInstance()->p2ArrowMesh->SetTexture(windowMgr::getInstance()->textures["arrowRedTexture"]);
+
 
 	// Spaceship properties
-	spaceTrans.getPos() = vec3(0.0f, 10.0f, 0.0f);
-	spaceTrans.getScale() = vec3(6.0f);
 
-	spaceTrans.getRot().y = -1.5708;
+	windowMgr::getInstance()->spaceShip->SetTexture(windowMgr::getInstance()->spaceShipTex);
+	spaceTrans.getPos() = vec3(10.0f, 10.0f, 0.0f);
+	spaceTrans.getScale() = vec3(6.0f);
+  spaceTrans.getRot().y = -1.5708;
+  
+	//Alien Planet
+	windowMgr::getInstance()->alienPlanet->SetTexture(windowMgr::getInstance()->alienPlanetTex);
+	alienPlanetTrans.getPos() = vec3(300.0f, -5.0f, 300.0f);
+	alienPlanetTrans.getScale() = vec3(30.0f);
+
+	//Galaxy Planet
+	windowMgr::getInstance()->galaxyPlanet->SetTexture(windowMgr::getInstance()->galaxyPlanetTex);
+	galaxyPlanetTrans.getPos() = vec3(-200.0f, 10.0f, 250.0f);
+	galaxyPlanetTrans.getScale() = vec3(20.0f);
+
+	//Gas Planet
+	windowMgr::getInstance()->gasPlanet->SetTexture(windowMgr::getInstance()->gasPlanetTex);
+	gasPlanetTrans.getPos() = vec3(250.0f, -20.0f, -350.0f);
+	gasPlanetTrans.getScale() = vec3(40.0f);
+
+	//Lava Planet
+	windowMgr::getInstance()->lavaPlanet->SetTexture(windowMgr::getInstance()->lavaPlanetTex);
+	lavaPlanetTrans.getPos() = vec3(-180.0f, -5.0f, -200.0f);
+	lavaPlanetTrans.getScale() = vec3(10.0f);
+
 
 	// Set camera startup properties
 	cameraType = 1; // Want chase cam by default	
@@ -2193,9 +2215,27 @@ void gameScene::Render(GLFWwindow* window)
 		windowMgr::getInstance()->worldClockMeshes[i]->Draw();
 	}
 
+	//////////////// RENDER SPACESHIP //////////////
 	windowMgr::getInstance()->spaceShip->thisTexture.Bind(0);
 	windowMgr::getInstance()->textureShader->Update(spaceTrans, mvp);
 	windowMgr::getInstance()->spaceShip->Draw();
+
+	//////////////// RENDER PLANETS //////////////
+	windowMgr::getInstance()->alienPlanet->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(alienPlanetTrans, mvp);
+	windowMgr::getInstance()->alienPlanet->Draw();
+
+	windowMgr::getInstance()->galaxyPlanet->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(galaxyPlanetTrans, mvp);
+	windowMgr::getInstance()->galaxyPlanet->Draw();
+
+	windowMgr::getInstance()->gasPlanet->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(gasPlanetTrans, mvp);
+	windowMgr::getInstance()->gasPlanet->Draw();
+
+	windowMgr::getInstance()->lavaPlanet->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(lavaPlanetTrans, mvp);
+	windowMgr::getInstance()->lavaPlanet->Draw();
 
 	// Draw 2 Player stuff
 	if (numPlayers == 2 && paused != true && !gameEnded)

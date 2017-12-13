@@ -111,7 +111,14 @@ public:
 	int previousMenuItem, currentMenuItem;
 	bool paused = false;
 
+	// Transform for spaceship
 	Transform spaceTrans;
+
+	// Transform for Planets
+	Transform alienPlanetTrans;
+	Transform galaxyPlanetTrans;
+	Transform gasPlanetTrans;
+	Transform lavaPlanetTrans;
 
 	// Camera variables
 	double camSpeed = 2.0;

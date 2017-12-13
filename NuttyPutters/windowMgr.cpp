@@ -146,7 +146,7 @@ void windowMgr::LoadAssets()
 	// ############################ MESHES ############################
 	Mesh* wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 	Mesh* wormholeMesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
-	wormholeTexture = new Texture("..\\NuttyPutters\\wormhole.jpg");
+	wormholeTexture = new Texture("..\\NuttyPutters\\newWormhole.png");
 	wormholeMesh->SetTexture(wormholeTexture);
 	wormholeMesh2->SetTexture(wormholeTexture);
 	wormholeMeshes.push_back(wormholeMesh);
@@ -242,8 +242,23 @@ void windowMgr::LoadAssets()
 
 
 	///////////////////// SPACESHIP ///////////////////
+
 	spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");
 	spaceShipTex = new Texture("..\\NuttyPutters\\DiffuseTexture.png");
+
+	///////////////////// PLANETS ///////////////////
+	alienPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	alienPlanetTex = new Texture("..\\NuttyPutters\\alienPlanet.png");
+
+	galaxyPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	galaxyPlanetTex = new Texture("..\\NuttyPutters\\galaxyPlanet.png");
+
+	gasPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	gasPlanetTex = new Texture("..\\NuttyPutters\\gasPlanet.png");
+
+
+	lavaPlanet = new Mesh("..\\NuttyPutters\\Earth.obj");
+	lavaPlanetTex = new Texture("..\\NuttyPutters\\lavaPlanet.png");
 
 	// ############################ TEXTURES ############################
 
@@ -359,10 +374,15 @@ void windowMgr::LoadAssets()
 	// Skybox mesh must be created after
 	skyboxMesh = new Mesh(skyboxTexture);
 	// Player textures
-	Texture* playerRedTexture = new Texture("..\\NuttyPutters\\ballRed.jpg");
+	Texture* playerRedTexture = new Texture("..\\NuttyPutters\\p1Tex.png");
 	textures.insert(std::pair<std::string, Texture*>("playerRedTexture", playerRedTexture));
-	Texture* playerBlueTexture = new Texture("..\\NuttyPutters\\ballBlue.jpg");
+	Texture* playerBlueTexture = new Texture("..\\NuttyPutters\\p2Tex.png");
 	textures.insert(std::pair<std::string, Texture*>("playerBlueTexture", playerBlueTexture));
+	//Arrow Texture
+	Texture* arrowRedTexture = new Texture("..\\NuttyPutters\\arrowRedTex.png");
+	textures.insert(std::pair<std::string, Texture*>("arrowRedTexture", arrowRedTexture));
+	Texture* arrowBlueTexture = new Texture("..\\NuttyPutters\\arrowBlueTex.png");
+	textures.insert(std::pair<std::string, Texture*>("arrowBlueTexture", arrowBlueTexture));
 	// Pickup crate texture
 	pickupCrateTexture = new Texture("..\\NuttyPutters\\powerUpBox.png");
 	// HUD label textures
