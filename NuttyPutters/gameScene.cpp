@@ -614,7 +614,7 @@ void gameScene::UpdateSpaceShips()
 		windowMgr::getInstance()->PlayThisSound("spaceshipPass");
 		soundPlaying3 = true;
 	}
-	cout << " SHIP 2 -----> " << windowMgr::getInstance()->spaceshipTransforms[1].getPos().x << endl;
+	//cout << " SHIP 2 -----> " << windowMgr::getInstance()->spaceshipTransforms[1].getPos().x << endl;
 
 }
 
@@ -1382,64 +1382,64 @@ void gameScene::Input(GLFWwindow* window)
 	//}
 
 	// If button one is pressed change to free camera
-	if (glfwGetKey(window, GLFW_KEY_1))
-	{
-		// Set camera version to free camera
-		cout << "Free Camera selected" << endl;
-		cameraType = 0;
-		// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
-		windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->chaseCams[0]->get_Posistion());
-	}
+	//if (glfwGetKey(window, GLFW_KEY_1))
+	//{
+	//	// Set camera version to free camera
+	//	cout << "Free Camera selected" << endl;
+	//	cameraType = 0;
+	//	// Set the free cam position to where the chasecam stopped moving for debugging can me changed later
+	//	windowMgr::getInstance()->freeCam->set_Posistion(windowMgr::getInstance()->chaseCams[0]->get_Posistion());
+	//}
 
 	// If button two is pressed change to chase camera
-	if (glfwGetKey(window, GLFW_KEY_2))
-	{
-		// Set camera version to chase camera
-		cout << "Chase Camera selected" << endl;
-		cameraType = 1;
-	}
+	//if (glfwGetKey(window, GLFW_KEY_2))
+	//{
+	//	// Set camera version to chase camera
+	//	cout << "Chase Camera selected" << endl;
+	//	cameraType = 1;
+	//}
 
-	// FREE CAM controls
-	if (cameraType == 0)
-	{
-		// Create vector to apply to current cam pos
-		vec3 freeCamPos = vec3(0, 0, 0);
+	//// FREE CAM controls
+	//if (cameraType == 0)
+	//{
+	//	// Create vector to apply to current cam pos
+	//	vec3 freeCamPos = vec3(0, 0, 0);
 
-		// Camera controls
-		if (glfwGetKey(window, GLFW_KEY_W))
-		{
-			freeCamPos = (vec3(0, 0, camSpeed * dt));
-		}
-		if (glfwGetKey(window, GLFW_KEY_A))
-		{
-			freeCamPos = (vec3(-camSpeed * dt, 0, 0));
-		}
-		if (glfwGetKey(window, GLFW_KEY_S))
-		{
-			freeCamPos = (vec3(0, 0, -camSpeed * dt));
-		}
-		if (glfwGetKey(window, GLFW_KEY_D))
-		{
-			freeCamPos = (vec3(camSpeed * dt, 0, 0));
-		}
-		if (glfwGetKey(window, GLFW_KEY_Q))
-		{
-			freeCamPos = (vec3(0, camSpeed * dt, 0));
-		}
-		if (glfwGetKey(window, GLFW_KEY_E))
-		{
-			freeCamPos = (vec3(0, -camSpeed * dt, 0));
-		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
-		{
-			camSpeed = 10.0f;
-		}
-		else
-			camSpeed = 2.0f;
+	//	// Camera controls
+	//	if (glfwGetKey(window, GLFW_KEY_W))
+	//	{
+	//		freeCamPos = (vec3(0, 0, camSpeed * dt));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_A))
+	//	{
+	//		freeCamPos = (vec3(-camSpeed * dt, 0, 0));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_S))
+	//	{
+	//		freeCamPos = (vec3(0, 0, -camSpeed * dt));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_D))
+	//	{
+	//		freeCamPos = (vec3(camSpeed * dt, 0, 0));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_Q))
+	//	{
+	//		freeCamPos = (vec3(0, camSpeed * dt, 0));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_E))
+	//	{
+	//		freeCamPos = (vec3(0, -camSpeed * dt, 0));
+	//	}
+	//	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT))
+	//	{
+	//		camSpeed = 10.0f;
+	//	}
+	//	else
+	//		camSpeed = 2.0f;
 
-		// Move camera by new pos after input
-		windowMgr::getInstance()->freeCam->move(freeCamPos);
-	}
+	//	// Move camera by new pos after input
+	//	windowMgr::getInstance()->freeCam->move(freeCamPos);
+	//}
 
 	// INPUT LOOPS:
 	// 1 - Keyboard input for both players (always runs)
@@ -2032,8 +2032,8 @@ void gameScene::Update(GLFWwindow* window)
 		eyeTransform.getRot().z = cosf(counter / randomize);
 	}
 
-	cout << "THE Y -------------------------> " << eyeTransform.getPos().y << endl;
-	cout << "THE RANDOM SHITE ---> " << randomize << endl;
+//	cout << "THE Y -------------------------> " << eyeTransform.getPos().y << endl;
+	//cout << "THE RANDOM SHITE ---> " << randomize << endl;
 
 
 	// Check whether to load next level, pass in player
@@ -2129,11 +2129,11 @@ void gameScene::Update(GLFWwindow* window)
 			double speed = p.velocity.length();
 			if (speed > 0)
 			{
-				p.transform.getRot() += rot * speed * dt;
+				p.transform.getRot() += rot * abs(speed) * dt;
 			}
 			else if (speed < 0)
 			{
-				p.transform.getRot() -= rot * speed * dt;
+				p.transform.getRot() -= rot * abs(speed) * dt;
 			}
 
 
@@ -2163,6 +2163,12 @@ void gameScene::Update(GLFWwindow* window)
 	//	counter = 0;
 	//}
 
+	// In case counter gets too big!
+	if (counter > 10000)
+	{
+		counter = 0.0f;
+	}
+	
 	counter += 0.01f;
 }
 
