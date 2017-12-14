@@ -298,6 +298,7 @@ void UI::UpdateWorldClock(int time)
 	if (minStr.length() > 1)
 	{
 		minutes = (int)minStr.back();
+		
 		tensMinutes = (int)minStr.front();
 	}
 
@@ -312,11 +313,11 @@ void UI::UpdateWorldClock(int time)
 	}
 
 	// Seconds
-	windowMgr::getInstance()->worldClockMeshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(seconds));
-	windowMgr::getInstance()->worldClockMeshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(tensSeconds));
+	windowMgr::getInstance()->worldClockMeshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(seconds)));
+	windowMgr::getInstance()->worldClockMeshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(tensSeconds)));
 	// Miss an index position (colon is at 2)
-	windowMgr::getInstance()->worldClockMeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(minutes));
-	windowMgr::getInstance()->worldClockMeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(tensMinutes));
+	windowMgr::getInstance()->worldClockMeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(minutes)));
+	windowMgr::getInstance()->worldClockMeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(tensMinutes)));
 
 }
 
