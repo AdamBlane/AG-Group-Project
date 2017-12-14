@@ -430,7 +430,7 @@ void startScene::Update(GLFWwindow* win)
 		// Assign new y position
 		yPos1 = yPosDistro(rng);
 		windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(0.0f, yPos1, -routeLength1);
-		cout << "reset" << endl;
+		//cout << "reset" << endl;
 		soundPlaying = false;
 	}
 
@@ -455,7 +455,7 @@ void startScene::Update(GLFWwindow* win)
 		// Assign new y position
 		yPos2 = yPosDistro(rng);
 		windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(-routeLength2, yPos2, -150.0f);
-		cout << "reset" << endl;
+		//cout << "reset" << endl;
 		soundPlaying = false;
 	}
 
