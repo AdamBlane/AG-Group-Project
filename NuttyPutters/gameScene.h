@@ -39,7 +39,10 @@ public:
 	// Deconstructor
 	~gameScene();
 
-
+	// Counter for sin ans cos eye ball moevements
+	float counter;
+	//tiny random value to change rotation of eye ball in each level
+	float randomize;
 
 	//Players list
 	vector<Player> players;
@@ -83,6 +86,8 @@ public:
 	vector<Transform> wormholeTransforms;
 	// Holds the world clock transforms
 	vector<Transform> worldClockTransforms;
+
+	Transform eyeTransform;
 
 	vec3 prevPos = vec3(0);
 
@@ -146,6 +151,9 @@ public:
 	void SetupPickupCrates();
 	// Sets up world clock on level load
 	void SetupWorldClock();
+
+	//Setup of eye at end hole
+	void SetupEye();
 
 	// Game loop and its functions
 	void Loop(GLFWwindow* window);

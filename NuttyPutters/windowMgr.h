@@ -92,7 +92,10 @@ class windowMgr
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
 
-	
+		// Cyber eye
+		Mesh* eyeMesh;
+		Texture* eyeGreenTexture;
+		Texture* eyeRedTexture;
 
         // Spaceship
 		Texture* spaceshipTexture;
