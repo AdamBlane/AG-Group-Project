@@ -2163,6 +2163,12 @@ void gameScene::Update(GLFWwindow* window)
 	//	counter = 0;
 	//}
 
+	// In case counter gets too big!
+	if (counter > 10000)
+	{
+		counter = 0.0f;
+	}
+	
 	counter += 0.01f;
 }
 
