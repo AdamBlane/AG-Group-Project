@@ -283,7 +283,7 @@ void startScene::Input(GLFWwindow * win)
 		}
 
 		// When Fire is realesed
-		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]])
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][0]] && total_time >= 5.0f)
 		{
 			windowMgr::getInstance()->enterCotn = true;
 		}
@@ -298,19 +298,10 @@ void startScene::Input(GLFWwindow * win)
 		}
 
 	}
+	
 
-	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]))
-	{
-		windowMgr::getInstance()->enterPressed = true;
-	}
-	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]) && total_time >= 5.0f)
-	{
-		if (windowMgr::getInstance()->enterPressed)
-		{
-			Click_or_Enter(win);
-			windowMgr::getInstance()->enterPressed = false;
-		}
-	}
+	
+	// Mouse 
 	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) && total_time >= 5.0f)
 	{
 		windowMgr::getInstance()->mouseLpressed = true;
@@ -323,11 +314,27 @@ void startScene::Input(GLFWwindow * win)
 			windowMgr::getInstance()->mouseLpressed = false;
 		}
 	}
+
+	// Keyboard input for p1 bindings
+	// Select/Fire
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]) && total_time >= 5.0f)
+	{
+		windowMgr::getInstance()->enterPressed = true;
+	}
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]))
+	{
+		if (windowMgr::getInstance()->enterPressed)
+		{
+			Click_or_Enter(win);
+			windowMgr::getInstance()->enterPressed = false;
+		}
+	}
+	
+	// DPAD Up
 	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 	{
 		windowMgr::getInstance()->upPressed = true;
 	}
-
 	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][3]))
 	{
 		if (windowMgr::getInstance()->upPressed)
@@ -350,12 +357,11 @@ void startScene::Input(GLFWwindow * win)
 		}
 	}
 	
-	// On down press
+	// DPAD Down
 	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 	{
 		windowMgr::getInstance()->downPressed = true;
 	}
-
 	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][5]))
 	{
 		previousMenuItem = currentMenuItem;

@@ -389,9 +389,6 @@ vector<int> courseGenV2::SetupSeed(string seed, int courseLength)
 			levelSeed.push_back(line[c] - 48); // Char encoding for digits; ASCII int value is - 48
 		}
 
-		//levelSeed.push_back(0);
-		//levelSeed.push_back(7);
-		//levelSeed.push_back(7);
 
 		//levelSeed.push_back(1);
 		//levelSeed.push_back(1);

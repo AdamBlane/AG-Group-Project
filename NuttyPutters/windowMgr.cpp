@@ -154,7 +154,12 @@ void windowMgr::LoadAssets()
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallJump", golfBallJump));
 	system->createSound("..\\NuttyPutters\\audio\\golf-ball-wood-hit.wav", FMOD_DEFAULT, 0, &golfBallWoodHit);
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
-
+	system->createSound("..\\NuttyPutters\\audio\\spaceship_pass.mp3", FMOD_DEFAULT, 0, &spaceshipPass);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("spaceshipPass", spaceshipPass));
+	system->createSound("..\\NuttyPutters\\audio\\wormhole.wav", FMOD_DEFAULT, 0, &wormhole);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("wormhole", wormhole));
+	system->createSound("..\\NuttyPutters\\audio\\spaceship_pass.mp3", FMOD_DEFAULT, 0, &spaceshipPass2);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("spaceshipPass2", spaceshipPass2));
 	// ############################ MESHES ############################
 	Mesh* wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 	Mesh* wormholeMesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
@@ -315,16 +320,20 @@ void windowMgr::LoadAssets()
 	textures.insert(std::pair<std::string, Texture*>("exitBtnSelected", exitBtnSelected));
 	Texture* exitBtnUnselected = new Texture("..\\NuttyPutters\\Mainmenu\\exitUnselected.png");
 	textures.insert(std::pair<std::string, Texture*>("exitBtnUnselected", exitBtnUnselected));
+
+	Texture* transBackground = new Texture("..\\NuttyPutters\\trans.png");
+	textures.insert(std::pair<std::string, Texture*>("transBackground", transBackground));
 	// Read saves file for file names of saves images
 	ifstream saves("saves.csv");
 	while (!saves.eof())
 	{
-		string texturePath = "..\\NuttyPutters\\savesImages\\";
+		string texturePath = "..\\NuttyPutters\\savesImages\\0";
 		string seed;
 		getline(saves, seed); // TODO prevent this from picking up whitespace/empty cells
 		texturePath += seed + ".bmp";
 		if (seed != "") // In case it reads cells with only whitespace
 		{
+			// Check for double 0
 			// Create a texture for that image
 			Texture* texture = new Texture(texturePath);
 			// Add to saves images list
@@ -907,7 +916,7 @@ void windowMgr::PlayThisSound(string sound)
 	// Get a thread to play the sound, pass in fmod system and given sound
 	std::thread t(&windowMgr::ThreadPlaySound, this, system, soundEffects[sound]);
 
-	t.join();
+	t.detach();
 }
 
 // The function which threads execute; plays a given sound effect
@@ -923,15 +932,15 @@ void windowMgr::ThreadSpaceship(int id)
 	// Spaceship always moves forward. Move until route length is met, 
 	// then teleport back to start (negative route length). Route length must be
 	// at least width of skybox (500) - rng the extra (within range)
-	cout << "hi from thread " << id << endl;
+
 	// Create random engine 	
 	default_random_engine rng(random_device{}());
 	// Create range for additional route length
 	uniform_int_distribution<int> routeLengthDistro(500, 1200);
 	// Pick a random value within range, add to the skybox width
 	//float routeLength = (float)500 + routeLengthDistro(rng);
-
-
+	
+	float speed = 0.0001f;
 	// Spaceship properties - id given is index to look at in spaceshipTransforms
 	uniform_int_distribution<int> yPosDistro;
 	// Act on id - different behaviours for each (so hacky to have all here)
@@ -948,12 +957,18 @@ void windowMgr::ThreadSpaceship(int id)
 		// Rotate to face forward (this ship goes up on x)
 		spaceshipTransforms[id].getRot().y = 1.5708;
 		// Keep this thread alive until the game ends
+		bool soundPlaying = false;
 		while (true)
 		{
+			
+			
 			// Travel until route length reached
 			if (spaceshipTransforms[id].getPos().x < routeLength)
 			{
-				spaceshipTransforms[id].getPos().x += 0.0001f;
+
+				spaceshipTransforms[id].getPos().x += speed;			
+
+					
 			}
 			else // Spaceship has travelled farther than route length
 			{
@@ -964,7 +979,19 @@ void windowMgr::ThreadSpaceship(int id)
 				// Assign new y position
 				yPos = yPosDistro(rng);
 				spaceshipTransforms[id].getPos() = vec3(-routeLength, yPos, 0.0f);
+				soundPlaying = false;
 			}
+
+			if (sceneManager.curScene == 1 || sceneManager.curScene == 6)
+			{
+				if (spaceshipTransforms[id].getPos().x > -20 && !soundPlaying)
+				{
+					cout << spaceshipTransforms[id].getPos().x << endl;
+					PlayThisSound("spaceshipPass");
+					soundPlaying = true;
+				}
+			}
+
 		}
 	}
 	else if (id == 1)
@@ -980,12 +1007,14 @@ void windowMgr::ThreadSpaceship(int id)
 		// Rotate to face forward (this ship goes down on x)
 		spaceshipTransforms[id].getRot().y = -1.5708;
 		// Keep this thread alive until the game ends
+		bool soundPlaying = false;
 		while (true)
 		{
+		
 			// Travel until route length reached
 			if (spaceshipTransforms[id].getPos().x > -routeLength)
 			{
-				spaceshipTransforms[id].getPos().x -= 0.0001f;
+				spaceshipTransforms[id].getPos().x -= speed;
 			}
 			else // Spaceship has travelled farther than route length
 			{
@@ -996,6 +1025,16 @@ void windowMgr::ThreadSpaceship(int id)
 				// Assign new y position
 				yPos = yPosDistro(rng);
 				spaceshipTransforms[id].getPos() = vec3(routeLength, yPos, 0.0f);
+			}
+
+			if (sceneManager.curScene == 1 || sceneManager.curScene == 6)
+			{
+				if (spaceshipTransforms[id].getPos().x > -20 && !soundPlaying)
+				{
+					cout << spaceshipTransforms[id].getPos().x << endl;
+					PlayThisSound("spaceshipPass2");
+					soundPlaying = true;
+				}
 			}
 		}
 	}
@@ -1016,7 +1055,7 @@ void windowMgr::ThreadSpaceship(int id)
 			// Travel until route length reached
 			if (spaceshipTransforms[id].getPos().z < routeLength)
 			{
-				spaceshipTransforms[id].getPos().z += 0.0001f;
+				spaceshipTransforms[id].getPos().z += speed;
 			}
 			else // Spaceship has travelled farther than route length
 			{

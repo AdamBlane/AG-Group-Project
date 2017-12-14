@@ -54,7 +54,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 {
 	// MONDAY DEMO 
 	continuePressed = true;
-
+	currentLevel = 0;
 	// Set the current menu item to resume
 	currentMenuItem = 1;
 
@@ -583,7 +583,7 @@ void gameScene::SetupWorldClock()
 		}
 	}
 
-	cout << dir << endl;
+	//cout << dir << endl;
 
 }
 
@@ -1768,6 +1768,8 @@ void gameScene::CheckLoadNextLevel()
 			{
 				wormholeTransforms[i].getScale() += vec3(0.2);
 			}
+			// Play wormhole sound
+			windowMgr::getInstance()->PlayThisSound("wormhole");
 		}
 
 		// Otherwise check if player is falling from top of skybox onto next level
@@ -1792,7 +1794,6 @@ void gameScene::CheckLoadNextLevel()
 	}
 
 }
-
 
 
 // Update player positions, spatitial partitioning, check for level changeover
@@ -1900,6 +1901,23 @@ void gameScene::Update(GLFWwindow* window)
 		// Only apply physics if it's moving
 		if (p.isMoving)
 		{
+
+			//// Update rotation
+			vec3 velDir = normalize(p.velocity);
+			dvec3 rot = (cross(velDir, vec3(0, 1, 0)));
+			// Roll the right direction
+			double speed = p.velocity.length();
+			if (speed > 0)
+			{
+				p.transform.getRot() += rot * speed * dt;
+			}
+			else if (speed < 0)
+			{
+				p.transform.getRot() -= rot * speed * dt;
+			}
+			
+
+
 			// Work out whether to apply gravity or not (is player on the floor/in air)
 			// Update player's floor level for this tile - this tile floor level + 0.5 (half tile thickness) + player radius
 			//p.floorLevel = masterAlgTiles[currentLevel].at(p.currentTile)->floorLevel + 0.5 + p.radius;

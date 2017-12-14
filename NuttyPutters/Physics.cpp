@@ -189,6 +189,7 @@ void Physics::Integrate(Player &player, double dt, float floorLevel)
 
 
 	// Update position with velocity
-	player.transform.getPos() += player.velocity * dt; // WHY * dt twice? 
+	player.transform.getPos() += player.velocity * dt; 
+
 
 }

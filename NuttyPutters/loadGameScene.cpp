@@ -101,7 +101,11 @@ void loadGameScene::Init(GLFWwindow* win)
 	{
 		windowMgr::getInstance()->imagePanelMeshes.at(i)->SetTexture(windowMgr::getInstance()->savesImages.at(i));
 	}
-	
+	// give clear texture to any left over
+	for (int i = limit; i < 9; ++i)
+	{
+		windowMgr::getInstance()->imagePanelMeshes.at(i)->SetTexture(windowMgr::getInstance()->textures["transBackground"]);
+	}
 	// Show first image as selected
 	windowMgr::getInstance()->imagePanelMeshes.at(0)->SetScale(selectedW, selectedH);
 
@@ -383,7 +387,7 @@ void loadGameScene::NextPage()
 	// Clear the rest from previous page
 	for (int i = limit; i < 9; ++i)
 	{
-		windowMgr::getInstance()->imagePanelMeshes.at(i)->SetTexture(windowMgr::getInstance()->textures["playerSelectBackground"]);
+		windowMgr::getInstance()->imagePanelMeshes.at(i)->SetTexture(windowMgr::getInstance()->textures["transBackground"]);
 	}
 }
 
