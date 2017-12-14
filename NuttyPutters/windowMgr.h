@@ -92,7 +92,12 @@ class windowMgr
 		Mesh* p1ArrowMesh;
 		Mesh* p2ArrowMesh;
 
-        // Spaceship
+		// Cyber eye
+		Mesh* eyeMesh;
+		Texture* eyeGreenTexture;
+		Texture* eyeRedTexture;
+
+    // Spaceship
 		Texture* spaceshipTexture;
 		vector<Mesh*> spaceshipMeshes;
 		vector<Transform> spaceshipTransforms;
