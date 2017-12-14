@@ -293,22 +293,31 @@ void UI::UpdateWorldClock(int time)
 	//	// Get the time in minutes, tenths and seconds - 0M:TS
 	 // If time is 600 then it's 10 minutes...minutes index will be 10 - fix!
 	int	minutes = time / 60;
+	int tensMinutes = (time / 60) / 10;
 	string minStr = to_string(minutes);
 	if (minStr.length() > 1)
 	{
 		minutes = (int)minStr.back();
+		
+		tensMinutes = (int)minStr.front();
 	}
 
-	int tensMinutes = (time / 60) / 10;
+	
 	int	tensSeconds = (time - (minutes * 60)) / 10;
 	int	seconds = time - (minutes * 60) - (tensSeconds * 10);
+	string secStr = to_string(seconds);
+	if (secStr.length() > 1)
+	{
+		seconds = (int)secStr.back();
+		tensSeconds = (int)secStr.front();
+	}
 
 	// Seconds
-	windowMgr::getInstance()->worldClockMeshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(seconds));
-	windowMgr::getInstance()->worldClockMeshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(tensSeconds));
+	windowMgr::getInstance()->worldClockMeshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(seconds)));
+	windowMgr::getInstance()->worldClockMeshes.at(3)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(tensSeconds)));
 	// Miss an index position (colon is at 2)
-	windowMgr::getInstance()->worldClockMeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(minutes));
-	windowMgr::getInstance()->worldClockMeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(tensMinutes));
+	windowMgr::getInstance()->worldClockMeshes.at(1)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(minutes)));
+	windowMgr::getInstance()->worldClockMeshes.at(0)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(tensMinutes)));
 
 }
 
