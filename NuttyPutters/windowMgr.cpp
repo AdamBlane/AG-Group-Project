@@ -248,9 +248,14 @@ void windowMgr::LoadAssets()
 	// World clock meshes
 	for (int i = 0; i < 5; i++)
 	{
-		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 2.0f, 0.0f), 5.0f, 5.0f);
+		Mesh* mesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 2.0f, 0.0f), 10.0f, 2.5f);
 		worldClockMeshes.push_back(mesh);
 	}
+
+	// Cyber eye at end hole
+	eyeMesh = new Mesh("..\\NuttyPutters\\Human_Eye.obj");
+	eyeGreenTexture = new Texture("..\\NuttyPutters\\eyeBall_green.png");
+	eyeRedTexture = new Texture("..\\NuttyPutters\\eyeBall_red.png");
 
 	// 3D Meshes
 	// Player meshes
@@ -266,8 +271,6 @@ void windowMgr::LoadAssets()
 		pickupCrateMeshes.push_back(new Mesh(Mesh::CUBOID, vec3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f, 1.0f));
 	}
 
-
-
 	///////////////////// SPACESHIP ///////////////////
 	spaceshipTexture = new Texture("..\\NuttyPutters\\DiffuseTexture.png");
 	/*spaceShip = new Mesh("..\\NuttyPutters\\DroidFighter.obj");*/
@@ -277,7 +280,6 @@ void windowMgr::LoadAssets()
 		spaceship->SetTexture(spaceshipTexture);
 		spaceshipMeshes.push_back(spaceship);
 	}
-
 
 	///////////////////// PLANETS ///////////////////
 	alienPlanet = new Mesh("..\\NuttyPutters\\sphere.obj");
@@ -2929,151 +2931,82 @@ void windowMgr::ControlsInputController()
 	// If controller is connected 
 	if (present == 1)
 	{
-		// If the amount of buttons detected is equal to 18 then - ps4 configurations
-		if (buttonCount == 18)
+		// For loop which checks to see if buttons are pressed
+		for (int buttonNumber = 0; buttonNumber < 14; buttonNumber++)
 		{
-			// For loop which checks to see if buttons are pressed - i buttons
-			for (int buttonNumber = 0; buttonNumber < 18; buttonNumber++)
+			// If button is pressed then set corresponding boolean to true
+			if (GLFW_PRESS == buttons[buttonNumber] && !buttonPressed[buttonNumber])
 			{
-				// If button i is pressed then set corresponding boolean to true
-				if (GLFW_PRESS == buttons[buttonNumber] && !buttonPressed[buttonNumber])
-				{
-					buttonPressed[buttonNumber] = true;
-				}
-
-				// If a button has just been pressed and is longer being pressed then
-				if (buttonPressed[buttonNumber] && !GLFW_PRESS == buttons[buttonNumber])
-				{
-					// If there is an empty function then
-					if (isFunctionEmpty)
-					{
-						// Find the index of the gameFunction which has a value of 99
-						indexAt99 = std::distance(windowMgr::getInstance()->playerXboxControls[playerTab - 1], std::find(windowMgr::getInstance()->playerXboxControls[playerTab - 1], windowMgr::getInstance()->playerXboxControls[playerTab - 1] + 10, 99));
-						// Find the index of the game function whih is assigned to the button that has just been pressed
-						indexAtButton = std::distance(windowMgr::getInstance()->playerXboxControls[playerTab - 1], std::find(windowMgr::getInstance()->playerXboxControls[playerTab - 1], windowMgr::getInstance()->playerXboxControls[playerTab - 1] + 10, buttonNumber));
-						// Check if button just pressed has a function assigned to it
-						if (buttonNumber == windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton])
-						{
-							// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-							windowMgr::getInstance()->controllerMeshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] = 99;
-						}
-
-						// Make the original empty function equal to the button
-						windowMgr::getInstance()->playerXboxControls[0][indexAt99] = buttonNumber;
-						windowMgr::getInstance()->controllerMeshes.at(4 + (indexAt99 * 2))->SetTexture(windowMgr::getInstance()->buttonsPS[buttonNumber]);
-
-						// Check if a function is equal to 99
-						if (windowMgr::getInstance()->playerXboxControls[playerTab - 1][0] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][1] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][2] == 99 ||
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][3] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][4] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][5] == 99 ||
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][6] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][7] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][8] == 99 ||
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][9] == 99)
-						{
-							isFunctionEmpty = true; // Set bool to true if a function is empty
-						}
-						else
-						{
-							isFunctionEmpty = false; // Set bool to false if no function is empty
-						}
-					}
-					else
-					{
-						// Find the function index where the button has been pressed
-						indexAtButton = std::distance(windowMgr::getInstance()->playerXboxControls[playerTab - 1], std::find(windowMgr::getInstance()->playerXboxControls[playerTab - 1], windowMgr::getInstance()->playerXboxControls[playerTab - 1] + 10, buttonNumber));
-						// If function is assigned to a button then
-						if (windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] == buttonNumber)
-						{
-							// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-							windowMgr::getInstance()->controllerMeshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] = 99;
-							// Set is Function Empty to true
-							isFunctionEmpty = true;
-						}
-					}
-					// Reset button pressed
-					buttonPressed[buttonNumber] = false;
-				}
+				buttonPressed[buttonNumber] = true;
+				//cout << "Button Pressed on Xbox: " << buttonNumber << endl;
 			}
-		}
-		else
-		{
-			// For loop which checks to see if buttons are pressed
-			for (int buttonNumber = 0; buttonNumber < 14; buttonNumber++)
+
+			// If a button has just been pressed and is longer being pressed then
+			if (buttonPressed[buttonNumber] && !GLFW_PRESS == buttons[buttonNumber])
 			{
-				// If button is pressed then set corresponding boolean to true
-				if (GLFW_PRESS == buttons[buttonNumber] && !buttonPressed[buttonNumber])
+				// If there is an empty function then
+				if (isFunctionEmpty)
 				{
-					buttonPressed[buttonNumber] = true;
-					//cout << "Button Pressed on Xbox: " << buttonNumber << endl;
-				}
-
-				// If a button has just been pressed and is longer being pressed then
-				if (buttonPressed[buttonNumber] && !GLFW_PRESS == buttons[buttonNumber])
-				{
-					// If there is an empty function then
-					if (isFunctionEmpty)
+					// Find the index of the gameFunction which has a value of 99
+					indexAt99 = std::distance(windowMgr::getInstance()->playerXboxControls[playerTab - 1], std::find(windowMgr::getInstance()->playerXboxControls[playerTab - 1], windowMgr::getInstance()->playerXboxControls[playerTab - 1] + 10, 99));
+					// Find the index of the game function whih is assigned to the button that has just been pressed
+					indexAtButton = std::distance(windowMgr::getInstance()->playerXboxControls[playerTab - 1], std::find(windowMgr::getInstance()->playerXboxControls[playerTab - 1], windowMgr::getInstance()->playerXboxControls[playerTab - 1] + 10, buttonNumber));
+					// Check if button just pressed has a function assigned to it
+					if (buttonNumber == windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton])
 					{
-						// Find the index of the gameFunction which has a value of 99
-						indexAt99 = std::distance(windowMgr::getInstance()->playerXboxControls[playerTab - 1], std::find(windowMgr::getInstance()->playerXboxControls[playerTab - 1], windowMgr::getInstance()->playerXboxControls[playerTab - 1] + 10, 99));
-						// Find the index of the game function whih is assigned to the button that has just been pressed
-						indexAtButton = std::distance(windowMgr::getInstance()->playerXboxControls[playerTab - 1], std::find(windowMgr::getInstance()->playerXboxControls[playerTab - 1], windowMgr::getInstance()->playerXboxControls[playerTab - 1] + 10, buttonNumber));
-						// Check if button just pressed has a function assigned to it
-						if (buttonNumber == windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton])
-						{
-							// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-							windowMgr::getInstance()->controllerMeshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] = 99;
-						}
+						// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+						windowMgr::getInstance()->controllerMeshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+						windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] = 99;
+					}
 
-						// Make the original empty function equal to the button
-						windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAt99] = buttonNumber;
-						windowMgr::getInstance()->controllerMeshes.at(4 + (indexAt99 * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[buttonNumber]);
+					// Make the original empty function equal to the button
+					windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAt99] = buttonNumber;
+					windowMgr::getInstance()->controllerMeshes.at(4 + (indexAt99 * 2))->SetTexture(windowMgr::getInstance()->buttonsXB[buttonNumber]);
 
-						// Check if a function is equal to 99
-						if (windowMgr::getInstance()->playerXboxControls[playerTab - 1][0] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][1] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][2] == 99 ||
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][3] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][4] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][5] == 99 ||
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][6] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][7] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][8] == 99 ||
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][9] == 99)
-						{
-							isFunctionEmpty = true; // Set bool to true if a function is empty
-						}
-						else
-						{
-							isFunctionEmpty = false; // Set bool to false if no function is empty
-						}
+					// Check if a function is equal to 99
+					if (windowMgr::getInstance()->playerXboxControls[playerTab - 1][0] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][1] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][2] == 99 ||
+						windowMgr::getInstance()->playerXboxControls[playerTab - 1][3] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][4] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][5] == 99 ||
+						windowMgr::getInstance()->playerXboxControls[playerTab - 1][6] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][7] == 99 || windowMgr::getInstance()->playerXboxControls[playerTab - 1][8] == 99 ||
+						windowMgr::getInstance()->playerXboxControls[playerTab - 1][9] == 99)
+					{
+						isFunctionEmpty = true; // Set bool to true if a function is empty
 					}
 					else
 					{
-						indexAtButton = std::distance(windowMgr::getInstance()->playerXboxControls[playerTab - 1], std::find(windowMgr::getInstance()->playerXboxControls[playerTab - 1], windowMgr::getInstance()->playerXboxControls[playerTab - 1] + 10, buttonNumber));
-						// If function is assigned to a button then
-						if (windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] == buttonNumber)
+						isFunctionEmpty = false; // Set bool to false if no function is empty
+					}
+				}
+				else
+				{
+					indexAtButton = std::distance(windowMgr::getInstance()->playerXboxControls[playerTab - 1], std::find(windowMgr::getInstance()->playerXboxControls[playerTab - 1], windowMgr::getInstance()->playerXboxControls[playerTab - 1] + 10, buttonNumber));
+					// If function is assigned to a button then
+					if (windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] == buttonNumber)
+					{
+						// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
+						windowMgr::getInstance()->controllerMeshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
+						windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] = 99;
+						// Set is Function Empty to true
+						isFunctionEmpty = true;
+					}
+					// Else then user wants to return to the pervious screen
+					else
+					{
+						// Work out the previous screen - if return to game is true then set variable to true to continue with game
+						if (returnToGame)
 						{
-							// Set picture to question marks and button to rogue value of 99 - 99 will mean the function now no longer has a button assigned
-							windowMgr::getInstance()->controllerMeshes.at(4 + (indexAtButton * 2))->SetTexture(windowMgr::getInstance()->textures["questionMarkLbl"]);
-							windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] = 99;
-							// Set is Function Empty to true
-							isFunctionEmpty = true;
+							// Set does user want controls to false meaning in game scene .cpp the controls render loop will be ignored
+							doesUserWantControls = false;
 						}
-						// Else then user wants to return to the pervious screen
 						else
 						{
-							// Work out the previous screen - if return to game is true then set variable to true to continue with game
-							if (returnToGame)
-							{
-								// Set does user want controls to false meaning in game scene .cpp the controls render loop will be ignored
-								doesUserWantControls = false;
-							}
-							else
-							{
-								// Change back to main menu
-								windowMgr::getInstance()->sceneManager.changeScene(1);
-							}
+							// Change back to main menu
+							windowMgr::getInstance()->sceneManager.changeScene(1);
 						}
 					}
-
-					// Reset button pressed
-					buttonPressed[buttonNumber] = false;
 				}
+
+				// Reset button pressed
+				buttonPressed[buttonNumber] = false;
 			}
 		}
 	}

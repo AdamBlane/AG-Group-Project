@@ -214,11 +214,12 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	SetupSpaceShips();
 
 	SetupWorldClock();
+	SetupEye();
 	// Set dt based on player count
 	//dt = (playerCount * 0.01) - 0.002;
 	dt = 0.02;
 
-
+	randomize = 0.8f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.5f - 0.8f)));
 
 	// Perform game logic and UI setup
 	// World clock should appear over end hole - pass in end hole position and direction
@@ -719,6 +720,60 @@ void gameScene::SetupWorldClock()
 	//cout << dir << endl;
 
 }
+
+
+void gameScene::SetupEye()
+{
+	// Cyber eye
+	int switchTexture = Tile::randomNumber(0, 1);
+	switch (switchTexture)
+	{
+	case 0:
+		windowMgr::getInstance()->eyeMesh->SetTexture(windowMgr::getInstance()->eyeGreenTexture);
+		break;
+	case 1:
+		windowMgr::getInstance()->eyeMesh->SetTexture(windowMgr::getInstance()->eyeRedTexture);
+		break;
+	default:
+		windowMgr::getInstance()->eyeMesh->SetTexture(windowMgr::getInstance()->eyeRedTexture);
+		break;
+	}
+
+	// Set position of clock to just above end hole
+	vec3 endPos = masterAlgTiles[currentLevel].back()->thisCoords;
+	eyeTransform.getScale() = vec3(5);
+
+	// Hacking this for now
+	if (masterAlgTiles[currentLevel].back()->outDir.going_up)
+	{
+		// Set pos
+		eyeTransform.getPos() = (vec3(endPos.x, 2.0f, endPos.z - 5.0f));
+		// Then rotate based on direction of end hole
+		eyeTransform.getRot().y = 3.14159;
+	}
+	else if (masterAlgTiles[currentLevel].back()->outDir.going_down)
+	{
+		// Set pos
+		eyeTransform.getPos() = (vec3(endPos.x, 2.0f, endPos.z + 5.0f));
+		// Then rotate based on direction of end hole
+		eyeTransform.getRot().y = 3.14159;
+	}
+	else if (masterAlgTiles[currentLevel].back()->outDir.going_left)
+	{
+		// Set pos
+		eyeTransform.getPos() = (vec3(endPos.x - 5.0f, 2.0f, endPos.z));
+		// Then rotate based on direction of end hole
+		eyeTransform.getRot().y = 1.5708;
+	}
+	else if (masterAlgTiles[currentLevel].back()->outDir.going_right)
+	{
+		// Set pos
+		eyeTransform.getPos() = (vec3(endPos.x + 5.0f, 2.0f, endPos.z));
+		// Then rotate based on direction of end hole
+		eyeTransform.getRot().y = 1.5708;
+	}
+}
+
 
 // Called from pause menu; screenshots and saves current level to file
 void gameScene::Save_Level(GLFWwindow* win)
@@ -1894,6 +1949,8 @@ void gameScene::CheckLoadNextLevel()
 					SetupSpaceShips();
 					// Reset world clock
 					SetupWorldClock();
+
+					SetupEye();
 				}
 			}
 
@@ -1957,9 +2014,26 @@ void gameScene::Update(GLFWwindow* window)
 	galaxyPlanetTrans.setRot(vec3(0.0f, galaxyRot, 0.0f));
 	float gasRot = gasPlanetTrans.getRot().y + 0.04f * dt;
 	gasPlanetTrans.setRot(vec3(0.0f, gasRot, 0.0f));
-	float lavaRot = lavaPlanetTrans.getRot().y + 0.03 * dt;
+	float lavaRot = lavaPlanetTrans.getRot().y + 0.09 * dt;
 	lavaPlanetTrans.setRot(vec3(0.0f, lavaRot, 0.0f));
 
+
+	
+	// Eye movements
+	eyeTransform.getPos().y = 3.0f + sinf(counter);
+
+
+	if (masterAlgTiles[currentLevel].back()->outDir.going_right || masterAlgTiles[currentLevel].back()->outDir.going_left)
+	{
+		eyeTransform.getRot().z = sinf(counter / randomize);
+	}
+	else if (masterAlgTiles[currentLevel].back()->outDir.going_down || masterAlgTiles[currentLevel].back()->outDir.going_up)
+	{
+		eyeTransform.getRot().z = cosf(counter / randomize);
+	}
+
+	cout << "THE Y -------------------------> " << eyeTransform.getPos().y << endl;
+	cout << "THE RANDOM SHITE ---> " << randomize << endl;
 
 
 	// Check whether to load next level, pass in player
@@ -2083,6 +2157,13 @@ void gameScene::Update(GLFWwindow* window)
 		p.arrowTransform.getPos() = vec3(p.transform.getPos().x, p.transform.getPos().y - 1.6, p.transform.getPos().z);
 	}
 
+
+	//if (counter = numeric_limits<float>::max())
+	//{
+	//	counter = 0;
+	//}
+
+	counter += 0.01f;
 }
 
 // Calls collision checking code of tile player is on
@@ -2390,6 +2471,10 @@ void gameScene::Render(GLFWwindow* window)
 		windowMgr::getInstance()->worldClockMeshes[i]->Draw();
 	}
 
+	///////// Draw eye
+	windowMgr::getInstance()->eyeMesh->thisTexture.Bind(0);
+	windowMgr::getInstance()->textureShader->Update(eyeTransform, mvp);
+	windowMgr::getInstance()->eyeMesh->Draw();
 
 	// Draw spaceships!
 	for (int i = 0; i < 3; i++)
