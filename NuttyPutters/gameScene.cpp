@@ -217,7 +217,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	SetupEye();
 	// Set dt based on player count
 	//dt = (playerCount * 0.01) - 0.002;
-	dt = 0.02;
+	dt = 0.014;
 
 	randomize = 0.8f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.5f - 0.8f)));
 

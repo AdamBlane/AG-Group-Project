@@ -293,15 +293,23 @@ void UI::UpdateWorldClock(int time)
 	//	// Get the time in minutes, tenths and seconds - 0M:TS
 	 // If time is 600 then it's 10 minutes...minutes index will be 10 - fix!
 	int	minutes = time / 60;
+	int tensMinutes = (time / 60) / 10;
 	string minStr = to_string(minutes);
 	if (minStr.length() > 1)
 	{
 		minutes = (int)minStr.back();
+		tensMinutes = (int)minStr.front();
 	}
 
-	int tensMinutes = (time / 60) / 10;
+	
 	int	tensSeconds = (time - (minutes * 60)) / 10;
 	int	seconds = time - (minutes * 60) - (tensSeconds * 10);
+	string secStr = to_string(seconds);
+	if (secStr.length() > 1)
+	{
+		seconds = (int)secStr.back();
+		tensSeconds = (int)secStr.front();
+	}
 
 	// Seconds
 	windowMgr::getInstance()->worldClockMeshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(seconds));
