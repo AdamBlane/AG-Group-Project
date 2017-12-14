@@ -661,7 +661,7 @@ void windowMgr::LoadAssets()
 		// Print to screen
 		cout << "Error in opening player one xbox file";
 		// Set default values for xbox controller - FUNCTION/BUTTONS
-		playerXboxControls[0][1] = 2;
+		playerXboxControls[0][0] = 2;
 		playerXboxControls[0][1] = 3;
 		playerXboxControls[0][2] = 7;
 		playerXboxControls[0][3] = 10;
@@ -1157,7 +1157,7 @@ void windowMgr::ControlsTextureSetup()
 	windowMgr::getInstance()->controllerMeshes.at(21)->SetTexture(windowMgr::getInstance()->textures["zoomOutLbl"]);
 	// Main Menu
 	windowMgr::getInstance()->controllerMeshes.at(23)->SetScale(3.0f, 0.5f);
-	windowMgr::getInstance()->controllerMeshes.at(23)->SetPos(vec3(2.2f, -1.8f, 0.0f));
+	windowMgr::getInstance()->controllerMeshes.at(23)->SetPos(vec3(2.5f, -1.6f, 0.0f));
 	windowMgr::getInstance()->controllerMeshes.at(23)->SetTexture(windowMgr::getInstance()->textures["backBtnUnselected"]);
 	// Set the player one and player two lbls
 	// P1
@@ -1243,96 +1243,9 @@ void windowMgr::ControlsTextureSetup()
 	windowMgr::getInstance()->controllerMeshes.at(36)->SetScale(1.6f, 0.4f);
 	windowMgr::getInstance()->controllerMeshes.at(36)->SetPos(vec3(0.5f, -1.81, 0.0f));
 	// Select an option label 
-	windowMgr::getInstance()->controllerMeshes.at(37)->SetScale(2.0f, 1.6f);
-	windowMgr::getInstance()->controllerMeshes.at(37)->SetPos(vec3(2.2f, 0.7, 0.0));
+	windowMgr::getInstance()->controllerMeshes.at(37)->SetScale(2.0f, 3.2f);
+	windowMgr::getInstance()->controllerMeshes.at(37)->SetPos(vec3(2.5f, 0.2, 0.0));
 	windowMgr::getInstance()->controllerMeshes.at(37)->SetTexture(windowMgr::getInstance()->textures["selectOptionLbl"]);
-
-	// If player tab is equal to one then 
-	if (playerTab == 1)
-	{
-		switch (windowMgr::getInstance()->playerOneSensitivity)
-		{
-		case 1:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-			windowMgr::getInstance()->playerOneSensitivity = 1;
-			break;
-		case 2:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-			windowMgr::getInstance()->playerOneSensitivity = 2;
-			break;
-		case 3:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
-			windowMgr::getInstance()->playerOneSensitivity = 3;
-			break;
-		case 4:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
-			windowMgr::getInstance()->playerOneSensitivity = 4;
-			break;
-		case 5:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
-			windowMgr::getInstance()->playerOneSensitivity = 5;
-			break;
-		case 6:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
-			windowMgr::getInstance()->playerOneSensitivity = 6;
-			break;
-		case 7:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
-			windowMgr::getInstance()->playerOneSensitivity = 7;
-			break;
-		case 8:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
-			windowMgr::getInstance()->playerOneSensitivity = 8;
-			break;
-		case 9:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
-			windowMgr::getInstance()->playerOneSensitivity = 9;
-			break;
-		}
-	}
-
-	if (playerTab == 2)
-	{
-		switch (windowMgr::getInstance()->playerTwoSensitivity)
-		{
-		case 1:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[1]);
-			windowMgr::getInstance()->playerTwoSensitivity = 1;
-			break;
-		case 2:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[2]);
-			windowMgr::getInstance()->playerTwoSensitivity = 2;
-			break;
-		case 3:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[3]);
-			windowMgr::getInstance()->playerTwoSensitivity = 3;
-			break;
-		case 4:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[4]);
-			windowMgr::getInstance()->playerTwoSensitivity = 4;
-			break;
-		case 5:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[5]);
-			windowMgr::getInstance()->playerTwoSensitivity = 5;
-			break;
-		case 6:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[6]);
-			windowMgr::getInstance()->playerTwoSensitivity = 6;
-			break;
-		case 7:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[7]);
-			windowMgr::getInstance()->playerTwoSensitivity = 7;
-			break;
-		case 8:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[8]);
-			windowMgr::getInstance()->playerTwoSensitivity = 8;
-			break;
-		case 9:
-			windowMgr::getInstance()->controllerMeshes.at(38)->SetTexture(windowMgr::getInstance()->numberTextures[9]);
-			windowMgr::getInstance()->playerTwoSensitivity = 9;
-			break;
-		}
-	}
 }
 
 void windowMgr::ControlsButtonsSetup()
@@ -1929,8 +1842,8 @@ void windowMgr::ControlsTrackMouse()
 		}
 	}
 	//this is for main menu button
-	else if ((windowMgr::getInstance()->mouse_x >= 1086 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1469 * windowMgr::getInstance()->windowScale)
-		&& (windowMgr::getInstance()->mouse_y >= 809 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 877 * windowMgr::getInstance()->windowScale))
+	else if ((windowMgr::getInstance()->mouse_x >= 1200 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_x <= 1500 * windowMgr::getInstance()->windowScale)
+		&& (windowMgr::getInstance()->mouse_y >= 740 * windowMgr::getInstance()->windowScale) && (windowMgr::getInstance()->mouse_y <= 850 * windowMgr::getInstance()->windowScale))
 	{
 		windowMgr::getInstance()->button_manager = 3;
 	}
@@ -2961,7 +2874,6 @@ void windowMgr::ControlsInputController()
 				if (GLFW_PRESS == buttons[buttonNumber] && !buttonPressed[buttonNumber])
 				{
 					buttonPressed[buttonNumber] = true;
-					//cout << "Button Pressed: " << buttonNumber << endl;
 				}
 
 				// If a button has just been pressed and is longer being pressed then
@@ -3076,6 +2988,21 @@ void windowMgr::ControlsInputController()
 							windowMgr::getInstance()->playerXboxControls[playerTab - 1][indexAtButton] = 99;
 							// Set is Function Empty to true
 							isFunctionEmpty = true;
+						}
+						// Else then user wants to return to the pervious screen
+						else
+						{
+							// Work out the previous screen - if return to game is true then set variable to true to continue with game
+							if (returnToGame)
+							{
+								// Set does user want controls to false meaning in game scene .cpp the controls render loop will be ignored
+								doesUserWantControls = false;
+							}
+							else
+							{
+								// Change back to main menu
+								windowMgr::getInstance()->sceneManager.changeScene(1);
+							}
 						}
 					}
 

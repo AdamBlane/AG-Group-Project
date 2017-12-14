@@ -132,7 +132,10 @@ void playerSelectScene::Init(GLFWwindow * win)
 	windowMgr::getInstance()->meshes.at(14)->SetPos(vec3(-1.45f, -1.1, 0.0));
 	windowMgr::getInstance()->meshes.at(14)->SetTexture(windowMgr::getInstance()->textures["mainMenuBtnUnselected"]);
 
-
+	// Reset all the variables on init 
+	playerSelect = 1;
+	difficultySelect = 1;
+	numberOfHoles = 1;
 }
 
 // Draw stuff for this scene
@@ -371,6 +374,20 @@ void playerSelectScene::Input(GLFWwindow* win)
 			windowMgr::getInstance()->leftCotn = false;
 		}
 
+		// If the back button is pressed then go back to the previous screen 
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][1]])
+		{
+			backButtonPressedController = true;
+		}
+		// If back button is realised and boolean is true then 
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][1]] && backButtonPressedController)
+		{
+			// Reset the boolean to false
+			backButtonPressedController = false;
+			// Return to the main menu screen
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+		}
+		
 		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][6]])
 		{
 			windowMgr::getInstance()->rightCotn = true;
@@ -455,9 +472,23 @@ void playerSelectScene::Input(GLFWwindow* win)
 				ChangeTexutes(win);
 			}
 		}
-
 	}
-		// If right key is pressed set keyLeft to true
+
+	// If the back button is pressed then go back to the previous screen 
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][1]))
+	{
+		backButtonPressedKeyboard = true;
+	}
+	// If back button is realised and boolean is true then 
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][1]) && backButtonPressedKeyboard)
+	{
+		// Reset the boolean to false
+		backButtonPressedKeyboard = false;
+		// Return to the main menu screen
+		windowMgr::getInstance()->sceneManager.changeScene(1);
+	}
+
+	// If right key is pressed set keyLeft to true
 	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][4]))
 	{
 		keyLeft = true;

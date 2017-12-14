@@ -59,6 +59,9 @@ public:
 	int controllerOneAxisCount;
 	const float *controllerOneAxis;
 	
+	bool backButtonPressedController = false; // Boolean used to see if the back button was pressed for controller
+	bool backButtonPressedKeyboard = false; // Boolean used to see if the back button was pressed for keyboard
+
 	// Setup
 	void Init(GLFWwindow* win);
 	// Draw stuff

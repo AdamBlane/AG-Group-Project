@@ -911,7 +911,7 @@ void gameScene::Pause(GLFWwindow* window)
 
 	while (paused)
 	{
-		cout << "Paused" << endl;
+		//cout << "Paused" << endl;
 		//code to disable mouse
 		windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
 		windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
@@ -1163,7 +1163,7 @@ void gameScene::Pause(GLFWwindow* window)
 	// Unpause clocks
 	gameLogicMgr.UnpauseGameClock();
 
-	std::cout << "\nUnpaused" << std::endl;
+	//std::cout << "\nUnpaused" << std::endl;
 }
 
 // Act on input
@@ -2054,7 +2054,7 @@ void gameScene::Render(GLFWwindow* window)
 		// If clicked on control option in pause screen, show control option screen
 		if (windowMgr::getInstance()->doesUserWantControls)
 		{
-			for (int i = 1; i < 38; i++)
+			for (int i = 0; i < 38; i++)
 			{
 				windowMgr::getInstance()->controllerMeshes.at(i)->thisTexture.Bind(0);
 				windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->texShaderTransform, hudVP);
