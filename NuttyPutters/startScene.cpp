@@ -125,6 +125,23 @@ void startScene::FirstTimeInit(GLFWwindow* win)
 
 void startScene::Init(GLFWwindow* win)
 {
+	// Setup spaceship properties
+	// Create random engine 	
+	default_random_engine rng(random_device{}());
+	uniform_int_distribution<int> routeLengthDistro(500, 1200);
+	uniform_int_distribution<int> yPosDistro(-10, 10);
+	routeLength1 = (float)500 + routeLengthDistro(rng);
+	routeLength2 = (float)500 + routeLengthDistro(rng);
+	// randomise y pos within given range
+	yPos1 = yPosDistro(rng);
+	yPos2 = yPosDistro(rng);
+	// Set start position (negative route length, randomised y pos)
+	windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(0.0f, yPos1, -routeLength1);
+	windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(-routeLength2, yPos2, -150);
+	// Rotate on side (from left to right)
+	windowMgr::getInstance()->spaceshipTransforms[1].getRot().y = 1.5708;
+
+
 	// Show mouse
 	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	// Set initial button press bools to false
@@ -212,14 +229,17 @@ void startScene::Click_or_Enter(GLFWwindow* win)
 	// If internet button is hovered over
 	else if (windowMgr::getInstance()->button_manager == 5)
 	{
-		ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
+		ShellExecute(NULL, "open", "http://www.calumtempleton.com/portfolio", NULL, NULL, SW_SHOWNORMAL);
 	}
 	// Otherwise load scene for this button
-	else
+	else if (windowMgr::getInstance()->button_manager != 0 )
 	{
 		// + 1 since button manager starts from 0, but scene 0 is exit (1 is start etc)
 		windowMgr::getInstance()->sceneManager.changeScene(windowMgr::getInstance()->button_manager + 1);
 	}
+
+	// Play sound on enter button
+	windowMgr::getInstance()->PlayThisSound("confirmSound");
 }
 
 // Act on input
@@ -391,6 +411,57 @@ void startScene::Input(GLFWwindow * win)
 // Update camera, select cooldown 
 void startScene::Update(GLFWwindow* win)
 {
+	default_random_engine rng(random_device{}());
+	//random speed
+	uniform_int_distribution<int> spaceShipSpeed(2, 12);
+	speed = spaceShipSpeed(rng);
+
+	// Move spaceship1
+	if (windowMgr::getInstance()->spaceshipTransforms[0].getPos().z < routeLength1)
+	{
+		windowMgr::getInstance()->spaceshipTransforms[0].getPos().z += speed;
+	}
+	else
+	{
+		uniform_int_distribution<int> routeLengthDistro(500, 1200);
+		uniform_int_distribution<int> yPosDistro(-10, 10);
+		// Assign a new route length
+		routeLength1 = (float)500 + routeLengthDistro(rng);
+		// Assign new y position
+		yPos1 = yPosDistro(rng);
+		windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(0.0f, yPos1, -routeLength1);
+		cout << "reset" << endl;
+		soundPlaying = false;
+	}
+
+	if (windowMgr::getInstance()->spaceshipTransforms[0].getPos().z >= -500 && windowMgr::getInstance()->spaceshipTransforms[0].getPos().z <= -450 && !soundPlaying)
+	{
+		windowMgr::getInstance()->PlayThisSound("spaceshipPass");
+		soundPlaying = true;
+	}
+
+
+	// Move spaceship2
+	if (windowMgr::getInstance()->spaceshipTransforms[1].getPos().x < routeLength2)
+	{
+		windowMgr::getInstance()->spaceshipTransforms[1].getPos().x += speed;
+	}
+	else
+	{
+		uniform_int_distribution<int> routeLengthDistro(500, 1200);
+		uniform_int_distribution<int> yPosDistro(-10, 10);
+		// Assign a new route length
+		routeLength2 = (float)500 + routeLengthDistro(rng);
+		// Assign new y position
+		yPos2 = yPosDistro(rng);
+		windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(-routeLength2, yPos2, -150.0f);
+		cout << "reset" << endl;
+		soundPlaying = false;
+	}
+
+
+	windowMgr::getInstance()->frameCount++;
+
 	// Update target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 
@@ -441,7 +512,7 @@ void startScene::Render(GLFWwindow* win)
 	if (loaded)
 	{
 		// Draw spaceships!
-		for (int i = 0; i < windowMgr::getInstance()->threadCount; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			windowMgr::getInstance()->spaceshipMeshes[i]->thisTexture.Bind(0);
 			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[i], hudVP);

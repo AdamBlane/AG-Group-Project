@@ -119,10 +119,19 @@ public:
 	bool paused = false;
 
 
-	// Spaceship properties
+	////// Spaceships properties
+	//route length of all spaceships
+	float routeLength1;
+	float routeLength2;
+	float routeLength3;
 
+	//y position of all spaceships
+	float yPos1;
+	float yPos2;
+	float yPos3;
 
-
+	//speed shared by all spaceships
+	float speedShip;
 
 	// Transform for Planets
 	Transform alienPlanetTrans;
@@ -149,6 +158,9 @@ public:
 	void SetupTilesToBeDrawn();
 	// Sets up pickup crates for a level
 	void SetupPickupCrates();
+	//Setup of spaceships
+	void SetupSpaceShips();
+	void UpdateSpaceShips();
 	// Sets up world clock on level load
 	void SetupWorldClock();
 

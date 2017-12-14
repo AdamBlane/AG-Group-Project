@@ -313,6 +313,8 @@ void loadGameScene::Click_or_Enter(GLFWwindow* win)
 		}
 	}
 
+	// Play sound on enter button
+	windowMgr::getInstance()->PlayThisSound("confirmSound");
 }
 
 // Main loop
@@ -508,6 +510,9 @@ void loadGameScene::Left()
 	}
 	else if (selection == 15)
 	{
+		// Play sound on enter button
+		windowMgr::getInstance()->PlayThisSound("confirmSound");
+
 		// If button selected is button 4 - main menu - then wrap around to button 1
 		if (playerCount == 1)
 		{
@@ -545,6 +550,9 @@ void loadGameScene::Right()
 	}
 	else if (selection == 15)
 	{
+		// Play sound on enter button
+		windowMgr::getInstance()->PlayThisSound("confirmSound");
+
 		// If button selected is button 4 - main menu - then wrap around to button 1
 		if (playerCount == 2)
 		{

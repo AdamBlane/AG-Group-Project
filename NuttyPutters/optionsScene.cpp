@@ -156,6 +156,9 @@ void optionsScene::Click_or_Enter(GLFWwindow *win)
 		glViewport(0, 0, windowMgr::getInstance()->width, windowMgr::getInstance()->height);
 		windowMgr::getInstance()->setWindowScale(windowMgr::getInstance()->width);
 	}
+
+	// Play sound on enter button
+	windowMgr::getInstance()->PlayThisSound("confirmSound");
 }
 
 void optionsScene::Init(GLFWwindow * win)

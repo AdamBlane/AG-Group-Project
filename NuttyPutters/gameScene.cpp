@@ -211,11 +211,13 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 	// Set pickup crate properties
 	SetupPickupCrates();
 
+	SetupSpaceShips();
+
 	SetupWorldClock();
 	SetupEye();
 	// Set dt based on player count
 	//dt = (playerCount * 0.01) - 0.002;
-	dt = 0.012;
+	dt = 0.02;
 
 	randomize = 0.8f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.5f - 0.8f)));
 
@@ -485,6 +487,137 @@ void gameScene::SetupPickupCrates()
 	}
 }
 
+void gameScene::SetupSpaceShips()
+{
+	// Spaceship always moves forward. Move until route length is met, 
+	// then teleport back to start (negative route length). Route length must be
+	// at least width of skybox (500) - rng the extra (within range)
+
+	// Create random engine 	
+	default_random_engine rng(random_device{}());
+
+	// Create range for additional route length
+	uniform_int_distribution<int> routeLengthDistro(500, 1200);
+	// Random y position for spaceships
+	uniform_int_distribution<int> yPosDistro1(15, 25);
+	uniform_int_distribution<int> yPosDistro2(-10, -20);
+	uniform_int_distribution<int> yPosDistro3(15, 35);
+
+	// Pick a random value within range, add to the skybox width
+	routeLength1 = (float)500 + routeLengthDistro(rng);
+	routeLength2 = (float)500 + routeLengthDistro(rng);
+	routeLength3 = (float)500 + routeLengthDistro(rng);
+
+	//randomizing y value
+	yPos1 = yPosDistro1(rng);
+	yPos2 = yPosDistro2(rng);
+	yPos3 = yPosDistro3(rng);
+
+	/////// SHIP 1
+	// Set start position (negative route length, randomised y pos)
+	windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(-routeLength1, yPos1, 0.0f);
+	// Rotate to face forward (this ship goes up on x)
+	windowMgr::getInstance()->spaceshipTransforms[0].getRot().y = 1.5708;
+
+	/////// SHIP 2
+	// Set start position (negative route length, randomised y pos)
+	windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(routeLength2, yPos2, 0.0f);
+	// Rotate to face forward (this ship goes up on x)
+	windowMgr::getInstance()->spaceshipTransforms[1].getRot().y = -1.5708;
+
+	/////// SHIP 3
+	// Set start position (negative route length, randomised y pos)
+	windowMgr::getInstance()->spaceshipTransforms[2].getPos() = vec3(0.0f, -yPos3, -routeLength3); // negative y
+	// Rotate to face forward (this ship goes up on x)
+	//windowMgr::getInstance()->spaceshipTransforms[0].getRot().y = 1.5708;
+}
+
+void gameScene::UpdateSpaceShips()
+{
+	// Create random engine 	
+	default_random_engine rng(random_device{}());
+	//random speed
+	uniform_int_distribution<int> spaceShipSpeed(2, 12);
+	// Create range for additional route length
+	uniform_int_distribution<int> routeLengthDistro(500, 1200);
+	// Random y position for spaceships
+	uniform_int_distribution<int> yPosDistro1(15, 25);
+	uniform_int_distribution<int> yPosDistro2(-10, -20);
+	uniform_int_distribution<int> yPosDistro3(15, 35);
+
+	//randomizing speed
+	speedShip = spaceShipSpeed(rng);
+	//Update stuff
+	bool soundPlaying1 = false;
+	bool soundPlaying3 = false;
+	// Travel until route length reached
+
+	//Ship 1
+	if (windowMgr::getInstance()->spaceshipTransforms[0].getPos().x < routeLength1)
+	{
+		windowMgr::getInstance()->spaceshipTransforms[0].getPos().x += 5.0f;
+	}
+	else // Spaceship has travelled farther than route length
+	{
+		// Teleport to negative route length (prevent turning ship)
+		//windowMgr::getInstance()->spaceshipTransforms[0].getPos().x = -routeLength1;
+		// Assign a new route length
+		routeLength1 = (float)500 + routeLengthDistro(rng);
+		// Assign new y position
+		yPos1 = yPosDistro1(rng);
+		windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(-routeLength1, yPos1, 0.0f);
+		soundPlaying1 = false;
+	}
+
+	//Ship 2
+	if (windowMgr::getInstance()->spaceshipTransforms[1].getPos().x > -routeLength2)
+	{
+		windowMgr::getInstance()->spaceshipTransforms[1].getPos().x -= 5.0f;
+	}
+	else // Spaceship has travelled farther than route length
+	{
+		// Teleport to negative route length (prevent turning ship)
+		//windowMgr::getInstance()->spaceshipTransforms[1].getPos().x = routeLength2;
+		// Assign a new route length
+		routeLength2 = (float)500 + routeLengthDistro(rng);
+		// Assign new y position
+		yPos2 = yPosDistro2(rng);
+		windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(routeLength2, yPos2, 0.0f);
+		soundPlaying1 = false;
+	}
+
+	//Ship 3
+	if (windowMgr::getInstance()->spaceshipTransforms[2].getPos().z < routeLength3)
+	{
+		windowMgr::getInstance()->spaceshipTransforms[2].getPos().z += 5.0f;
+	}
+	else // Spaceship has travelled farther than route length
+	{
+		// Teleport to negative route length (prevent turning ship)
+		//windowMgr::getInstance()->spaceshipTransforms[2].getPos().x = -routeLength3;
+		// Assign a new route length
+		routeLength2 = (float)500 + routeLengthDistro(rng);
+		// Assign new y position
+		yPos3 = yPosDistro3(rng);
+		windowMgr::getInstance()->spaceshipTransforms[2].getPos() = vec3(0.0f, -yPos3, -routeLength3);
+		soundPlaying3 = false;
+	}
+
+	if (windowMgr::getInstance()->spaceshipTransforms[0].getPos().x > -150 && windowMgr::getInstance()->spaceshipTransforms[0].getPos().x < -140 && !soundPlaying1)
+	{
+		windowMgr::getInstance()->PlayThisSound("spaceshipPass");
+		soundPlaying1 = true;
+	}	
+
+	if (windowMgr::getInstance()->spaceshipTransforms[2].getPos().z > -50 && windowMgr::getInstance()->spaceshipTransforms[2].getPos().z < -40 && !soundPlaying1)
+	{
+		windowMgr::getInstance()->PlayThisSound("spaceshipPass");
+		soundPlaying3 = true;
+	}
+	cout << " SHIP 2 -----> " << windowMgr::getInstance()->spaceshipTransforms[1].getPos().x << endl;
+
+}
+
 // Sets up world clock on level load
 void gameScene::SetupWorldClock()
 {
@@ -683,6 +816,7 @@ void gameScene::Save_Level(GLFWwindow* win)
 
 		// Tell winMgr to update its saved images list
 		windowMgr::getInstance()->UpdateSavesImages(fileName.c_str());
+
 	} // end level saving code
 
 }
@@ -723,6 +857,9 @@ void gameScene::Track_mouse(GLFWwindow* win)
 // Called when on pause screen; enact highlighted choice
 void gameScene::Click_Or_Enter(GLFWwindow* win, bool pause)
 {
+	// Play sound on enter button
+	windowMgr::getInstance()->PlayThisSound("confirmSound");
+
 	switch (currentMenuItem)
 	{
 		// Resume
@@ -1568,12 +1705,16 @@ void gameScene::Input(GLFWwindow* window)
 			{
 				windowMgr::getInstance()->sceneManager.changeScene(1);
 				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+				// Play sound on enter button
+				windowMgr::getInstance()->PlayThisSound("confirmSound");
 			}
 		}
 		else if (glfwGetKey(window, windowMgr::getInstance()->playerKeyboardControls[0][0]))
 		{
 			windowMgr::getInstance()->sceneManager.changeScene(1);
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			// Play sound on enter button
+			windowMgr::getInstance()->PlayThisSound("confirmSound");
 		}
 	}
 
@@ -1804,6 +1945,8 @@ void gameScene::CheckLoadNextLevel()
 					changedLevel = true;
 					// Respawn pickup crates
 					SetupPickupCrates();
+					// Reset spaceships
+					SetupSpaceShips();
 					// Reset world clock
 					SetupWorldClock();
 
@@ -1856,6 +1999,8 @@ void gameScene::CheckLoadNextLevel()
 // Update player positions, spatitial partitioning, check for level changeover
 void gameScene::Update(GLFWwindow* window)
 {
+	UpdateSpaceShips();
+
 	// Rotate pickup crates
 	for (auto &t : windowMgr::getInstance()->pickupCrateTransforms)
 	{
@@ -1871,6 +2016,7 @@ void gameScene::Update(GLFWwindow* window)
 	gasPlanetTrans.setRot(vec3(0.0f, gasRot, 0.0f));
 	float lavaRot = lavaPlanetTrans.getRot().y + 0.09 * dt;
 	lavaPlanetTrans.setRot(vec3(0.0f, lavaRot, 0.0f));
+
 
 	
 	// Eye movements
@@ -1888,6 +2034,7 @@ void gameScene::Update(GLFWwindow* window)
 
 	cout << "THE Y -------------------------> " << eyeTransform.getPos().y << endl;
 	cout << "THE RANDOM SHITE ---> " << randomize << endl;
+
 
 	// Check whether to load next level, pass in player
 	CheckLoadNextLevel();
@@ -1960,12 +2107,13 @@ void gameScene::Update(GLFWwindow* window)
 
 	accumulator += frameTime;
 
+	windowMgr::getInstance()->frameCount++;
 	// Calculate fps
 	//double fps = 1.0 / frameTime;
 	//if (accumulator > dt)
 	//cout << "FPS:" << fps << endl;
 
-
+	
 
 	// Update each player
 	for (auto &p : players)
@@ -1987,7 +2135,7 @@ void gameScene::Update(GLFWwindow* window)
 			{
 				p.transform.getRot() -= rot * speed * dt;
 			}
-			
+
 
 
 			// Work out whether to apply gravity or not (is player on the floor/in air)
@@ -2329,16 +2477,12 @@ void gameScene::Render(GLFWwindow* window)
 	windowMgr::getInstance()->eyeMesh->Draw();
 
 	// Draw spaceships!
-	for (int i = 0; i < windowMgr::getInstance()->threadCount; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		windowMgr::getInstance()->spaceshipMeshes[i]->thisTexture.Bind(0);
 		windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[i], mvp);
 		windowMgr::getInstance()->spaceshipMeshes[i]->Draw();
 	}
-
-
-
-
 
 	//////////////// RENDER PLANETS //////////////
 	windowMgr::getInstance()->alienPlanet->thisTexture.Bind(0);
