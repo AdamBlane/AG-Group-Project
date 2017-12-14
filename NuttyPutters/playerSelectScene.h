@@ -44,6 +44,8 @@ public:
 	bool keyLeft = false;
 	bool keyRight = false;
 	bool keyEnter = false;
+	bool backButtonPressedController = false; // Boolean used to see if the back button was pressed for controller
+	bool backButtonPressedKeyboard = false; // Boolean used to see if the back button was pressed for keyboard
 
 	// Background Mesh		 0
 	// PlayersLabel Mesh     1

@@ -722,6 +722,21 @@ void loadGameScene::Input(GLFWwindow* win)
 	{
 		// Get axes details
 		controllerOneAxis = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &controllerOneAxisCount);
+
+		// If the back button is pressed then go back to the previous screen 
+		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][1]])
+		{
+			backButtonPressedController = true;
+		}
+		// If back button is realised and boolean is true then 
+		if (GLFW_RELEASE == controllerOne[windowMgr::getInstance()->playerXboxControls[0][1]] && backButtonPressedController)
+		{
+			// Reset the boolean to false
+			backButtonPressedController = false;
+			// Return to the main menu screen
+			windowMgr::getInstance()->sceneManager.changeScene(1);
+		}
+
 		// If right key is pressed set keyLeft to true
 		if (GLFW_PRESS == controllerOne[windowMgr::getInstance()->playerXboxControls[0][4]])
 		{
@@ -787,7 +802,21 @@ void loadGameScene::Input(GLFWwindow* win)
 			}
 		}
 	}
-	//cout << xPos << " : " << yPos << endl;
+
+	// If the back button is pressed then go back to the previous screen 
+	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][1]))
+	{
+		backButtonPressedKeyboard = true;
+	}
+	// If back button is realised and boolean is true then 
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][1]) && backButtonPressedKeyboard)
+	{
+		// Reset the boolean to false
+		backButtonPressedKeyboard = false;
+		// Return to the main menu screen
+		windowMgr::getInstance()->sceneManager.changeScene(1);
+	}
+
 	// B goes back to main menu screen
 	if (glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][1]))
 	{
