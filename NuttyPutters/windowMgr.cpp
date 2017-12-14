@@ -243,6 +243,11 @@ void windowMgr::LoadAssets()
 		worldClockMeshes.push_back(mesh);
 	}
 
+	// Cyber eye at end hole
+	eyeMesh = new Mesh("..\\NuttyPutters\\Human_Eye.obj");
+	eyeGreenTexture = new Texture("..\\NuttyPutters\\eyeBall_green.png");
+	eyeRedTexture = new Texture("..\\NuttyPutters\\eyeBall_red.png");
+
 	// 3D Meshes
 	// Player meshes
 	player1Mesh = new Mesh("..\\NuttyPutters\\sphere.obj");
