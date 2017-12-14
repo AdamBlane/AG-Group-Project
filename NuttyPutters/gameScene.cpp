@@ -2628,32 +2628,32 @@ void gameScene::Render(GLFWwindow* window)
 
 		///////// Draw eye
 		windowMgr::getInstance()->eyeMesh->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(eyeTransform, mvp);
+		windowMgr::getInstance()->textureShader->Update(eyeTransform, mvp2);
 		windowMgr::getInstance()->eyeMesh->Draw();
 
 		// Draw spaceships!
 		for (int i = 0; i < 3; i++)
 		{
 			windowMgr::getInstance()->spaceshipMeshes[i]->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[i], mvp);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[i], mvp2);
 			windowMgr::getInstance()->spaceshipMeshes[i]->Draw();
 		}
 
 		//////////////// RENDER PLANETS //////////////
 		windowMgr::getInstance()->alienPlanet->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(alienPlanetTrans, mvp);
+		windowMgr::getInstance()->textureShader->Update(alienPlanetTrans, mvp2);
 		windowMgr::getInstance()->alienPlanet->Draw();
 
 		windowMgr::getInstance()->galaxyPlanet->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(galaxyPlanetTrans, mvp);
+		windowMgr::getInstance()->textureShader->Update(galaxyPlanetTrans, mvp2);
 		windowMgr::getInstance()->galaxyPlanet->Draw();
 
 		windowMgr::getInstance()->gasPlanet->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(gasPlanetTrans, mvp);
+		windowMgr::getInstance()->textureShader->Update(gasPlanetTrans, mvp2);
 		windowMgr::getInstance()->gasPlanet->Draw();
 
 		windowMgr::getInstance()->lavaPlanet->thisTexture.Bind(0);
-		windowMgr::getInstance()->textureShader->Update(lavaPlanetTrans, mvp);
+		windowMgr::getInstance()->textureShader->Update(lavaPlanetTrans, mvp2);
 		windowMgr::getInstance()->lavaPlanet->Draw();
 
 
