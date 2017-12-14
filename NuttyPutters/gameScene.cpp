@@ -54,7 +54,7 @@ void gameScene::Init(GLFWwindow* window, int courseLength, int playerCount, int 
 {
 	// MONDAY DEMO 
 	continuePressed = true;
-
+	currentLevel = 0;
 	// Set the current menu item to resume
 	currentMenuItem = 1;
 
@@ -583,7 +583,7 @@ void gameScene::SetupWorldClock()
 		}
 	}
 
-	cout << dir << endl;
+	//cout << dir << endl;
 
 }
 
@@ -911,7 +911,7 @@ void gameScene::Pause(GLFWwindow* window)
 
 	while (paused)
 	{
-		cout << "Paused" << endl;
+		//cout << "Paused" << endl;
 		//code to disable mouse
 		windowMgr::getInstance()->previous_mouse_x = windowMgr::getInstance()->mouse_x;
 		windowMgr::getInstance()->previous_mouse_y = windowMgr::getInstance()->mouse_y;
@@ -1768,6 +1768,8 @@ void gameScene::CheckLoadNextLevel()
 			{
 				wormholeTransforms[i].getScale() += vec3(0.2);
 			}
+			// Play wormhole sound
+			windowMgr::getInstance()->PlayThisSound("wormhole");
 		}
 
 		// Otherwise check if player is falling from top of skybox onto next level
