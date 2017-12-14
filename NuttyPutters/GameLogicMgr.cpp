@@ -91,7 +91,7 @@ void GameLogicMgr::UpdateClock()
 	// Only update the UI every second
 	if (elapsedTime > lastFrameTime && !gameEnded)
 	{
-		uiMgr.UpdateWorldClock(abs(elapsedTime));	
+		uiMgr.UpdateWorldClock((elapsedTime));	
 	}
 }
 

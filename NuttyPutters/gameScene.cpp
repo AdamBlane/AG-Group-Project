@@ -500,7 +500,7 @@ void gameScene::SetupSpaceShips()
 	uniform_int_distribution<int> routeLengthDistro(500, 1200);
 	// Random y position for spaceships
 	uniform_int_distribution<int> yPosDistro1(15, 25);
-	uniform_int_distribution<int> yPosDistro2(-10, -20);
+	uniform_int_distribution<int> yPosDistro2(10, 20);
 	uniform_int_distribution<int> yPosDistro3(15, 35);
 
 	// Pick a random value within range, add to the skybox width
@@ -521,7 +521,7 @@ void gameScene::SetupSpaceShips()
 
 	/////// SHIP 2
 	// Set start position (negative route length, randomised y pos)
-	windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(routeLength2, yPos2, 0.0f);
+	windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(routeLength2, -yPos2, 0.0f);
 	// Rotate to face forward (this ship goes up on x)
 	windowMgr::getInstance()->spaceshipTransforms[1].getRot().y = -1.5708;
 
@@ -542,7 +542,7 @@ void gameScene::UpdateSpaceShips()
 	uniform_int_distribution<int> routeLengthDistro(500, 1200);
 	// Random y position for spaceships
 	uniform_int_distribution<int> yPosDistro1(15, 25);
-	uniform_int_distribution<int> yPosDistro2(-10, -20);
+	uniform_int_distribution<int> yPosDistro2(10, 20);
 	uniform_int_distribution<int> yPosDistro3(15, 35);
 
 	//randomizing speed
@@ -582,7 +582,7 @@ void gameScene::UpdateSpaceShips()
 		routeLength2 = (float)500 + routeLengthDistro(rng);
 		// Assign new y position
 		yPos2 = yPosDistro2(rng);
-		windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(routeLength2, yPos2, 0.0f);
+		windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(routeLength2, -yPos2, 0.0f);
 		soundPlaying1 = false;
 	}
 

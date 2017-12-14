@@ -289,28 +289,36 @@ void UI::UpdateHUDClock(int time)
 // Update world clock - only applied in 2 player mode
 void UI::UpdateWorldClock(int time)
 {
+	if (time >= 600)
+	{
+		time -= 600;
+	}
 	// Time given is elapsed time since start in seconds
 	//	// Get the time in minutes, tenths and seconds - 0M:TS
 	 // If time is 600 then it's 10 minutes...minutes index will be 10 - fix!
-	int	minutes = time / 60;
-	int tensMinutes = (time / 60) / 10;
-	string minStr = to_string(minutes);
-	if (minStr.length() > 1)
+	int	minutes = floor(time / 60);
+	int tensMinutes = floor((time / 60) / 10);
+	int	tensSeconds = (time - (minutes * 60)) / 10;
+	int	seconds = time - (minutes * 60) - (tensSeconds * 10);
+
+
+	// time total is in seconds - 330  (5 min 30 s)
+	// remove <minutes> worth of seconds
+	// minutes * 60 off of total
+	// 
+
+	// Error checks
+	if (minutes > 9) // assume it has two digits
 	{
+		// Convert to string
+		string minStr = to_string(minutes);
+		// Minutes value is the second/last
 		minutes = (int)minStr.back();
-		
+		// tens minutes is the first
 		tensMinutes = (int)minStr.front();
 	}
 
 	
-	int	tensSeconds = (time - (minutes * 60)) / 10;
-	int	seconds = time - (minutes * 60) - (tensSeconds * 10);
-	string secStr = to_string(seconds);
-	if (secStr.length() > 1)
-	{
-		seconds = (int)secStr.back();
-		tensSeconds = (int)secStr.front();
-	}
 
 	// Seconds
 	windowMgr::getInstance()->worldClockMeshes.at(4)->SetTexture(windowMgr::getInstance()->numberTextures.at(abs(seconds)));
