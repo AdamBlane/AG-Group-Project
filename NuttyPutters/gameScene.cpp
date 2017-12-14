@@ -2626,6 +2626,38 @@ void gameScene::Render(GLFWwindow* window)
 			windowMgr::getInstance()->wormholeMeshes[i]->Draw();
 		}
 
+		///////// Draw eye
+		windowMgr::getInstance()->eyeMesh->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(eyeTransform, mvp);
+		windowMgr::getInstance()->eyeMesh->Draw();
+
+		// Draw spaceships!
+		for (int i = 0; i < 3; i++)
+		{
+			windowMgr::getInstance()->spaceshipMeshes[i]->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[i], mvp);
+			windowMgr::getInstance()->spaceshipMeshes[i]->Draw();
+		}
+
+		//////////////// RENDER PLANETS //////////////
+		windowMgr::getInstance()->alienPlanet->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(alienPlanetTrans, mvp);
+		windowMgr::getInstance()->alienPlanet->Draw();
+
+		windowMgr::getInstance()->galaxyPlanet->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(galaxyPlanetTrans, mvp);
+		windowMgr::getInstance()->galaxyPlanet->Draw();
+
+		windowMgr::getInstance()->gasPlanet->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(gasPlanetTrans, mvp);
+		windowMgr::getInstance()->gasPlanet->Draw();
+
+		windowMgr::getInstance()->lavaPlanet->thisTexture.Bind(0);
+		windowMgr::getInstance()->textureShader->Update(lavaPlanetTrans, mvp);
+		windowMgr::getInstance()->lavaPlanet->Draw();
+
+
+
 		// DRAW all level tiles
 		for (auto &t : masterTiles[currentLevel])
 		{

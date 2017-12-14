@@ -435,11 +435,11 @@ void Tile::obstacle()
 	switch (thisObstacleID)
 	{
 	case 0:
-		cout << "Has obstacle 0!" << endl << endl << endl;
+		//cout << "Has obstacle 0!" << endl << endl << endl;
 		obstacleSlalom();
 		break;
 	case 1:
-		cout << "Has obstacle 1!" << endl << endl << endl;
+		//cout << "Has obstacle 1!" << endl << endl << endl;
 		obstacleCube();
 		break;
 	default:

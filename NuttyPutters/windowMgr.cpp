@@ -968,7 +968,7 @@ void windowMgr::ThreadSpaceship(int id)
 				if (spaceshipTransforms[id].getPos().x < routeLength)
 				{
 					spaceshipTransforms[id].getPos().x += speed;
-					cout << "moved" << endl;
+					//cout << "moved" << endl;
 				}
 				else // Spaceship has travelled farther than route length
 				{
@@ -979,7 +979,7 @@ void windowMgr::ThreadSpaceship(int id)
 					// Assign new y position
 					yPos = yPosDistro(rng);
 					spaceshipTransforms[id].getPos() = vec3(-routeLength, yPos, 0.0f);
-					cout << "reset" << endl;
+					//cout << "reset" << endl;
 					soundPlaying = false;
 				}
 
@@ -987,7 +987,7 @@ void windowMgr::ThreadSpaceship(int id)
 				{
 					if (spaceshipTransforms[id].getPos().x > -20 && !soundPlaying)
 					{
-						cout << spaceshipTransforms[id].getPos().x << endl;
+						//cout << spaceshipTransforms[id].getPos().x << endl;
 						PlayThisSound("spaceshipPass");
 						soundPlaying = true;
 					}
@@ -1037,7 +1037,7 @@ void windowMgr::ThreadSpaceship(int id)
 				{
 					if (spaceshipTransforms[id].getPos().x > -20 && !soundPlaying)
 					{
-						cout << spaceshipTransforms[id].getPos().x << endl;
+						//cout << spaceshipTransforms[id].getPos().x << endl;
 						PlayThisSound("spaceshipPass2");
 						soundPlaying = true;
 					}
