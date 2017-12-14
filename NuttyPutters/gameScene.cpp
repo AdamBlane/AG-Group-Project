@@ -1888,6 +1888,7 @@ void gameScene::Update(GLFWwindow* window)
 
 	accumulator += frameTime;
 
+	windowMgr::getInstance()->frameCount++;
 	// Calculate fps
 	//double fps = 1.0 / frameTime;
 	//if (accumulator > dt)

@@ -125,6 +125,20 @@ void startScene::FirstTimeInit(GLFWwindow* win)
 
 void startScene::Init(GLFWwindow* win)
 {
+	// Setup spaceship properties
+	// Create random engine 	
+	default_random_engine rng(random_device{}());
+	uniform_int_distribution<int> routeLengthDistro(500, 1200);
+	uniform_int_distribution<int> yPosDistro(1, 3);
+	routeLength = (float)500 + routeLengthDistro(rng);
+	// randomise y pos within given range
+	yPos = yPosDistro(rng);
+	// Set start position (negative route length, randomised y pos)
+	windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(-routeLength, yPos, -200.0f);
+	// Rotate to face forward (this ship goes up on x)
+	windowMgr::getInstance()->spaceshipTransforms[0].getRot().y = 1.5708;
+
+
 	// Show mouse
 	glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	// Set initial button press bools to false
@@ -391,6 +405,30 @@ void startScene::Input(GLFWwindow * win)
 // Update camera, select cooldown 
 void startScene::Update(GLFWwindow* win)
 {
+	// Move spaceship
+	if (windowMgr::getInstance()->spaceshipTransforms[0].getPos().x < routeLength)
+	{
+		windowMgr::getInstance()->spaceshipTransforms[0].getPos().x += 1.0f;
+	}
+	else
+	{
+		uniform_int_distribution<int> routeLengthDistro(500, 1200);
+		uniform_int_distribution<int> yPosDistro(15, 25);
+		// Assign a new route length
+		default_random_engine rng(random_device{}());
+		routeLength = (float)500 + routeLengthDistro(rng);
+		// Assign new y position
+		yPos = yPosDistro(rng);
+		windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(-routeLength, yPos, 0.0f);
+		cout << "reset" << endl;
+		soundPlaying = false;
+	}
+	cout << "Pos " << windowMgr::getInstance()->spaceshipTransforms[0].getPos().x << endl;
+
+
+
+	windowMgr::getInstance()->frameCount++;
+
 	// Update target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
 
@@ -441,11 +479,11 @@ void startScene::Render(GLFWwindow* win)
 	if (loaded)
 	{
 		// Draw spaceships!
-		for (int i = 0; i < windowMgr::getInstance()->threadCount; i++)
+		for (int i = 0; i < 1; i++)
 		{
-			windowMgr::getInstance()->spaceshipMeshes[i]->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[i], hudVP);
-			windowMgr::getInstance()->spaceshipMeshes[i]->Draw();
+			windowMgr::getInstance()->spaceshipMeshes[0]->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[0], hudVP);
+			windowMgr::getInstance()->spaceshipMeshes[0]->Draw();
 		}
 	}
 	// Fully reset depth range for next frame - REQUIRED

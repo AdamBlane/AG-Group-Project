@@ -107,8 +107,8 @@ void windowMgr::LoadAssets()
 		spaceshipTransform.getScale() = vec3(6.0f);
 		spaceshipTransforms.push_back(spaceshipTransform);
 		// Create thread, pass in i to assign id (lookup index of spaceshipTransforms)
-		thread spaceshipThread(&windowMgr::ThreadSpaceship, this, i);
-		spaceshipThread.detach();
+		//thread spaceshipThread(&windowMgr::ThreadSpaceship, this, i);
+		//spaceshipThread.detach();
 	}
 
 	// Setup skybox shader
@@ -958,42 +958,46 @@ void windowMgr::ThreadSpaceship(int id)
 		spaceshipTransforms[id].getRot().y = 1.5708;
 		// Keep this thread alive until the game ends
 		bool soundPlaying = false;
+		int lastFrameUpdated = 0;
 		while (true)
 		{
-			
-			
-			// Travel until route length reached
-			if (spaceshipTransforms[id].getPos().x < routeLength)
+			// If a frame has passed
+			if (frameCount > lastFrameUpdated)
 			{
-
-				spaceshipTransforms[id].getPos().x += speed;			
-
-					
-			}
-			else // Spaceship has travelled farther than route length
-			{
-				// Teleport to negative route length (prevent turning ship)
-				spaceshipTransforms[id].getPos().x = -routeLength;
-				// Assign a new route length
-				float routeLength = (float)500 + routeLengthDistro(rng);
-				// Assign new y position
-				yPos = yPosDistro(rng);
-				spaceshipTransforms[id].getPos() = vec3(-routeLength, yPos, 0.0f);
-				soundPlaying = false;
-			}
-
-			if (sceneManager.curScene == 1 || sceneManager.curScene == 6)
-			{
-				if (spaceshipTransforms[id].getPos().x > -20 && !soundPlaying)
+				lastFrameUpdated = frameCount;
+				
+				// Travel until route length reached
+				if (spaceshipTransforms[id].getPos().x < routeLength)
 				{
-					cout << spaceshipTransforms[id].getPos().x << endl;
-					PlayThisSound("spaceshipPass");
-					soundPlaying = true;
+					spaceshipTransforms[id].getPos().x += speed;
+					cout << "moved" << endl;
+				}
+				else // Spaceship has travelled farther than route length
+				{
+					// Teleport to negative route length (prevent turning ship)
+					spaceshipTransforms[id].getPos().x = -routeLength;
+					// Assign a new route length
+					float routeLength = (float)500 + routeLengthDistro(rng);
+					// Assign new y position
+					yPos = yPosDistro(rng);
+					spaceshipTransforms[id].getPos() = vec3(-routeLength, yPos, 0.0f);
+					cout << "reset" << endl;
+					soundPlaying = false;
+				}
+
+				if (sceneManager.curScene == 1 || sceneManager.curScene == 6)
+				{
+					if (spaceshipTransforms[id].getPos().x > -20 && !soundPlaying)
+					{
+						cout << spaceshipTransforms[id].getPos().x << endl;
+						PlayThisSound("spaceshipPass");
+						soundPlaying = true;
+					}
 				}
 			}
 
-		}
-	}
+		} // end thread while loop
+	} // end if id is 1
 	else if (id == 1)
 	{
 		// Pick a random value within range, add to the skybox width
@@ -1008,36 +1012,42 @@ void windowMgr::ThreadSpaceship(int id)
 		spaceshipTransforms[id].getRot().y = -1.5708;
 		// Keep this thread alive until the game ends
 		bool soundPlaying = false;
+		int lastFrameUpdated = 0;
 		while (true)
 		{
 		
-			// Travel until route length reached
-			if (spaceshipTransforms[id].getPos().x > -routeLength)
+			if (frameCount > lastFrameUpdated)
 			{
-				spaceshipTransforms[id].getPos().x -= speed;
-			}
-			else // Spaceship has travelled farther than route length
-			{
-				// Teleport to negative route length (prevent turning ship)
-				spaceshipTransforms[id].getPos().x = routeLength;
-				// Assign a new route length
-				float routeLength = (float)500 + routeLengthDistro(rng);
-				// Assign new y position
-				yPos = yPosDistro(rng);
-				spaceshipTransforms[id].getPos() = vec3(routeLength, yPos, 0.0f);
-			}
-
-			if (sceneManager.curScene == 1 || sceneManager.curScene == 6)
-			{
-				if (spaceshipTransforms[id].getPos().x > -20 && !soundPlaying)
+				lastFrameUpdated = frameCount;
+				// Travel until route length reached
+				if (spaceshipTransforms[id].getPos().x > -routeLength)
 				{
-					cout << spaceshipTransforms[id].getPos().x << endl;
-					PlayThisSound("spaceshipPass2");
-					soundPlaying = true;
+					spaceshipTransforms[id].getPos().x -= speed;
+				}
+				else // Spaceship has travelled farther than route length
+				{
+					// Teleport to negative route length (prevent turning ship)
+					spaceshipTransforms[id].getPos().x = routeLength;
+					// Assign a new route length
+					float routeLength = (float)500 + routeLengthDistro(rng);
+					// Assign new y position
+					yPos = yPosDistro(rng);
+					spaceshipTransforms[id].getPos() = vec3(routeLength, yPos, 0.0f);
+				}
+
+				if (sceneManager.curScene == 1 || sceneManager.curScene == 6)
+				{
+					if (spaceshipTransforms[id].getPos().x > -20 && !soundPlaying)
+					{
+						cout << spaceshipTransforms[id].getPos().x << endl;
+						PlayThisSound("spaceshipPass2");
+						soundPlaying = true;
+					}
 				}
 			}
-		}
-	}
+			
+		} // end while loop
+	} // end id is 1
 	else if (id == 2)
 	{
 		// Pick a random value within range, add to the skybox width
@@ -1050,23 +1060,29 @@ void windowMgr::ThreadSpaceship(int id)
 		// Rotate to face forward (this ship goes down on x)
 		//spaceshipTransforms[id].getRot().y = -1.5708;
 		// Keep this thread alive until the game ends
+		int lastFrameUpdated = 0;
 		while (true)
 		{
-			// Travel until route length reached
-			if (spaceshipTransforms[id].getPos().z < routeLength)
+			if (frameCount > lastFrameUpdated)
 			{
-				spaceshipTransforms[id].getPos().z += speed;
+				lastFrameUpdated = frameCount;
+				// Travel until route length reached
+				if (spaceshipTransforms[id].getPos().z < routeLength)
+				{
+					spaceshipTransforms[id].getPos().z += speed;
+				}
+				else // Spaceship has travelled farther than route length
+				{
+					// Teleport to negative route length (prevent turning ship)
+					spaceshipTransforms[id].getPos().x = -routeLength;
+					// Assign a new route length
+					float routeLength = (float)500 + routeLengthDistro(rng);
+					// Assign new y position
+					yPos = yPosDistro(rng);
+					spaceshipTransforms[id].getPos() = vec3(0.0f, -yPos, -routeLength);
+				}
 			}
-			else // Spaceship has travelled farther than route length
-			{
-				// Teleport to negative route length (prevent turning ship)
-				spaceshipTransforms[id].getPos().x = -routeLength;
-				// Assign a new route length
-				float routeLength = (float)500 + routeLengthDistro(rng);
-				// Assign new y position
-				yPos = yPosDistro(rng);
-				spaceshipTransforms[id].getPos() = vec3(0.0f, -yPos, -routeLength);
-			}
+			
 		}
 	}
 	

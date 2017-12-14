@@ -23,6 +23,12 @@ public:
 	~startScene() {}
   
 
+
+
+	float routeLength;
+	float speed = 0.01f;
+	float yPos;
+	bool soundPlaying = false;
 	// Render splash screen or not
 	bool loaded = false;
 
