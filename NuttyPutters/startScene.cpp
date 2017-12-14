@@ -321,7 +321,7 @@ void startScene::Input(GLFWwindow * win)
 	{
 		windowMgr::getInstance()->enterPressed = true;
 	}
-	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]))
+	if (!glfwGetKey(win, windowMgr::getInstance()->playerKeyboardControls[0][0]) && total_time >= 5.0f)
 	{
 		if (windowMgr::getInstance()->enterPressed)
 		{
@@ -393,6 +393,8 @@ void startScene::Update(GLFWwindow* win)
 {
 	// Update target camera
 	windowMgr::getInstance()->HUDtargetCam->update(0.00001);
+
+	windowMgr::getInstance()->frameCount++;
 
 	// To ensure enter doesn't trigger just after loading this scene
 	if (selectCooldown < selectCooldownMax + 5) // 5 is epsilon

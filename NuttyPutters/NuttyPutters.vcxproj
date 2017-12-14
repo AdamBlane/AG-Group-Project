@@ -163,6 +163,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)\include\OpenGLDep\headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)\include\lib;$(ProjectDir)\include\OpenGLDep\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

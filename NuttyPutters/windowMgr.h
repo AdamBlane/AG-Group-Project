@@ -46,7 +46,9 @@ class windowMgr
 		bool mouseLpressed;
 		// Number of threads being used for spaceships
 		int threadCount = 3;
-	
+		int frameCount = 0;
+
+
 		// Most textures in the game stored here
 		map<std::string, Texture*> textures;
 		// All number textures stored here

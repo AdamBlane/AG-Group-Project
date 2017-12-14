@@ -330,7 +330,8 @@ void GameLogicMgr::RandomPowerup(Player &player)
 	{
 		player.transform.getScale() = vec3(0.7);
 		player.radius = 0.8;
-		player.mass = 1.4;
+		player.mass = 1.4; 
+		
 	}
 		break;
 	// Player gets small!

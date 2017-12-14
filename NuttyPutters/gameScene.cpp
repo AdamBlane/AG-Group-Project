@@ -1815,7 +1815,8 @@ void gameScene::Update(GLFWwindow* window)
 	float lavaRot = lavaPlanetTrans.getRot().y + 0.03 * dt;
 	lavaPlanetTrans.setRot(vec3(0.0f, lavaRot, 0.0f));
 
-	
+	// Move ships
+
 
 	// Check whether to load next level, pass in player
 	CheckLoadNextLevel();
@@ -1880,7 +1881,8 @@ void gameScene::Update(GLFWwindow* window)
 	// Update pause target camera
 	windowMgr::getInstance()->PAUSEtargetCam->update(0.00001);
 
-
+	// Keep track of frame count 
+	windowMgr::getInstance()->frameCount++;
 	// Calculate dt
 	double newTime = glfwGetTime();
 	double frameTime = newTime - currentTime;
@@ -1909,11 +1911,11 @@ void gameScene::Update(GLFWwindow* window)
 			double speed = p.velocity.length();
 			if (speed > 0)
 			{
-				p.transform.getRot() += rot * speed * dt;
+				p.transform.getRot() -= rot * speed * dt;
 			}
 			else if (speed < 0)
 			{
-				p.transform.getRot() -= rot * speed * dt;
+				p.transform.getRot() += rot * speed * dt;
 			}
 			
 

@@ -293,6 +293,12 @@ void UI::UpdateWorldClock(int time)
 	//	// Get the time in minutes, tenths and seconds - 0M:TS
 	 // If time is 600 then it's 10 minutes...minutes index will be 10 - fix!
 	int	minutes = time / 60;
+	// Check if minutes is two digits; only take second
+	string minStr = to_string(minutes);
+	if (minStr.length() > 1)
+	{
+		int minutes = (int)minStr.back();
+	}
 	int tensMinutes = (time / 60) / 10;
 	int	tensSeconds = (time - (minutes * 60)) / 10;
 	int	seconds = time - (minutes * 60) - (tensSeconds * 10);
