@@ -296,6 +296,8 @@ class windowMgr
 		FMOD::Sound *spaceshipPass;
 		FMOD::Sound *wormhole;
 		FMOD::Sound *spaceshipPass2;
+		FMOD::Sound *confirmSound;
+		FMOD::Sound *levelSavedSound;
 		// Store all above declared sound effects here
 		map<std::string, FMOD::Sound*> soundEffects;
 

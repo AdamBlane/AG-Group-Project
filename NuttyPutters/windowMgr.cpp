@@ -160,6 +160,10 @@ void windowMgr::LoadAssets()
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("wormhole", wormhole));
 	system->createSound("..\\NuttyPutters\\audio\\spaceship_pass.mp3", FMOD_DEFAULT, 0, &spaceshipPass2);
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("spaceshipPass2", spaceshipPass2));
+	system->createSound("..\\NuttyPutters\\audio\\confirmSound.wav", FMOD_DEFAULT, 0, &confirmSound);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("confirmSound", confirmSound));
+	system->createSound("..\\NuttyPutters\\audio\\levelSaved.wav", FMOD_DEFAULT, 0, &levelSavedSound);
+	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("levelSavedSound", levelSavedSound));
 	// ############################ MESHES ############################
 	Mesh* wormholeMesh = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
 	Mesh* wormholeMesh2 = new Mesh(Mesh::RECTANGLE, vec3(0.0f, 0.0f, -1.0f), 10.0f, 10.0f); // This scale value is abritray, since it'll always be reset in each scene it's used
@@ -1916,6 +1920,8 @@ void windowMgr::ControlsTrackClick()
 		windowMgr::getInstance()->controllerMeshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblRed"]);
 		// Set player tab equal to one as player tab one is currently selected
 		playerTab = 1;
+		// Play sound on enter button
+		windowMgr::getInstance()->PlayThisSound("confirmSound");
 		// Call the initiastion menthod for player one
 		ControlsButtonsSetup();
 		break;
@@ -1925,6 +1931,8 @@ void windowMgr::ControlsTrackClick()
 		windowMgr::getInstance()->controllerMeshes.at(25)->SetTexture(windowMgr::getInstance()->textures["playerTwoLblGreen"]);
 		// Set player tab equal to two as player tab two is currently selected
 		playerTab = 2;
+		// Play sound on enter button
+		windowMgr::getInstance()->PlayThisSound("confirmSound");
 		// Call the initiastion menthod for player two
 		ControlsButtonsSetup();
 		break;
@@ -1952,6 +1960,8 @@ void windowMgr::ControlsTrackClick()
 		// Else if all the actions have buttons then 
 		else
 		{
+			// Play sound on enter button
+			windowMgr::getInstance()->PlayThisSound("confirmSound");
 			// Set the output file
 			outputFileP1Xbox.open("..\\NuttyPutters\\input\\p1XboxController.txt");
 			outputFileP2Xbox.open("..\\NuttyPutters\\input\\p2XboxController.txt");

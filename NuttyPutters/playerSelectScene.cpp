@@ -165,6 +165,9 @@ void playerSelectScene::Loop(GLFWwindow * win)
 
 void playerSelectScene::Click_Right(GLFWwindow *win)
 {
+	// Play sound on enter button
+	windowMgr::getInstance()->PlayThisSound("confirmSound");
+
 	switch (currentMenuItem)
 	{
 		// Case 1 is player select
@@ -210,6 +213,9 @@ void playerSelectScene::Click_Right(GLFWwindow *win)
 
 void playerSelectScene::Click_Left(GLFWwindow *win)
 {
+	// Play sound on enter button
+	windowMgr::getInstance()->PlayThisSound("confirmSound");
+
 	switch (currentMenuItem)
 	{
 		// Case 1 is player select
@@ -458,6 +464,9 @@ void playerSelectScene::Input(GLFWwindow* win)
 		{
 			if (windowMgr::getInstance()->enterCotn)
 			{
+				// Play sound on enter button
+				windowMgr::getInstance()->PlayThisSound("confirmSound");
+
 				// If button select is 3 then start the game
 				if (currentMenuItem == 4)
 				{
@@ -540,6 +549,8 @@ void playerSelectScene::Input(GLFWwindow* win)
 		}
 		else if (windowMgr::getInstance()->mouseLpressed && selection != 0)
 		{
+			// Play sound on enter button
+			windowMgr::getInstance()->PlayThisSound("confirmSound");
 			previousMenuItem = currentMenuItem;
 			currentMenuItem = selection;
 			ChangeTexutes(win);

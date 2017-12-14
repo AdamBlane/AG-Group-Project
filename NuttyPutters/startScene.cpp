@@ -229,14 +229,17 @@ void startScene::Click_or_Enter(GLFWwindow* win)
 	// If internet button is hovered over
 	else if (windowMgr::getInstance()->button_manager == 5)
 	{
-		ShellExecute(NULL, "open", "http://www.calumtempleton.com", NULL, NULL, SW_SHOWNORMAL);
+		ShellExecute(NULL, "open", "http://www.calumtempleton.com/portfolio", NULL, NULL, SW_SHOWNORMAL);
 	}
 	// Otherwise load scene for this button
-	else
+	else if (windowMgr::getInstance()->button_manager != 0 )
 	{
 		// + 1 since button manager starts from 0, but scene 0 is exit (1 is start etc)
 		windowMgr::getInstance()->sceneManager.changeScene(windowMgr::getInstance()->button_manager + 1);
 	}
+
+	// Play sound on enter button
+	windowMgr::getInstance()->PlayThisSound("confirmSound");
 }
 
 // Act on input
