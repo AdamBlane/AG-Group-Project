@@ -129,14 +129,17 @@ void startScene::Init(GLFWwindow* win)
 	// Create random engine 	
 	default_random_engine rng(random_device{}());
 	uniform_int_distribution<int> routeLengthDistro(500, 1200);
-	uniform_int_distribution<int> yPosDistro(1, 3);
-	routeLength = (float)500 + routeLengthDistro(rng);
+	uniform_int_distribution<int> yPosDistro(-10, 10);
+	routeLength1 = (float)500 + routeLengthDistro(rng);
+	routeLength2 = (float)500 + routeLengthDistro(rng);
 	// randomise y pos within given range
-	yPos = yPosDistro(rng);
+	yPos1 = yPosDistro(rng);
+	yPos2 = yPosDistro(rng);
 	// Set start position (negative route length, randomised y pos)
-	windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(-routeLength, yPos, -200.0f);
-	// Rotate to face forward (this ship goes up on x)
-	windowMgr::getInstance()->spaceshipTransforms[0].getRot().y = 1.5708;
+	windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(0.0f, yPos1, -routeLength1);
+	windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(-routeLength2, yPos2, -150);
+	// Rotate on side (from left to right)
+	windowMgr::getInstance()->spaceshipTransforms[1].getRot().y = 1.5708;
 
 
 	// Show mouse
@@ -405,26 +408,53 @@ void startScene::Input(GLFWwindow * win)
 // Update camera, select cooldown 
 void startScene::Update(GLFWwindow* win)
 {
-	// Move spaceship
-	if (windowMgr::getInstance()->spaceshipTransforms[0].getPos().x < routeLength)
+	default_random_engine rng(random_device{}());
+	//random speed
+	uniform_int_distribution<int> spaceShipSpeed(2, 12);
+	speed = spaceShipSpeed(rng);
+
+	// Move spaceship1
+	if (windowMgr::getInstance()->spaceshipTransforms[0].getPos().z < routeLength1)
 	{
-		windowMgr::getInstance()->spaceshipTransforms[0].getPos().x += 1.0f;
+		windowMgr::getInstance()->spaceshipTransforms[0].getPos().z += speed;
 	}
 	else
 	{
 		uniform_int_distribution<int> routeLengthDistro(500, 1200);
-		uniform_int_distribution<int> yPosDistro(15, 25);
+		uniform_int_distribution<int> yPosDistro(-10, 10);
 		// Assign a new route length
-		default_random_engine rng(random_device{}());
-		routeLength = (float)500 + routeLengthDistro(rng);
+		routeLength1 = (float)500 + routeLengthDistro(rng);
 		// Assign new y position
-		yPos = yPosDistro(rng);
-		windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(-routeLength, yPos, 0.0f);
+		yPos1 = yPosDistro(rng);
+		windowMgr::getInstance()->spaceshipTransforms[0].getPos() = vec3(0.0f, yPos1, -routeLength1);
 		cout << "reset" << endl;
 		soundPlaying = false;
 	}
-	cout << "Pos " << windowMgr::getInstance()->spaceshipTransforms[0].getPos().x << endl;
 
+	if (windowMgr::getInstance()->spaceshipTransforms[0].getPos().z >= -500 && windowMgr::getInstance()->spaceshipTransforms[0].getPos().z <= -450 && !soundPlaying)
+	{
+		windowMgr::getInstance()->PlayThisSound("spaceshipPass");
+		soundPlaying = true;
+	}
+
+
+	// Move spaceship2
+	if (windowMgr::getInstance()->spaceshipTransforms[1].getPos().x < routeLength2)
+	{
+		windowMgr::getInstance()->spaceshipTransforms[1].getPos().x += speed;
+	}
+	else
+	{
+		uniform_int_distribution<int> routeLengthDistro(500, 1200);
+		uniform_int_distribution<int> yPosDistro(-10, 10);
+		// Assign a new route length
+		routeLength2 = (float)500 + routeLengthDistro(rng);
+		// Assign new y position
+		yPos2 = yPosDistro(rng);
+		windowMgr::getInstance()->spaceshipTransforms[1].getPos() = vec3(-routeLength2, yPos2, -150.0f);
+		cout << "reset" << endl;
+		soundPlaying = false;
+	}
 
 
 	windowMgr::getInstance()->frameCount++;
@@ -479,11 +509,11 @@ void startScene::Render(GLFWwindow* win)
 	if (loaded)
 	{
 		// Draw spaceships!
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 2; i++)
 		{
-			windowMgr::getInstance()->spaceshipMeshes[0]->thisTexture.Bind(0);
-			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[0], hudVP);
-			windowMgr::getInstance()->spaceshipMeshes[0]->Draw();
+			windowMgr::getInstance()->spaceshipMeshes[i]->thisTexture.Bind(0);
+			windowMgr::getInstance()->textureShader->Update(windowMgr::getInstance()->spaceshipTransforms[i], hudVP);
+			windowMgr::getInstance()->spaceshipMeshes[i]->Draw();
 		}
 	}
 	// Fully reset depth range for next frame - REQUIRED

@@ -154,7 +154,7 @@ void windowMgr::LoadAssets()
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallJump", golfBallJump));
 	system->createSound("..\\NuttyPutters\\audio\\golf-ball-wood-hit.wav", FMOD_DEFAULT, 0, &golfBallWoodHit);
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("golfBallWoodHit", golfBallWoodHit));
-	system->createSound("..\\NuttyPutters\\audio\\spaceship_pass.mp3", FMOD_DEFAULT, 0, &spaceshipPass);
+	system->createSound("..\\NuttyPutters\\audio\\spaceShipFlyby.wav", FMOD_DEFAULT, 0, &spaceshipPass);
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("spaceshipPass", spaceshipPass));
 	system->createSound("..\\NuttyPutters\\audio\\wormhole.wav", FMOD_DEFAULT, 0, &wormhole);
 	soundEffects.insert(std::pair<std::string, FMOD::Sound*>("wormhole", wormhole));

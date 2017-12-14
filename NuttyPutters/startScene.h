@@ -24,10 +24,12 @@ public:
   
 
 
-
-	float routeLength;
-	float speed = 0.01f;
-	float yPos;
+	//Route length for 2 spaceships
+	float routeLength1;
+	float routeLength2;
+	float speed;
+	float yPos1;
+	float yPos2;
 	bool soundPlaying = false;
 	// Render splash screen or not
 	bool loaded = false;
