@@ -93,7 +93,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -133,8 +133,10 @@
     <LibraryPath>C:\Users\mrnew\Documents\Visual Studio 2015\Projects\NuttyPutters\OpenGLDep\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\mrnew\Documents\Visual Studio 2015\Projects\NuttyPutters\OpenGLDep\headers;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\mrnew\Documents\Visual Studio 2015\Projects\NuttyPutters\OpenGLDep\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\include\inc;$(ProjectDir)\include\bit32\headers;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\include\bit32\lib;$(ProjectDir)\include\bit32\libs;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath> $(ProjectDir)\include\inc;$(ProjectDir)\include\OpenGLDep\headers;$(IncludePath);</IncludePath>
@@ -176,13 +178,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\mrnew\Documents\Visual Studio 2015\Projects\NuttyPutters\OpenGLDep\headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include\bit32\headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\mrnew\Documents\Visual Studio 2015\Projects\NuttyPutters\OpenGLDep\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;glfw3.lib;glfw3dll.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\include\bits32\lib;$(ProjectDir)\include\bit32\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;glew32.lib;glew32s.lib;glfw3.lib;glfw3dll.lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
