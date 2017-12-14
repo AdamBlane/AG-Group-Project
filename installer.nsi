@@ -9,8 +9,8 @@
 # All the other settings can be tweaked by editing the !defines at the top of this script
 !include "MUI2.nsh"
 !define APPNAME "NuttyPutters"
-!define COMPANYNAME "GroupB"
-!define DESCRIPTION "Golf"
+!define COMPANYNAME "NuttyPutters"
+!define DESCRIPTION "NuttyPutters"
 # These three must be integers
 !define VERSIONMAJOR 1
 !define VERSIONMINOR 1
@@ -27,7 +27,7 @@ InstallDir "${DESKTOP}\${COMPANYNAME}\${APPNAME}"
 #LicenseData "license.rtf"
 # This will be in the installer/uninstaller's title bar
 Name "${COMPANYNAME} - ${APPNAME}"
-outFile "NuttyPutters.exe"
+outFile "NuttyPuttersx64.exe"
  
 !include LogicLib.nsh
  
@@ -55,6 +55,8 @@ section "install"
 	setOutPath $INSTDIR
 	# Release folder contents
 	file "x64\Release\*.*"
+	# All dlls required
+	file "NuttyPutters\*.dll"
 	# All images required in install dir
 	file "NuttyPutters\*.jpg" 
 	file "NuttyPutters\*.png"
@@ -67,12 +69,43 @@ section "install"
 	file  "NuttyPutters\*.vert"
 	# Readme
 	file "NuttyPutters\README.txt"
-	createDirectory "$INSTDIR\highscore\"
-	SetOutPath "$INSTDIR\highscore\"
-	file /r "NuttyPutters\highscore\"
+	
+	# SETUP folder structure
+	# create the folder
+	createDirectory "$INSTDIR\audio\"
+	# set the out dir for following file copy commands
+	SetOutPath "$INSTDIR\audio\"
+	# copy files in this folder to before set outdir
+	file /r "NuttyPutters\audio\"
+	
+	createDirectory "$INSTDIR\controller\"
+	SetOutPath "$INSTDIR\controller\"
+	file /r "NuttyPutters\controller\"
+	
+	createDirectory "$INSTDIR\input"
+	SetOutPath "$INSTDIR\input\"
+	file /r "NuttyPutters\input\"
+	
 	createDirectory "$INSTDIR\Mainmenu\"
 	SetOutPath "$INSTDIR\Mainmenu\"
 	file /r "NuttyPutters\Mainmenu\"
+	
+	createDirectory "$INSTDIR\options\"
+	SetOutPath "$INSTDIR\options\"
+	file /r "NuttyPutters\options\"
+	
+	createDirectory "$INSTDIR\pause\"
+	SetOutPath "$INSTDIR\pause\"
+	file /r "NuttyPutters\pause\"
+	
+	createDirectory "$INSTDIR\pause\"
+	SetOutPath "$INSTDIR\pause\"
+	file /r "NuttyPutters\pause\"
+	
+	createDirectory "$INSTDIR\savesImages\"
+	SetOutPath "$INSTDIR\savesImages\"
+	file /r "NuttyPutters\savesImages\"
+	
 	createDirectory "$INSTDIR\skyboxes\"
 	SetOutPath "$INSTDIR\skyboxes\"
 	file /r "NuttyPutters\skyboxes\"
@@ -82,7 +115,7 @@ section "install"
     #file /r "x64\Debug\*.*"
 	#file /r "NuttyPutters\x64\Debug\*.*"
 	# Uninstaller - See function un.onInit and section "uninstall" for configuration
-	writeUninstaller "$INSTDIR\NuttyPuttersUninstall.exe"
+	writeUninstaller "$INSTDIR\NuttyPuttersx64Uninstall.exe"
  
 	# Start Menu
 	createDirectory "$SMPROGRAMS\${COMPANYNAME}"
@@ -127,21 +160,30 @@ section "uninstall"
 	# Try to remove the Start Menu folder - this will only happen if it is empty
 	rmDir "$SMPROGRAMS\${COMPANYNAME}"
  
-	# Remove files
+	# Remove files from folders
+	delete $INSTDIR\audio\*.*
+	delete $INSTDIR\controller\*.*
+	delete $INSTDIR\input\*.*
 	delete $INSTDIR\Mainmenu\*.*
+	delete $INSTDIR\options\*.*
+	delete $INSTDIR\pause\*.*
+	delete $INSTDIR\savesImages\*.*
 	delete $INSTDIR\skyboxes\*.*
-	delete $INSTDIR\highscore\*.*
+	# Remove files from install dir
     delete $INSTDIR\*.*
-	# Always delete uninstaller as the last action
+	# Always delete uninstaller as the delete last action
 	delete $INSTDIR\NuttyPuttersUninstall.exe
+	# Clean up empty folders
+	rmDir $INSTDIR\audio
+	rmDir $INSTDIR\controller
+	rmDir $INSTDIR\input
 	rmDir $INSTDIR\Mainmenu
+	rmDir $INSTDIR\options 
+	rmDir $INSTDIR\pause 
+	rmDir $INSTDIR\savesImages
 	rmDir $INSTDIR\skyboxes
-	rmDir $INSTDIR\highscore
 	
 	
-
-	
- 
 	# Try to remove the install directory - this will only happen if it is empty
 	rmDir $INSTDIR
  
